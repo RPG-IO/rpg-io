@@ -3,13 +3,21 @@ name: Build project
 on:
   push:
     branches: [ master ]
+    paths:
+      - src/**
+      - build.gradle
+      - settings.gradle
   pull_request:
     branches: [ master ]
 
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
     - uses: actions/checkout@v2
