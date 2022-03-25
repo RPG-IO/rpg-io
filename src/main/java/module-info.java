@@ -8,6 +8,6 @@ module io.rpg.rpg {
   requires org.kordamp.ikonli.javafx;
   requires org.kordamp.bootstrapfx.core;
 
-  opens io.rpg.rpg to javafx.fxml;
-  exports io.rpg.rpg;
+  opens io.rpg to javafx.fxml;
+  exports io.rpg;
 }

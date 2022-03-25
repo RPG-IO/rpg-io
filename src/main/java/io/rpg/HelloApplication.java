@@ -1,4 +1,4 @@
-package io.rpg.rpg;
+package io.rpg;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
