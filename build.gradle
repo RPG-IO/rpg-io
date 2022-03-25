@@ -38,14 +38,8 @@ dependencies {
     implementation('com.dlsc.formsfx:formsfx-core:11.5.0') {
         exclude(group: 'org.openjfx')
     }
-//    implementation('net.synedra:validatorfx:0.1.13') {
-//        exclude(group: 'org.openjfx')
-//    }
     implementation('org.kordamp.ikonli:ikonli-javafx:12.3.0')
     implementation('org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0')
-//    implementation('eu.hansolo:tilesfx:17.1.5') {
-//        exclude(group: 'org.openjfx')
-//    }
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
