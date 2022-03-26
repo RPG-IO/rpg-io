@@ -7,7 +7,6 @@ module io.rpg {
   requires com.dlsc.formsfx;
   requires org.kordamp.ikonli.javafx;
   requires org.kordamp.bootstrapfx.core;
-
-  opens io.rpg to javafx.fxml;
-  exports io.rpg;
+  requires com.google.gson;
+  requires org.jetbrains.annotations;
 }
