@@ -1,0 +1,17 @@
+# OS specific
+#
+.DS_Store
+
+# IntelliJ
+#
+.idea/
+*.iml
+
+# Gradle
+#
+.gradle/
+build/
+
+# Explicitly specifed as local
+#
+local.*
