@@ -4,12 +4,12 @@ import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
 
 public class ConfigLoader {
-  private final Gson mGson;
-  private final String mPathToConfigDir;
+  private final Gson gson;
+  private final String pathToConfigDir;
 
   public ConfigLoader(@NotNull String configDirPath) {
-    mPathToConfigDir = configDirPath;
-    mGson = new Gson();
+    pathToConfigDir = configDirPath;
+    gson = new Gson();
   }
 
   public void load() {

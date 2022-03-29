@@ -12,30 +12,30 @@ abstract public class GameObject {
    * Position of game object in model's representation of location
    */
   @NotNull
-  private final Position mPosition;
+  private final Position position;
 
   /**
    * Unique identifier of this game object
    */
   @NotNull
-  private final String mTag;
+  private final String tag;
 
   /**
    * Unique identifier of this game object
    */
   public String getTag() {
-    return mTag;
+    return tag;
   }
 
   /**
    * Position of game object in model's representation of location
    */
   public Position getPosition() {
-    return mPosition;
+    return position;
   }
 
   public GameObject(@NotNull String tag, @NotNull Position position) {
-    mTag = tag;
-    mPosition = position;
+    this.tag = tag;
+    this.position = position;
   }
 }
