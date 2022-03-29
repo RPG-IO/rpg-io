@@ -9,4 +9,6 @@ module io.rpg {
   requires org.kordamp.bootstrapfx.core;
   requires com.google.gson;
   requires org.jetbrains.annotations;
+  requires org.apache.logging.log4j;
+  requires org.apache.logging.log4j.core;
 }
