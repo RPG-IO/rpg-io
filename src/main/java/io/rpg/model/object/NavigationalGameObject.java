@@ -1,4 +1,12 @@
 package io.rpg.model.object;
 
-public interface NavigationalGameObject {
+public class NavigationalGameObject extends InteractiveGameObject{
+    public void navigateTo(Object target){};
+
+    @Override
+    public void onAction() {
+
+    }
+
+
 }
