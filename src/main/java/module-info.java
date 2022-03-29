@@ -11,4 +11,7 @@ module io.rpg {
   requires org.jetbrains.annotations;
   requires org.apache.logging.log4j;
   requires org.apache.logging.log4j.core;
+
+  opens io.rpg to javafx.fxml;
+  exports io.rpg;
 }
