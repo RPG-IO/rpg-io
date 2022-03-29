@@ -1,4 +1,4 @@
 package io.rpg.model;
 
-public class GameWorld {
+final public class GameWorld {
 }
