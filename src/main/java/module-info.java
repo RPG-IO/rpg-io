@@ -1,4 +1,4 @@
-module io.rpg.rpg {
+module io.rpg {
   requires javafx.controls;
   requires javafx.fxml;
   requires javafx.web;
