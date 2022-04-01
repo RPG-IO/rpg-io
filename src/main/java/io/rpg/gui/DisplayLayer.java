@@ -22,8 +22,7 @@ public class DisplayLayer {
 
     public LocationModel showLocation(){
         // maybe initialize the scene only once
-        mainStage.setScene(new Scene(locationController.getParent()));
-
+        mainStage.setScene(locationController.getScene());
         return locationController.getModel()
                 .clear();
     }
