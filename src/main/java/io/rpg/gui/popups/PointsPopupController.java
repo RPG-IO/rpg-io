@@ -12,7 +12,7 @@ public class PointsPopupController {
     @FXML private Pane background;
 
     protected void setPointsCount(int pointsCount) {
-        label.setText("Earned " + pointsCount + " points");
+        label.setText("Earned " + pointsCount + " points!");
     }
 
     protected Pair<Double, Double> setBackgroundImage(String url){
