@@ -45,6 +45,7 @@ public class ConfigLoader {
       GameWorldConfig config = loadGameWorldConfig();
 
       logger.info("GameWorldConfig loaded");
+      logger.info(config.toString());
 
     } catch (FileNotFoundException e) {
       throw new RuntimeException(ERR_ROOT_FNF);
