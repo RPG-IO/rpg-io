@@ -115,7 +115,7 @@ public class ConfigLoader {
 
     BufferedReader reader = new BufferedReader(new FileReader(locationConfigJson.toString()));
     LocationConfig config = gson.fromJson(reader, LocationConfig.class);
-    return null;
+    return config;
   }
 
   private void validateState() {
