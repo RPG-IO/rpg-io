@@ -13,5 +13,6 @@ module io.rpg {
   requires org.apache.logging.log4j.core;
 
   opens io.rpg to javafx.fxml;
+  opens io.rpg.model to com.google.gson;
   exports io.rpg;
 }
