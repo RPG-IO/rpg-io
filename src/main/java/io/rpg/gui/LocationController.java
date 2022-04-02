@@ -1,15 +1,11 @@
 package io.rpg.gui;
 
 import io.rpg.gui.model.LocationModel;
-import io.rpg.model.GameObjectStandIn;
-import javafx.event.EventType;
+import io.rpg.gui.popups.PointsEarnedPopup;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.SubScene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;

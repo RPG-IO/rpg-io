@@ -1,4 +1,4 @@
-package io.rpg.gui;
+package io.rpg.gui.popups;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

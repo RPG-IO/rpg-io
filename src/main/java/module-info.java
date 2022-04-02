@@ -10,4 +10,5 @@ module io.rpg {
 
   opens io.rpg.gui to javafx.fxml;
   exports io.rpg;
+    opens io.rpg.gui.popups to javafx.fxml;
 }
