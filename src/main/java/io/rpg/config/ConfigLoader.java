@@ -1,6 +1,8 @@
 package io.rpg.config;
 
 import com.google.gson.Gson;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Files;
@@ -11,8 +13,10 @@ public class ConfigLoader {
   private final Path pathToConfigDir;
   private final Path pathToRootFile;
 
+  private final Logger logger;
 
   public ConfigLoader(@NotNull String configDirPath) {
+    logger = LogManager.getLogger(ConfigLoader.class);
 
     pathToConfigDir = Path.of(configDirPath);
     pathToRootFile = pathToConfigDir.resolve(ConfigConstants.ROOT);
