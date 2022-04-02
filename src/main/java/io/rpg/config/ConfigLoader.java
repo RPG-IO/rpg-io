@@ -1,10 +1,16 @@
 package io.rpg.config;
 
 import com.google.gson.Gson;
+import io.rpg.model.Game;
+import io.rpg.model.GameWorldConfig;
+import io.rpg.model.object.GameObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -24,6 +30,8 @@ public class ConfigLoader {
   public ConfigLoader(@NotNull String configDirPath) {
     logger = LogManager.getLogger(ConfigLoader.class);
 
+    logger.info("Ctor");
+
     pathToConfigDir = Path.of(configDirPath);
     pathToRootFile = pathToConfigDir.resolve(ConfigConstants.ROOT);
     gson = new Gson();
@@ -32,7 +40,25 @@ public class ConfigLoader {
   }
 
   public void load() {
+    logger.info("Load");
+    try {
+      GameWorldConfig config = loadGameWorldConfig();
 
+      logger.info("GameWorldConfig loaded");
+
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException(ERR_ROOT_FNF);
+    }
+  }
+
+  private GameWorldConfig loadGameWorldConfig() throws FileNotFoundException {
+    logger.info("Loading game world config");
+    BufferedReader reader = new BufferedReader(new FileReader(pathToRootFile.toString()));
+    GameWorldConfig config = gson.fromJson(reader, GameWorldConfig.class);
+
+    // todo: validate input
+
+    return config;
   }
 
   void validateState() {
