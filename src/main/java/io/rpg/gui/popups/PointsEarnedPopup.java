@@ -14,20 +14,25 @@ import java.util.Objects;
 
 public class PointsEarnedPopup {
 
+    private final FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(PointsEarnedPopup.class.getResource("points-earned-view.fxml")));;
+    private Parent root;
+    private PointsPopupController controller;
+    private final Scene popupScene;
 
-    public static void showPopup(int pointsCount, Scene scene){
-
+    public PointsEarnedPopup(){
         // read FXML view
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(PointsEarnedPopup.class.getResource("points-earned-view.fxml")));
-        Parent root = null;
         try {
             root = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        popupScene = new Scene(root, Color.TRANSPARENT);
+    }
+
+    public void showPopup(int pointsCount, Scene scene){
         // fill dynamic view components
-        PointsPopupController controller = loader.getController();
+        if (controller == null) controller = loader.getController();
         controller.setPointsCount(pointsCount);
         Pair<Double, Double> backgroundDims = controller.setBackgroundImage("file:assets/point-popup-bg.png");
 
@@ -36,8 +41,8 @@ public class PointsEarnedPopup {
         Window window = scene.getWindow();
         popupStage.initOwner(window);
 
-        // add and center scene on popup
-        popupStage.setScene(new Scene(root, Color.TRANSPARENT));
+        // add and center popupScene on popup stage
+        popupStage.setScene(popupScene);
         popupStage.setX(window.getX() + window.getWidth()/2 - backgroundDims.getKey()/2);
         popupStage.setY(window.getY() + window.getHeight()/2 - backgroundDims.getValue()/2);
         popupStage.show();

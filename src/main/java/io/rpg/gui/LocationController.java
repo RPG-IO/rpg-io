@@ -25,6 +25,8 @@ public class LocationController implements Initializable {
     private LocationModel model;
     private Scene scene;
 
+    private final PointsEarnedPopup pointsPopup = new PointsEarnedPopup();
+
     public static LocationController load() throws IOException {
         FXMLLoader loader = new FXMLLoader(FXML_URL);
         loader.load();
@@ -60,8 +62,7 @@ public class LocationController implements Initializable {
 
         System.out.println(event);
 
-        PointsEarnedPopup.showPopup(5, scene);
-
+        pointsPopup.showPopup(5, scene);
     }
 
     public LocationModel getModel(){
