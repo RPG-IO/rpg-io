@@ -19,4 +19,14 @@ public class GameWorldConfig {
   public List<String> getLocations() {
     return locations;
   }
+
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append("\n{\n").append("\ttag: ").append(tag).append('\n');
+    locations.forEach(location -> {
+      builder.append("\tlocation-tag: ").append(location).append('\n');
+    });
+    return builder.append("}\n").toString();
+  }
 }
