@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SubScene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -62,6 +63,8 @@ public class LocationController implements Initializable {
         // TODO: 01.04.2022 Implement key actions
 
         System.out.println(event);
+
+        PointsEarnedPopup.showPopup(5, scene);
 
     }
 

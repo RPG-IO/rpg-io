@@ -16,10 +16,10 @@ import java.net.URL;
 public class HelloApplication extends Application {
   @Override
   public void start(Stage stage) throws IOException {
-    Image someMap = new Image("C:\\Dev\\rpg-io\\assets\\map.png");
-    Image someMap10x10 = new Image("C:\\Dev\\rpg-io\\assets\\map10x10.png");
-    Image someDude1 = new Image("C:\\Dev\\rpg-io\\assets\\someDude.png");
-    Image someDude2 = new Image("C:\\Dev\\rpg-io\\assets\\someDudeButGreen.png");
+    Image someMap = new Image("file:assets/map.png");
+    Image someMap10x10 = new Image("file:assets/map10x10.png");
+    Image someDude1 = new Image("file:assets/someDude.png");
+    Image someDude2 = new Image("file:assets/someDudeButGreen.png");
 
     DisplayLayer displayLayer = new DisplayLayer(stage);
     displayLayer.showLocation()
