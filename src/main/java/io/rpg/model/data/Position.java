@@ -1,3 +1,22 @@
 package io.rpg.model.data;
 
-public record Position(int row, int col) {}
+// This class can NOT be record due to some issues
+// with Gson library
+public class Position {
+  public final int row;
+
+  public final int col;
+
+  public Position(int row, int col) {
+    this.row = row;
+    this.col = col;
+  }
+
+  public int getRow() {
+    return row;
+  }
+
+  public int getCol() {
+    return col;
+  }
+}

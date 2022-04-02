@@ -4,10 +4,10 @@ import io.rpg.model.data.Position;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Abstract class representing common state properties for all
+ * Class representing common state properties for all
  * objects appearing in the game
  */
-abstract public class GameObject {
+public class GameObject {
   /**
    * Position of game object in model's representation of location
    */
