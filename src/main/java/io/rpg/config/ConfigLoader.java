@@ -13,6 +13,12 @@ public class ConfigLoader {
   private final Path pathToConfigDir;
   private final Path pathToRootFile;
 
+  public static final String ERR_INVALID_CFG_DIR_PATH = "Could not resolve config directory." +
+      " Make sure that the config dir path is correct";
+
+  public static final String ERR_ROOT_FNF = ConfigConstants.ROOT +
+      " file was not found inside config directory. Make sure that the file exists and is named properly";
+
   private final Logger logger;
 
   public ConfigLoader(@NotNull String configDirPath) {
@@ -31,9 +37,11 @@ public class ConfigLoader {
 
   void validateState() {
     if (!Files.isDirectory(pathToConfigDir)) {
-
-      throw new IllegalArgumentException("Could not resolve " + pathToConfigDir + " directory. " +
-          "Make sure that the config dir path is correct.");
+      logger.error(ERR_INVALID_CFG_DIR_PATH);
+      throw new IllegalArgumentException(ERR_INVALID_CFG_DIR_PATH);
+    } else if (!Files.isReadable(pathToRootFile)) {
+      logger.error(ERR_ROOT_FNF);
+      throw new IllegalArgumentException(ERR_ROOT_FNF);
     }
   }
 }
