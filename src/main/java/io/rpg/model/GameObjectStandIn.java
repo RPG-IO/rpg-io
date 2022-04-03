@@ -8,15 +8,16 @@ import javafx.util.Pair;
  */
 public class GameObjectStandIn {
 
-    private Pair<Integer,Integer> position;
+//    private Pair<Integer,Integer> position;
+    private Vector position;
     private Image image;
 
-    public GameObjectStandIn(Pair<Integer, Integer> position, Image image) {
+    public GameObjectStandIn(Vector position, Image image) {
         this.position = position;
         this.image = image;
     }
 
-    public Pair<Integer, Integer> getPosition() {
+    public Vector getPosition() {
         return position;
     }
 

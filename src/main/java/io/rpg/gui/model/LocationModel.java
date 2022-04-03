@@ -2,6 +2,7 @@ package io.rpg.gui.model;
 
 import io.rpg.gui.LocationController;
 import io.rpg.model.GameObjectStandIn;
+import io.rpg.model.Vector;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -40,9 +41,10 @@ public class LocationModel {
 
     public LocationModel addMapObject(GameObjectStandIn gameObject){
         ImageView imageView = new ImageView(gameObject.getImage());
-        Pair<Integer,Integer> mapPosition = getMapPosition(gameObject.getPosition());
-        imageView.setX(mapPosition.getKey());
-        imageView.setY(mapPosition.getValue());
+        Vector mapPosition = getMapPosition(gameObject.getPosition());
+//        Pair<Integer,Integer> mapPosition = getMapPosition(gameObject.getPosition());
+        imageView.setX(mapPosition.x);
+        imageView.setY(mapPosition.y);
         gameObject2NodeMap.put(gameObject, imageView);
         mapObjects.add(imageView);
         imageView.setOnMouseClicked((e) -> onGameObjectAction(gameObject));
@@ -55,9 +57,11 @@ public class LocationModel {
     }
 
     // TODO: 01.04.2022 Replace with Position
-    private Pair<Integer, Integer> getMapPosition(Pair<Integer, Integer> position){
+    private Vector getMapPosition(Vector position){
+    //        size of one tile
         int scale = 32;
-        return new Pair<>(position.getKey() * scale, position.getValue() * scale);
+        return new Vector(position.x * scale, position.y * scale);
+//        return new Pair<>(position.x * scale, position.y * scale);
     }
 
 
