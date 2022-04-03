@@ -5,11 +5,11 @@ import com.google.gson.Gson;
 import io.rpg.model.GameWorldConfig;
 import io.rpg.model.location.LocationConfig;
 
+import io.rpg.model.object.GameObjectConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -58,7 +58,7 @@ public class ConfigLoader {
     pathToLocationsDir = pathToConfigDir.resolve(ConfigConstants.LOCATIONS_DIR);
     gson = new Gson();
 
-    validateState();
+    validate();
   }
 
   public void load() {
@@ -75,10 +75,41 @@ public class ConfigLoader {
       throw new RuntimeException(ERR_ROOT_FNF);
     }
 
+    assert config.getLocations().size() > 0 : "Configuration must specify locations";
+
     for (String locationTag : config.getLocations()) {
       try {
-        loadLocation(locationTag);
+        logger.info("Loading location config for tag: " + locationTag);
+
+        LocationConfig locationConfig = loadLocationConfig(locationTag);
+
+        // todo: this should be called in loadLocationConfig method?
+        // locationConfig.validate();
+
+        logger.info("Location config loaded for tag: " + locationTag);
+        logger.info(locationConfig.toString());
+
+
+        assert locationConfig.getPath() != null : "Path to location dir must be set in its loader";
+        Path objectsDir = locationConfig.getPath().resolve(ConfigConstants.OBJECTS_DIR);
+
+        for (GameObjectConfig gameObjectConfig : locationConfig.getObjects()) {
+          try {
+            gameObjectConfig.validate();
+          } catch (Exception ex) {
+            String exceptionMessage = ex.getMessage();
+
+            logger.warn("Validation for game object config with tag: " +
+                gameObjectConfig.getTag() + " failed." +
+                (exceptionMessage != null ? "Reason: " + exceptionMessage : "No reason provided"));
+          }
+
+          Path GameObjectConfig
+
+        }
+
       } catch (FileNotFoundException e) {
+        logger.warn("Failed to load location config for tag: " + locationTag);
         e.printStackTrace();
       }
     }
@@ -91,12 +122,12 @@ public class ConfigLoader {
     GameWorldConfig config = gson.fromJson(reader, GameWorldConfig.class);
 
     // todo: validate input
+//    config.validate();
 
     return config;
   }
 
-  @Nullable
-  LocationConfig loadLocation(@NotNull String locationTag) throws FileNotFoundException {
+  LocationConfig loadLocationConfig(@NotNull String locationTag) throws FileNotFoundException {
     logger.info("Loading location: " + locationTag);
 
     Path locationDir = pathToLocationsDir.resolve(locationTag);
@@ -115,10 +146,11 @@ public class ConfigLoader {
 
     BufferedReader reader = new BufferedReader(new FileReader(locationConfigJson.toString()));
     LocationConfig config = gson.fromJson(reader, LocationConfig.class);
+    config.setPath(locationDir);
     return config;
   }
 
-  private void validateState() {
+  public void validate() {
     if (!Files.isDirectory(pathToConfigDir)) {
       logger.error(ERR_INVALID_CFG_DIR_PATH);
       throw new IllegalArgumentException(ERR_INVALID_CFG_DIR_PATH);
