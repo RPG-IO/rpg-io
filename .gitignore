@@ -11,6 +11,7 @@
 #
 .gradle/
 build/
+bin/
 
 # Explicitly specifed as local
 #
