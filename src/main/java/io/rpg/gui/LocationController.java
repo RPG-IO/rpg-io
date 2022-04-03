@@ -2,11 +2,14 @@ package io.rpg.gui;
 
 import io.rpg.gui.model.LocationModel;
 import io.rpg.gui.popups.PointsEarnedPopup;
+import io.rpg.model.Game;
+import io.rpg.model.Vector;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -24,6 +27,7 @@ public class LocationController implements Initializable {
 
     private LocationModel model;
     private Scene scene;
+    private Game game;
 
     private final PointsEarnedPopup pointsPopup = new PointsEarnedPopup();
 
@@ -51,6 +55,7 @@ public class LocationController implements Initializable {
 
         });
 
+//        model = new LocationModel(mapImageView.imageProperty(), foregroundPane.getChildren(), this);
         model = new LocationModel(mapImageView.imageProperty(), foregroundPane.getChildren(), this);
 
         scene = new Scene(parent);
@@ -59,12 +64,27 @@ public class LocationController implements Initializable {
 
     public void onKeyTyped(KeyEvent event) {
         // TODO: 01.04.2022 Implement key actions
-
         System.out.println(event);
-
+        switch(event.getCode()){
+            case S:
+                game.getPlayer().setDirection(new Vector(0,-1));
+                break;
+            case W:
+                game.getPlayer().setDirection(new Vector(0,1));
+                break;
+            case A:
+                game.getPlayer().setDirection(new Vector(-1,0));
+                break;
+            case D:
+                game.getPlayer().setDirection(new Vector(1,0));
+                break;
+        }
         pointsPopup.showPopup(5, scene);
     }
 
+    public void setGame(Game game){
+        this.game=game;
+    }
     public LocationModel getModel(){
         return model;
     }
