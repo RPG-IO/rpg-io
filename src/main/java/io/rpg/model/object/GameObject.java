@@ -23,6 +23,7 @@ public class GameObject {
   /**
    * Unique identifier of this game object
    */
+  @NotNull
   public String getTag() {
     return tag;
   }
@@ -30,8 +31,13 @@ public class GameObject {
   /**
    * Position of game object in model's representation of location
    */
+  @NotNull
   public Position getPosition() {
     return position;
+  }
+
+  public void validate() {
+    // nothing to validate for now
   }
 
   public GameObject(@NotNull String tag, @NotNull Position position) {
