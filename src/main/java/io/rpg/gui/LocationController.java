@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -62,7 +63,8 @@ public class LocationController implements Initializable {
 
         System.out.println(event);
 
-        pointsPopup.showPopup(5, scene);
+        Stage pointPopupStage = pointsPopup.getPopup(5, scene);
+        pointPopupStage.show();
     }
 
     public LocationModel getModel(){

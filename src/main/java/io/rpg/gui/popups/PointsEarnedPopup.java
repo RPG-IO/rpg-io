@@ -30,7 +30,7 @@ public class PointsEarnedPopup {
         popupScene = new Scene(root, Color.TRANSPARENT);
     }
 
-    public void showPopup(int pointsCount, Scene scene){
+    public Stage getPopup(int pointsCount, Scene scene){
         // fill dynamic view components
         if (controller == null) controller = loader.getController();
         controller.setPointsCount(pointsCount);
@@ -45,7 +45,6 @@ public class PointsEarnedPopup {
         popupStage.setScene(popupScene);
         popupStage.setX(window.getX() + window.getWidth()/2 - backgroundDims.getKey()/2);
         popupStage.setY(window.getY() + window.getHeight()/2 - backgroundDims.getValue()/2);
-        popupStage.show();
 
         // close popup after clicking aside
         popupStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
@@ -53,5 +52,7 @@ public class PointsEarnedPopup {
                 popupStage.close();
             }
         });
+
+        return popupStage;
     }
 }
