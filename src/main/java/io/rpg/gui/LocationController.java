@@ -65,21 +65,25 @@ public class LocationController implements Initializable {
     public void onKeyTyped(KeyEvent event) {
         // TODO: 01.04.2022 Implement key actions
         System.out.println(event);
-        switch(event.getCode()){
-            case S:
+        String c=event.getCharacter();
+//        System.out.println();
+        switch(c){
+            case "w":
                 game.getPlayer().setDirection(new Vector(0,-1));
                 break;
-            case W:
+            case "s":
                 game.getPlayer().setDirection(new Vector(0,1));
                 break;
-            case A:
+            case "a":
                 game.getPlayer().setDirection(new Vector(-1,0));
                 break;
-            case D:
+            case "d":
                 game.getPlayer().setDirection(new Vector(1,0));
                 break;
+            default:
+                pointsPopup.showPopup(5, scene);
+                break;
         }
-        pointsPopup.showPopup(5, scene);
     }
 
     public void setGame(Game game){
@@ -92,4 +96,5 @@ public class LocationController implements Initializable {
     public Scene getScene() {
         return scene;
     }
+
 }

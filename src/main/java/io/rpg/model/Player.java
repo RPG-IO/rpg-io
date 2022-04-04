@@ -8,7 +8,7 @@ public class Player extends GameObject{
     Vector direction;
     public Player(Vector position, Image image){
         super(position,image);
-        speed=5;
+        speed=0.1f;
         direction=new Vector(0,0);
     }
 

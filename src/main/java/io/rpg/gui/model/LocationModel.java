@@ -13,7 +13,7 @@ import javafx.util.Pair;
 import java.util.HashMap;
 
 public class LocationModel {
-
+    static final int SCALE = 32;
     private Game game;
     private final ObjectProperty<Image> background;
     // TODO: 01.04.2022 Think about a better name
@@ -65,8 +65,7 @@ public class LocationModel {
     // TODO: 01.04.2022 Replace with Position
     private Vector getMapPosition(Vector position){
     //        size of one tile
-        int scale = 32;
-        return new Vector(position.x * scale, position.y * scale);
+        return new Vector(position.x * SCALE, position.y * SCALE);
 //        return new Pair<>(position.x * scale, position.y * scale);
     }
 
@@ -79,9 +78,7 @@ public class LocationModel {
     }
     public void update(){
         Player player=game.getPlayer();
-        player.getImageView().setX(player.getPosition().x);
-        player.getImageView().setX(player.getPosition().y);
-//        player.getPosition().y
-//        game
+        player.getImageView().setX(player.getPosition().x*SCALE);
+        player.getImageView().setY(player.getPosition().y*SCALE);
     }
 }

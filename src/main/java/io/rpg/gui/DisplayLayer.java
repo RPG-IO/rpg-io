@@ -17,15 +17,18 @@ public class DisplayLayer {
         this.mainStage = mainStage;
         mainStage.show();
         locationController = LocationController.load();
+
     }
 
 
     public LocationModel showLocation(){
         // maybe initialize the scene only once
         mainStage.setScene(locationController.getScene());
-        return locationController.getModel()
-                .clear();
+        return locationController.getModel().clear();
     }
 
+    public LocationController getLocationController(){
+        return locationController;
+    }
 
 }

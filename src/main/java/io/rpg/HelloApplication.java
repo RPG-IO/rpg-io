@@ -1,10 +1,10 @@
 package io.rpg;
 
 import io.rpg.gui.DisplayLayer;
-import io.rpg.model.Game;
+import io.rpg.gui.LocationController;
+import io.rpg.gui.model.LocationModel;
+import io.rpg.model.*;
 import io.rpg.model.GameObject;
-import io.rpg.model.GameObject;
-import io.rpg.model.Vector;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -27,14 +27,17 @@ public class HelloApplication extends Application {
     Image player = new Image("file:assets/stone.png");
     Game game=new Game();
     DisplayLayer displayLayer = new DisplayLayer(stage);
+    LocationModel locationModel=displayLayer.showLocation();
+    LocationController locationController=displayLayer.getLocationController();
+    locationController.setGame(game);
     try{
       game.addGameObject(new GameObject(new Vector(0,0), someDude1));
       game.addGameObject(new GameObject(new Vector(0,5), someDude2));
       game.addGameObject(new GameObject(new Vector(5,5), someDude2));
-      game.addGameObject(new GameObject(new Vector(7,7), player));
-      displayLayer.showLocation().setBackgroundImage(someMap);
-      displayLayer.showLocation().setGame(game);
-
+      game.addGameObject(new Player(new Vector(7,7), player));
+//      locationModel=displayLayer.showLocation();
+      locationModel.setBackgroundImage(someMap);
+      locationModel.setGame(game);
     }catch(Exception e){
         e.printStackTrace();
     }
@@ -42,9 +45,10 @@ public class HelloApplication extends Application {
       @Override
       public void handle(long now) {
         game.update();
-        displayLayer.showLocation().update();
+        locationModel.update();
       }
     };
+
     animationTimer.start();
 
 //    DisplayLayer displayLayer = new DisplayLayer(stage);
