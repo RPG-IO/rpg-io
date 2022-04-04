@@ -51,8 +51,8 @@ public class HelloApplication extends Application {
           locationModel.update(difference);
         }
         lastUpdate=now;
-
       }
+
     };
 
     animationTimer.start();

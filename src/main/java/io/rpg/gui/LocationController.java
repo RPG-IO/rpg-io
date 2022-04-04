@@ -4,6 +4,7 @@ import io.rpg.gui.model.LocationModel;
 import io.rpg.gui.popups.PointsEarnedPopup;
 import io.rpg.model.Game;
 import io.rpg.model.Vector;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -59,32 +60,84 @@ public class LocationController implements Initializable {
         model = new LocationModel(mapImageView.imageProperty(), foregroundPane.getChildren(), this);
 
         scene = new Scene(parent);
-        scene.addEventFilter(KeyEvent.KEY_TYPED, this::onKeyTyped);
+//        scene.addEventFilter(KeyEvent.KEY_TYPED, this::onKeyTyped);
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, this::onKeyPressed);
+        scene.addEventFilter(KeyEvent.KEY_RELEASED, this::onKeyReleased);
     }
 
-    public void onKeyTyped(KeyEvent event) {
-        // TODO: 01.04.2022 Implement key actions
-        System.out.println(event);
-        String c=event.getCharacter();
-//        System.out.println();
-        switch(c){
-            case "w":
-                game.getPlayer().setDirection(new Vector(0,-1));
+    public void onKeyPressed(KeyEvent event){
+        switch(event.getCode()){
+            case W:
+//                game.getPlayer().setDirection(new Vector(0,-1));
+                game.getPlayer().setUpPressed(true);
                 break;
-            case "s":
-                game.getPlayer().setDirection(new Vector(0,1));
+            case S:
+//                game.getPlayer().setDirection(new Vector(0,1));
+                game.getPlayer().setDownPressed(true);
                 break;
-            case "a":
-                game.getPlayer().setDirection(new Vector(-1,0));
+            case A:
+//                game.getPlayer().setDirection(new Vector(-1,0));
+                game.getPlayer().setLeftPressed(true);
                 break;
-            case "d":
-                game.getPlayer().setDirection(new Vector(1,0));
-                break;
-            default:
-                pointsPopup.showPopup(5, scene);
+            case D:
+//                game.getPlayer().setDirection(new Vector(1,0));
+                game.getPlayer().setRightPressed(true);
                 break;
         }
+
     }
+
+    public void onKeyReleased(KeyEvent event){
+        event.getCharacter();
+//        System.out.println();
+        switch(event.getCode()){
+            case W:
+//                game.getPlayer().setDirection(new Vector(0,-1));
+                game.getPlayer().setUpPressed(false);
+                break;
+            case S:
+//                game.getPlayer().setDirection(new Vector(0,1));
+                game.getPlayer().setDownPressed(false);
+                break;
+            case A:
+//                game.getPlayer().setDirection(new Vector(-1,0));
+                game.getPlayer().setLeftPressed(false);
+                break;
+            case D:
+//                game.getPlayer().setDirection(new Vector(1,0));
+                game.getPlayer().setRightPressed(false);
+                break;
+        }
+
+    }
+
+//    public void onKeyTyped(KeyEvent event) {
+//        // TODO: 01.04.2022 Implement key actions
+//        System.out.println(event);
+//        String c=event.getCharacter();
+////        System.out.println();
+//        switch(c){
+//            case "w":
+////                game.getPlayer().setDirection(new Vector(0,-1));
+//                game.getPlayer().setUpPressed(true);
+//                break;
+//            case "s":
+////                game.getPlayer().setDirection(new Vector(0,1));
+//                game.getPlayer().setDownPressed(true);
+//                break;
+//            case "a":
+//                game.getPlayer().setDirection(new Vector(-1,0));
+//                game.getPlayer().setLeftPressed(true);
+//                break;
+//            case "d":
+//                game.getPlayer().setDirection(new Vector(1,0));
+//                game.getPlayer().setRightPressed(true);
+//                break;
+//            default:
+//                pointsPopup.showPopup(5, scene);
+//                break;
+//        }
+//    }
 
     public void setGame(Game game){
         this.game=game;
