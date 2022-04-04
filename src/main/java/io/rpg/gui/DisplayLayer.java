@@ -20,7 +20,6 @@ public class DisplayLayer {
 
     }
 
-
     public LocationModel showLocation(){
         // maybe initialize the scene only once
         mainStage.setScene(locationController.getScene());

@@ -8,7 +8,7 @@ public class Player extends GameObject{
     Vector direction;
     public Player(Vector position, Image image){
         super(position,image);
-        speed=0.1f;
+        speed=5f;
         direction=new Vector(0,0);
     }
 
@@ -16,7 +16,7 @@ public class Player extends GameObject{
         this.direction = direction;
     }
 
-    public void update(){
-        this.position=new Vector(this.position.x+speed*direction.x,this.position.y+speed*direction.y);
+    public void update(float elapsed){
+        this.position=new Vector(this.position.x+speed*direction.x*elapsed/1000,this.position.y+speed*direction.y*elapsed/1000);
     }
 }

@@ -35,7 +35,7 @@ public class Game {
     public Player getPlayer() {
         return player;
     }
-    public void update(){
-        player.update();
+    public void update(float elapsed){
+        player.update(elapsed);
     }
 }

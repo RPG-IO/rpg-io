@@ -76,7 +76,8 @@ public class LocationModel {
         }
         return this;
     }
-    public void update(){
+//    elapsed is expressed in milliseconds
+    public void update(float elapsed){
         Player player=game.getPlayer();
         player.getImageView().setX(player.getPosition().x*SCALE);
         player.getImageView().setY(player.getPosition().y*SCALE);

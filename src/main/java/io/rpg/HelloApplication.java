@@ -42,10 +42,16 @@ public class HelloApplication extends Application {
         e.printStackTrace();
     }
     AnimationTimer animationTimer=new AnimationTimer() {
+      long lastUpdate=-1;
       @Override
       public void handle(long now) {
-        game.update();
-        locationModel.update();
+        if(lastUpdate!=-1){
+          float difference=(now-lastUpdate)/1e6f;
+          game.update(difference);
+          locationModel.update(difference);
+        }
+        lastUpdate=now;
+
       }
     };
 
