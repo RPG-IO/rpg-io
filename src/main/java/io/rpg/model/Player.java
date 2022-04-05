@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 
 public class Player extends GameObject{
 
+    int strength;
     float speed;
     Vector direction;
     boolean rightPressed;
@@ -19,8 +20,12 @@ public class Player extends GameObject{
         this.leftPressed=false;
         this.upPressed=false;
         this.downPressed=false;
+        this.strength=0;
     }
 
+    public void updateStrength(int value){
+        strength += value;
+    }
 
     public void setDirection(Vector direction) {
         this.direction = direction;
@@ -60,5 +65,9 @@ public class Player extends GameObject{
 
     public void setDownPressed(boolean downPressed) {
         this.downPressed = downPressed;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
     }
 }

@@ -60,7 +60,7 @@ public class LocationController implements Initializable {
         model = new LocationModel(mapImageView.imageProperty(), foregroundPane.getChildren(), this);
 
         scene = new Scene(parent);
-//        scene.addEventFilter(KeyEvent.KEY_TYPED, this::onKeyTyped);
+        scene.addEventFilter(KeyEvent.KEY_TYPED, this::onKeyTyped);
         scene.addEventFilter(KeyEvent.KEY_PRESSED, this::onKeyPressed);
         scene.addEventFilter(KeyEvent.KEY_RELEASED, this::onKeyReleased);
     }
@@ -111,33 +111,17 @@ public class LocationController implements Initializable {
 
     }
 
-//    public void onKeyTyped(KeyEvent event) {
-//        // TODO: 01.04.2022 Implement key actions
-//        System.out.println(event);
-//        String c=event.getCharacter();
-////        System.out.println();
-//        switch(c){
-//            case "w":
-////                game.getPlayer().setDirection(new Vector(0,-1));
-//                game.getPlayer().setUpPressed(true);
-//                break;
-//            case "s":
-////                game.getPlayer().setDirection(new Vector(0,1));
-//                game.getPlayer().setDownPressed(true);
-//                break;
-//            case "a":
-//                game.getPlayer().setDirection(new Vector(-1,0));
-//                game.getPlayer().setLeftPressed(true);
-//                break;
-//            case "d":
-//                game.getPlayer().setDirection(new Vector(1,0));
-//                game.getPlayer().setRightPressed(true);
-//                break;
-//            default:
-//                pointsPopup.showPopup(5, scene);
-//                break;
-//        }
-//    }
+    public void onKeyTyped(KeyEvent event) {
+        // TODO: 01.04.2022 Implement key actions
+        System.out.println(event);
+        String c=event.getCharacter();
+//        System.out.println();
+        switch(c){
+            case "f":
+                pointsPopup.showPopup(5, scene);
+                break;
+        }
+    }
 
     public void setGame(Game game){
         this.game=game;
