@@ -104,7 +104,7 @@ public class ConfigLoader {
                 (exceptionMessage != null ? "Reason: " + exceptionMessage : "No reason provided"));
           }
 
-          Path GameObjectConfig
+//          Path GameObjectConfig
 
         }
 
