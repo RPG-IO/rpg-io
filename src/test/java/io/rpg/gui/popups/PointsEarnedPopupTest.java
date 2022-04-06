@@ -23,7 +23,7 @@ public class PointsEarnedPopupTest {
             mainStage.initOwner(null);
             Scene mainScene = new Scene(new Group());
             mainStage.setScene(mainScene);
-            Stage popupStage = pointsPopup.getPopup(5, mainStage);
+            Stage popupStage = pointsPopup.getPopup(5, mainScene);
 
             popupStage.show();
             mainStage.requestFocus();
