@@ -2,6 +2,7 @@ module io.rpg {
   requires javafx.controls;
   requires javafx.fxml;
   requires javafx.web;
+  requires javafx.swing;
 
   requires org.controlsfx.controls;
   requires com.dlsc.formsfx;
@@ -10,5 +11,5 @@ module io.rpg {
 
   opens io.rpg.gui to javafx.fxml;
   exports io.rpg;
-    opens io.rpg.gui.popups to javafx.fxml;
+    opens io.rpg.gui.popups to javafx.fxml, javafx.swing;
 }
