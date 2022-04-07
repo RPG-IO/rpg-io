@@ -30,7 +30,7 @@ public class PointsEarnedPopup {
         popupScene = new Scene(root, Color.TRANSPARENT);
     }
 
-    public Stage getPopup(int pointsCount, Scene scene){
+    public Stage getPopup(int pointsCount, Scene scene) {
         // fill dynamic view components
         if (controller == null) controller = loader.getController();
         controller.setPointsCount(pointsCount);
