@@ -1,62 +1,36 @@
 package io.rpg;
 
 import io.rpg.config.ConfigLoader;
+import io.rpg.gui.DisplayLayer;
+import io.rpg.model.GameObjectStandIn;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
+import javafx.util.Pair;
 
 import java.io.IOException;
+import java.net.URL;
 
-//public class HelloApplication extends Application {
-//  // As start method is called even before main function, we need
-//  // to initialize logging even earlier
-//  @Override
-//  public void init() {
-//    setupLogging();
-//
-//    Logger logger = LogManager.getLogger(HelloApplication.class);
-//    logger.info("Running application...");
-//
-////    ConfigLoader configLoader = new ConfigLoader();
-//  }
-//
-//  @Override
-//  public void start(Stage stage) throws IOException {
-//    FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-//    Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-//    stage.setTitle("Hello!");
-//    stage.setScene(scene);
-//    stage.show();
-//  }
-//
-//  public static void setupLogging() {
-//    // log everything
-//    Configurator.setRootLevel(Level.TRACE);
-//  }
-//
-//  public static void main(String[] args) {
-////    launch();
-//  }
-//}
+public class HelloApplication extends Application {
+  @Override
+  public void start(Stage stage) throws IOException {
+    Image someMap = new Image("file:assets/map.png");
+    Image someMap10x10 = new Image("file:assets/map10x10.png");
+    Image someDude1 = new Image("file:assets/someDude.png");
+    Image someDude2 = new Image("file:assets/someDudeButGreen.png");
 
-public class HelloApplication {
-  public static void main(String[] args) {
-    setupLogging();
-
-    Logger logger = LogManager.getLogger(HelloApplication.class);
-    logger.info("Running application...");
-
-    ConfigLoader configLoader = new ConfigLoader("configurations/config-1");
-    configLoader.load();
-  }
-
-  public static void setupLogging() {
-    // log everything
-    Configurator.setRootLevel(Level.TRACE);
+    DisplayLayer displayLayer = new DisplayLayer(stage);
+    displayLayer.showLocation()
+            .setBackgroundImage(someMap)
+            .addMapObject(new GameObjectStandIn(new Pair<>(0,0), someDude1))
+            .addMapObject(new GameObjectStandIn(new Pair<>(0,5), someDude1))
+            .addMapObject(new GameObjectStandIn(new Pair<>(5,5), someDude2));
   }
 }
