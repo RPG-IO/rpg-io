@@ -17,7 +17,8 @@ module io.rpg {
   opens io.rpg.model.location to com.google.gson;
   opens io.rpg.model.object to com.google.gson;
   opens io.rpg.model.data to com.google.gson;
-
   opens io.rpg.gui to javafx.fxml;
+	opens io.rpg.gui.popups to javafx.fxml;
+	
   exports io.rpg;
 }
