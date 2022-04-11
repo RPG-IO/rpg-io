@@ -2,11 +2,6 @@ package io.rpg.config;
 
 import io.rpg.model.GameWorldConfig;
 
-import io.rpg.model.data.Position;
-import io.rpg.model.location.Location;
-import io.rpg.model.location.LocationConfig;
-import io.rpg.model.object.GameObject;
-import io.rpg.model.object.GameObjectConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

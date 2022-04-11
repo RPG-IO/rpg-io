@@ -61,7 +61,7 @@ public class ConfigLoader {
     validate();
   }
 
-  public void load() {
+  public GameWorldConfig load() {
     logger.info("Load");
 
     GameWorldConfig config;
@@ -85,6 +85,8 @@ public class ConfigLoader {
 
         // todo: this should be called in loadLocationConfig method?
         // locationConfig.validate();
+
+        config.addLocationConfigForTag(locationTag, locationConfig);
 
         logger.info("Location config loaded for tag: " + locationTag);
         logger.info(locationConfig.toString());
@@ -113,6 +115,7 @@ public class ConfigLoader {
         e.printStackTrace();
       }
     }
+    return config;
   }
 
   @NotNull

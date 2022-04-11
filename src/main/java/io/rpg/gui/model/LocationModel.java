@@ -3,7 +3,8 @@ package io.rpg.gui.model;
 import io.rpg.gui.LocationController;
 import io.rpg.model.GameObjectStandIn;
 import io.rpg.model.*;
-import io.rpg.model.GameObject;
+import io.rpg.model.object.GameObject;
+import io.rpg.model.object.InteractiveGameObject;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -39,12 +40,12 @@ public class LocationModel {
         return this;
     }
 
-    public LocationModel setBackgroundImage(Image backgroundImage){
+    public LocationModel setBackgroundImage(Image backgroundImage) {
         background.setValue(backgroundImage);
         return this;
     }
 
-    public LocationModel addMapObject(GameObject gameObject){
+    public LocationModel addMapObject(GameObject gameObject) {
         ImageView imageView = new ImageView(gameObject.getImage());
 //        gameObject
         Vector mapPosition = getMapPosition(gameObject.getPosition());
@@ -58,13 +59,17 @@ public class LocationModel {
         return this;
     }
     
-    private void onGameObjectAction(GameObject source){
+    private void onGameObjectAction(GameObject source) {
         // TODO: 01.04.2022 What to do when some GameObject was clicked
         System.out.println(source);
+        if (source instanceof InteractiveGameObject) {
+            ((InteractiveGameObject) source).onAction();
+
+        }
     }
 
     // TODO: 01.04.2022 Replace with Position
-    private Vector getMapPosition(Vector position){
+    private Vector getMapPosition(Vector position) {
     //        size of one tile
         return new Vector(position.x * SCALE, position.y * SCALE);
 //        return new Pair<>(position.x * scale, position.y * scale);

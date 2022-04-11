@@ -4,6 +4,7 @@ import io.rpg.gui.model.LocationModel;
 import io.rpg.gui.popups.PointsEarnedPopup;
 import io.rpg.model.Game;
 import io.rpg.model.Vector;
+import io.rpg.view.LocationView;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -59,7 +60,7 @@ public class LocationController implements Initializable {
         model = new LocationModel(mapImageView.imageProperty(), foregroundPane.getChildren(), this);
 
         scene = new Scene(parent);
-        scene.addEventFilter(KeyEvent.KEY_TYPED, this::onKeyTyped);
+        scene.addEventFilter(KeyEvent.KEY_TYPED, this::onKeyTyped;
         scene.addEventFilter(KeyEvent.KEY_PRESSED, this::onKeyPressed);
         scene.addEventFilter(KeyEvent.KEY_RELEASED, this::onKeyReleased);
     }
@@ -133,4 +134,5 @@ public class LocationController implements Initializable {
     public Scene getScene() {
         return scene;
     }
+
 }
