@@ -1,37 +1,67 @@
 package io.rpg;
 
+import io.rpg.config.ConfigLoader;
+import io.rpg.gui.DisplayLayer;
+import io.rpg.model.GameObjectStandIn;
+import io.rpg.gui.LocationController;
+import io.rpg.gui.model.LocationModel;
+import io.rpg.model.*;
+import io.rpg.model.GameObject;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
+import javafx.util.Pair;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URL;
 
 public class HelloApplication extends Application {
   @Override
   public void start(Stage stage) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), 200, 200);
 
-    List<List<Integer>> map = new ArrayList<>();
-    int counter = 0;
-    for(int i = 0; i < 20; i++){
-      ArrayList<Integer> row = new ArrayList<>();
-      for(int j = 0; j < 20; j++)
-        row.add(counter++);
-      map.add(row);
+    Image someMap = new Image("file:assets/map.png");
+    Image someMap10x10 = new Image("file:assets/map10x10.png");
+    Image someDude1 = new Image("file:assets/someDude.png");
+    Image someDude2 = new Image("file:assets/someDudeButGreen.png");
+    Image player = new Image("file:assets/stone.png");
+    Game game=new Game();
+    DisplayLayer displayLayer = new DisplayLayer(stage);
+    LocationModel locationModel=displayLayer.showLocation();
+    LocationController locationController=displayLayer.getLocationController();
+    locationController.setGame(game);
+    try{
+      game.addGameObject(new GameObject(new Vector(0,0), someDude1));
+      game.addGameObject(new GameObject(new Vector(0,5), someDude2));
+      game.addGameObject(new GameObject(new Vector(5,5), someDude2));
+      game.addGameObject(new Player(new Vector(7,7), player));
+//      locationModel=displayLayer.showLocation();
+      locationModel.setBackgroundImage(someMap);
+      locationModel.setGame(game);
+    }catch(Exception e){
+        e.printStackTrace();
     }
+    AnimationTimer animationTimer=new AnimationTimer() {
+      long lastUpdate=-1;
+      @Override
+      public void handle(long now) {
+        if(lastUpdate!=-1){
+          float difference=(now-lastUpdate)/1e6f;
+          game.update(difference);
+          locationModel.update(difference);
+        }
+        lastUpdate=now;
+      }
 
-    scene.setOnMouseClicked(new ClickInteractionHandler(map, 0, 0));
-    stage.setTitle("Hello!");
-    stage.setScene(scene);
-    stage.show();
-  }
+    };
 
-  public static void main(String[] args) {
-    launch();
+    animationTimer.start();
   }
 }
