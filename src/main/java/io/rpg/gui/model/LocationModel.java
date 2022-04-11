@@ -59,8 +59,15 @@ public class LocationModel {
     }
     
     private void onGameObjectAction(GameObject source){
-        // TODO: 01.04.2022 What to do when some GameObject was clicked
-        System.out.println(source);
+        // TODO: 11.04.2022 Change GameObject and InteractibleGameObject classes
+        System.out.println("Mouse click handled, but a change in class hierarchy is necessary");
+
+        Vector playerPos = game.getPlayer().getPosition();
+        Vector sourcePos = source.getPosition();
+
+        if(source instanceof InteractiveGameObject && Math.abs(playerPos.x-sourcePos.x) <= 1.5 && Math.abs(playerPos.y-sourcePos.y) <= 1.5){
+            ((InteractiveGameObject) source).onAction();
+        }
     }
 
     // TODO: 01.04.2022 Replace with Position
