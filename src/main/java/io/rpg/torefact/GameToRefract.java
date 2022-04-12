@@ -1,4 +1,4 @@
-package io.rpg.torefract;
+package io.rpg.torefact;
 
 import io.rpg.model.object.Player;
 

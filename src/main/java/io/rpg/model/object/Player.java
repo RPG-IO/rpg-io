@@ -1,7 +1,7 @@
 package io.rpg.model.object;
 
 import io.rpg.model.data.Vector;
-import io.rpg.torefract.GameObject;
+import io.rpg.torefact.GameObject;
 import javafx.scene.image.Image;
 
 public class Player extends GameObject {

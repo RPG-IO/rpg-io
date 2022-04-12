@@ -18,7 +18,7 @@ module io.rpg {
   opens io.rpg.model.data to com.google.gson;
 
   opens io.rpg.viewmodel to javafx.fxml;
-  opens io.rpg.torefract to com.google.gson;
+  opens io.rpg.torefact to com.google.gson;
   opens io.rpg.config.model to com.google.gson;
 
   exports io.rpg;
