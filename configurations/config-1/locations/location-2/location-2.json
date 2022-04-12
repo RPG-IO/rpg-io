@@ -1,7 +1,8 @@
 {
   "tag": "location-2",
   "objects": [
-    { "tag": "object-1", "position": { "row": 0, "col": 0 } },
-    { "tag": "object-3", "position": { "row": 0, "col": 1 } }
-  ]
+    { "tag": "object-1", "position": { "row": 0, "col": 0 }, "type": "collectible" },
+    { "tag": "object-3", "position": { "row": 0, "col": 1 }, "type": "navigable" }
+  ],
+	"backgroundPath": "file:assets/map.png"
 }

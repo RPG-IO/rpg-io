@@ -1,6 +1,6 @@
 package io.rpg.config;
 
-import io.rpg.model.GameWorldConfig;
+import io.rpg.config.model.GameWorldConfig;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

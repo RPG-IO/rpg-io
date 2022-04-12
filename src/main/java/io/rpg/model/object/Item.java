@@ -1,4 +1,4 @@
-package io.rpg.model;
+package io.rpg.model.object;
 
 public class Item {
     private int strength;

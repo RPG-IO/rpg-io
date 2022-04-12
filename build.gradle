@@ -25,7 +25,7 @@ tasks.withType(JavaCompile) {
 
 application {
     mainModule = 'io.rpg'
-    mainClass = 'io.rpg.HelloApplication'
+    mainClass = 'io.rpg.Main'
 }
 
 javafx {

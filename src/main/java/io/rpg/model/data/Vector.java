@@ -1,4 +1,4 @@
-package io.rpg.model;
+package io.rpg.model.data;
 
 public class Vector {
     public final float x;

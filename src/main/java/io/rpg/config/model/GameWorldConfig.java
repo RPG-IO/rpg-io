@@ -1,11 +1,9 @@
-package io.rpg.model;
+package io.rpg.config.model;
 
-import io.rpg.model.location.LocationConfig;
+import io.rpg.config.model.LocationConfig;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GameWorldConfig {
   private String tag;
@@ -14,14 +12,12 @@ public class GameWorldConfig {
 
   private ArrayList<LocationConfig> locationConfigs;
 
-  private LinkedHashMap<String, LocationConfig> tagToLocationConfigMap;
-
   // This class is not meant to be instantiated
   // by hand. Only Gson should be able to do so
   private GameWorldConfig() {
-    tagToLocationConfigMap = new LinkedHashMap<>();
+    locations = new ArrayList<>();
+    locationConfigs = new ArrayList<>();
   }
-
 
   public String getTag() {
     return tag;
@@ -31,8 +27,8 @@ public class GameWorldConfig {
     return locations;
   }
 
-  public LinkedHashMap<String, LocationConfig> getTagToLocationConfigMap() {
-    return tagToLocationConfigMap;
+  public ArrayList<LocationConfig> getLocationConfigs() {
+    return locationConfigs;
   }
 
   @Override
@@ -45,7 +41,7 @@ public class GameWorldConfig {
     return builder.append("}\n").toString();
   }
 
-  public void addLocationConfigForTag(String locationTag, LocationConfig locationConfig) {
-    tagToLocationConfigMap.put(locationTag, locationConfig);
+  public void addLocationConfig(LocationConfig locationConfig) {
+    locationConfigs.add(locationConfig);
   }
 }

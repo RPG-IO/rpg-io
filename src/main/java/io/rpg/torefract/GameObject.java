@@ -1,5 +1,6 @@
-package io.rpg.model;
+package io.rpg.torefract;
 
+import io.rpg.model.data.Vector;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -8,10 +9,10 @@ import javafx.scene.image.ImageView;
  */
 public class GameObject {
 
-//    private Pair<Integer,Integer> position;
+    // private Pair<Integer,Integer> position;
     protected Vector position;
     private Image image;
-//    control that displays objects
+    // control that displays objects
     private ImageView imageView;
 
     public GameObject(Vector position, Image image) {

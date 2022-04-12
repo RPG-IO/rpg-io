@@ -1,4 +1,4 @@
-package io.rpg.gui.popups;
+package io.rpg.viewmodel;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -11,11 +11,11 @@ public class PointsPopupController {
     @FXML private Label label;
     @FXML private Pane background;
 
-    protected void setPointsCount(int pointsCount) {
+    public void setPointsCount(int pointsCount) {
         label.setText("Earned " + pointsCount + " points!");
     }
 
-    protected Pair<Double, Double> setBackgroundImage(String url){
+    public Pair<Double, Double> setBackgroundImage(String url){
         BackgroundImage backgroundImg= new BackgroundImage(
                 new Image(url),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,

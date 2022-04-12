@@ -1,8 +1,10 @@
-package io.rpg.model;
+package io.rpg.model.object;
 
+import io.rpg.model.data.Vector;
+import io.rpg.torefract.GameObject;
 import javafx.scene.image.Image;
 
-public class Player extends GameObject{
+public class Player extends GameObject {
 
     int strength;
     float speed;
@@ -46,7 +48,6 @@ public class Player extends GameObject{
 
         if(rightPressed)
             x+=1;
-
 
         this.position=new Vector(this.position.x+speed*x*elapsed/1000,this.position.y+speed*y*elapsed/1000);
     }

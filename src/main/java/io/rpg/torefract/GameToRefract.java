@@ -1,13 +1,15 @@
-package io.rpg.model;
+package io.rpg.torefract;
+
+import io.rpg.model.object.Player;
 
 import java.util.ArrayList;
 
-public class Game {
+public class GameToRefract {
     private Player player;
 //    Timer
     ArrayList<GameObject> gameObjects;
 
-    public Game(){
+    public GameToRefract(){
         this.gameObjects=new ArrayList<>();
         this.player=null;
     }

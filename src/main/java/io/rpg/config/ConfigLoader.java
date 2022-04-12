@@ -2,10 +2,10 @@ package io.rpg.config;
 
 import com.google.gson.Gson;
 
-import io.rpg.model.GameWorldConfig;
-import io.rpg.model.location.LocationConfig;
+import io.rpg.config.model.GameWorldConfig;
+import io.rpg.config.model.LocationConfig;
 
-import io.rpg.model.object.GameObjectConfig;
+import io.rpg.config.model.GameObjectConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -86,7 +86,7 @@ public class ConfigLoader {
         // todo: this should be called in loadLocationConfig method?
         // locationConfig.validate();
 
-        config.addLocationConfigForTag(locationTag, locationConfig);
+        config.addLocationConfig(locationConfig);
 
         logger.info("Location config loaded for tag: " + locationTag);
         logger.info(locationConfig.toString());

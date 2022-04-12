@@ -3,5 +3,6 @@
   "objects": [
     { "tag": "object-1", "position": { "row": 0, "col": 5 }, "type": "collectible" },
     { "tag": "object-2", "position": { "row": 1, "col": 3 }, "type": "interactive" }
-  ]
+  ],
+	"backgroundPath": "file:assets/map.png"
 }

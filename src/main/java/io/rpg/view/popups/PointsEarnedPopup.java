@@ -1,5 +1,6 @@
-package io.rpg.gui.popups;
+package io.rpg.view.popups;
 
+import io.rpg.viewmodel.PointsPopupController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

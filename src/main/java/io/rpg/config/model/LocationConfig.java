@@ -1,7 +1,6 @@
-package io.rpg.model.location;
+package io.rpg.config.model;
 
 
-import io.rpg.model.object.GameObjectConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,6 +18,11 @@ public class LocationConfig {
   @Nullable
   private Path path;
 
+  @Nullable
+  private String backgroundPath;
+
+  private boolean isRoot;
+
   // This class is not meant to be instantiated
   // by hand. Only Gson should be able to do so
   private LocationConfig() {
@@ -28,6 +32,11 @@ public class LocationConfig {
   @Nullable
   public String getTag() {
     return tag;
+  }
+
+  @Nullable
+  public String getBackgroundPath() {
+    return backgroundPath;
   }
 
   @NotNull
@@ -42,5 +51,9 @@ public class LocationConfig {
 
   public void setPath(@NotNull Path path) {
     this.path = path;
+  }
+
+  public boolean isRoot() {
+    return isRoot;
   }
 }
