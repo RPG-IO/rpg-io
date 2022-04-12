@@ -25,12 +25,12 @@ tasks.withType(JavaCompile) {
 
 application {
     mainModule = 'io.rpg'
-    mainClass = 'io.rpg.HelloApplication'
+    mainClass = 'io.rpg.Main'
 }
 
 javafx {
     version = '17.0.2'
-    modules = ['javafx.controls', 'javafx.fxml', 'javafx.web']
+    modules = ['javafx.controls', 'javafx.fxml']
 }
 
 dependencies {
@@ -50,6 +50,9 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+    testImplementation("org.testfx:testfx-junit5:4.0.16-alpha")
+    testRuntimeOnly("org.testfx:testfx-core:4.0.16-alpha")
 }
 
 test {
