@@ -37,7 +37,7 @@ public class ConfigLoaderTest {
 
     Assertions.assertEquals(testTag, config.getTag());
 
-    List<String> actualLocationNames = config.getLocations();
+    List<String> actualLocationNames = config.getLocationTags();
     Assertions.assertEquals(expectedLocationNames, actualLocationNames);
   }
 

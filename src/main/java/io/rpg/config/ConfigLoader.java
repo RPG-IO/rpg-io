@@ -17,16 +17,36 @@ import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * This class exposes methods to load user specified configuration into
+ * configuration objects
+ * {@link GameObjectConfig}
+ * {@link GameWorldConfig}
+ * {@link LocationConfig}
+ */
 public class ConfigLoader {
   @NotNull
   private final Gson gson;
 
+  /**
+   * Path to the directory that contains configuration -
+   * root.json file & locations directory
+   */
   @NotNull
   private final Path pathToConfigDir;
 
+  /**
+   * This filed is initialized basing on {@link io.rpg.config.ConfigLoader#pathToConfigDir}.
+   * It represents path to the root.json file which is entry point for {@link ConfigLoader}
+   */
   @NotNull
   private final Path pathToRootFile;
 
+  /**
+   * Similarly to {@link io.rpg.config.ConfigLoader#pathToRootFile} this field is initialized basing on
+   * {@link io.rpg.config.ConfigLoader#pathToConfigDir}.
+   * It represents path to the directory that holds locations configuration files.
+   */
   @NotNull
   private final Path pathToLocationsDir;
 
@@ -75,9 +95,9 @@ public class ConfigLoader {
       throw new RuntimeException(ERR_ROOT_FNF);
     }
 
-    assert config.getLocations().size() > 0 : "Configuration must specify locations";
+    assert config.getLocationTags().size() > 0 : "Configuration must specify locations";
 
-    for (String locationTag : config.getLocations()) {
+    for (String locationTag : config.getLocationTags()) {
       try {
         logger.info("Loading location config for tag: " + locationTag);
 
