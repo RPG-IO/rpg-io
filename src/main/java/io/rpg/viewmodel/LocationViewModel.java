@@ -12,35 +12,38 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LocationViewModel implements Initializable {
-    @FXML private ImageView mapImageView;
-    @FXML private Pane foregroundPane, contentPane;
-    @FXML private HBox parent;
+  @FXML
+  private ImageView mapImageView;
+  @FXML
+  private Pane foregroundPane, contentPane;
+  @FXML
+  private HBox parent;
 
-    public LocationViewModel() {
+  public LocationViewModel() {
 
-    }
+  }
 
-    public void setBackground(Image background) {
-        this.mapImageView.imageProperty().setValue(background);
-    }
+  public void setBackground(Image background) {
+    this.mapImageView.imageProperty().setValue(background);
+  }
 
-    public HBox getParent() {
-        return parent;
-    }
+  public HBox getParent() {
+    return parent;
+  }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("INITIALIZE");
-        mapImageView.imageProperty().addListener((property, oldImg, newImg) -> {
-            System.out.println("Map image view changing");
-            contentPane.setPrefWidth(newImg.getWidth());
-            contentPane.setPrefHeight(newImg.getHeight());
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    System.out.println("INITIALIZE");
+    mapImageView.imageProperty().addListener((property, oldImg, newImg) -> {
+      System.out.println("Map image view changing");
+      contentPane.setPrefWidth(newImg.getWidth());
+      contentPane.setPrefHeight(newImg.getHeight());
 
-            foregroundPane.setPrefWidth(newImg.getWidth());
-            foregroundPane.setPrefHeight(newImg.getHeight());
+      foregroundPane.setPrefWidth(newImg.getWidth());
+      foregroundPane.setPrefHeight(newImg.getHeight());
 
-            mapImageView.setFitWidth(newImg.getWidth());
-            mapImageView.setFitHeight(newImg.getHeight());
-        });
-    }
+      mapImageView.setFitWidth(newImg.getWidth());
+      mapImageView.setFitHeight(newImg.getHeight());
+    });
+  }
 }

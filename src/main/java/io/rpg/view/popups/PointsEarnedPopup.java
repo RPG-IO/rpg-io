@@ -15,45 +15,45 @@ import java.util.Objects;
 
 public class PointsEarnedPopup {
 
-    private final FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(PointsEarnedPopup.class.getResource("points-earned-view.fxml")));;
-    private Parent root;
-    private PointsPopupViewModel controller;
-    private final Scene popupScene;
+  private final FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(PointsEarnedPopup.class.getResource("points-earned-view.fxml")));
+  private Parent root;
+  private PointsPopupViewModel controller;
+  private final Scene popupScene;
 
-    public PointsEarnedPopup(){
-        // read FXML view
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        popupScene = new Scene(root, Color.TRANSPARENT);
+  public PointsEarnedPopup() {
+    // read FXML view
+    try {
+      root = loader.load();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
-    public Stage getPopup(int pointsCount, Scene scene) {
-        // fill dynamic view components
-        if (controller == null) controller = loader.getController();
-        controller.setPointsCount(pointsCount);
-        Pair<Double, Double> backgroundDims = controller.setBackgroundImage("file:assets/point-popup-bg.png");
+    popupScene = new Scene(root, Color.TRANSPARENT);
+  }
 
-        // create popup stage
-        Stage popupStage = new Stage(StageStyle.TRANSPARENT);
-        Window window = scene.getWindow();
-        popupStage.initOwner(window);
+  public Stage getPopup(int pointsCount, Scene scene) {
+    // fill dynamic view components
+    if (controller == null) controller = loader.getController();
+    controller.setPointsCount(pointsCount);
+    Pair<Double, Double> backgroundDims = controller.setBackgroundImage("file:assets/point-popup-bg.png");
 
-        // add and center popupScene on popup stage
-        popupStage.setScene(popupScene);
-        popupStage.setX(window.getX() + window.getWidth()/2 - backgroundDims.getKey()/2);
-        popupStage.setY(window.getY() + window.getHeight()/2 - backgroundDims.getValue()/2);
+    // create popup stage
+    Stage popupStage = new Stage(StageStyle.TRANSPARENT);
+    Window window = scene.getWindow();
+    popupStage.initOwner(window);
 
-        // close popup after clicking aside
-        popupStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-            if (!isNowFocused) {
-                popupStage.close();
-            }
-        });
+    // add and center popupScene on popup stage
+    popupStage.setScene(popupScene);
+    popupStage.setX(window.getX() + window.getWidth() / 2 - backgroundDims.getKey() / 2);
+    popupStage.setY(window.getY() + window.getHeight() / 2 - backgroundDims.getValue() / 2);
 
-        return popupStage;
-    }
+    // close popup after clicking aside
+    popupStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+      if (!isNowFocused) {
+        popupStage.close();
+      }
+    });
+
+    return popupStage;
+  }
 }
