@@ -21,9 +21,18 @@ public class Main extends Application {
 
     if (initializationResult.isError()) {
       logger.error("Initialization error");
-      // TODO: HANLDE BAD INIT
+
+      initializationResult.getErrorValueOpt().ifPresentOrElse(
+          ex -> {
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
+          },
+          () -> logger.error("No reason provided")
+      );
+      return;
     } else if (initializationResult.isOkValueNull()) {
-      // TODO: HANDLE
+      logger.error("Initialization returned null value");
+      return;
     }
 
     Game game = initializationResult.getOkValue();
@@ -31,8 +40,6 @@ public class Main extends Application {
     stage.setScene(game.getWorldView());
 
     stage.show();
-    System.out.println("SCENE");
-    System.out.println(stage.getScene());
   }
 
   public static void main(String[] args) {
