@@ -2,6 +2,7 @@ package io.rpg.config;
 
 import io.rpg.config.model.GameWorldConfig;
 
+import io.rpg.util.Result;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -33,44 +34,15 @@ public class ConfigLoaderTest {
     String testTag = "test-tag";
 
     ConfigLoader configLoader = new ConfigLoader(CFG_DIR_PATH);
-    GameWorldConfig config = configLoader.loadGameWorldConfig();
+    Result<GameWorldConfig, Exception> loadingResult = configLoader.loadGameWorldConfig();
+
+    GameWorldConfig config = loadingResult.getOkValue();
+
+    Assertions.assertNotNull(config);
 
     Assertions.assertEquals(testTag, config.getTag());
 
     List<String> actualLocationNames = config.getLocationTags();
     Assertions.assertEquals(expectedLocationNames, actualLocationNames);
   }
-
-//  @Test
-//  public void LocationConfigIsLoadedProperly() throws FileNotFoundException {
-//    ConfigLoader configLoader = new ConfigLoader(CFG_DIR_PATH);
-//    String locationTag = "location-1";
-//
-//    Assertions.assertDoesNotThrow(() -> {
-//      configLoader.loadLocation(locationTag);
-//    });
-//
-//    LocationConfig config = configLoader.loadLocation(locationTag);
-//    Assertions.assertNotNull(config);
-//
-//    Assertions.assertEquals(locationTag, config.getTag());
-//
-//    GameObjectConfig expectedGameObject1 = new GameObjectConfig("object-1", new Position(0, 5));
-//    GameObject expectedGameObject2 = new GameObject("object-2", new Position(1, 3));
-//
-//    // this test relies on order of deserialization in Gson implementation
-//    // todo: find a better way to test this
-//
-//    List<GameObject> actualGameObjects = config.getObjects();
-//
-//    Assertions.assertEquals(2, actualGameObjects.size());
-//
-//    GameObject actualGameObject1 = actualGameObjects.get(0);
-//    GameObject actualGameObject2 = actualGameObjects.get(1);
-//
-//    Assertions.assertEquals(expectedGameObject1.getTag(), actualGameObject1.getTag());
-//    Assertions.assertEquals(expectedGameObject2.getTag(), actualGameObject2.getTag());
-//    Assertions.assertEquals(expectedGameObject1.getPosition(), actualGameObject1.getPosition());
-//    Assertions.assertEquals(expectedGameObject2.getPosition(), actualGameObject2.getPosition());
-//  }
 }
