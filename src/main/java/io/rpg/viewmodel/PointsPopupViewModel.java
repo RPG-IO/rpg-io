@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.util.Pair;
 
-public class PointsPopupController {
+public class PointsPopupViewModel {
 
     @FXML private Label label;
     @FXML private Pane background;

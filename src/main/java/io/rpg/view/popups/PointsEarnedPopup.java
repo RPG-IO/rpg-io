@@ -1,6 +1,6 @@
 package io.rpg.view.popups;
 
-import io.rpg.viewmodel.PointsPopupController;
+import io.rpg.viewmodel.PointsPopupViewModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,7 +17,7 @@ public class PointsEarnedPopup {
 
     private final FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(PointsEarnedPopup.class.getResource("points-earned-view.fxml")));;
     private Parent root;
-    private PointsPopupController controller;
+    private PointsPopupViewModel controller;
     private final Scene popupScene;
 
     public PointsEarnedPopup(){
