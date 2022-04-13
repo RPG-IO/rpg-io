@@ -3,6 +3,8 @@ package io.rpg.util;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 public class Result<OkT, ErrorT> {
   @Nullable
   private final OkT okValue;
@@ -56,6 +58,16 @@ public class Result<OkT, ErrorT> {
     } else {
       throw new IllegalStateException("Attempt to access error value on ok result!");
     }
+  }
+
+  @NotNull
+  public Optional<OkT> getOkValueOpt() {
+    return Optional.ofNullable(getOkValue());
+  }
+
+  @NotNull
+  public Optional<ErrorT> getErrorValueOpt() {
+    return Optional.ofNullable(getErrorValue());
   }
 
   public enum Type {
