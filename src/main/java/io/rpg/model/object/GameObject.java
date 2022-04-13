@@ -48,11 +48,6 @@ public class GameObject {
     return position;
   }
 
-
-  public void validate() {
-    // nothing to validate for now
-  }
-
   public GameObject(@NotNull String tag, @NotNull Position position) {
     this.tag = tag;
     this.position = position;
