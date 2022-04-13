@@ -33,20 +33,21 @@ public class GameWorldConfig {
   }
 
   /**
-   * TODO
+   * Describes tag of the root location. (The location that is displayed first)
    */
   private String rootLocation;
 
   /**
    * Unique tag for the game. This can be treated as name of the game.
-   * @return String representing name of the game
+   *
+   * @return String representing name of the game.
    */
   public String getTag() {
     return tag;
   }
 
   /**
-   * @return List containing names of locations
+   * @return List containing names of locations.
    */
   public List<String> getLocationTags() {
     return locationTags;
@@ -61,7 +62,7 @@ public class GameWorldConfig {
   }
 
   /**
-   * @return TODO
+   * @return Tag of the root location.
    */
   public String getRootLocation() {
     return rootLocation;
@@ -81,6 +82,14 @@ public class GameWorldConfig {
     locationConfigs.add(locationConfig);
   }
 
+  /**
+   * As {@link GameWorldConfig} is loaded in two stages right now:
+   * 1. first data from root.json is loaded first
+   * 2. then location configs are added
+   * validation after step 1 is also required.
+   *
+   * @return Current configuration state or exception.
+   */
   public Result<GameWorldConfig, Exception> validateStageOne() {
     if (locationTags.size() < 1) {
       return Result.error(new IllegalStateException("No location tags detected"));
@@ -91,6 +100,11 @@ public class GameWorldConfig {
     }
   }
 
+  /**
+   * Allows for validation of the object's state.
+   *
+   * @return Object with valid state or exception.
+   */
   public Result<GameWorldConfig, IllegalStateException> validate() {
     if (locationTags.size() < 1) {
       return Result.error(new IllegalStateException("No location tags detected"));
