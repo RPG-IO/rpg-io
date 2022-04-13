@@ -60,6 +60,14 @@ public class Result<OkT, ErrorT> {
     }
   }
 
+  public boolean isOkValueNull() {
+    return okValue == null;
+  }
+
+  public boolean isErrorValueNull() {
+    return errorValue == null;
+  }
+
   @NotNull
   public Optional<OkT> getOkValueOpt() {
     return Optional.ofNullable(getOkValue());
