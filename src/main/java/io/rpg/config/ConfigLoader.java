@@ -139,7 +139,7 @@ public class ConfigLoader {
   }
 
   @NotNull
-  GameWorldConfig loadGameWorldConfig() throws FileNotFoundException {
+  private GameWorldConfig loadGameWorldConfig() throws FileNotFoundException {
     logger.info("Loading game world config");
     BufferedReader reader = new BufferedReader(new FileReader(pathToRootFile.toString()));
     GameWorldConfig config = gson.fromJson(reader, GameWorldConfig.class);
@@ -150,7 +150,7 @@ public class ConfigLoader {
     return config;
   }
 
-  LocationConfig loadLocationConfig(@NotNull String locationTag) throws FileNotFoundException {
+  private LocationConfig loadLocationConfig(@NotNull String locationTag) throws FileNotFoundException {
     logger.info("Loading location: " + locationTag);
 
     Path locationDir = pathToLocationsDir.resolve(locationTag);
@@ -173,7 +173,7 @@ public class ConfigLoader {
     return config;
   }
 
-  public void validate() {
+  private void validate() {
     if (!Files.isDirectory(pathToConfigDir)) {
       logger.error(ERR_INVALID_CFG_DIR_PATH);
       throw new IllegalArgumentException(ERR_INVALID_CFG_DIR_PATH);
