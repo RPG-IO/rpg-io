@@ -17,13 +17,13 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
-public class LocationView extends Scene implements IObservable<IOnKeyPressedListener> {
+public class LocationView extends Scene implements IObservable<IOnKeyPressedObserver>, ILocationModelStateChangeObserver {
   static final int SCALE = 32; // TODO: REMOVE THIS
   private final static URL FXML_URL = LocationViewModel.class.getResource("location-view.fxml");
 
   private final Logger logger;
 
-  private final Set<IOnKeyPressedListener> onKeyPressedListeners;
+  private final Set<IOnKeyPressedObserver> onKeyPressedListeners;
 
   private final LocationViewModel viewModel;
 
@@ -81,12 +81,12 @@ public class LocationView extends Scene implements IObservable<IOnKeyPressedList
   }
 
   @Override
-  public void addListener(IOnKeyPressedListener listener) {
+  public void addListener(IOnKeyPressedObserver listener) {
     onKeyPressedListeners.add(listener);
   }
 
   @Override
-  public void removeListener(IOnKeyPressedListener listener) {
+  public void removeListener(IOnKeyPressedObserver listener) {
     onKeyPressedListeners.remove(listener);
   }
 }

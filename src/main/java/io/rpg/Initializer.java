@@ -7,8 +7,11 @@ import io.rpg.config.model.LocationConfig;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.GameObject;
 import io.rpg.config.model.GameObjectConfig;
+import io.rpg.util.Result;
 import io.rpg.view.LocationView;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,59 +26,62 @@ public class Initializer {
   private ConfigLoader configLoader;
   private Stage mainStage;
 
+  private final Logger logger;
+
   public Initializer(@NotNull String pathToConfigDir, Stage mainStage) {
-    configLoader = new ConfigLoader(pathToConfigDir);
+    this.configLoader = new ConfigLoader(pathToConfigDir);
     this.mainStage = mainStage;
+    this.logger = LogManager.getLogger(Initializer.class);
   }
 
+  public Result<Game, Exception> initialize() {
+    Result<GameWorldConfig, Exception> gameWorldConfigLoadResult = configLoader.load();
 
-
-  public Game getWorld() {
-    GameWorldConfig worldConfig = configLoader.load();
-
-
-    // todo: apply builder pattern
-    Game game = new Game();
-
-    Controller controller = new Controller();
-
-
-    LinkedHashMap<String, LocationModel> tagToLocationModelMap = new LinkedHashMap<>();
-    LinkedHashMap<String, LocationView> tagToLocationViewMap = new LinkedHashMap<>();
-
-    assert worldConfig.getLocationConfigs() != null;
-    for (LocationConfig locationConfig : worldConfig.getLocationConfigs()) {
-      LocationModel model = loadLocationModelFromConfig(locationConfig);
-      LocationView view = buildViewFromModel(locationConfig);
-
-      assert view != null;
-      view.addListener(controller);
-
-      tagToLocationModelMap.put(locationConfig.getTag(), model);
-      // TODO: Set correct parent
-      tagToLocationViewMap.put(locationConfig.getTag(), view);
+    if (gameWorldConfigLoadResult.isError()) {
+      gameWorldConfigLoadResult.getErrorValueOpt().ifPresentOrElse(
+          ex -> logger.error(ex.getMessage()),
+          () -> logger.error("Unknown error returned from config loader")
+      );
+      return Result.error(gameWorldConfigLoadResult.getErrorValue());
+    } else if (gameWorldConfigLoadResult.getOkValue() == null) {
+      logger.error("ConfigLoader fetched null GameWorldConfig");
+      return Result.error(new RuntimeException("ConfigLoader fetched null GameWorldConfig"));
     }
 
-    // TODO: recognize root location
-    String rootTag = "location-1";
+    GameWorldConfig worldConfig = gameWorldConfigLoadResult.getOkValue();
 
-    System.out.println("ROOT VIEW");
-    System.out.println(tagToLocationViewMap.get(rootTag));
+    Controller.Builder controllerBuilder = new Controller.Builder();
 
-    controller.setTagToLocationModelMap(tagToLocationModelMap);
-    controller.setTagToLocationViewMap(tagToLocationViewMap);
-    controller.setModel(tagToLocationModelMap.get(rootTag));
-    controller.setView(tagToLocationViewMap.get(rootTag));
+    assert worldConfig.getLocationConfigs() != null;
+    assert worldConfig.getLocationConfigs().size() > 0 : "There must be at least one location config specified";
 
+    for (LocationConfig locationConfig : worldConfig.getLocationConfigs()) {
+      LocationModel model = loadLocationModelFromConfig(locationConfig);
+      LocationView view = loadLocationViewFromConfig(locationConfig);
 
+      assert view != null;
 
-    game.setController(controller);
+      if (locationConfig.getTag().equals(worldConfig.getRootLocation())) {
+        controllerBuilder
+            .setModel(model)
+            .setView(view);
+      }
 
-    return game;
+      model.addListener(view);
+
+      controllerBuilder
+          .addViewForTag(locationConfig.getTag(), view)
+          .addModelForTag(locationConfig.getTag(), model);
+    }
+
+    Game.Builder gameBuilder = new Game.Builder();
+    gameBuilder.setController(controllerBuilder.build());
+
+    return Result.ok(gameBuilder.build());
   }
 
   @Nullable
-  public static LocationView buildViewFromModel(LocationConfig config) {
+  public static LocationView loadLocationViewFromConfig(LocationConfig config) {
     try {
       return LocationView.fromConfig(config);
     } catch (IOException e) {

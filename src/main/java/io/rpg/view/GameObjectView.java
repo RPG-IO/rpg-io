@@ -1,8 +1,6 @@
 package io.rpg.view;
 
 import io.rpg.model.data.Position;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -12,9 +10,9 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
-public class GameObjectView extends ImageView implements IObservable<IOnClickedListener> {
+public class GameObjectView extends ImageView implements IObservable<IOnClickedObserver> {
   private Path path;
-  private final Set<IOnClickedListener> onClickedListeners;
+  private final Set<IOnClickedObserver> onClickedListeners;
 
   public GameObjectView(@NotNull Path assetPath, @NotNull Position position) {
     path = assetPath;
@@ -31,12 +29,12 @@ public class GameObjectView extends ImageView implements IObservable<IOnClickedL
   }
 
   @Override
-  public void addListener(IOnClickedListener listener) {
+  public void addListener(IOnClickedObserver listener) {
     onClickedListeners.add(listener);
   }
 
   @Override
-  public void removeListener(IOnClickedListener listener) {
+  public void removeListener(IOnClickedObserver listener) {
     onClickedListeners.remove(listener);
   }
 }

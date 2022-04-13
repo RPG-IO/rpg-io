@@ -1,5 +1,6 @@
 package io.rpg.viewmodel;
 
+import io.rpg.view.ILocationModelStateChangeObserver;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;

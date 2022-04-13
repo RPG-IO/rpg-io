@@ -1,5 +1,5 @@
 package io.rpg.view;
 
-public interface IOnClickedListener {
+public interface IOnClickedObserver {
   void onClick(GameObjectView source);
 }
