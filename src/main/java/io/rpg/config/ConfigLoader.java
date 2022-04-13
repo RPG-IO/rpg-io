@@ -139,7 +139,7 @@ public class ConfigLoader {
   }
 
   @NotNull
-  private GameWorldConfig loadGameWorldConfig() throws FileNotFoundException {
+  GameWorldConfig loadGameWorldConfig() throws FileNotFoundException {
     logger.info("Loading game world config");
     BufferedReader reader = new BufferedReader(new FileReader(pathToRootFile.toString()));
     GameWorldConfig config = gson.fromJson(reader, GameWorldConfig.class);
@@ -150,7 +150,7 @@ public class ConfigLoader {
     return config;
   }
 
-  private LocationConfig loadLocationConfig(@NotNull String locationTag) throws FileNotFoundException {
+  LocationConfig loadLocationConfig(@NotNull String locationTag) throws FileNotFoundException {
     logger.info("Loading location: " + locationTag);
 
     Path locationDir = pathToLocationsDir.resolve(locationTag);
