@@ -5,9 +5,13 @@ import io.rpg.model.object.GameObject;
 import io.rpg.model.object.GameObjects;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents {@link io.rpg.model.object.GameObject} configuration provided by user
+ * in configuration files.
+ */
 public class GameObjectConfig extends GameObject {
-  private String type;
 
+  private String type;
 
   public GameObjectConfig(@NotNull String tag, @NotNull Position position) {
     super(tag, position);
