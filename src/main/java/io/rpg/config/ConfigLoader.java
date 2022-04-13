@@ -1,15 +1,12 @@
 package io.rpg.config;
 
 import com.google.gson.Gson;
-
+import io.rpg.config.model.GameObjectConfig;
 import io.rpg.config.model.GameWorldConfig;
 import io.rpg.config.model.LocationConfig;
-
-import io.rpg.config.model.GameObjectConfig;
 import io.rpg.util.Result;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
@@ -20,10 +17,10 @@ import java.nio.file.Path;
 
 /**
  * This class exposes methods to load user specified configuration into
- * configuration objects
- * {@link GameObjectConfig}
- * {@link GameWorldConfig}
- * {@link LocationConfig}
+ * configuration objects:
+ * {@link GameObjectConfig},
+ * {@link GameWorldConfig},
+ * {@link LocationConfig}.
  */
 public class ConfigLoader {
   @NotNull
@@ -51,14 +48,14 @@ public class ConfigLoader {
   @NotNull
   private final Path pathToLocationsDir;
 
-  public static final String ERR_INVALID_CFG_DIR_PATH = "Could not resolve config directory." +
-      " Make sure that the config dir path is correct";
+  public static final String ERR_INVALID_CFG_DIR_PATH = "Could not resolve config directory."
+      + " Make sure that the config dir path is correct";
 
-  public static final String ERR_ROOT_FNF = ConfigConstants.ROOT +
-      " file was not found inside config directory. Make sure that the file exists and is named properly";
+  public static final String ERR_ROOT_FNF = ConfigConstants.ROOT
+      + " file was not found inside config directory. Make sure that the file exists and is named properly";
 
-  public static final String ERR_LOCATIONS_DIR_FNF = ConfigConstants.LOCATIONS_DIR +
-      " directory was not found inside configuration directory";
+  public static final String ERR_LOCATIONS_DIR_FNF = ConfigConstants.LOCATIONS_DIR
+      + " directory was not found inside configuration directory";
 
   public static final String ERR_LOCATION_DIR_FNF_FOR_TAG =
       "Directory was not found for location with tag: ";
@@ -69,6 +66,11 @@ public class ConfigLoader {
   @NotNull
   private final Logger logger;
 
+  /**
+   * Creates {@link ConfigLoader} for configuration under configDirPath.
+   *
+   * @param configDirPath Path to the root directory.
+   */
   public ConfigLoader(@NotNull String configDirPath) {
     logger = LogManager.getLogger(ConfigLoader.class);
 
@@ -82,6 +84,12 @@ public class ConfigLoader {
     validate();
   }
 
+  /**
+   * Loads {@link io.rpg.config.model.GameWorldConfig} from the configuration files specified
+   * by the user.
+   *
+   * @return Valid {@link io.rpg.config.model.GameWorldConfig} or exception.
+   */
   public Result<GameWorldConfig, Exception> load() {
     logger.info("Loading GameWorldConfig");
 
@@ -109,7 +117,7 @@ public class ConfigLoader {
         LocationConfig locationConfig = loadLocationConfig(locationTag);
 
         // todo: this should be called in loadLocationConfig method?
-       locationConfig.validate();
+        locationConfig.validate();
 
         gameWorldConfig.addLocationConfig(locationConfig);
 
@@ -126,12 +134,12 @@ public class ConfigLoader {
           } catch (Exception ex) {
             String exceptionMessage = ex.getMessage();
 
-            logger.warn("Validation for game object config with tag: " +
-                gameObjectConfig.getTag() + " failed." +
-                (exceptionMessage != null ? "Reason: " + exceptionMessage : "No reason provided"));
+            logger.warn("Validation for game object config with tag: "
+                + gameObjectConfig.getTag() + " failed."
+                + (exceptionMessage != null ? "Reason: " + exceptionMessage : "No reason provided"));
           }
 
-//          Path GameObjectConfig
+          // TODO: @kkafar: Load objects inside objects directory
 
         }
 
@@ -141,9 +149,12 @@ public class ConfigLoader {
       }
     }
 
-    // TODO: @kkafar: Validate gameWorldConfig one more time
+    Result<GameWorldConfig, IllegalStateException> validationResult = gameWorldConfig.validate();
+    if (validationResult.isError()) {
+      return Result.error(validationResult.getErrorValue());
+    }
 
-    return Result.ok(gameWorldConfig);
+    return Result.ok(validationResult.getOkValue());
   }
 
   @NotNull
