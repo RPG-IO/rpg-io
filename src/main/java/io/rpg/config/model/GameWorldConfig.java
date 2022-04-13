@@ -1,5 +1,7 @@
 package io.rpg.config.model;
 
+import io.rpg.util.Result;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,11 @@ public class GameWorldConfig {
   }
 
   /**
+   * TODO
+   */
+  private String rootLocation;
+
+  /**
    * Unique tag for the game. This can be treated as name of the game.
    * @return String representing name of the game
    */
@@ -53,6 +60,13 @@ public class GameWorldConfig {
     return locationConfigs;
   }
 
+  /**
+   * @return TODO
+   */
+  public String getRootLocation() {
+    return rootLocation;
+  }
+
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
@@ -67,8 +81,27 @@ public class GameWorldConfig {
     locationConfigs.add(locationConfig);
   }
 
-  public boolean validate() {
-    // TODO
-    return true;
+  public Result<GameWorldConfig, Exception> validateStageOne() {
+    if (locationTags.size() < 1) {
+      return Result.error(new IllegalStateException("No location tags detected"));
+    } else if (tag == null) {
+      return Result.error(new IllegalStateException("Null tag"));
+    } else {
+      return Result.ok(this);
+    }
+  }
+
+  public Result<GameWorldConfig, IllegalStateException> validate() {
+    if (locationTags.size() < 1) {
+      return Result.error(new IllegalStateException("No location tags detected"));
+    } else if (locationConfigs.size() < 1) {
+      return Result.error(new IllegalStateException("No location configs loaded"));
+    } else if (tag == null) {
+      return Result.error(new IllegalStateException("Null tag"));
+    } else if (rootLocation == null) {
+      return Result.error(new IllegalStateException("No root location set!"));
+    } else {
+      return Result.ok(this);
+    }
   }
 }

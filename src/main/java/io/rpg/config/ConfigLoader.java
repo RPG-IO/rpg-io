@@ -6,6 +6,7 @@ import io.rpg.config.model.GameWorldConfig;
 import io.rpg.config.model.LocationConfig;
 
 import io.rpg.config.model.GameObjectConfig;
+import io.rpg.util.Result;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -81,32 +82,36 @@ public class ConfigLoader {
     validate();
   }
 
-  public GameWorldConfig load() {
-    logger.info("Load");
+  public Result<GameWorldConfig, Exception> load() {
+    logger.info("Loading GameWorldConfig");
 
-    GameWorldConfig config;
-    try {
-      config = loadGameWorldConfig();
+    Result<GameWorldConfig, Exception> configLoadResult = loadGameWorldConfig();
 
-      logger.info("GameWorldConfig loaded");
-      logger.info(config.toString());
-
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException(ERR_ROOT_FNF);
+    if (configLoadResult.isError()) {
+      logger.error("Error while loading GameWorldConfig");
+      configLoadResult.getErrorValueOpt().ifPresent(ex -> logger.error(ex.getMessage()));
+      return configLoadResult;
+    } else if (configLoadResult.getOkValue() == null) {
+      return Result.error(new RuntimeException("loadGameWorldConfig returned null config"));
     }
 
-    assert config.getLocationTags().size() > 0 : "Configuration must specify locations";
+    GameWorldConfig gameWorldConfig = configLoadResult.getOkValue();
 
-    for (String locationTag : config.getLocationTags()) {
+    logger.info("GameWorldConfig loaded");
+    logger.info(gameWorldConfig.toString());
+
+    // we assume here that gameWorldConfig was validated in loadGameWorldConfig method
+
+    for (String locationTag : gameWorldConfig.getLocationTags()) {
       try {
         logger.info("Loading location config for tag: " + locationTag);
 
         LocationConfig locationConfig = loadLocationConfig(locationTag);
 
         // todo: this should be called in loadLocationConfig method?
-        // locationConfig.validate();
+       locationConfig.validate();
 
-        config.addLocationConfig(locationConfig);
+        gameWorldConfig.addLocationConfig(locationConfig);
 
         logger.info("Location config loaded for tag: " + locationTag);
         logger.info(locationConfig.toString());
@@ -135,19 +140,34 @@ public class ConfigLoader {
         e.printStackTrace();
       }
     }
-    return config;
+
+    // TODO: @kkafar: Validate gameWorldConfig one more time
+
+    return Result.ok(gameWorldConfig);
   }
 
   @NotNull
-  GameWorldConfig loadGameWorldConfig() throws FileNotFoundException {
+  Result<GameWorldConfig, Exception> loadGameWorldConfig() {
     logger.info("Loading game world config");
-    BufferedReader reader = new BufferedReader(new FileReader(pathToRootFile.toString()));
-    GameWorldConfig config = gson.fromJson(reader, GameWorldConfig.class);
 
-    // todo: validate input
-//    config.validate();
+    BufferedReader reader;
 
-    return config;
+    try {
+      reader = new BufferedReader(new FileReader(pathToRootFile.toString()));
+    } catch (FileNotFoundException exception) {
+      return Result.error(exception);
+    }
+
+    // after loading a object from JSON we should always call the validate method
+    GameWorldConfig gameWorldConfigShell = gson.fromJson(reader, GameWorldConfig.class);
+
+    System.out.println(gameWorldConfigShell.toString());
+
+    // GameWorldConfig is loaded in two stages right now
+    // todo: fix this! Separate initial GameWorldConfig to different class
+    Result<GameWorldConfig, Exception> configLoadResult = gameWorldConfigShell.validateStageOne();
+
+    return configLoadResult;
   }
 
   LocationConfig loadLocationConfig(@NotNull String locationTag) throws FileNotFoundException {

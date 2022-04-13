@@ -21,8 +21,6 @@ public class LocationConfig {
   @Nullable
   private String backgroundPath;
 
-  private boolean isRoot;
-
   // This class is not meant to be instantiated
   // by hand. Only Gson should be able to do so
   private LocationConfig() {
@@ -53,7 +51,7 @@ public class LocationConfig {
     this.path = path;
   }
 
-  public boolean isRoot() {
-    return isRoot;
+  public void validate() {
+
   }
 }
