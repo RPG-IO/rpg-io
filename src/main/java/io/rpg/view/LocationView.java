@@ -1,12 +1,12 @@
 package io.rpg.view;
 
+import io.rpg.model.data.KeyboardEvent;
 import io.rpg.viewmodel.LocationViewModel;
 import io.rpg.config.model.LocationConfig;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

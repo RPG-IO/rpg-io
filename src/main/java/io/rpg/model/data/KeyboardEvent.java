@@ -1,4 +1,4 @@
-package io.rpg.view;
+package io.rpg.model.data;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;

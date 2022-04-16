@@ -1,5 +1,6 @@
-package io.rpg.view;
+package io.rpg.model.data;
 
+import io.rpg.view.GameObjectView;
 import javafx.scene.input.MouseEvent;
 import org.jetbrains.annotations.NotNull;
 

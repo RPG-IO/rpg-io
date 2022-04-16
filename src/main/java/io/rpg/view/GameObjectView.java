@@ -1,5 +1,6 @@
 package io.rpg.view;
 
+import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
