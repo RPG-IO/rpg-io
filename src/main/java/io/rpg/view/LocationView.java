@@ -1,6 +1,7 @@
 package io.rpg.view;
 
 import io.rpg.model.data.KeyboardEvent;
+import io.rpg.model.data.LocationModelStateChange;
 import io.rpg.viewmodel.LocationViewModel;
 import io.rpg.config.model.LocationConfig;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +18,8 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
-public class LocationView extends Scene implements KeyboardEvent.Emitter, ILocationModelStateChangeObserver {
+public class LocationView extends Scene
+    implements KeyboardEvent.Emitter, LocationModelStateChange.Observer {
   static final int SCALE = 32; // TODO: REMOVE THIS
   private final static URL FXML_URL = LocationViewModel.class.getResource("location-view.fxml");
 
@@ -78,5 +80,12 @@ public class LocationView extends Scene implements KeyboardEvent.Emitter, ILocat
     onKeyPressedObservers.forEach(observer -> {
       observer.onKeyboardEvent(event);
     });
+  }
+
+  @Override
+  public void onLocationModelStateChange(LocationModelStateChange event) {
+    // TODO: implement state change & appropriate events
+    // most likely here we watn to pass this event to LocationViewModel or even
+    // make LocationViewModel implement LocationModelStateChange.Observer
   }
 }
