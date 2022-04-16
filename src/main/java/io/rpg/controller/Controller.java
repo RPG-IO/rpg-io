@@ -3,8 +3,6 @@ package io.rpg.controller;
 import io.rpg.model.location.LocationModel;
 import io.rpg.util.Result;
 import io.rpg.view.GameObjectView;
-import io.rpg.view.IOnClickedObserver;
-import io.rpg.view.IOnKeyPressedObserver;
 import io.rpg.view.LocationView;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;

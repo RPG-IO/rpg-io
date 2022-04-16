@@ -3,7 +3,6 @@ package io.rpg.model.location;
 import io.rpg.model.object.Player;
 import io.rpg.model.object.GameObject;
 import io.rpg.view.ILocationModelStateChangeObserver;
-import io.rpg.view.IObservable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashSet;
