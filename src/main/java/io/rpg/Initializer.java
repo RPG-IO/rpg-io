@@ -56,6 +56,16 @@ public class Initializer {
     assert worldConfig.getLocationConfigs().size() > 0 : "There must be at least one location config specified";
 
     for (LocationConfig locationConfig : worldConfig.getLocationConfigs()) {
+
+      /**
+       * Trzeba zrobić Builderów / dependecy injection dla `LocationModel` i `LocationView`.
+       * Jest to spowodowane faktem konieczności zarejestrowania się każdego `GameObjectView`
+       * w odpowiadającym mu `GameObject`. W tym momencie listy `GameObject` i `GameObjectView`
+       * są ukryte w klasach lokacji i nie ma do nich zbyt dobrego dostępu. Także najlepiej będzie
+       * wyciągnąć konstrukcję `GameObject`'ów na zewnątrz do osobnej metody
+       * i tam będzie można to łatwo zrobić.
+       */
+
       LocationModel model = loadLocationModelFromConfig(locationConfig);
       LocationView view = loadLocationViewFromConfig(locationConfig);
 
@@ -68,6 +78,7 @@ public class Initializer {
       }
 
       model.addOnLocationModelStateChangeObserver(view);
+      // TODO: register views to model
 
       controllerBuilder
           .addViewForTag(locationConfig.getTag(), view)

@@ -4,10 +4,9 @@ import io.rpg.model.data.LocationModelStateChange;
 import io.rpg.model.object.Player;
 import io.rpg.model.object.GameObject;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents single location in our game
@@ -32,6 +31,11 @@ public class LocationModel implements LocationModelStateChange.Emitter {
 
   public String getTag() {
     return tag;
+  }
+
+  @UnmodifiableView
+  public List<GameObject> getGameObjects() {
+    return Collections.unmodifiableList(gameObjects);
   }
 
   @Override
