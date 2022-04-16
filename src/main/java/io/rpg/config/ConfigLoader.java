@@ -1,14 +1,12 @@
 package io.rpg.config;
 
 import com.google.gson.Gson;
-
-import io.rpg.model.GameWorldConfig;
-import io.rpg.model.location.LocationConfig;
-
-import io.rpg.model.object.GameObjectConfig;
+import io.rpg.config.model.GameObjectConfig;
+import io.rpg.config.model.GameWorldConfig;
+import io.rpg.config.model.LocationConfig;
+import io.rpg.util.Result;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
@@ -17,27 +15,47 @@ import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * This class exposes methods to load user specified configuration into
+ * configuration objects:
+ * {@link GameObjectConfig},
+ * {@link GameWorldConfig},
+ * {@link LocationConfig}.
+ */
 public class ConfigLoader {
   @NotNull
   private final Gson gson;
 
+  /**
+   * Path to the directory that contains configuration -
+   * root.json file & locations directory
+   */
   @NotNull
   private final Path pathToConfigDir;
 
+  /**
+   * This filed is initialized basing on {@link io.rpg.config.ConfigLoader#pathToConfigDir}.
+   * It represents path to the root.json file which is entry point for {@link ConfigLoader}
+   */
   @NotNull
   private final Path pathToRootFile;
 
+  /**
+   * Similarly to {@link io.rpg.config.ConfigLoader#pathToRootFile} this field is initialized basing on
+   * {@link io.rpg.config.ConfigLoader#pathToConfigDir}.
+   * It represents path to the directory that holds locations configuration files.
+   */
   @NotNull
   private final Path pathToLocationsDir;
 
-  public static final String ERR_INVALID_CFG_DIR_PATH = "Could not resolve config directory." +
-      " Make sure that the config dir path is correct";
+  public static final String ERR_INVALID_CFG_DIR_PATH = "Could not resolve config directory."
+      + " Make sure that the config dir path is correct";
 
-  public static final String ERR_ROOT_FNF = ConfigConstants.ROOT +
-      " file was not found inside config directory. Make sure that the file exists and is named properly";
+  public static final String ERR_ROOT_FNF = ConfigConstants.ROOT
+      + " file was not found inside config directory. Make sure that the file exists and is named properly";
 
-  public static final String ERR_LOCATIONS_DIR_FNF = ConfigConstants.LOCATIONS_DIR +
-      " directory was not found inside configuration directory";
+  public static final String ERR_LOCATIONS_DIR_FNF = ConfigConstants.LOCATIONS_DIR
+      + " directory was not found inside configuration directory";
 
   public static final String ERR_LOCATION_DIR_FNF_FOR_TAG =
       "Directory was not found for location with tag: ";
@@ -48,6 +66,11 @@ public class ConfigLoader {
   @NotNull
   private final Logger logger;
 
+  /**
+   * Creates {@link ConfigLoader} for configuration under configDirPath.
+   *
+   * @param configDirPath Path to the root directory.
+   */
   public ConfigLoader(@NotNull String configDirPath) {
     logger = LogManager.getLogger(ConfigLoader.class);
 
@@ -61,30 +84,42 @@ public class ConfigLoader {
     validate();
   }
 
-  public void load() {
-    logger.info("Load");
+  /**
+   * Loads {@link io.rpg.config.model.GameWorldConfig} from the configuration files specified
+   * by the user.
+   *
+   * @return Valid {@link io.rpg.config.model.GameWorldConfig} or exception.
+   */
+  public Result<GameWorldConfig, Exception> load() {
+    logger.info("Loading GameWorldConfig");
 
-    GameWorldConfig config;
-    try {
-      config = loadGameWorldConfig();
+    Result<GameWorldConfig, Exception> configLoadResult = loadGameWorldConfig();
 
-      logger.info("GameWorldConfig loaded");
-      logger.info(config.toString());
-
-    } catch (FileNotFoundException e) {
-      throw new RuntimeException(ERR_ROOT_FNF);
+    if (configLoadResult.isError()) {
+      logger.error("Error while loading GameWorldConfig");
+      configLoadResult.getErrorValueOpt().ifPresent(ex -> logger.error(ex.getMessage()));
+      return configLoadResult;
+    } else if (configLoadResult.getOkValue() == null) {
+      return Result.error(new RuntimeException("loadGameWorldConfig returned null config"));
     }
 
-    assert config.getLocations().size() > 0 : "Configuration must specify locations";
+    GameWorldConfig gameWorldConfig = configLoadResult.getOkValue();
 
-    for (String locationTag : config.getLocations()) {
+    logger.info("GameWorldConfig loaded");
+    logger.info(gameWorldConfig.toString());
+
+    // we assume here that gameWorldConfig was validated in loadGameWorldConfig method
+
+    for (String locationTag : gameWorldConfig.getLocationTags()) {
       try {
         logger.info("Loading location config for tag: " + locationTag);
 
         LocationConfig locationConfig = loadLocationConfig(locationTag);
 
         // todo: this should be called in loadLocationConfig method?
-        // locationConfig.validate();
+        locationConfig.validate();
+
+        gameWorldConfig.addLocationConfig(locationConfig);
 
         logger.info("Location config loaded for tag: " + locationTag);
         logger.info(locationConfig.toString());
@@ -99,12 +134,12 @@ public class ConfigLoader {
           } catch (Exception ex) {
             String exceptionMessage = ex.getMessage();
 
-            logger.warn("Validation for game object config with tag: " +
-                gameObjectConfig.getTag() + " failed." +
-                (exceptionMessage != null ? "Reason: " + exceptionMessage : "No reason provided"));
+            logger.warn("Validation for game object config with tag: "
+                + gameObjectConfig.getTag() + " failed."
+                + (exceptionMessage != null ? "Reason: " + exceptionMessage : "No reason provided"));
           }
 
-//          Path GameObjectConfig
+          // TODO: @kkafar: Load objects inside objects directory
 
         }
 
@@ -113,18 +148,37 @@ public class ConfigLoader {
         e.printStackTrace();
       }
     }
+
+    Result<GameWorldConfig, IllegalStateException> validationResult = gameWorldConfig.validate();
+    if (validationResult.isError()) {
+      return Result.error(validationResult.getErrorValue());
+    }
+
+    return Result.ok(validationResult.getOkValue());
   }
 
   @NotNull
-  GameWorldConfig loadGameWorldConfig() throws FileNotFoundException {
+  Result<GameWorldConfig, Exception> loadGameWorldConfig() {
     logger.info("Loading game world config");
-    BufferedReader reader = new BufferedReader(new FileReader(pathToRootFile.toString()));
-    GameWorldConfig config = gson.fromJson(reader, GameWorldConfig.class);
 
-    // todo: validate input
-//    config.validate();
+    BufferedReader reader;
 
-    return config;
+    try {
+      reader = new BufferedReader(new FileReader(pathToRootFile.toString()));
+    } catch (FileNotFoundException exception) {
+      return Result.error(exception);
+    }
+
+    // after loading a object from JSON we should always call the validate method
+    GameWorldConfig gameWorldConfigShell = gson.fromJson(reader, GameWorldConfig.class);
+
+    System.out.println(gameWorldConfigShell.toString());
+
+    // GameWorldConfig is loaded in two stages right now
+    // todo: fix this! Separate initial GameWorldConfig to different class
+    Result<GameWorldConfig, Exception> configLoadResult = gameWorldConfigShell.validateStageOne();
+
+    return configLoadResult;
   }
 
   LocationConfig loadLocationConfig(@NotNull String locationTag) throws FileNotFoundException {
@@ -150,7 +204,7 @@ public class ConfigLoader {
     return config;
   }
 
-  public void validate() {
+  private void validate() {
     if (!Files.isDirectory(pathToConfigDir)) {
       logger.error(ERR_INVALID_CFG_DIR_PATH);
       throw new IllegalArgumentException(ERR_INVALID_CFG_DIR_PATH);
