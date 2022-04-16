@@ -15,7 +15,7 @@ public class GameObjectView extends ImageView implements MouseClickedEvent.Emitt
   private final Set<MouseClickedEvent.Observer> onClickedObservers;
 
   public GameObjectView(@NotNull Path assetPath, @NotNull Position position) {
-    path = assetPath;
+    this.path = assetPath;
     this.setImage(new Image(path.toString()));
     // todo: better position class
     this.setX(position.col);
