@@ -1,5 +1,6 @@
 package io.rpg.view;
 
+import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
 import javafx.scene.image.Image;
@@ -10,7 +11,8 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
-public class GameObjectView extends ImageView implements MouseClickedEvent.Emitter {
+public class GameObjectView extends ImageView
+    implements MouseClickedEvent.Emitter, GameObjectStateChange.Observer {
   private Path path;
   private final Set<MouseClickedEvent.Observer> onClickedObservers;
 
@@ -37,5 +39,11 @@ public class GameObjectView extends ImageView implements MouseClickedEvent.Emitt
   @Override
   public void removeOnClickedObserver(MouseClickedEvent.Observer observer) {
     onClickedObservers.remove(observer);
+  }
+
+  @Override
+  public void onGameObjectStateChange(GameObjectStateChange event) {
+    // TODO: implement update logic here or create view model class but it
+    // is even more boilerplate
   }
 }
