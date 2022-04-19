@@ -2,8 +2,11 @@ package io.rpg.model.data;
 
 import java.util.Objects;
 
-// This class can NOT be record due to some issues
-// with Gson library
+/**
+ * Represents current position by holding row / col values.
+ * This class can NOT be record due to some issues with
+ * Gson library.
+ */
 public class Position {
   public final int row;
 
@@ -26,10 +29,9 @@ public class Position {
   public boolean equals(Object obj) {
     if (this == obj) {
       return true;
-    } else if (!(obj instanceof Position)){
+    } else if (!(obj instanceof Position that)) {
       return false;
     } else {
-      Position that = (Position) obj;
       return this.row == that.row && this.col == that.col;
     }
   }

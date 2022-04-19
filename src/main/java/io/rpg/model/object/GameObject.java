@@ -1,5 +1,6 @@
 package io.rpg.model.object;
 
+import io.rpg.config.model.GameObjectConfig;
 import io.rpg.model.data.Position;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,6 +22,17 @@ public class GameObject {
   private final String tag;
 
   /**
+   *
+   */
+  @NotNull
+  private String assetPath;
+
+  @NotNull
+  public String getAssetPath() {
+    return assetPath;
+  }
+
+  /**
    * Unique identifier of this game object
    */
   @NotNull
@@ -36,12 +48,19 @@ public class GameObject {
     return position;
   }
 
-  public void validate() {
-    // nothing to validate for now
-  }
-
   public GameObject(@NotNull String tag, @NotNull Position position) {
     this.tag = tag;
     this.position = position;
+    this.assetPath = ""; // TODO
+  }
+
+  public GameObject(@NotNull String tag, @NotNull Position position, @NotNull String assetPath) {
+    this.tag = tag;
+    this.position = position;
+    this.assetPath = assetPath;
+  }
+
+  public static GameObject fromConfig(GameObjectConfig config) {
+    return new GameObject("XD", new Position(3, 3), "file:assets/someDude.png");
   }
 }
