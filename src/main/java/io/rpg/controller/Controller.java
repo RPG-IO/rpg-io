@@ -6,8 +6,10 @@ import io.rpg.model.location.LocationModel;
 import io.rpg.util.Result;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
+import io.rpg.view.popups.PointsEarnedPopup;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +22,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   private LocationModel currentModel;
   private LinkedHashMap<String, LocationView> tagToLocationViewMap;
   private Logger logger;
+
+  private final PointsEarnedPopup pointsPopup = new PointsEarnedPopup();
 
 
   public Controller() {
@@ -90,6 +94,13 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   public void onKeyboardEvent(KeyboardEvent event) {
     // TODO: implement event handling
     logger.info("Controller notified on key pressed from " + event.source());
+
+    switch (event.payload().getCode()) {
+      case F -> {
+        Stage popup = pointsPopup.getPopup(5, currentView);
+        popup.show();
+      }
+    }
   }
 
   @Override
