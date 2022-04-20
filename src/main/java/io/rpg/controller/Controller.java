@@ -1,10 +1,10 @@
 package io.rpg.controller;
 
+import io.rpg.model.data.KeyboardEvent;
+import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.location.LocationModel;
 import io.rpg.util.Result;
 import io.rpg.view.GameObjectView;
-import io.rpg.view.IOnClickedObserver;
-import io.rpg.view.IOnKeyPressedObserver;
 import io.rpg.view.LocationView;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
 
-public class Controller implements IOnClickedObserver, IOnKeyPressedObserver {
+public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Observer {
   private Scene currentView;
   private LinkedHashMap<String, LocationModel> tagToLocationModelMap;
   private LocationModel currentModel;
@@ -71,18 +71,6 @@ public class Controller implements IOnClickedObserver, IOnKeyPressedObserver {
     return tagToLocationViewMap;
   }
 
-  @Override
-  public void onClick(GameObjectView source) {
-    // TODO
-    logger.info("Controller notified on click from " + source);
-  }
-
-  @Override
-  public void onKeyPressed(Scene source, KeyEvent event) {
-    // TODO
-    logger.info("Controller notified on key pressed from " + source);
-  }
-
   public Result<Controller, Exception> validate() {
     if (tagToLocationModelMap.size() == 0)
       return Result.error(new Exception("Empty tag to location model map!"));
@@ -96,6 +84,18 @@ public class Controller implements IOnClickedObserver, IOnKeyPressedObserver {
       return Result.error(new Exception("No current model set!"));
     else
       return Result.ok(this);
+  }
+
+  @Override
+  public void onKeyboardEvent(KeyboardEvent event) {
+    // TODO: implement event handling
+    logger.info("Controller notified on key pressed from " + event.source());
+  }
+
+  @Override
+  public void onMouseClickedEvent(MouseClickedEvent event) {
+    // TODO: implement event handling
+    logger.info("Controller notified on click from " + event.source());
   }
 
   public static class Builder {
@@ -147,7 +147,7 @@ public class Controller implements IOnClickedObserver, IOnKeyPressedObserver {
 
     public Builder addViewForTag(String tag, LocationView view) {
       controller.getTagToLocationViewMap().put(tag, view);
-      view.addListener(controller);
+      view.addKeyboardEventObserver(controller);
       return this;
     }
 

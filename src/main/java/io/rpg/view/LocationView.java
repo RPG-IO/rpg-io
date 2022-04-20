@@ -1,12 +1,13 @@
 package io.rpg.view;
 
+import io.rpg.model.data.KeyboardEvent;
+import io.rpg.model.data.LocationModelStateChange;
 import io.rpg.viewmodel.LocationViewModel;
 import io.rpg.config.model.LocationConfig;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,13 +18,14 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
-public class LocationView extends Scene implements IObservable<IOnKeyPressedObserver>, ILocationModelStateChangeObserver {
+public class LocationView extends Scene
+    implements KeyboardEvent.Emitter, LocationModelStateChange.Observer {
   static final int SCALE = 32; // TODO: REMOVE THIS
   private final static URL FXML_URL = LocationViewModel.class.getResource("location-view.fxml");
 
   private final Logger logger;
 
-  private final Set<IOnKeyPressedObserver> onKeyPressedListeners;
+  private final Set<KeyboardEvent.Observer> onKeyPressedObservers;
 
   private final LocationViewModel viewModel;
 
@@ -33,31 +35,14 @@ public class LocationView extends Scene implements IObservable<IOnKeyPressedObse
     logger = LogManager.getLogger(LocationView.class);
 
     this.viewModel = viewModel;
-    onKeyPressedListeners = new HashSet<>();
+    onKeyPressedObservers = new HashSet<>();
 
-    this.setOnKeyPressed(this::onKeyPressed);
-    this.setOnKeyReleased(this::onKeyReleased);
+    this.setOnKeyPressed(event -> emitKeyboardEvent(new KeyboardEvent(this, event)));
+    this.setOnKeyReleased(event -> emitKeyboardEvent(new KeyboardEvent(this, event)));
 
     System.out.println("CHILDREN");
     System.out.println(root.getChildrenUnmodifiable());
-
   }
-
-  private void onKeyPressed(KeyEvent event) {
-    logger.info("Collected key press event ");
-    notifyOnKeyPressedListeners(event);
-  }
-
-  private void onKeyReleased(KeyEvent event) {
-    logger.info("Collected key press");
-    notifyOnKeyPressedListeners(event);
-  }
-
-  private void notifyOnKeyPressedListeners(KeyEvent event) {
-    onKeyPressedListeners.forEach(listener -> listener.onKeyPressed(this, event));
-  }
-
-//  private void onKeyTyped(Key)
 
   public LocationViewModel getViewModel() {
     return viewModel;
@@ -81,12 +66,26 @@ public class LocationView extends Scene implements IObservable<IOnKeyPressedObse
   }
 
   @Override
-  public void addListener(IOnKeyPressedObserver listener) {
-    onKeyPressedListeners.add(listener);
+  public void addKeyboardEventObserver(KeyboardEvent.Observer observer) {
+    onKeyPressedObservers.add(observer);
   }
 
   @Override
-  public void removeListener(IOnKeyPressedObserver listener) {
-    onKeyPressedListeners.remove(listener);
+  public void removeKeyboardEventObserver(KeyboardEvent.Observer observer) {
+    onKeyPressedObservers.remove(observer);
+  }
+
+  @Override
+  public void emitKeyboardEvent(KeyboardEvent event) {
+    onKeyPressedObservers.forEach(observer -> {
+      observer.onKeyboardEvent(event);
+    });
+  }
+
+  @Override
+  public void onLocationModelStateChange(LocationModelStateChange event) {
+    // TODO: implement state change & appropriate events
+    // most likely here we watn to pass this event to LocationViewModel or even
+    // make LocationViewModel implement LocationModelStateChange.Observer
   }
 }

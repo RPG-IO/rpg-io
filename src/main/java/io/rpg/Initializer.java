@@ -67,7 +67,7 @@ public class Initializer {
             .setView(view);
       }
 
-      model.addListener(view);
+      model.addOnLocationModelStateChangeObserver(view);
 
       controllerBuilder
           .addViewForTag(locationConfig.getTag(), view)
