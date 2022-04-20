@@ -4,55 +4,31 @@ import io.rpg.viewmodel.PointsPopupViewModel;
 import java.io.IOException;
 import java.util.Objects;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.Window;
-import javafx.util.Pair;
 
-public class PointsEarnedPopup {
+public class PointsEarnedPopup extends Scene {
 
-  private final FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(PointsPopupViewModel.class.getResource("points-earned-view.fxml")));
-  private Parent root;
-  private PointsPopupViewModel controller;
-  private final Scene popupScene;
+  private final PointsPopupViewModel controller;
 
-  public PointsEarnedPopup() {
-    // read FXML view
-    try {
-      root = loader.load();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  public PointsEarnedPopup(String backgroundPath) throws IOException {
+    super(new Group(), Color.TRANSPARENT);
 
-    popupScene = new Scene(root, Color.TRANSPARENT);
+    FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(PointsPopupViewModel.class.getResource("points-earned-view.fxml")));
+    Parent root = loader.load();
+    this.setRoot(root);
+
+    controller = loader.getController();
+    controller.setBackgroundImage(backgroundPath);
   }
 
-  public Stage getPopup(int pointsCount, Scene scene) {
-    // fill dynamic view components
-    if (controller == null) controller = loader.getController();
+  public PointsEarnedPopup() throws IOException {
+    this("file:assets/point-popup-bg.png");
+  }
+
+  public void setPointsCount(int pointsCount){
     controller.setPointsCount(pointsCount);
-    Pair<Double, Double> backgroundDims = controller.setBackgroundImage("file:assets/point-popup-bg.png");
-
-    // create popup stage
-    Stage popupStage = new Stage(StageStyle.TRANSPARENT);
-    Window window = scene.getWindow();
-    popupStage.initOwner(window);
-
-    // add and center popupScene on popup stage
-    popupStage.setScene(popupScene);
-    popupStage.setX(window.getX() + window.getWidth() / 2 - backgroundDims.getKey() / 2);
-    popupStage.setY(window.getY() + window.getHeight() / 2 - backgroundDims.getValue() / 2);
-
-    // close popup after clicking aside
-    popupStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-      if (!isNowFocused) {
-        popupStage.close();
-      }
-    });
-
-    return popupStage;
   }
 }

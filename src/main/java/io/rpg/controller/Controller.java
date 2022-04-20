@@ -4,12 +4,8 @@ import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.location.LocationModel;
 import io.rpg.util.Result;
-import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
-import io.rpg.view.popups.PointsEarnedPopup;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -22,8 +18,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   private LocationModel currentModel;
   private LinkedHashMap<String, LocationView> tagToLocationViewMap;
   private Logger logger;
-
-  private final PointsEarnedPopup pointsPopup = new PointsEarnedPopup();
+  private final PopupController popupController = new PopupController();
 
 
   public Controller() {
@@ -96,11 +91,16 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     logger.info("Controller notified on key pressed from " + event.source());
 
     switch (event.payload().getCode()) {
-      case F -> {
-        Stage popup = pointsPopup.getPopup(5, currentView);
-        popup.show();
-      }
+      case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
     }
+  }
+
+  private int getWindowCenterX(){
+    return (int) (currentView.getWindow().getX() + currentView.getWindow().getWidth()/2);
+  }
+
+  private int getWindowCenterY(){
+    return (int) (currentView.getWindow().getY() + currentView.getWindow().getHeight()/2);
   }
 
   @Override
