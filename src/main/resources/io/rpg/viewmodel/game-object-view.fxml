@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.Pane?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<Pane fx:id="imgPane" viewOrder="10" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.rpg.viewmodel.GameObjectViewModel">
+    <ImageView fx:id="gameObjectView" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../../../../../../assets/stone.png" />
+        </image>
+    </ImageView>
+</Pane>
