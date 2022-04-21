@@ -9,7 +9,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 import java.util.*;
 
 /**
- * Represents single location in our game
+ * Represents single location in our game.
  */
 public class LocationModel implements LocationModelStateChange.Emitter {
   private String tag;

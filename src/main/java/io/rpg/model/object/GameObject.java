@@ -10,17 +10,17 @@ import java.util.Set;
 
 /**
  * Class representing common state properties for all
- * objects appearing in the game
+ * objects appearing in the game.
  */
 public class GameObject implements GameObjectStateChange.Emitter {
   /**
-   * Position of game object in model's representation of location
+   * Position of game object in model's representation of location.
    */
   @NotNull
   private final Position position;
 
   /**
-   * Unique identifier of this game object
+   * Unique identifier of this game object.
    */
   @NotNull
   private final String tag;
@@ -40,7 +40,7 @@ public class GameObject implements GameObjectStateChange.Emitter {
   }
 
   /**
-   * Unique identifier of this game object
+   * Unique identifier of this game object.
    */
   @NotNull
   public String getTag() {
@@ -48,7 +48,7 @@ public class GameObject implements GameObjectStateChange.Emitter {
   }
 
   /**
-   * Position of game object in model's representation of location
+   * Position of game object in model's representation of location.
    */
   @NotNull
   public Position getPosition() {
