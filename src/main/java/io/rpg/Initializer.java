@@ -8,6 +8,7 @@ import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.GameObject;
 import io.rpg.config.model.GameObjectConfig;
 import io.rpg.util.Result;
+import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -95,7 +96,8 @@ public class Initializer {
     List<GameObject> gameObjects = new LinkedList<>();
 
     for (GameObjectConfig goconfig : gameObjectConfigs) {
-      gameObjects.add(GameObject.fromConfig(goconfig));
+      GameObject gameObject = GameObject.fromConfig(goconfig);
+      gameObjects.add(gameObject);
     }
 
     return new LocationModel(

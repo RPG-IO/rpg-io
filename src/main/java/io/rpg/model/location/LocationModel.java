@@ -50,4 +50,8 @@ public class LocationModel implements LocationModelStateChange.Emitter {
       observer.onLocationModelStateChange(event);
     });
   }
+
+  public List<GameObject> getGameObjects() {
+    return gameObjects;
+  }
 }

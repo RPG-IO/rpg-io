@@ -1,7 +1,12 @@
 package io.rpg.view;
 
+import io.rpg.Game;
+import io.rpg.Initializer;
+import io.rpg.config.model.GameObjectConfig;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.LocationModelStateChange;
+import io.rpg.model.location.LocationModel;
+import io.rpg.model.object.GameObject;
 import io.rpg.viewmodel.LocationViewModel;
 import io.rpg.config.model.LocationConfig;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +20,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class LocationView extends Scene
@@ -27,7 +35,7 @@ public class LocationView extends Scene
 
   private final Set<KeyboardEvent.Observer> onKeyPressedObservers;
 
-  private final LocationViewModel viewModel;
+  private static LocationViewModel viewModel;
 
   public LocationView(HBox root, LocationViewModel viewModel) {
     super(root);
@@ -62,6 +70,11 @@ public class LocationView extends Scene
     System.out.println(config.getBackgroundPath());
     view.getViewModel().setBackground(new Image(config.getBackgroundPath()));
     // todo: na podstawie configu ustawić pola korzystając z view modelu
+    List<GameObjectConfig> objectConfigs = config.getObjects();
+    for(GameObjectConfig objectConfig: objectConfigs){
+      GameObjectView goview = new GameObjectView(Path.of(objectConfig.getAssetPath()), objectConfig.getPosition());
+      viewModel.addChild(goview);
+    }
     return view;
   }
 

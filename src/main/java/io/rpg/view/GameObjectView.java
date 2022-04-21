@@ -1,12 +1,21 @@
 package io.rpg.view;
 
+import io.rpg.config.model.GameObjectConfig;
 import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
+import io.rpg.viewmodel.GameObjectViewModel;
+import io.rpg.viewmodel.LocationViewModel;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;

@@ -2,8 +2,10 @@ package io.rpg.viewmodel;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
@@ -15,6 +17,8 @@ public class GameObjectViewModel implements Initializable {
 
     @FXML
     private ImageView gameObjectView;
+    @FXML
+    private HBox parent;
 
     public GameObjectViewModel() {
     }
