@@ -66,20 +66,6 @@ public class GameObject implements GameObjectStateChange.Emitter {
     this.stateChangeObservers = new LinkedHashSet<>();
   }
 
-  public static GameObject fromConfig(GameObjectConfig config) {
-    // TODO: dispatch good type based on config.getType()?
-
-    switch (GameObject.Type.valueOf(config.getTypeString())) {
-      case COLLECTIBLE -> { return new CollectibleGameObject(config.getTag(), config.getPosition()); }
-      case DIALOG -> { return new DialogGameObject(config.getTag(), config.getPosition()); }
-//      case PLAYER -> { return new Player(null, null); } // TODO
-      case NAVIGABLE -> { return new NavigationalGameObject(config.getTag(), config.getPosition()); }
-      default -> throw new RuntimeException("Unknown GameObject type. This should not happen!");
-    }
-    // TODO: assert that asset path is in correct format (e.g. file:assets/someDude.png)
-    // does "assets/someDude.png" work?
-  }
-
   @Override
   public void emitGameObjectStateChange(GameObjectStateChange event) {
     // TODO
