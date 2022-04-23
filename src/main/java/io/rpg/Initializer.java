@@ -7,7 +7,10 @@ import io.rpg.config.model.LocationConfig;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.GameObject;
 import io.rpg.config.model.GameObjectConfig;
+import io.rpg.util.GameObjectFactory;
+import io.rpg.util.GameObjectViewFactory;
 import io.rpg.util.Result;
+import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Initializer {
@@ -56,16 +59,15 @@ public class Initializer {
 
     for (LocationConfig locationConfig : worldConfig.getLocationConfigs()) {
 
-      /**
-       * Trzeba zrobić Builderów / dependecy injection dla `LocationModel` i `LocationView`.
-       * Jest to spowodowane faktem konieczności zarejestrowania się każdego `GameObjectView`
-       * w odpowiadającym mu `GameObject`. W tym momencie listy `GameObject` i `GameObjectView`
-       * są ukryte w klasach lokacji i nie ma do nich zbyt dobrego dostępu. Także najlepiej będzie
-       * wyciągnąć konstrukcję `GameObject`'ów na zewnątrz do osobnej metody
-       * i tam będzie można to łatwo zrobić.
-       */
+      List<GameObject> gameObjects = loadGameObjectsForLocation(locationConfig);
+      List<GameObjectView> gameObjectViews = loadGameObjectViewsForLocation(locationConfig);
 
-      LocationModel model = loadLocationModelFromConfig(locationConfig);
+      registerGameObjectViewsToModel(gameObjects, gameObjectViews);
+
+      LocationModel model = new LocationModel.Builder()
+          .setTag(locationConfig.getTag())
+          .setGameObjects(gameObjects).build();
+
       LocationView view = loadLocationViewFromConfig(locationConfig);
 
       assert view != null;
@@ -77,7 +79,6 @@ public class Initializer {
       }
 
       model.addOnLocationModelStateChangeObserver(view);
-      // TODO: register views to model
 
       controllerBuilder
           .addViewForTag(locationConfig.getTag(), view)
@@ -90,6 +91,33 @@ public class Initializer {
     return Result.ok(gameBuilder.build());
   }
 
+  public static List<GameObject> loadGameObjectsForLocation(LocationConfig config) {
+    return GameObjectFactory.fromConfigList(config.getObjects());
+  }
+
+  public static List<GameObjectView> loadGameObjectViewsForLocation(LocationConfig config) {
+    return GameObjectViewFactory.fromConfigList(config.getObjects());
+  }
+
+  public static void registerGameObjectViewsToModel(List<GameObject> gameObjects,
+                                                    List<GameObjectView> gameObjectViews) {
+    assert gameObjects.size() == gameObjectViews.size() : "Arrays must be of the same length!";
+
+    Iterator<GameObject> gameObjectIterator = gameObjects.iterator();
+    Iterator<GameObjectView> gameObjectViewIterator = gameObjectViews.iterator();
+
+    // we asserted earlier that both lists have the same length thus we don't
+    // need to check .hasNext() for both lists
+    while (gameObjectIterator.hasNext()) {
+      GameObject gameObject = gameObjectIterator.next();
+      GameObjectView gameObjectView = gameObjectViewIterator.next();
+
+      // registration
+      gameObject.addGameObjectStateChangeObserver(gameObjectView);
+    }
+  }
+
+
   @Nullable
   public static LocationView loadLocationViewFromConfig(LocationConfig config) {
     try {
@@ -98,19 +126,5 @@ public class Initializer {
       e.printStackTrace();
     }
     return null;
-  }
-
-  public static LocationModel loadLocationModelFromConfig(LocationConfig config) {
-    List<GameObjectConfig> gameObjectConfigs = config.getObjects();
-    List<GameObject> gameObjects = new LinkedList<>();
-
-    for (GameObjectConfig goconfig : gameObjectConfigs) {
-      gameObjects.add(GameObject.fromConfig(goconfig));
-    }
-
-    return new LocationModel(
-        config.getTag(),
-        gameObjects
-    );
   }
 }
