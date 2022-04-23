@@ -104,6 +104,7 @@ public class LocationModel implements LocationModelStateChange.Emitter {
     }
 
     public Builder setTag(@NotNull String tag) {
+      assert tag != null : "Location tag must not be null!";
       locationModel.setTag(tag);
       return this;
     }
