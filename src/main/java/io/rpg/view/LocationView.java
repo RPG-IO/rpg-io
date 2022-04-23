@@ -71,7 +71,7 @@ public class LocationView extends Scene
     view.getViewModel().setBackground(new Image(config.getBackgroundPath()));
     // todo: na podstawie configu ustawić pola korzystając z view modelu
     List<GameObjectConfig> objectConfigs = config.getObjects();
-    for(GameObjectConfig objectConfig: objectConfigs){
+    for(GameObjectConfig objectConfig : objectConfigs) {
       GameObjectView goview = new GameObjectView(Path.of(objectConfig.getAssetPath()), objectConfig.getPosition());
       viewModel.addChild(goview);
     }

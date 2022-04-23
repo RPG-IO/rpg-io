@@ -96,8 +96,7 @@ public class Initializer {
     List<GameObject> gameObjects = new LinkedList<>();
 
     for (GameObjectConfig goconfig : gameObjectConfigs) {
-      GameObject gameObject = GameObject.fromConfig(goconfig);
-      gameObjects.add(gameObject);
+      gameObjects.add(GameObject.fromConfig(goconfig));
     }
 
     return new LocationModel(
