@@ -97,7 +97,6 @@ public class GameObject implements GameObjectStateChange.Emitter {
   }
 
   public enum Type {
-    INTERACTIVE("interactive"),
     NAVIGABLE("navigable"),
     DIALOG("dialog"),
     PLAYER("player"),
