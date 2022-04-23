@@ -98,12 +98,14 @@ public class LocationModel implements LocationModelStateChange.Emitter {
       locationModel = new LocationModel();
     }
 
-    public void setGameObjects(@NotNull List<GameObject> gameObjects) {
+    public Builder setGameObjects(@NotNull List<GameObject> gameObjects) {
       locationModel.setGameObjects(gameObjects);
+      return this;
     }
 
-    public void setTag(@NotNull String tag) {
+    public Builder setTag(@NotNull String tag) {
       locationModel.setTag(tag);
+      return this;
     }
 
     public LocationModel build() {
