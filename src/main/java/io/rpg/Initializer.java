@@ -23,7 +23,7 @@ import java.util.List;
 public class Initializer {
   private Path pathToConfigDir;
   private ConfigLoader configLoader;
-  private Stage mainStage;
+  private final Stage mainStage;
 
   private final Logger logger;
 
