@@ -95,12 +95,12 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     }
   }
 
-  private int getWindowCenterX(){
-    return (int) (currentView.getWindow().getX() + currentView.getWindow().getWidth()/2);
+  private int getWindowCenterX() {
+    return (int) (currentView.getWindow().getX() + currentView.getWindow().getWidth() / 2);
   }
 
-  private int getWindowCenterY(){
-    return (int) (currentView.getWindow().getY() + currentView.getWindow().getHeight()/2);
+  private int getWindowCenterY() {
+    return (int) (currentView.getWindow().getY() + currentView.getWindow().getHeight() / 2);
   }
 
   @Override
