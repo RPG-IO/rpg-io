@@ -1,10 +1,9 @@
 package io.rpg.util;
 
 import io.rpg.config.model.GameObjectConfig;
-import io.rpg.model.object.CollectibleGameObject;
-import io.rpg.model.object.DialogGameObject;
-import io.rpg.model.object.GameObject;
-import io.rpg.model.object.NavigationalGameObject;
+import io.rpg.model.data.Vector;
+import io.rpg.model.object.*;
+import javafx.scene.image.Image;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +24,7 @@ public class GameObjectFactory {
     switch (GameObject.Type.valueOf(config.getTypeString().toUpperCase())) {
       case COLLECTIBLE -> { return new CollectibleGameObject(config.getTag(), config.getPosition()); }
       case DIALOG -> { return new DialogGameObject(config.getTag(), config.getPosition()); }
+      case PLAYER -> { return new Player(config.getTag(), config.getPosition()); }
       case NAVIGABLE -> { return new NavigationalGameObject(config.getTag(), config.getPosition()); }
       default -> throw new RuntimeException("Unknown GameObject type. This should not happen!");
     }

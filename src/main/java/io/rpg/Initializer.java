@@ -7,6 +7,7 @@ import io.rpg.config.model.LocationConfig;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.GameObject;
 import io.rpg.config.model.GameObjectConfig;
+import io.rpg.model.object.Player;
 import io.rpg.util.GameObjectFactory;
 import io.rpg.util.GameObjectViewFactory;
 import io.rpg.util.Result;
@@ -62,6 +63,12 @@ public class Initializer {
       List<GameObject> gameObjects = loadGameObjectsForLocation(locationConfig);
       List<GameObjectView> gameObjectViews = loadGameObjectViewsForLocation(locationConfig);
 
+      for (GameObject gameObject : gameObjects) {
+        if (gameObject instanceof Player) {
+          controllerBuilder.setPlayer((Player)gameObject);
+        }
+      }
+
       registerGameObjectViewsToModel(gameObjects, gameObjectViews);
 
       LocationModel model = new LocationModel.Builder()
@@ -81,6 +88,8 @@ public class Initializer {
             .setModel(model)
             .setView(view);
       }
+
+
 
       model.addOnLocationModelStateChangeObserver(view);
 

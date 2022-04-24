@@ -6,6 +6,7 @@ import io.rpg.model.data.Vector;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.GameObject;
 import io.rpg.model.object.InteractiveGameObject;
+import io.rpg.model.object.Player;
 import io.rpg.util.Result;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
@@ -116,7 +117,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   @Override
   public void onMouseClickedEvent(MouseClickedEvent event) {
-    Vector playerPos = currentModel.getPlayer().getPosition();
+    Vector playerPos = currentModel.getPlayer().getPixelPosition();
     GameObjectView objectView = event.source();
     GameObject object = currentModel.getObject((int) objectView.getY(), (int) objectView.getX());
     if (Math.abs(playerPos.x - objectView.getX()) <= 1.5 && Math.abs(playerPos.y) - objectView.getY() <= 1.5) {
@@ -127,10 +128,16 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     logger.info("Controller notified on click from " + event.source());
   }
 
+  private void setPlayer(Player gameObject) {
+    currentModel.setPlayer(gameObject);
+  }
+
   public static class Builder {
     private final Controller controller;
     private boolean isViewSet = false;
     private boolean isModelSet = false;
+
+    private Player player;
 
     public Builder() {
       controller = new Controller();
@@ -167,10 +174,12 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     }
 
     public Controller build() {
+      controller.setPlayer(player);
       Result<Controller, Exception> validationResult = controller.validate();
       if (validationResult.isError()) {
         throw new IllegalStateException(validationResult.getErrorValue());
       }
+
       return controller;
     }
 
@@ -189,6 +198,11 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
     public Builder addModelForTag(String tag, LocationModel model) {
       controller.getTagToLocationModelMap().put(tag, model);
+      return this;
+    }
+
+    public Builder setPlayer(Player gameObject) {
+      player = gameObject;
       return this;
     }
   }
