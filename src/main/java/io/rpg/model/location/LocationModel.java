@@ -1,6 +1,7 @@
 package io.rpg.model.location;
 
 import io.rpg.model.data.LocationModelStateChange;
+import io.rpg.model.data.Position;
 import io.rpg.model.object.Player;
 import io.rpg.model.object.GameObject;
 import io.rpg.util.Result;
@@ -39,6 +40,20 @@ public class LocationModel implements LocationModelStateChange.Emitter {
     return tag;
   }
 
+  public Player getPlayer() {
+    return player;
+  }
+
+  public GameObject getObject(int row, int column) {
+    GameObject object =  gameObjects.stream().filter(gameObject -> gameObject.getPosition()
+                    .equals(new Position(row, column)))
+                    .findFirst().orElse(null);
+    if (object == null) {
+      throw new NullPointerException("No object found on (" + row + ", " + column + ")");
+    }
+    return object;
+  }
+  
   /**
    * Private setter for Builder usage only.
    *

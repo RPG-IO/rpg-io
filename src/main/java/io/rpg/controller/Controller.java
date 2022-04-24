@@ -2,7 +2,10 @@ package io.rpg.controller;
 
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
+import io.rpg.model.data.Vector;
 import io.rpg.model.location.LocationModel;
+import io.rpg.model.object.GameObject;
+import io.rpg.model.object.InteractiveGameObject;
 import io.rpg.util.Result;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
@@ -113,7 +116,14 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   @Override
   public void onMouseClickedEvent(MouseClickedEvent event) {
-    // TODO: implement event handling
+    Vector playerPos = currentModel.getPlayer().getPosition();
+    GameObjectView objectView = event.source();
+    GameObject object = currentModel.getObject((int) objectView.getY(), (int) objectView.getX());
+    if (Math.abs(playerPos.x - objectView.getX()) <= 1.5 && Math.abs(playerPos.y) - objectView.getY() <= 1.5) {
+      if (object instanceof InteractiveGameObject) {
+        ((InteractiveGameObject) object).onAction();
+      }
+    }
     logger.info("Controller notified on click from " + event.source());
   }
 
