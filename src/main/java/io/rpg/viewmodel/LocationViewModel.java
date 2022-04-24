@@ -1,5 +1,6 @@
 package io.rpg.viewmodel;
 
+import io.rpg.model.object.GameObject;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -8,6 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class LocationViewModel implements Initializable {
@@ -44,5 +46,9 @@ public class LocationViewModel implements Initializable {
       mapImageView.setFitWidth(newImg.getWidth());
       mapImageView.setFitHeight(newImg.getHeight());
     });
+  }
+
+  public void addChild(ImageView child) {
+    parent.getChildren().add(child);
   }
 }
