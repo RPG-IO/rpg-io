@@ -36,7 +36,7 @@ public class LocationView extends Scene
 
   private final Set<KeyboardEvent.Observer> onKeyPressedObservers;
 
-  private static LocationViewModel viewModel;
+  private final LocationViewModel viewModel;
 
   public LocationView(HBox root, LocationViewModel viewModel) {
     super(root);
@@ -70,12 +70,6 @@ public class LocationView extends Scene
     System.out.println("BACKGROUND PATH");
     System.out.println(config.getBackgroundPath());
     view.getViewModel().setBackground(new Image(resolvePathToJFXFormat(config.getBackgroundPath())));
-    // todo: na podstawie configu ustawić pola korzystając z view modelu
-    List<GameObjectConfig> objectConfigs = config.getObjects();
-    for(GameObjectConfig objectConfig : objectConfigs) {
-      GameObjectView goview = new GameObjectView(Path.of(objectConfig.getAssetPath()), objectConfig.getPosition());
-      viewModel.addChild(goview);
-    }
     return view;
   }
 

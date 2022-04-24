@@ -16,13 +16,15 @@ public class GameObjectView extends ImageView
   private Path path;
   private final Set<MouseClickedEvent.Observer> onClickedObservers;
 
+  private final int SCALE = 32;
+
   public GameObjectView(@NotNull Path assetPath, @NotNull Position position) {
     this.path = assetPath;
 //    String xdpath =
     this.setImage(new Image(resolvePathToJFXFormat(path.toString())));
     // todo: better position class
-    this.setX(position.col);
-    this.setY(position.row);
+    this.setX(position.col * SCALE);
+    this.setY(position.row * SCALE);
     this.onClickedObservers = new HashSet<>();
     this.setOnMouseClicked(event -> emitOnMouseClickedEvent(new MouseClickedEvent(this, event)));
   }
@@ -34,6 +36,7 @@ public class GameObjectView extends ImageView
 
   @Override
   public void emitOnMouseClickedEvent(MouseClickedEvent event) {
+    System.out.println("Object clicked");
     onClickedObservers.forEach(listener -> listener.onMouseClickedEvent(event));
   }
 

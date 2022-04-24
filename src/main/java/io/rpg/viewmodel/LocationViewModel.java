@@ -49,6 +49,6 @@ public class LocationViewModel implements Initializable {
   }
 
   public void addChild(ImageView child) {
-    parent.getChildren().add(child);
+    contentPane.getChildren().add(child);
   }
 }

@@ -4,6 +4,7 @@ import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.location.LocationModel;
 import io.rpg.util.Result;
+import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
 import javafx.scene.Scene;
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Observer {
   private Scene currentView;
@@ -48,6 +50,12 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   public void setView(Scene currentView) {
     this.currentView = currentView;
+  }
+
+  public void registerToViews(List<GameObjectView> views) {
+    for (GameObjectView view : views) {
+      view.addOnClickedObserver(this);
+    }
   }
 
   public Scene getView() {
@@ -154,6 +162,13 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         throw new IllegalStateException(validationResult.getErrorValue());
       }
       return controller;
+    }
+
+    public Builder registerToViews(List<GameObjectView> views) {
+      for (GameObjectView view : views) {
+        view.addOnClickedObserver(controller);
+      }
+      return this;
     }
 
     public Builder addViewForTag(String tag, LocationView view) {

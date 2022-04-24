@@ -72,6 +72,10 @@ public class Initializer {
 
       assert view != null;
 
+      gameObjectViews.forEach(view_ -> {
+        view.getViewModel().addChild(view_);
+      });
+
       if (locationConfig.getTag().equals(worldConfig.getRootLocation())) {
         controllerBuilder
             .setModel(model)
@@ -82,7 +86,8 @@ public class Initializer {
 
       controllerBuilder
           .addViewForTag(locationConfig.getTag(), view)
-          .addModelForTag(locationConfig.getTag(), model);
+          .addModelForTag(locationConfig.getTag(), model)
+          .registerToViews(gameObjectViews);
     }
 
     Game.Builder gameBuilder = new Game.Builder();
