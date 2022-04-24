@@ -117,7 +117,6 @@ public class Initializer {
     }
   }
 
-
   @Nullable
   public static LocationView loadLocationViewFromConfig(LocationConfig config) {
     try {
