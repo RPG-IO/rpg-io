@@ -8,6 +8,7 @@ import io.rpg.model.object.NavigationalGameObject;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Exposes collection of methods to create {@link io.rpg.model.object.GameObject} class instances.
@@ -21,7 +22,7 @@ public class GameObjectFactory {
    */
   public static GameObject fromConfig(GameObjectConfig config) {
     // TODO: add case for Player type here!
-    switch (GameObject.Type.valueOf(config.getTypeString())) {
+    switch (GameObject.Type.valueOf(config.getTypeString().toUpperCase())) {
       case COLLECTIBLE -> { return new CollectibleGameObject(config.getTag(), config.getPosition()); }
       case DIALOG -> { return new DialogGameObject(config.getTag(), config.getPosition()); }
       case NAVIGABLE -> { return new NavigationalGameObject(config.getTag(), config.getPosition()); }
