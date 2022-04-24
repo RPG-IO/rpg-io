@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -68,7 +69,7 @@ public class LocationView extends Scene
     LocationView view = loadFromFXML(FXML_URL);
     System.out.println("BACKGROUND PATH");
     System.out.println(config.getBackgroundPath());
-    view.getViewModel().setBackground(new Image(config.getBackgroundPath()));
+    view.getViewModel().setBackground(new Image(resolvePathToJFXFormat(config.getBackgroundPath())));
     // todo: na podstawie configu ustawić pola korzystając z view modelu
     List<GameObjectConfig> objectConfigs = config.getObjects();
     for(GameObjectConfig objectConfig : objectConfigs) {
@@ -76,6 +77,10 @@ public class LocationView extends Scene
       viewModel.addChild(goview);
     }
     return view;
+  }
+
+  public static String resolvePathToJFXFormat(String path) {
+    return "file:" + path;
   }
 
   @Override

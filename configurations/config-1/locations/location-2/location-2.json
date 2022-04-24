@@ -1,8 +1,8 @@
 {
   "tag": "location-2",
   "objects": [
-    { "tag": "object-1", "position": { "row": 0, "col": 0 }, "type": "collectible" },
-    { "tag": "object-3", "position": { "row": 0, "col": 1 }, "type": "navigable" }
+    { "tag": "object-1", "position": { "row": 0, "col": 5 }, "type": "collectible", "assetPath": "assets/someDude.png" },
+    { "tag": "object-2", "position": { "row": 1, "col": 3 }, "type": "dialog", "assetPath": "assets/someDude.png" }
   ],
-  "backgroundPath": "file:assets/map.png"
+  "backgroundPath": "assets/map.png"
 }
