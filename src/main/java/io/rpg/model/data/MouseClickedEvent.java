@@ -5,16 +5,22 @@ import javafx.scene.input.MouseEvent;
 import org.jetbrains.annotations.NotNull;
 
 /**
- *
+ * Represents mouse click event.
  */
-final public record MouseClickedEvent(
+public record MouseClickedEvent(
     @NotNull GameObjectView source,
     @NotNull MouseEvent payload
 ) {
+  /**
+   * Interface for {@link MouseClickedEvent} observer.
+   */
   public interface Observer {
     void onMouseClickedEvent(MouseClickedEvent event);
   }
 
+  /**
+   * Interface for {@link MouseClickedEvent} emitter.
+   */
   public interface Emitter {
     void emitOnMouseClickedEvent(MouseClickedEvent event);
 

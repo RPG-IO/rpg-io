@@ -201,6 +201,9 @@ public class ConfigLoader {
     BufferedReader reader = new BufferedReader(new FileReader(locationConfigJson.toString()));
     LocationConfig config = gson.fromJson(reader, LocationConfig.class);
     config.setPath(locationDir);
+
+    logger.info("Path to background for location");
+    logger.info(config.getBackgroundPath());
     return config;
   }
 
