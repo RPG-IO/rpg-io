@@ -10,6 +10,6 @@ public final class DialogGameObject extends InteractiveGameObject {
 
   @Override
   public void onAction() {
-
+    System.out.println("Dialogue object action");
   }
 }

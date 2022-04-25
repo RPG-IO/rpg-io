@@ -119,8 +119,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   public void onMouseClickedEvent(MouseClickedEvent event) {
     Vector playerPos = currentModel.getPlayer().getPixelPosition();
     GameObjectView objectView = event.source();
-    GameObject object = currentModel.getObject((int) objectView.getY(), (int) objectView.getX());
-    if (Math.abs(playerPos.x - objectView.getX()) <= 1.5 && Math.abs(playerPos.y) - objectView.getY() <= 1.5) {
+    GameObject object = currentModel.getObject((int) objectView.getY() / 32, (int) objectView.getX() / 32);
+    if (Math.abs(playerPos.x - objectView.getX()) / 32 <= 1.5 && Math.abs(playerPos.y - objectView.getY()) / 32 <= 1.5) {
       if (object instanceof InteractiveGameObject) {
         ((InteractiveGameObject) object).onAction();
       }
