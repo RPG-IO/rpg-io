@@ -6,7 +6,9 @@ import io.rpg.model.data.Position;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Field;
 import java.util.LinkedHashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -84,6 +86,30 @@ public class GameObject implements GameObjectStateChange.Emitter {
   @Override
   public void removeGameObjectStateChangeObserver(GameObjectStateChange.Observer observer) {
     this.stateChangeObservers.remove(observer);
+  }
+
+  public String getFieldDescription() {
+    StringBuilder builder = new StringBuilder();
+    for (Field field : GameObject.class.getDeclaredFields()) {
+      try {
+        Optional<Object> fieldValue = Optional.ofNullable(field.get(this));
+        fieldValue.ifPresent(_fieldValue -> builder.append('\t')
+            .append(field.getName())
+            .append(": ")
+            .append(_fieldValue)
+            .append(",\n")
+        );
+      } catch (IllegalAccessException ignored) { /* noop */ }
+    }
+    return builder.toString();
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append("\n{\n");
+    builder.append(getFieldDescription());
+    return builder.append("}").toString();
   }
 
   public enum Type {

@@ -6,6 +6,9 @@ import io.rpg.model.object.GameObjects;
 import io.rpg.util.Result;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
+import java.util.Optional;
+
 /**
  * Represents {@link io.rpg.model.object.GameObject} configuration provided by user
  * in configuration files.
@@ -46,4 +49,28 @@ public class GameObjectConfig extends GameObject {
       this.assetPath = gameObjectConfig.assetPath;
     }
   }
+
+  public String getFieldDescription() {
+    StringBuilder builder = new StringBuilder();
+    for (Field field : GameObjectConfig.class.getDeclaredFields()) {
+      try {
+        Optional<Object> fieldValue = Optional.ofNullable(field.get(this));
+        fieldValue.ifPresent(_fieldValue -> builder.append('\t')
+            .append(field.getName())
+            .append(": ")
+            .append(_fieldValue)
+            .append(",\n")
+        );
+      } catch (IllegalAccessException ignored) { /* noop */ }
+    }
+    return builder.toString();
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append("\n{\n").append(super.getFieldDescription()).append(getFieldDescription());
+    return builder.append("}").toString();
+  }
+
 }

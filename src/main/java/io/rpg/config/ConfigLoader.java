@@ -168,6 +168,8 @@ public class ConfigLoader {
               logger.warn("Validation for game object config with tag: "
                   + gameObjectConfig.getTag() + " failed with null result.");
             });
+          } else {
+            logger.info("Loaded GameObjectConfig for tag: " + gameObjectConfig.getTag() + ":" + gameObjectConfig);
           }
 
         }
