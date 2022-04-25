@@ -107,6 +107,8 @@ public class GameWorldConfig {
       return Result.error(new IllegalStateException("No location tags detected"));
     } else if (tag == null) {
       return Result.error(new IllegalStateException("Null tag"));
+    } else if (playerConfig == null) {
+      return Result.error(new IllegalStateException("No player config provided"));
     } else {
       return Result.ok(this);
     }
