@@ -90,6 +90,8 @@ public class Initializer {
           .addViewForTag(locationConfig.getTag(), view)
           .addModelForTag(locationConfig.getTag(), model)
           .registerToViews(gameObjectViews);
+
+      view.createViewsForObjects(model);
     }
 
     // Player is created separately

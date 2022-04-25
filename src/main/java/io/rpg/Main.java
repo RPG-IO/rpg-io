@@ -1,6 +1,8 @@
 package io.rpg;
 
+import io.rpg.model.object.Player;
 import io.rpg.util.Result;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.Level;
@@ -40,6 +42,28 @@ public class Main extends Application {
     stage.setScene(game.getWorldView());
 
     stage.show();
+
+    AnimationTimer animationTimer=new AnimationTimer() {
+      long lastUpdate=-1;
+      @Override
+      public void handle(long now) {
+        if(lastUpdate!=-1){
+          float difference=(now-lastUpdate)/1e6f;
+
+          game.getController().getCurrentModel().update(difference);
+//          locationModel.update(difference);
+          Player player=game.getController().getCurrentModel().getPlayer();
+          if(player!=null){
+//            game.getController().getCurrentModel().getPlayer().render();
+            player.render();
+          }
+        }
+        lastUpdate=now;
+      }
+    };
+
+    animationTimer.start();
+
   }
 
   public static void main(String[] args) {

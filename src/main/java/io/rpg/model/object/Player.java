@@ -2,12 +2,14 @@ package io.rpg.model.object;
 
 import io.rpg.model.data.Position;
 import io.rpg.model.data.Vector;
+import io.rpg.view.GameObjectView;
 import io.rpg.model.object.GameObject;
 import javafx.scene.image.Image;
 import org.jetbrains.annotations.NotNull;
 
 public class Player extends GameObject {
 
+  Vector currentPosition;
   int strength;
   float speed;
   Vector direction;
@@ -15,11 +17,17 @@ public class Player extends GameObject {
   boolean leftPressed;
   boolean upPressed;
   boolean downPressed;
-
+  GameObjectView gameObjectView;
   private Vector pixelPosition;
 
-  public Player(@NotNull String tag, @NotNull Position position) {
-    super(tag, position);
+  //  public GameObject(@NotNull String tag, @NotNull Position position, @NotNull String assetPath) {
+//    this.tag = tag;
+//    this.position = position;
+//    this.assetPath = assetPath;
+//  }
+  public Player(@NotNull String tag, @NotNull Position position, @NotNull String assetPath) {
+    super(tag, position, assetPath);
+    this.currentPosition=new Vector(position.col, position.row);
     this.speed = 5f;
     this.direction = new Vector(0, 0);
     this.rightPressed = false;
@@ -58,7 +66,7 @@ public class Player extends GameObject {
     if (rightPressed)
       x += 1;
 
-    this.pixelPosition = new Vector(this.pixelPosition.x + speed * x * elapsed / 1000, this.pixelPosition.y + speed * y * elapsed / 1000);
+    this.currentPosition = new Vector(this.currentPosition.x + speed * x * elapsed / 1000, this.currentPosition.y + speed * y * elapsed / 1000);
   }
 
   public void setRightPressed(boolean rightPressed) {
@@ -79,5 +87,16 @@ public class Player extends GameObject {
 
   public void setStrength(int strength) {
     this.strength = strength;
+  }
+
+  public void setGameObjectView(GameObjectView gameObjectView) {
+    this.gameObjectView = gameObjectView;
+  }
+
+  public void render(){
+    if(gameObjectView!=null){
+      gameObjectView.setX(this.currentPosition.x);
+      gameObjectView.setY(this.currentPosition.y);
+    }
   }
 }

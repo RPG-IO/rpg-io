@@ -41,4 +41,8 @@ public class Game {
       return this;
     }
   }
+
+  public Controller getController() {
+    return controller;
+  }
 }

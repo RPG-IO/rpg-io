@@ -101,7 +101,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   public void onKeyboardEvent(KeyboardEvent event) {
     // TODO: implement event handling
     logger.info("Controller notified on key pressed from " + event.source());
-
+    //TODO: call Player::set...Pressed depending on keyCode and whether the key was pressed or released
     switch (event.payload().getCode()) {
       case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
     }
@@ -210,5 +210,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       player = gameObject;
       return this;
     }
+  }
+  public LocationModel getCurrentModel() {
+    return currentModel;
   }
 }

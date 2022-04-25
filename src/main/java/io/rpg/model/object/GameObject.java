@@ -3,6 +3,9 @@ package io.rpg.model.object;
 import io.rpg.config.model.GameObjectConfig;
 import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.Position;
+import io.rpg.model.data.Vector;
+import io.rpg.view.GameObjectView;
+import javafx.scene.image.ImageView;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,6 +19,11 @@ import java.util.Set;
  * objects appearing in the game.
  */
 public class GameObject implements GameObjectStateChange.Emitter {
+
+//  protected Vector currentPosition;
+
+//  public GameObjectView view;
+
   /**
    * Position of game object in model's representation of location.
    */
