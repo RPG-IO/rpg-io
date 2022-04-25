@@ -31,22 +31,22 @@ public class ConfigLoader {
    * root.json file & locations directory
    */
   @NotNull
-  private final Path pathToConfigDir;
+  private final Path configDirPath;
 
   /**
-   * This filed is initialized basing on {@link io.rpg.config.ConfigLoader#pathToConfigDir}.
+   * This filed is initialized basing on {@link io.rpg.config.ConfigLoader#configDirPath}.
    * It represents path to the root.json file which is entry point for {@link ConfigLoader}
    */
   @NotNull
-  private final Path pathToRootFile;
+  private final Path rootFilePath;
 
   /**
-   * Similarly to {@link io.rpg.config.ConfigLoader#pathToRootFile} this field is initialized basing on
-   * {@link io.rpg.config.ConfigLoader#pathToConfigDir}.
+   * Similarly to {@link io.rpg.config.ConfigLoader#rootFilePath} this field is initialized basing on
+   * {@link io.rpg.config.ConfigLoader#configDirPath}.
    * It represents path to the directory that holds locations configuration files.
    */
   @NotNull
-  private final Path pathToLocationsDir;
+  private final Path locationsDirPath;
 
   public static final String ERR_INVALID_CFG_DIR_PATH = "Could not resolve config directory."
       + " Make sure that the config dir path is correct";
@@ -76,9 +76,9 @@ public class ConfigLoader {
 
     logger.info("Initializing");
 
-    pathToConfigDir = Path.of(configDirPath);
-    pathToRootFile = pathToConfigDir.resolve(ConfigConstants.ROOT);
-    pathToLocationsDir = pathToConfigDir.resolve(ConfigConstants.LOCATIONS_DIR);
+    this.configDirPath = Path.of(configDirPath);
+    rootFilePath = this.configDirPath.resolve(ConfigConstants.ROOT);
+    locationsDirPath = this.configDirPath.resolve(ConfigConstants.LOCATIONS_DIR);
     gson = new Gson();
 
     validate();
@@ -164,7 +164,7 @@ public class ConfigLoader {
     BufferedReader reader;
 
     try {
-      reader = new BufferedReader(new FileReader(pathToRootFile.toString()));
+      reader = new BufferedReader(new FileReader(rootFilePath.toString()));
     } catch (FileNotFoundException exception) {
       return Result.error(exception);
     }
@@ -184,7 +184,7 @@ public class ConfigLoader {
   LocationConfig loadLocationConfig(@NotNull String locationTag) throws FileNotFoundException {
     logger.info("Loading location: " + locationTag);
 
-    Path locationDir = pathToLocationsDir.resolve(locationTag);
+    Path locationDir = locationsDirPath.resolve(locationTag);
 
     if (!Files.isDirectory(locationDir)) {
       logger.error(ERR_LOCATION_DIR_FNF_FOR_TAG + locationTag);
@@ -208,13 +208,13 @@ public class ConfigLoader {
   }
 
   private void validate() {
-    if (!Files.isDirectory(pathToConfigDir)) {
+    if (!Files.isDirectory(configDirPath)) {
       logger.error(ERR_INVALID_CFG_DIR_PATH);
       throw new IllegalArgumentException(ERR_INVALID_CFG_DIR_PATH);
-    } else if (!Files.isReadable(pathToRootFile)) {
+    } else if (!Files.isReadable(rootFilePath)) {
       logger.error(ERR_ROOT_FNF);
       throw new IllegalArgumentException(ERR_ROOT_FNF);
-    } else if (!Files.isDirectory(pathToLocationsDir)) {
+    } else if (!Files.isDirectory(locationsDirPath)) {
       logger.error(ERR_LOCATIONS_DIR_FNF);
       throw new IllegalArgumentException(ERR_LOCATIONS_DIR_FNF);
     }
