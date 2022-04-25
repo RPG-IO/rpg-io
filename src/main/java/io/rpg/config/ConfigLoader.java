@@ -70,6 +70,9 @@ public class ConfigLoader {
    * Creates {@link ConfigLoader} for configuration under configDirPath.
    *
    * @param configDirPath Path to the root directory.
+   * @throws IllegalArgumentException with appropriate error message when path to config directory
+   * path is invalid or configuration has invalid structure.
+   *
    */
   public ConfigLoader(@NotNull String configDirPath) {
     logger = LogManager.getLogger(ConfigLoader.class);
