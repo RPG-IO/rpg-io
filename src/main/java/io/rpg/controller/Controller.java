@@ -132,6 +132,11 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     currentModel.setPlayer(gameObject);
   }
 
+  // TODO: temporary solution
+  public void setPlayerView(GameObjectView playerView) {
+    ((LocationView) currentView).getViewModel().addChild(playerView);
+  }
+
   public static class Builder {
     private final Controller controller;
     private boolean isViewSet = false;

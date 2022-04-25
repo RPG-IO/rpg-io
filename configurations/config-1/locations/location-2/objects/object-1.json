@@ -1,5 +1,9 @@
 {
   "tag": "object-1",
-  "assetPath": "/path/to/the/asset",
-  "type": ""
+  "assetPath": "assets/stone.png",
+  "type": "dialog",
+  "position": {
+    "row": 1,
+    "col": 15
+  }
 }

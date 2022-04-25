@@ -7,6 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
 import java.util.List;
@@ -20,8 +22,10 @@ public class LocationViewModel implements Initializable {
   @FXML
   private HBox parent;
 
-  public LocationViewModel() {
+  private final Logger logger;
 
+  public LocationViewModel() {
+    logger = LogManager.getLogger(LocationViewModel.class);
   }
 
   public void setBackground(Image background) {
@@ -34,9 +38,9 @@ public class LocationViewModel implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    System.out.println("INITIALIZE");
+    logger.info("Initializing LocationViewModel");
     mapImageView.imageProperty().addListener((property, oldImg, newImg) -> {
-      System.out.println("Map image view changing");
+      logger.info("mapImageView modified");
       contentPane.setPrefWidth(newImg.getWidth());
       contentPane.setPrefHeight(newImg.getHeight());
 

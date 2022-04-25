@@ -1,6 +1,7 @@
 package io.rpg;
 
 import io.rpg.config.ConfigLoader;
+import io.rpg.config.model.PlayerConfig;
 import io.rpg.controller.Controller;
 import io.rpg.config.model.GameWorldConfig;
 import io.rpg.config.model.LocationConfig;
@@ -51,23 +52,17 @@ public class Initializer {
       return Result.error(new RuntimeException("ConfigLoader fetched null GameWorldConfig"));
     }
 
-    GameWorldConfig worldConfig = gameWorldConfigLoadResult.getOkValue();
+    GameWorldConfig gameWorldConfig = gameWorldConfigLoadResult.getOkValue();
 
     Controller.Builder controllerBuilder = new Controller.Builder();
 
-    assert worldConfig.getLocationConfigs() != null;
-    assert worldConfig.getLocationConfigs().size() > 0 : "There must be at least one location config specified";
+    assert gameWorldConfig.getLocationConfigs() != null;
+    assert gameWorldConfig.getLocationConfigs().size() > 0 : "There must be at least one location config specified";
 
-    for (LocationConfig locationConfig : worldConfig.getLocationConfigs()) {
+    for (LocationConfig locationConfig : gameWorldConfig.getLocationConfigs()) {
 
       List<GameObject> gameObjects = loadGameObjectsForLocation(locationConfig);
       List<GameObjectView> gameObjectViews = loadGameObjectViewsForLocation(locationConfig);
-
-      for (GameObject gameObject : gameObjects) {
-        if (gameObject instanceof Player) {
-          controllerBuilder.setPlayer((Player)gameObject);
-        }
-      }
 
       registerGameObjectViewsToModel(gameObjects, gameObjectViews);
 
@@ -83,13 +78,11 @@ public class Initializer {
         view.getViewModel().addChild(view_);
       });
 
-      if (locationConfig.getTag().equals(worldConfig.getRootLocation())) {
+      if (locationConfig.getTag().equals(gameWorldConfig.getRootLocation())) {
         controllerBuilder
             .setModel(model)
             .setView(view);
       }
-
-
 
       model.addOnLocationModelStateChangeObserver(view);
 
@@ -99,8 +92,21 @@ public class Initializer {
           .registerToViews(gameObjectViews);
     }
 
+    // Player is created separately
+    // TODO: consider moving it to separate method
+    Player player = (Player) GameObjectFactory.fromConfig(gameWorldConfig.getPlayerConfig());
+    GameObjectView playerView = GameObjectViewFactory.fromConfig(gameWorldConfig.getPlayerConfig());
+    player.addGameObjectStateChangeObserver(playerView);
+    controllerBuilder.setPlayer(player);
+
+    Controller controller = controllerBuilder.build();
+    // TODO: this is a temporary solution
+    controller.setPlayerView(playerView);
+
+
+
     Game.Builder gameBuilder = new Game.Builder();
-    gameBuilder.setController(controllerBuilder.build());
+    gameBuilder.setController(controller);
 
     return Result.ok(gameBuilder.build());
   }

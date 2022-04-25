@@ -1,7 +1,6 @@
 {
   "tag": "object-2",
   "assetPath": "assets/stone.png",
-  "type": "",
-  "x": 50,
-  "y": 100
+  "type": "navigable",
+  "position": { "row": 11, "col": 3 }
 }

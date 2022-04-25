@@ -1,6 +1,7 @@
 package io.rpg.config.model;
 
 
+import io.rpg.util.Result;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,7 +52,14 @@ public class LocationConfig {
     this.path = path;
   }
 
-  public void validate() {
-
+  public Result<LocationConfig, Exception> validate() {
+    if (tag == null) {
+      return Result.error(new IllegalStateException("Null tag"));
+    } else if (backgroundPath == null || backgroundPath.isBlank()) {
+      // TODO: Validate the backgroundPath here
+      return Result.error(new IllegalStateException("Empty string as background path"));
+    } else {
+      return Result.ok(this);
+    }
   }
 }
