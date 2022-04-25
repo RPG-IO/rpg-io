@@ -1,5 +1,6 @@
 package io.rpg.config.model;
 
+import com.google.gson.annotations.SerializedName;
 import io.rpg.util.Result;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class GameWorldConfig {
   /**
    * Configuration for the player object.
    */
+  @SerializedName("player")
   private GameObjectConfig playerConfig;
 
   private GameWorldConfig() {
