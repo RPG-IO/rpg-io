@@ -1,7 +1,9 @@
 {
   "tag": "object-1",
   "assetPath": "assets/stone.png",
-  "type": "",
-  "x": 150,
-  "y": 200
+  "type": "collectible",
+  "position": {
+    "row": 200,
+    "col": 150
+  }
 }

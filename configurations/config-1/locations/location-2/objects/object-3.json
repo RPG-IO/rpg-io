@@ -1,5 +1,9 @@
 {
   "tag": "object-3",
-  "assetPath": "/path/to/the/asset",
-  "type": ""
+  "assetPath": "assets/someDudeButGreen.png",
+  "type": "collectible",
+  "position": {
+    "row": 200,
+    "col": 150
+  }
 }
