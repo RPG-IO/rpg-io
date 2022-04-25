@@ -15,4 +15,10 @@ public class Vector {
     this.y = y;
   }
 
+  public Vector(Position position) {
+    // TODO THIS MOTHT
+    this.x = position.col * 32;
+    this.y = position.row * 32;
+  }
+
 }
