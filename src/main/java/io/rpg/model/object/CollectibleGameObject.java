@@ -10,6 +10,6 @@ public final class CollectibleGameObject extends InteractiveGameObject {
 
   @Override
   public void onAction() {
-
+    System.out.println("Collectible object action");
   }
 }
