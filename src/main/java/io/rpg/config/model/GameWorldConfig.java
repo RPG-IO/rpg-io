@@ -27,6 +27,11 @@ public class GameWorldConfig {
    */
   private ArrayList<LocationConfig> locationConfigs;
 
+  /**
+   * Configuration for the player object.
+   */
+  private GameObjectConfig playerConfig;
+
   private GameWorldConfig() {
     locationTags = new ArrayList<>();
     locationConfigs = new ArrayList<>();
@@ -66,6 +71,13 @@ public class GameWorldConfig {
    */
   public String getRootLocation() {
     return rootLocation;
+  }
+
+  /**
+   * @return configuration for the player
+   */
+  public GameObjectConfig getPlayerConfig() {
+    return playerConfig;
   }
 
   @Override
