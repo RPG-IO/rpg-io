@@ -109,6 +109,8 @@ public class GameWorldConfig {
       return Result.error(new IllegalStateException("Null tag"));
     } else if (playerConfig == null) {
       return Result.error(new IllegalStateException("No player config provided"));
+    } else if (rootLocation == null) {
+      return Result.error(new IllegalStateException("No root location set!"));
     } else {
       return Result.ok(this);
     }
@@ -119,15 +121,12 @@ public class GameWorldConfig {
    *
    * @return Object with valid state or exception.
    */
-  public Result<GameWorldConfig, IllegalStateException> validate() {
-    if (locationTags.size() < 1) {
-      return Result.error(new IllegalStateException("No location tags detected"));
+  public Result<GameWorldConfig, Exception> validate() {
+    Result<GameWorldConfig, Exception> stageOneValidationResult = validateStageOne();
+    if (stageOneValidationResult.isError()) {
+      return stageOneValidationResult;
     } else if (locationConfigs.size() < 1) {
       return Result.error(new IllegalStateException("No location configs loaded"));
-    } else if (tag == null) {
-      return Result.error(new IllegalStateException("Null tag"));
-    } else if (rootLocation == null) {
-      return Result.error(new IllegalStateException("No root location set!"));
     } else {
       return Result.ok(this);
     }

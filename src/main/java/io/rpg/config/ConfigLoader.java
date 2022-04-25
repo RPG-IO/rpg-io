@@ -152,7 +152,7 @@ public class ConfigLoader {
       }
     }
 
-    Result<GameWorldConfig, IllegalStateException> validationResult = gameWorldConfig.validate();
+    Result<GameWorldConfig, Exception> validationResult = gameWorldConfig.validate();
     if (validationResult.isError()) {
       return Result.error(validationResult.getErrorValue());
     }
