@@ -28,10 +28,22 @@ public class GameObjectConfig extends GameObject {
    *
    * @return Object in valid state or exception.
    */
-  public Result<GameObjectConfig, IllegalStateException> validate() {
+  public Result<GameObjectConfig, Exception> validate() {
     if (!GameObjects.isValidType(type)) {
       return Result.error(new IllegalStateException("Invalid object type: " + type));
     }
     return Result.ok(this);
+  }
+
+  public void updateFrom(GameObjectConfig gameObjectConfig) {
+    if (gameObjectConfig.getPosition() != null) {
+      this.position = gameObjectConfig.getPosition();
+    }
+    if (gameObjectConfig.getTypeString() != null) {
+      this.type = gameObjectConfig.getTypeString();
+    }
+    if (gameObjectConfig.getAssetPath() != null) {
+      this.assetPath = gameObjectConfig.assetPath;
+    }
   }
 }

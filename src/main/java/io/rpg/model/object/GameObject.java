@@ -4,6 +4,7 @@ import io.rpg.config.model.GameObjectConfig;
 import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.Position;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -16,11 +17,12 @@ public class GameObject implements GameObjectStateChange.Emitter {
   /**
    * Position of game object in model's representation of location.
    */
-  @NotNull
-  private final Position position;
+  @Nullable
+  protected Position position;
 
   /**
    * Unique identifier of this game object.
+   * This value is set in location
    */
   @NotNull
   private final String tag;
@@ -28,13 +30,13 @@ public class GameObject implements GameObjectStateChange.Emitter {
   /**
    *
    */
-  @NotNull
-  private String assetPath;
+  @Nullable
+  protected String assetPath;
 
   @NotNull
   private final Set<GameObjectStateChange.Observer> stateChangeObservers;
 
-  @NotNull
+  @Nullable
   public String getAssetPath() {
     return assetPath;
   }
@@ -49,8 +51,10 @@ public class GameObject implements GameObjectStateChange.Emitter {
 
   /**
    * Position of game object in model's representation of location.
+   *
+   * @return initial position on object in the model (on the grid)
    */
-  @NotNull
+  @Nullable
   public Position getPosition() {
     return position;
   }
