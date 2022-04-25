@@ -3,7 +3,7 @@
   "assetPath": "assets/stone.png",
   "type": "dialog",
   "position": {
-    "row": 200,
-    "col": 150
+    "row": 1,
+    "col": 15
   }
 }

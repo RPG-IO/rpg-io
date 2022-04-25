@@ -3,7 +3,7 @@
   "assetPath": "assets/stone.png",
   "type": "collectible",
   "position": {
-    "row": 200,
-    "col": 150
+    "row": 10,
+    "col": 10
   }
 }

@@ -2,5 +2,5 @@
   "tag": "object-2",
   "assetPath": "assets/stone.png",
   "type": "navigable",
-  "position": { "row": 100, "col": 50 }
+  "position": { "row": 11, "col": 3 }
 }
