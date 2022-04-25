@@ -32,7 +32,7 @@ public class GameWorldConfig {
    * Configuration for the player object.
    */
   @SerializedName("player")
-  private GameObjectConfig playerConfig;
+  private PlayerConfig playerConfig;
 
   private GameWorldConfig() {
     locationTags = new ArrayList<>();
@@ -78,7 +78,7 @@ public class GameWorldConfig {
   /**
    * @return configuration for the player
    */
-  public GameObjectConfig getPlayerConfig() {
+  public PlayerConfig getPlayerConfig() {
     return playerConfig;
   }
 

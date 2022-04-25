@@ -9,6 +9,7 @@
     "tag": "player",
     "position": { "row": 4, "col": 5 },
     "type": "player",
-    "assetPath": "assets/stone.png"
+    "assetPath": "assets/stone.png",
+    "location": "location-1"
   }
 }
