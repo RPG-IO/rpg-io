@@ -3,7 +3,6 @@ package io.rpg.model.object;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
-import java.util.concurrent.Executors;
 
 // TODO: refactor way of validating {@link GameObject.Type}
 public class GameObjects {
