@@ -63,10 +63,10 @@ public class LocationModel implements LocationModelStateChange.Emitter {
     this.tag = tag;
   }
 
-  @UnmodifiableView
-  public List<GameObject> getGameObjects() {
-    return Collections.unmodifiableList(gameObjects);
-  }
+//  @UnmodifiableView
+//  public List<GameObject> getGameObjects() {
+//    return Collections.unmodifiableList(gameObjects);
+//  }
 
   /**
    * Private setter for Builder usage only. Notice that ownership of {@link GameObject}s is not
@@ -135,4 +135,14 @@ public class LocationModel implements LocationModelStateChange.Emitter {
       return locationModel;
     }
   }
+  public List<GameObject> getGameObjects() {
+    return gameObjects;
+  }
+
+  public void update(float elapsed){
+    if(player!=null){
+      player.update(elapsed);
+    }
+  }
+
 }

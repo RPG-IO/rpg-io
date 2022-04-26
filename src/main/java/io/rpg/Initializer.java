@@ -90,6 +90,8 @@ public class Initializer {
           .addViewForTag(locationConfig.getTag(), view)
           .addModelForTag(locationConfig.getTag(), model)
           .registerToViews(gameObjectViews);
+
+      view.createViewsForObjects(model);
     }
 
     // Player is created separately
@@ -98,12 +100,11 @@ public class Initializer {
     GameObjectView playerView = GameObjectViewFactory.fromConfig(gameWorldConfig.getPlayerConfig());
     player.addGameObjectStateChangeObserver(playerView);
     controllerBuilder.setPlayer(player);
+    player.setGameObjectView(playerView);
 
     Controller controller = controllerBuilder.build();
     // TODO: this is a temporary solution
     controller.setPlayerView(playerView);
-
-
 
     Game.Builder gameBuilder = new Game.Builder();
     gameBuilder.setController(controller);

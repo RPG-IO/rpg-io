@@ -12,6 +12,7 @@ import io.rpg.util.Result;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -102,9 +103,25 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   public void onKeyboardEvent(KeyboardEvent event) {
     // TODO: implement event handling
     logger.info("Controller notified on key pressed from " + event.source());
+    //TODO: call Player::set...Pressed depending on keyCode and whether the key was pressed or released
 
-    switch (event.payload().getCode()) {
-      case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
+    KeyEvent payload = event.payload();
+
+    if (payload.getEventType() == KeyEvent.KEY_PRESSED){
+      switch (payload.getCode()) {
+        case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
+        case A -> currentModel.getPlayer().setLeftPressed(true);
+        case D -> currentModel.getPlayer().setRightPressed(true);
+        case S -> currentModel.getPlayer().setDownPressed(true);
+        case W -> currentModel.getPlayer().setUpPressed(true);
+      }
+    } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
+      switch (payload.getCode()) {
+        case A -> currentModel.getPlayer().setLeftPressed(false);
+        case D -> currentModel.getPlayer().setRightPressed(false);
+        case S -> currentModel.getPlayer().setDownPressed(false);
+        case W -> currentModel.getPlayer().setUpPressed(false);
+      }
     }
   }
 
@@ -217,5 +234,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       player = gameObject;
       return this;
     }
+  }
+  public LocationModel getCurrentModel() {
+    return currentModel;
   }
 }

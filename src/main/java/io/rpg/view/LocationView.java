@@ -100,4 +100,17 @@ public class LocationView extends Scene
     // most likely here we watn to pass this event to LocationViewModel or even
     // make LocationViewModel implement LocationModelStateChange.Observer
   }
+
+
+  List<GameObjectView> gameObjectViews=new ArrayList<>();
+
+  public void createViewsForObjects(LocationModel locationModel){
+    for(GameObject g: locationModel.getGameObjects()){
+      GameObjectView gameObjectView=new GameObjectView(Path.of(g.getAssetPath()),g.getPosition());
+      gameObjectViews.add(gameObjectView);
+//      g.view=gameObjectView;
+      viewModel.getForegroundPane().getChildren().add(gameObjectView);
+    }
+  }
+
 }
