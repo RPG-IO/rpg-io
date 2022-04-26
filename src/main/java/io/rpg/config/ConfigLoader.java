@@ -96,6 +96,8 @@ public class ConfigLoader {
     locationsDirPath = this.configDirPath.resolve(ConfigConstants.LOCATIONS_DIR);
     gson = new Gson();
 
+    logger.info("root file path: " + rootFilePath);
+
     validate();
   }
 
