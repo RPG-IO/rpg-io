@@ -25,7 +25,7 @@ public class ConfigLoaderTest {
   }
 
   @Test
-  public void ConfigLoaderDoesThrowWithBadDirPath() {
+  public void configLoaderDoesThrowWithBadDirPath() {
     final Path notExistingConfigPath = configurationsPath.resolve("not-exiting-config");
 
     if (Files.isDirectory(notExistingConfigPath)) {
@@ -38,7 +38,7 @@ public class ConfigLoaderTest {
   }
 
   @Test
-  public void ConfigLoaderDoesNotThrowWithGoodDirPath() {
+  public void configLoaderDoesNotThrowWithGoodDirPath() {
     Path existingConfigPath = configurationsPath.resolve("test-config-3-minimal-struct");
 
     if (!Files.isDirectory(existingConfigPath)) {
@@ -51,7 +51,7 @@ public class ConfigLoaderTest {
   }
 
   @Test
-  public void GameWorldConfigIsLoadedProperly() {
+  public void gameWorldConfigIsLoadedProperly() {
     Path fullConfigPath = configurationsPath.resolve("test-config-1-full");
 
     if (!Files.isDirectory(fullConfigPath)) {
