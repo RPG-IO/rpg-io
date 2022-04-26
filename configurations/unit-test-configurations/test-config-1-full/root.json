@@ -1,0 +1,15 @@
+{
+  "tag": "GameByConfig1",
+  "locationTags": [
+    "location-1",
+    "location-2"
+  ],
+  "rootLocation": "location-1",
+  "player": {
+    "tag": "player",
+    "position": { "row": 4, "col": 5 },
+    "type": "player",
+    "assetPath": "assets/stone.png",
+    "location": "location-1"
+  }
+}
