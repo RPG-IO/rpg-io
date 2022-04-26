@@ -75,11 +75,23 @@ public class ConfigLoader {
    *
    */
   public ConfigLoader(@NotNull String configDirPath) {
+    this(Path.of(configDirPath));
+  }
+
+  /**
+   * Creates {@link ConfigLoader} for configuration under configDirPath.
+   *
+   * @param configDirPath Path to the root directory.
+   * @throws IllegalArgumentException with appropriate error message when path to config directory
+   * path is invalid or configuration has invalid structure.
+   *
+   */
+  public ConfigLoader(@NotNull Path configDirPath) {
     logger = LogManager.getLogger(ConfigLoader.class);
 
     logger.info("Initializing");
 
-    this.configDirPath = Path.of(configDirPath);
+    this.configDirPath = configDirPath;
     rootFilePath = this.configDirPath.resolve(ConfigConstants.ROOT);
     locationsDirPath = this.configDirPath.resolve(ConfigConstants.LOCATIONS_DIR);
     gson = new Gson();
