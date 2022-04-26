@@ -2,13 +2,13 @@ name: Build & test project
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, development ]
     paths:
       - src/**
       - build.gradle
       - settings.gradle
   pull_request:
-    branches: [ master ]
+    branches: [ master, development ]
 
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}

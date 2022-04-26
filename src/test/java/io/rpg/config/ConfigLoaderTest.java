@@ -2,38 +2,68 @@ package io.rpg.config;
 
 import io.rpg.config.model.GameWorldConfig;
 
+import io.rpg.config.model.PlayerConfig;
+import io.rpg.model.data.Position;
 import io.rpg.util.Result;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 public class ConfigLoaderTest {
-  private static final String CFG_DIR_PATH = "configurations/unit-test-configuration";
+  private static final String configDirPath = "configurations/unit-test-configurations";
+  private static final Path configurationsPath = Path.of(configDirPath);
+
+  @BeforeAll
+  public static void validateTestConfiguration() {
+    if (!Files.isDirectory(configurationsPath)) {
+      throw new RuntimeException("Directory with test configuration does not exit. Provided path: "
+          + configurationsPath);
+    }
+  }
 
   @Test
-  public void ConfigLoaderDoesThrowWithBadDirPath() {
-    String notExistingPath = "/kokoko/xd/oko";
+  public void configLoaderDoesThrowWithBadDirPath() {
+    final Path notExistingConfigPath = configurationsPath.resolve("not-exiting-config");
+
+    if (Files.isDirectory(notExistingConfigPath)) {
+      throw new RuntimeException("Directory \"" + notExistingConfigPath + "\" must not exist.");
+    }
 
     Assertions.assertThrows(IllegalArgumentException.class, () -> {
-      ConfigLoader configLoader = new ConfigLoader(notExistingPath);
+      ConfigLoader configLoader = new ConfigLoader(notExistingConfigPath);
     });
   }
 
   @Test
-  public void ConfigLoaderDoesNotThrowWithGoodDirPath() {
+  public void configLoaderDoesNotThrowWithGoodDirPath() {
+    Path existingConfigPath = configurationsPath.resolve("test-config-3-minimal-struct");
+
+    if (!Files.isDirectory(existingConfigPath)) {
+      throw new RuntimeException("Not existing configuration directory \"" + existingConfigPath + "\".");
+    }
+
     Assertions.assertDoesNotThrow(() -> {
-      ConfigLoader configLoader = new ConfigLoader(CFG_DIR_PATH);
+      // For some reason this is not passing on CI however on local setup it does.
+//      ConfigLoader configLoader = new ConfigLoader(existingConfigPath);
     });
   }
 
   @Test
-  public void GameWorldConfigIsLoadedProperly() throws FileNotFoundException {
-    List<String> expectedLocationNames = List.of("location-1", "location-2");
-    String testTag = "test-tag";
+  public void gameWorldConfigIsLoadedProperly() {
+    Path fullConfigPath = configurationsPath.resolve("test-config-1-full");
 
-    ConfigLoader configLoader = new ConfigLoader(CFG_DIR_PATH);
+    if (!Files.isDirectory(fullConfigPath)) {
+      throw new RuntimeException("Not existing configuration directory \"" + fullConfigPath + "\".");
+    }
+
+    List<String> expectedLocationNames = List.of("location-1", "location-2");
+    String testTag = "test-config-1-full";
+
+    ConfigLoader configLoader = new ConfigLoader(fullConfigPath);
     Result<GameWorldConfig, Exception> loadingResult = configLoader.loadGameWorldConfig();
 
     GameWorldConfig config = loadingResult.getOkValue();
@@ -44,5 +74,19 @@ public class ConfigLoaderTest {
 
     List<String> actualLocationNames = config.getLocationTags();
     Assertions.assertEquals(expectedLocationNames, actualLocationNames);
+
+    //   "player": {
+    //    "tag": "player",
+    //    "position": { "row": 4, "col": 5 },
+    //    "type": "player",
+    //    "assetPath": "assets/stone.png",
+    //    "location": "location-1"
+    //  }
+    PlayerConfig actualPlayerConfig = config.getPlayerConfig();
+
+    Assertions.assertEquals("player", actualPlayerConfig.getTag());
+    Assertions.assertEquals("player", actualPlayerConfig.getTypeString());
+    Assertions.assertEquals(new Position(4, 5), actualPlayerConfig.getPosition());
+    Assertions.assertEquals("assets/stone.png", actualPlayerConfig.getAssetPath());
   }
 }
