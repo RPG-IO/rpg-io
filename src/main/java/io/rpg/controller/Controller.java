@@ -4,6 +4,7 @@ import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Vector;
 import io.rpg.model.location.LocationModel;
+import io.rpg.model.object.CollectibleGameObject;
 import io.rpg.model.object.GameObject;
 import io.rpg.model.object.InteractiveGameObject;
 import io.rpg.model.object.Player;
@@ -117,12 +118,18 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   @Override
   public void onMouseClickedEvent(MouseClickedEvent event) {
+    int SCALE = 64;
     Vector playerPos = currentModel.getPlayer().getPixelPosition();
     GameObjectView objectView = event.source();
-    GameObject object = currentModel.getObject((int) objectView.getY() / 32, (int) objectView.getX() / 32);
-    if (Math.abs(playerPos.x - objectView.getX()) / 32 <= 1.5 && Math.abs(playerPos.y - objectView.getY()) / 32 <= 1.5) {
+    GameObject object = currentModel.getObject((int) objectView.getY() / SCALE, (int) objectView.getX() / SCALE);
+    if (Math.abs(playerPos.x - objectView.getX()) / SCALE <= 1.5 && Math.abs(playerPos.y - objectView.getY()) / SCALE <= 1.5) {
       if (object instanceof InteractiveGameObject) {
         ((InteractiveGameObject) object).onAction();
+      }
+
+      if (object instanceof CollectibleGameObject) {
+        popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
+        objectView.setVisible(false);
       }
     }
     logger.info("Controller notified on click from " + event.source());

@@ -16,7 +16,7 @@ public class Main extends Application {
     Configurator.setRootLevel(Level.DEBUG);
     Logger logger = LogManager.getLogger(Main.class);
 
-    Initializer worldInitializer = new Initializer("configurations/config-1", stage);
+    Initializer worldInitializer = new Initializer("configurations/demo-config-1", stage);
     Result<Game, Exception>  initializationResult = worldInitializer.initialize();
 
     if (initializationResult.isError()) {

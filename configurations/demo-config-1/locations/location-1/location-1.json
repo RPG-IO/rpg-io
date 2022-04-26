@@ -1,0 +1,11 @@
+{
+  "tag": "location-1",
+  "objects": [
+    { "tag": "object-1", "position": { "row": 1, "col": 8 }, "type": "collectible", "assetPath": "assets/diamond.png" },
+    { "tag": "object-2", "position": { "row": 6, "col": 3 }, "type": "collectible", "assetPath": "assets/key.png" },
+    { "tag": "object-3", "position": { "row": 1, "col": 1 }, "type": "dialog", "assetPath": "assets/zombie.png" },
+    { "tag": "object-4", "position": { "row": 3, "col": 2 }, "type": "dialog", "assetPath": "assets/zombie.png" },
+    { "tag": "object-5", "position": { "row": 8, "col": 8 }, "type": "dialog", "assetPath": "assets/chest.png" }
+  ],
+  "backgroundPath": "assets/map.png"
+}
