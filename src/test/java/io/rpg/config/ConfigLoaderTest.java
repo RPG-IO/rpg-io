@@ -2,6 +2,8 @@ package io.rpg.config;
 
 import io.rpg.config.model.GameWorldConfig;
 
+import io.rpg.config.model.PlayerConfig;
+import io.rpg.model.data.Position;
 import io.rpg.util.Result;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -14,7 +16,6 @@ import java.util.List;
 public class ConfigLoaderTest {
   private static final String configDirPath = "configurations/unit-test-configurations";
   private static final Path configurationsPath = Path.of(configDirPath);
-
 
   @BeforeAll
   public static void validateTestConfiguration() {
@@ -72,5 +73,19 @@ public class ConfigLoaderTest {
 
     List<String> actualLocationNames = config.getLocationTags();
     Assertions.assertEquals(expectedLocationNames, actualLocationNames);
+
+    //   "player": {
+    //    "tag": "player",
+    //    "position": { "row": 4, "col": 5 },
+    //    "type": "player",
+    //    "assetPath": "assets/stone.png",
+    //    "location": "location-1"
+    //  }
+    PlayerConfig actualPlayerConfig = config.getPlayerConfig();
+
+    Assertions.assertEquals("player", actualPlayerConfig.getTag());
+    Assertions.assertEquals("player", actualPlayerConfig.getTypeString());
+    Assertions.assertEquals(new Position(4, 5), actualPlayerConfig.getPosition());
+    Assertions.assertEquals("assets/stone.png", actualPlayerConfig.getAssetPath());
   }
 }
