@@ -28,7 +28,7 @@ public class Player extends GameObject {
   public Player(@NotNull String tag, @NotNull Position position, @NotNull String assetPath) {
     super(tag, position, assetPath);
     this.currentPosition=new Vector(position.col, position.row);
-    this.speed = 5f;
+    this.speed = 100f;
     this.direction = new Vector(0, 0);
     this.rightPressed = false;
     this.leftPressed = false;
@@ -66,7 +66,7 @@ public class Player extends GameObject {
     if (rightPressed)
       x += 1;
 
-    this.currentPosition = new Vector(this.currentPosition.x + speed * x * elapsed / 1000, this.currentPosition.y + speed * y * elapsed / 1000);
+    this.pixelPosition = new Vector(this.pixelPosition.x + speed * x * elapsed / 1000, this.pixelPosition.y + speed * y * elapsed / 1000);
   }
 
   public void setRightPressed(boolean rightPressed) {
@@ -95,8 +95,8 @@ public class Player extends GameObject {
 
   public void render(){
     if(gameObjectView!=null){
-      gameObjectView.setX(this.currentPosition.x);
-      gameObjectView.setY(this.currentPosition.y);
+      gameObjectView.setX(this.pixelPosition.x);
+      gameObjectView.setY(this.pixelPosition.y);
     }
   }
 }
