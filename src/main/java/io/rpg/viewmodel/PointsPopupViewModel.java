@@ -17,7 +17,7 @@ public class PointsPopupViewModel {
     label.setText("Earned " + pointsCount + " points!");
   }
 
-  public Pair<Double, Double> setBackgroundImage(String url) {
+  public void setBackgroundImage(String url) {
     BackgroundImage backgroundImg = new BackgroundImage(
         new Image(url),
         BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -25,6 +25,5 @@ public class PointsPopupViewModel {
         BackgroundSize.DEFAULT
     );
     background.setBackground(new Background(backgroundImg));
-    return new Pair<>(background.getPrefWidth(), background.getPrefHeight());
   }
 }

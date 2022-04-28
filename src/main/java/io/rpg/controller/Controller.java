@@ -2,7 +2,12 @@ package io.rpg.controller;
 
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
+import io.rpg.model.data.Vector;
 import io.rpg.model.location.LocationModel;
+import io.rpg.model.object.CollectibleGameObject;
+import io.rpg.model.object.GameObject;
+import io.rpg.model.object.InteractiveGameObject;
+import io.rpg.model.object.Player;
 import io.rpg.util.Result;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
@@ -13,6 +18,7 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Observer {
   private Scene currentView;
@@ -20,6 +26,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   private LocationModel currentModel;
   private LinkedHashMap<String, LocationView> tagToLocationViewMap;
   private Logger logger;
+  private final PopupController popupController = new PopupController();
 
 
   public Controller() {
@@ -49,6 +56,12 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   public void setView(Scene currentView) {
     this.currentView = currentView;
+  }
+
+  public void registerToViews(List<GameObjectView> views) {
+    for (GameObjectView view : views) {
+      view.addOnClickedObserver(this);
+    }
   }
 
   public Scene getView() {
@@ -90,18 +103,70 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   public void onKeyboardEvent(KeyboardEvent event) {
     // TODO: implement event handling
     logger.info("Controller notified on key pressed from " + event.source());
+    //TODO: call Player::set...Pressed depending on keyCode and whether the key was pressed or released
+
+    KeyEvent payload = event.payload();
+
+    if (payload.getEventType() == KeyEvent.KEY_PRESSED){
+      switch (payload.getCode()) {
+        case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
+        case A -> currentModel.getPlayer().setLeftPressed(true);
+        case D -> currentModel.getPlayer().setRightPressed(true);
+        case S -> currentModel.getPlayer().setDownPressed(true);
+        case W -> currentModel.getPlayer().setUpPressed(true);
+      }
+    } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
+      switch (payload.getCode()) {
+        case A -> currentModel.getPlayer().setLeftPressed(false);
+        case D -> currentModel.getPlayer().setRightPressed(false);
+        case S -> currentModel.getPlayer().setDownPressed(false);
+        case W -> currentModel.getPlayer().setUpPressed(false);
+      }
+    }
+  }
+
+  private int getWindowCenterX() {
+    return (int) (currentView.getWindow().getX() + currentView.getWindow().getWidth() / 2);
+  }
+
+  private int getWindowCenterY() {
+    return (int) (currentView.getWindow().getY() + currentView.getWindow().getHeight() / 2);
   }
 
   @Override
   public void onMouseClickedEvent(MouseClickedEvent event) {
-    // TODO: implement event handling
+    int SCALE = 64;
+    Vector playerPos = currentModel.getPlayer().getPixelPosition();
+    GameObjectView objectView = event.source();
+    GameObject object = currentModel.getObject((int) objectView.getY() / SCALE, (int) objectView.getX() / SCALE);
+    if (Math.abs(playerPos.x - objectView.getX()) / SCALE <= 1.5 && Math.abs(playerPos.y - objectView.getY()) / SCALE <= 1.5) {
+      if (object instanceof InteractiveGameObject) {
+        ((InteractiveGameObject) object).onAction();
+      }
+
+      if (object instanceof CollectibleGameObject) {
+        popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
+        objectView.setVisible(false);
+      }
+    }
     logger.info("Controller notified on click from " + event.source());
+  }
+
+  private void setPlayer(Player gameObject) {
+    currentModel.setPlayer(gameObject);
+  }
+
+  // TODO: temporary solution
+  public void setPlayerView(GameObjectView playerView) {
+    ((LocationView) currentView).getViewModel().addChild(playerView);
   }
 
   public static class Builder {
     private final Controller controller;
     private boolean isViewSet = false;
     private boolean isModelSet = false;
+
+    private Player player;
 
     public Builder() {
       controller = new Controller();
@@ -138,11 +203,20 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     }
 
     public Controller build() {
+      controller.setPlayer(player);
       Result<Controller, Exception> validationResult = controller.validate();
       if (validationResult.isError()) {
         throw new IllegalStateException(validationResult.getErrorValue());
       }
+
       return controller;
+    }
+
+    public Builder registerToViews(List<GameObjectView> views) {
+      for (GameObjectView view : views) {
+        view.addOnClickedObserver(controller);
+      }
+      return this;
     }
 
     public Builder addViewForTag(String tag, LocationView view) {
@@ -155,5 +229,13 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       controller.getTagToLocationModelMap().put(tag, model);
       return this;
     }
+
+    public Builder setPlayer(Player gameObject) {
+      player = gameObject;
+      return this;
+    }
+  }
+  public LocationModel getCurrentModel() {
+    return currentModel;
   }
 }

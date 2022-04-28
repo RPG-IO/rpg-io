@@ -1,5 +1,6 @@
 package io.rpg.config.model;
 
+import com.google.gson.annotations.SerializedName;
 import io.rpg.util.Result;
 
 import java.util.ArrayList;
@@ -26,6 +27,12 @@ public class GameWorldConfig {
    * locations specified by user.
    */
   private ArrayList<LocationConfig> locationConfigs;
+
+  /**
+   * Configuration for the player object.
+   */
+  @SerializedName("player")
+  private PlayerConfig playerConfig;
 
   private GameWorldConfig() {
     locationTags = new ArrayList<>();
@@ -68,6 +75,13 @@ public class GameWorldConfig {
     return rootLocation;
   }
 
+  /**
+   * @return configuration for the player
+   */
+  public PlayerConfig getPlayerConfig() {
+    return playerConfig;
+  }
+
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
@@ -95,6 +109,10 @@ public class GameWorldConfig {
       return Result.error(new IllegalStateException("No location tags detected"));
     } else if (tag == null) {
       return Result.error(new IllegalStateException("Null tag"));
+    } else if (playerConfig == null) {
+      return Result.error(new IllegalStateException("No player config provided"));
+    } else if (rootLocation == null) {
+      return Result.error(new IllegalStateException("No root location set!"));
     } else {
       return Result.ok(this);
     }
@@ -105,15 +123,12 @@ public class GameWorldConfig {
    *
    * @return Object with valid state or exception.
    */
-  public Result<GameWorldConfig, IllegalStateException> validate() {
-    if (locationTags.size() < 1) {
-      return Result.error(new IllegalStateException("No location tags detected"));
+  public Result<GameWorldConfig, Exception> validate() {
+    Result<GameWorldConfig, Exception> stageOneValidationResult = validateStageOne();
+    if (stageOneValidationResult.isError()) {
+      return stageOneValidationResult;
     } else if (locationConfigs.size() < 1) {
       return Result.error(new IllegalStateException("No location configs loaded"));
-    } else if (tag == null) {
-      return Result.error(new IllegalStateException("Null tag"));
-    } else if (rootLocation == null) {
-      return Result.error(new IllegalStateException("No root location set!"));
     } else {
       return Result.ok(this);
     }
