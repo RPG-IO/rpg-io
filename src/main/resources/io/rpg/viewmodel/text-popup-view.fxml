@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.rpg.viewmodel.TextPopupViewModel">
+   <children>
+      <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="59.0" layoutY="44.0" prefHeight="213.0" prefWidth="383.0" text="Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar." textAlignment="JUSTIFY" textFill="#0d4a19" wrapText="true">
+         <font>
+            <Font name="Monospaced Bold" size="19.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>
