@@ -14,7 +14,13 @@ public class TextPopup extends Scene {
 
   private final TextPopupViewModel controller;
 
-  public TextPopup(String text, String backgroundPath) {
+  public TextPopup(String text, String backgroundPath, String buttonPath) {
+    this(text);
+    controller.setBackgroundImage(backgroundPath);
+    controller.setOkButtonImage(buttonPath);
+  }
+
+  public TextPopup(String text) {
     super(new Group(), Color.TRANSPARENT);
 
     FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(TextPopupViewModel.class.getResource("text-popup-view.fxml")));
@@ -28,12 +34,7 @@ public class TextPopup extends Scene {
     this.setRoot(root);
 
     controller = loader.getController();
-
-    controller.setBackgroundImage(backgroundPath);
     controller.setText(text);
-  }
-
-  public TextPopup(String text) {
-    this(text, "file:assets/popup-background.png");
+    this.setFill(Color.TRANSPARENT);
   }
 }

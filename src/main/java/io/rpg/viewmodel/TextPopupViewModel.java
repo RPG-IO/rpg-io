@@ -1,28 +1,30 @@
 package io.rpg.viewmodel;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 public class TextPopupViewModel {
 
-  @FXML
-  private Label label;
-  @FXML
-  private Pane background;
+  @FXML private Label label;
+  @FXML private Pane backgroundPane;
+  @FXML private ImageView backgroundImage;
+  @FXML private Button okButton;
 
   public void setText(String text) {
     label.setText(text);
   }
 
   public void setBackgroundImage(String url) {
-    BackgroundImage backgroundImg = new BackgroundImage(
-        new Image(url),
-        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-        BackgroundPosition.DEFAULT,
-        BackgroundSize.DEFAULT
-    );
-    background.setBackground(new Background(backgroundImg));
+    Image image = new Image(url);
+    backgroundImage.setImage(image);
+  }
+
+  public void setOkButtonImage(String url) {
+    ImageView imageView = new ImageView(url);
+    okButton.setGraphic(imageView);
   }
 }
