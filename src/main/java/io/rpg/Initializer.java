@@ -33,7 +33,7 @@ public class Initializer {
 
   private final Logger logger;
 
-  public Initializer(@NotNull String pathToConfigDir, Stage mainStage) {
+  public Initializer(@NotNull String pathToConfigDir, @NotNull Stage mainStage) {
     this.configLoader = new ConfigLoader(pathToConfigDir);
     this.mainStage = mainStage;
     this.logger = LogManager.getLogger(Initializer.class);
