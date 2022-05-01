@@ -27,4 +27,8 @@ public class TextPopupViewModel {
     ImageView imageView = new ImageView(url);
     okButton.setGraphic(imageView);
   }
+
+  public void setButtonOnClick(javafx.event.EventHandler<? super javafx.scene.input.MouseEvent> callback) {
+    okButton.setOnMouseClicked(callback);
+  }
 }

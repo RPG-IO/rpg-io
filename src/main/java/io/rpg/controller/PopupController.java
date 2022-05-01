@@ -45,6 +45,8 @@ public class PopupController {
 
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
+
+    popupScene.hideStageOnButton(popupStage);
   }
 
   public void hidePopup() {
