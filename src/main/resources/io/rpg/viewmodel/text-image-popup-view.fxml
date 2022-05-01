@@ -14,7 +14,7 @@
             <Image url="@../../../../../../assets/popup-background-2.png" />
          </image>
       </ImageView>
-      <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="42.0" layoutY="51.0" prefHeight="160.0" prefWidth="243.0" text="&lt;no text set&gt;" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="42.0" layoutY="56.0" prefHeight="160.0" prefWidth="243.0" text="&lt;no text set&gt;" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font name="Monospaced Bold" size="25.0" />
          </font>

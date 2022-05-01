@@ -10,6 +10,7 @@ import javafx.stage.StageStyle;
 public class PopupController {
 
   private final Stage popupStage = new Stage(StageStyle.TRANSPARENT);
+  private final Image coinImage = new Image("file:assets/coin.png");
 
   public PopupController() {
     // close popup after clicking aside
@@ -45,7 +46,7 @@ public class PopupController {
   }
 
   public void openPointsPopup(int pointsCount, int x, int y) {
-    openTextPopup("You earned " + pointsCount + " points!", x, y);
+    openTextImagePopup("You earned " + pointsCount + " points!", coinImage, x, y);
   }
 
 
