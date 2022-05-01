@@ -40,7 +40,7 @@ public class TextPopup extends Scene {
     this.setFill(Color.TRANSPARENT);
   }
 
-  public void setButtonCallback(EventHandler<? super MouseEvent> callback){
+  public void setButtonCallback(EventHandler<? super MouseEvent> callback) {
     this.viewModel.setButtonOnClick(callback);
   }
 }
