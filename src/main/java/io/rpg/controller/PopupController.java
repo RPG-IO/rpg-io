@@ -1,6 +1,8 @@
 package io.rpg.controller;
 
+import io.rpg.view.popups.TextImagePopup;
 import io.rpg.view.popups.TextPopup;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -20,6 +22,18 @@ public class PopupController {
 
   public void openTextPopup(String text, int x, int y){
     TextPopup popupScene = new TextPopup(text);
+    popupStage.setScene(popupScene);
+
+    popupStage.show();
+
+    popupStage.setX(x - popupScene.getWidth() / 2);
+    popupStage.setY(y - popupScene.getHeight() / 2);
+
+    popupScene.setButtonCallback(event -> popupStage.hide());
+  }
+
+  public void openTextImagePopup(String text, Image image, int x, int y){
+    TextImagePopup popupScene = new TextImagePopup(text, image);
     popupStage.setScene(popupScene);
 
     popupStage.show();

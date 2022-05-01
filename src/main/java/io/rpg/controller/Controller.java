@@ -146,7 +146,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       }
 
       if (object instanceof CollectibleGameObject) {
-        popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
+        popupController.openTextImagePopup("Picked up an item!", objectView.getImage(), getWindowCenterX(), getWindowCenterY());
         objectView.setVisible(false);
       }
     }

@@ -11,7 +11,7 @@
    <children>
       <ImageView fx:id="backgroundImage" fitHeight="300.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../assets/popup-background-2.png" />
+            <Image url="@../../../../../../assets/popup-background.png" />
          </image>
       </ImageView>
       <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="66.0" layoutY="50.0" prefHeight="162.0" prefWidth="383.0" text="&lt;no text set&gt;" textAlignment="CENTER" textFill="WHITE" wrapText="true">
