@@ -1,10 +1,12 @@
 package io.rpg.view.popups;
 
 import io.rpg.viewmodel.TextPopupViewModel;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
@@ -38,7 +40,7 @@ public class TextPopup extends Scene {
     this.setFill(Color.TRANSPARENT);
   }
 
-  public void setButtonCallback(javafx.event.EventHandler<? super javafx.scene.input.MouseEvent> callback){
+  public void setButtonCallback(EventHandler<? super MouseEvent> callback){
     this.viewModel.setButtonOnClick(callback);
   }
 }

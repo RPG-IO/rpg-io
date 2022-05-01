@@ -2,11 +2,13 @@ package io.rpg.view.popups;
 
 import io.rpg.viewmodel.TextImagePopupViewModel;
 import io.rpg.viewmodel.TextPopupViewModel;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
@@ -33,6 +35,7 @@ public class TextImagePopup extends Scene {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
     this.setRoot(root);
 
     viewModel = loader.getController();
@@ -41,7 +44,7 @@ public class TextImagePopup extends Scene {
     this.setFill(Color.TRANSPARENT);
   }
 
-  public void setButtonCallback(javafx.event.EventHandler<? super javafx.scene.input.MouseEvent> callback){
+  public void setButtonCallback(EventHandler<? super MouseEvent> callback){
     this.viewModel.setButtonOnClick(callback);
   }
 }

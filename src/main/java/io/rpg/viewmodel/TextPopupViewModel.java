@@ -1,10 +1,12 @@
 package io.rpg.viewmodel;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 public class TextPopupViewModel {
@@ -23,7 +25,6 @@ public class TextPopupViewModel {
   }
 
   public void setTextSize(int size) {
-    System.out.println(size);
     label.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + size);
   }
 
@@ -37,9 +38,7 @@ public class TextPopupViewModel {
     okButton.setGraphic(imageView);
   }
 
-  public void setButtonOnClick(javafx.event.EventHandler<? super javafx.scene.input.MouseEvent> callback) {
+  public void setButtonOnClick(EventHandler<? super MouseEvent> callback) {
     okButton.setOnMouseClicked(callback);
   }
-
-
 }
