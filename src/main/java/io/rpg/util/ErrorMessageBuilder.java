@@ -30,6 +30,11 @@ public class ErrorMessageBuilder {
     return this;
   }
 
+  public ErrorMessageBuilder combine(String message) {
+    this.builder.append(message);
+    return this;
+  }
+
   @Override
   public String toString() {
     return this.builder.toString();

@@ -1,10 +1,12 @@
 package io.rpg.config.model;
 
 
+import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.Result;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,15 +68,20 @@ public class LocationConfig {
   }
 
   public Result<LocationConfig, Exception> validate() {
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
     if (tag == null) {
-      return Result.error(new IllegalStateException("Null tag"));
-    } else if (backgroundPath == null || backgroundPath.isBlank()) {
-      // TODO: Validate the backgroundPath here
-      return Result.error(new IllegalStateException("Empty string as background path"));
-    } else if (width > MAX_WIDTH || height > MAX_HEIGHT) {
-      return Result.error(new IllegalStateException("Size of location is greater than max size"));
-    } else {
-      return Result.ok(this);
+      builder.append("Null tag");
     }
+    if (backgroundPath == null) {
+      builder.append("No background path provided");
+    } else if (backgroundPath.isBlank()) {
+      builder.append("Blank background path");
+    } else if (!Files.isRegularFile(Path.of(backgroundPath))) {
+      builder.append("Provided background path: \"" + backgroundPath
+          + "\" does not point to a regular file");
+    }
+
+    return builder.isEmpty() ? Result.ok(this) :
+        Result.error(new IllegalStateException(builder.toString()));
   }
 }

@@ -1,6 +1,8 @@
 package io.rpg.config.model;
 
 import com.google.gson.annotations.SerializedName;
+import io.rpg.Game;
+import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.Result;
 
 import java.util.ArrayList;
@@ -105,17 +107,22 @@ public class GameWorldConfig {
    * @return Current configuration state or exception.
    */
   public Result<GameWorldConfig, Exception> validateStageOne() {
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
     if (locationTags.size() < 1) {
-      return Result.error(new IllegalStateException("No location tags detected"));
-    } else if (tag == null) {
-      return Result.error(new IllegalStateException("Null tag"));
-    } else if (playerConfig == null) {
-      return Result.error(new IllegalStateException("No player config provided"));
-    } else if (rootLocation == null) {
-      return Result.error(new IllegalStateException("No root location set!"));
-    } else {
-      return Result.ok(this);
+      builder.append("No location tags detected");
     }
+    if (tag == null) {
+      builder.append("Null tag");
+    }
+    if (playerConfig == null) {
+      builder.append("No player config provided");
+    }
+    if (rootLocation == null) {
+      builder.append("No root location set!");
+    }
+
+    return builder.isEmpty() ? Result.ok(this) :
+        Result.error(new IllegalStateException(builder.toString()));
   }
 
   /**
@@ -125,12 +132,16 @@ public class GameWorldConfig {
    */
   public Result<GameWorldConfig, Exception> validate() {
     Result<GameWorldConfig, Exception> stageOneValidationResult = validateStageOne();
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
+
     if (stageOneValidationResult.isError()) {
-      return stageOneValidationResult;
-    } else if (locationConfigs.size() < 1) {
-      return Result.error(new IllegalStateException("No location configs loaded"));
-    } else {
-      return Result.ok(this);
+      builder.combine(stageOneValidationResult.getErrorValue().getMessage());
     }
+    if (locationConfigs.size() < 1) {
+      builder.append("No location configs loaded");
+    }
+
+    return builder.isEmpty() ? Result.ok(this) :
+        Result.error(new IllegalStateException(builder.toString()));
   }
 }
