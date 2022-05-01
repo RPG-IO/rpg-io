@@ -3,11 +3,9 @@ package io.rpg.config.model;
 import io.rpg.model.data.Position;
 import io.rpg.model.object.GameObject;
 import io.rpg.model.object.GameObjects;
+import io.rpg.util.DataObjectDescriptionProvider;
 import io.rpg.util.Result;
 import org.jetbrains.annotations.NotNull;
-
-import java.lang.reflect.Field;
-import java.util.Optional;
 
 /**
  * Represents {@link io.rpg.model.object.GameObject} configuration provided by user
@@ -61,25 +59,11 @@ public class GameObjectConfig {
     }
   }
 
-  public String getFieldDescription() {
-    StringBuilder builder = new StringBuilder();
-    for (Field field : GameObjectConfig.class.getDeclaredFields()) {
-      try {
-        Optional<Object> fieldValue = Optional.ofNullable(field.get(this));
-        fieldValue.ifPresent(_fieldValue -> builder.append('\t')
-            .append(field.getName())
-            .append(": ")
-            .append(_fieldValue)
-            .append(",\n")
-        );
-      } catch (IllegalAccessException ignored) { /* noop */ }
-    }
-    return builder.toString();
-  }
-
   @Override
   public String toString() {
-    return "\n{\n" + getFieldDescription() + "}";
+    return DataObjectDescriptionProvider.combineDescriptions(
+        DataObjectDescriptionProvider.getFieldDescription(this, GameObject.class),
+        DataObjectDescriptionProvider.getFieldDescription(this, GameObjectConfig.class)
+    );
   }
-
 }
