@@ -4,8 +4,10 @@ import io.rpg.model.data.Position;
 import io.rpg.model.object.GameObject;
 import io.rpg.model.object.GameObjects;
 import io.rpg.util.DataObjectDescriptionProvider;
+import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.Result;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents {@link io.rpg.model.object.GameObject} configuration provided by user
@@ -13,10 +15,26 @@ import org.jetbrains.annotations.NotNull;
  */
 public class GameObjectConfig {
 
+  /**
+   *
+   */
   private String type;
   private String tag;
   private Position position;
   private String assetPath;
+
+  /**
+   * Config for the action triggered when object is pressed.
+   */
+  @Nullable
+  private ActionConfig onPress;
+
+  /**
+   * Config for the action triggered when player approaches
+   * the object.
+   */
+  @Nullable
+  private ActionConfig onApproach;
 
   public GameObjectConfig(@NotNull String tag, @NotNull Position position) {
     this.tag = tag;
@@ -46,10 +64,17 @@ public class GameObjectConfig {
    * @return Object in valid state or exception.
    */
   public Result<GameObjectConfig, Exception> validate() {
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
+
     if (!GameObjects.isValidType(type)) {
-      return Result.error(new IllegalStateException("Invalid object type: " + type));
+      // TODO: remove this validation as there is no longer
+      // bounding between object type and action.
+
+      builder.append("Invalid object type: " + type);
     }
-    return Result.ok(this);
+
+    return builder.isEmpty() ? Result.ok(this) :
+        Result.error(new IllegalStateException(builder.toString()));
   }
 
   public void updateFrom(GameObjectConfig gameObjectConfig) {
