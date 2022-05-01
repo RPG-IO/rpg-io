@@ -12,12 +12,12 @@ import java.util.Objects;
 
 public class TextPopup extends Scene {
 
-  private final TextPopupViewModel controller;
+  private final TextPopupViewModel viewModel;
 
   public TextPopup(String text, String backgroundPath, String buttonPath) {
     this(text);
-    controller.setBackgroundImage(backgroundPath);
-    controller.setOkButtonImage(buttonPath);
+    viewModel.setBackgroundImage(backgroundPath);
+    viewModel.setOkButtonImage(buttonPath);
   }
 
   public TextPopup(String text) {
@@ -33,8 +33,8 @@ public class TextPopup extends Scene {
     }
     this.setRoot(root);
 
-    controller = loader.getController();
-    controller.setText(text);
+    viewModel = loader.getController();
+    viewModel.setText(text);
     this.setFill(Color.TRANSPARENT);
   }
 }
