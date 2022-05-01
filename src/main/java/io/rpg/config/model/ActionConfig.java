@@ -1,5 +1,6 @@
 package io.rpg.config.model;
 
+import com.google.gson.annotations.SerializedName;
 import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.Result;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,7 @@ public class ActionConfig {
    * blank string.
    */
   @Nullable
+  @SerializedName("type")
   private final String actionTypeString;
 
   /**
