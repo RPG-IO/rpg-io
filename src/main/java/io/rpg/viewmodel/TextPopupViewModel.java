@@ -14,8 +14,17 @@ public class TextPopupViewModel {
   @FXML private ImageView backgroundImage;
   @FXML private Button okButton;
 
+
   public void setText(String text) {
+    if (text.length() < 50) setTextSize(25);
+    else if (text.length() < 190) setTextSize(19);
+    else setTextSize(13);
     label.setText(text);
+  }
+
+  public void setTextSize(int size) {
+    System.out.println(size);
+    label.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + size);
   }
 
   public void setBackgroundImage(String url) {
@@ -31,4 +40,6 @@ public class TextPopupViewModel {
   public void setButtonOnClick(javafx.event.EventHandler<? super javafx.scene.input.MouseEvent> callback) {
     okButton.setOnMouseClicked(callback);
   }
+
+
 }

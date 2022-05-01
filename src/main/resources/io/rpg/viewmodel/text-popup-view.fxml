@@ -14,9 +14,9 @@
             <Image url="@../../../../../../assets/popup-background-2.png" />
          </image>
       </ImageView>
-      <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="66.0" layoutY="50.0" prefHeight="162.0" prefWidth="383.0" text="Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar." textAlignment="JUSTIFY" textFill="WHITE" wrapText="true">
+      <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" layoutX="66.0" layoutY="50.0" prefHeight="162.0" prefWidth="383.0" text="&lt;no text set&gt;" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
-            <Font name="Monospaced Bold" size="19.0" />
+            <Font name="Monospaced Bold" size="25.0" />
          </font>
       </Label>
       <Button fx:id="okButton" cancelButton="true" contentDisplay="CENTER" layoutX="216.0" layoutY="205.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: transparent;" stylesheets="@../../../css/styles.css" text="OK" textAlignment="CENTER" textFill="#97401d">
