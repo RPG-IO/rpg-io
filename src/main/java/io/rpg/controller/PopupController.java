@@ -27,7 +27,7 @@ public class PopupController {
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
 
-    popupScene.hideStageOnButton(popupStage);
+    popupScene.setButtonCallback(event -> popupStage.hide());
   }
 
   public void openPointsPopup(int pointsCount, int x, int y) {

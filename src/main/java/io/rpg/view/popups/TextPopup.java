@@ -6,7 +6,6 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -39,7 +38,7 @@ public class TextPopup extends Scene {
     this.setFill(Color.TRANSPARENT);
   }
 
-  public void hideStageOnButton(Stage stage){
-    this.viewModel.setButtonOnClick(event -> stage.hide());
+  public void setButtonCallback(javafx.event.EventHandler<? super javafx.scene.input.MouseEvent> callback){
+    this.viewModel.setButtonOnClick(callback);
   }
 }
