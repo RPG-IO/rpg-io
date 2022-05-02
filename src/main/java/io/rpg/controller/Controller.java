@@ -110,6 +110,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     if (payload.getEventType() == KeyEvent.KEY_PRESSED){
       switch (payload.getCode()) {
         case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
+        case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
         case A -> currentModel.getPlayer().setLeftPressed(true);
         case D -> currentModel.getPlayer().setRightPressed(true);
         case S -> currentModel.getPlayer().setDownPressed(true);
@@ -145,7 +146,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       }
 
       if (object instanceof CollectibleGameObject) {
-        popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
+        popupController.openTextImagePopup("Picked up an item!", objectView.getImage(), getWindowCenterX(), getWindowCenterY());
         objectView.setVisible(false);
       }
     }
