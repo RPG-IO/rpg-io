@@ -54,9 +54,7 @@ public class Main extends Application {
         lastUpdate = now;
       }
     };
-
     animationTimer.start();
-
   }
 
   public static void main(String[] args) {
