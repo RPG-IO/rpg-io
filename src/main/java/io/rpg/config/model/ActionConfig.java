@@ -92,7 +92,7 @@ public class ActionConfig {
       builder.append("Invalid action type: " + actionTypeString);
     }
 
-    return builder.isEmpty() ? Result.ok(null) :
+    return builder.isEmpty() ? Result.ok() :
         Result.error(new IllegalStateException(builder.toString()));
   }
 }

@@ -167,9 +167,9 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
 
   public Result<Void, Void> validate() {
     if (tag == null || gameObjects == null) {
-      return Result.error(null);
+      return Result.error();
     }
-    return Result.ok(null);
+    return Result.ok();
   }
 
   public static class Builder {

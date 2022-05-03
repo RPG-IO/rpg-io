@@ -25,8 +25,16 @@ public class Result<OkT, ErrorT> {
     return new Result<>(okValue, null, Type.OK);
   }
 
+  public static <S, E> Result<S, E> ok() {
+    return new Result<>(null, null, Type.OK);
+  }
+
   public static <S, E> Result<S, E> error(@Nullable E errorValue) {
     return new Result<>(null, errorValue, Type.ERROR);
+  }
+
+  public static <S, E> Result<S, E> error() {
+    return new Result<>(null, null, Type.ERROR);
   }
 
   public boolean isError() {
