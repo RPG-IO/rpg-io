@@ -12,6 +12,7 @@ import io.rpg.util.BattleResult;
 import io.rpg.util.Result;
 import io.rpg.view.GameEndView;
 import io.rpg.view.GameObjectView;
+import io.rpg.view.InventoryPopup;
 import io.rpg.view.LocationView;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -22,6 +23,8 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import io.rpg.view.popups.TextPopup;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -36,10 +39,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   private PlayerController playerController;
   private Stage mainStage;
 
-
   public Controller() {
     logger = LogManager.getLogger(Controller.class);
-
     tagToLocationModelMap = new LinkedHashMap<>();
     tagToLocationViewMap = new LinkedHashMap<>();
   }
@@ -168,7 +169,15 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     }
     popupController.openTextPopup(result.getMessage(), getWindowCenterX(), getWindowCenterY());
   }
-  
+
+	// private void onAction(CollectAction action) {
+  //     if (object instanceof CollectibleGameObject) {
+  //       popupController.openTextImagePopup("Picked up an item!", objectView.getImage(), getWindowCenterX(), getWindowCenterY());
+  //       objectView.setVisible(false);
+  //       currentModel.getPlayer().getInventory().add((CollectibleGameObject) object);
+  //     }
+	// }
+
   public Scene getView() {
     return currentView;
   }
@@ -215,11 +224,13 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         case Q -> popupController.openQuestionPopup(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'), getWindowCenterX(), getWindowCenterY());
         case L -> consumeAction(new LocationChangeAction("location-2", new Position(1, 2)));
         case U -> consumeAction(new GameEndAction("You have pressed the forbidden button"));
+				case O -> popupController.openInventoryPopup(playerController.getPlayer().getInventory(),getWindowCenterX(), getWindowCenterY());
       }
     }
     // } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
     //
     // }
+    }
   }
 
   private int getWindowCenterX() {
