@@ -102,13 +102,12 @@ public class LocationView extends Scene
   }
 
 
-  List<GameObjectView> gameObjectViews=new ArrayList<>();
+  List<GameObjectView> gameObjectViews = new ArrayList<>();
 
-  public void createViewsForObjects(LocationModel locationModel){
-    for(GameObject g: locationModel.getGameObjects()){
-      GameObjectView gameObjectView=new GameObjectView(Path.of(g.getAssetPath()),g.getPosition());
+  public void createViewsForObjects(LocationModel locationModel) {
+    for (GameObject g : locationModel.getGameObjects()) {
+      GameObjectView gameObjectView = new GameObjectView(Path.of(g.getAssetPath()), g.getPosition());
       gameObjectViews.add(gameObjectView);
-//      g.view=gameObjectView;
       viewModel.getForegroundPane().getChildren().add(gameObjectView);
     }
   }

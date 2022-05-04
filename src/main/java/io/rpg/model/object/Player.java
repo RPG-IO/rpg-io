@@ -9,25 +9,21 @@ import org.jetbrains.annotations.NotNull;
 
 public class Player extends GameObject {
 
-  Vector currentPosition;
-  int strength;
-  float speed;
-  Vector direction;
-  boolean rightPressed;
-  boolean leftPressed;
-  boolean upPressed;
-  boolean downPressed;
-  GameObjectView gameObjectView;
+  private Vector currentPosition;
+  private int strength;
+  private float speed;
+  private Vector direction;
+  private boolean rightPressed;
+  private boolean leftPressed;
+  private boolean upPressed;
+  private boolean downPressed;
+  private GameObjectView gameObjectView;
   private Vector pixelPosition;
 
-  //  public GameObject(@NotNull String tag, @NotNull Position position, @NotNull String assetPath) {
-//    this.tag = tag;
-//    this.position = position;
-//    this.assetPath = assetPath;
-//  }
+
   public Player(@NotNull String tag, @NotNull Position position, @NotNull String assetPath) {
     super(tag, position, assetPath);
-    this.currentPosition=new Vector(position.col, position.row);
+    this.currentPosition = new Vector(position.col, position.row);
     this.speed = 100f;
     this.direction = new Vector(0, 0);
     this.rightPressed = false;
@@ -54,17 +50,21 @@ public class Player extends GameObject {
     float y = 0;
     float x = 0;
 //        the sum tells us the direction
-    if (upPressed)
+    if (upPressed) {
       y += -1;
+    }
 
-    if (downPressed)
+    if (downPressed) {
       y += 1;
+    }
 
-    if (leftPressed)
+    if (leftPressed) {
       x += -1;
+    }
 
-    if (rightPressed)
+    if (rightPressed) {
       x += 1;
+    }
 
     this.pixelPosition = new Vector(this.pixelPosition.x + speed * x * elapsed / 1000, this.pixelPosition.y + speed * y * elapsed / 1000);
   }
@@ -93,8 +93,8 @@ public class Player extends GameObject {
     this.gameObjectView = gameObjectView;
   }
 
-  public void render(){
-    if(gameObjectView!=null){
+  public void render() {
+    if (gameObjectView != null) {
       gameObjectView.setX(this.pixelPosition.x);
       gameObjectView.setY(this.pixelPosition.y);
     }

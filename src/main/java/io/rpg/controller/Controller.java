@@ -3,6 +3,7 @@ package io.rpg.controller;
 import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
+import io.rpg.model.data.Position;
 import io.rpg.model.data.Vector;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.CollectibleGameObject;
@@ -72,10 +73,16 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(LocationChangeAction action) {
+    if (!this.tagToLocationModelMap.containsKey(action.destinationLocationTag)) {
+      logger.error("Unknown location tag");
+      return;
+    }
+
     Scene nextView = this.tagToLocationViewMap.get(action.destinationLocationTag);
     LocationModel nextModel = this.tagToLocationModelMap.get(action.destinationLocationTag);
-
-
+    this.currentModel = nextModel;
+    this.currentView = nextView;
+    mainStage.setScene(nextView);
   }
 
   public Scene getView() {
@@ -121,10 +128,11 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
     KeyEvent payload = event.payload();
 
-    if (payload.getEventType() == KeyEvent.KEY_PRESSED){
+    if (payload.getEventType() == KeyEvent.KEY_PRESSED) {
       switch (payload.getCode()) {
         case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
         case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
+        case L -> onAction(new LocationChangeAction("location-2", new Position(2, 2)));
         case A -> currentModel.getPlayer().setLeftPressed(true);
         case D -> currentModel.getPlayer().setRightPressed(true);
         case S -> currentModel.getPlayer().setDownPressed(true);
