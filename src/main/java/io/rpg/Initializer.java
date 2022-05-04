@@ -80,10 +80,9 @@ public class Initializer {
       });
 
       if (locationConfig.getTag().equals(gameWorldConfig.getRootLocation())) {
-//        controllerBuilder
-//            .setModel(model)
-//            .setView(view);
-
+        controllerBuilder
+            .setModel(model)
+            .setView(view);
 
       }
 

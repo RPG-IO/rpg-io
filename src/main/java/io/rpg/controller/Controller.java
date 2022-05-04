@@ -1,5 +1,6 @@
 package io.rpg.controller;
 
+import io.rpg.model.actions.Action;
 import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
@@ -13,6 +14,8 @@ import io.rpg.model.object.Player;
 import io.rpg.util.Result;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -70,6 +73,24 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   public void registerToViews(List<GameObjectView> views) {
     for (GameObjectView view : views) {
       view.addOnClickedObserver(this);
+    }
+  }
+
+  public void onAction(Action action) {
+    Class<?>[] args = {action.getClass()};
+    Method onSpecificAction;
+
+    try {
+      onSpecificAction = this.getClass().getDeclaredMethod("onAction", args);
+    } catch (NoSuchMethodException e) {
+      logger.error("onAction for " + action.getClass().getSimpleName() + "is not implemented");
+      return;
+    }
+
+    try {
+      onSpecificAction.invoke(this, action);
+    } catch (IllegalAccessException | InvocationTargetException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -134,7 +155,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       switch (payload.getCode()) {
         case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
         case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
-        case L -> onAction(new LocationChangeAction("location-2", new Position(2, 2)));
+        case L -> onAction((Action) new LocationChangeAction("location-2", new Position(2, 2)));
         case A -> currentModel.getPlayer().setLeftPressed(true);
         case D -> currentModel.getPlayer().setRightPressed(true);
         case S -> currentModel.getPlayer().setDownPressed(true);

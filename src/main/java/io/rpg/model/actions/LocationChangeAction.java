@@ -3,10 +3,10 @@ package io.rpg.model.actions;
 import io.rpg.model.data.Position;
 
 /**
- * Class for storing local data needed to preform a location change action
+ * Class for storing local data needed to preform a location change action.
  */
 
-public class LocationChangeAction {
+public class LocationChangeAction implements Action {
   public final String destinationLocationTag;
   private Position playerPosition;
 
