@@ -28,10 +28,6 @@ public class QuestionPopupViewModel {
     questionLabel.setText(text);
   }
 
-  public void setTextSize(int size) {
-    questionLabel.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + size);
-  }
-
   public void setBackgroundImage(String url) {
     Image image = new Image(url);
     backgroundImage.setImage(image);
