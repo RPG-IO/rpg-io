@@ -100,8 +100,14 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       return;
     }
 
+    if (currentView != null) {
+      ((LocationView) currentView).removeKeyboardEventObserver(playerController);
+    }
+
     LocationView nextView = this.tagToLocationViewMap.get(action.destinationLocationTag);
+    nextView.addKeyboardEventObserver(playerController);
     LocationModel nextModel = this.tagToLocationModelMap.get(action.destinationLocationTag);
+
 
     this.currentModel = nextModel;
     this.currentView = nextView;
@@ -156,19 +162,11 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
         case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
         case L -> onAction((Action) new LocationChangeAction("location-2", new Position(2, 2)));
-        case A -> currentModel.getPlayer().setLeftPressed(true);
-        case D -> currentModel.getPlayer().setRightPressed(true);
-        case S -> currentModel.getPlayer().setDownPressed(true);
-        case W -> currentModel.getPlayer().setUpPressed(true);
-      }
-    } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
-      switch (payload.getCode()) {
-        case A -> currentModel.getPlayer().setLeftPressed(false);
-        case D -> currentModel.getPlayer().setRightPressed(false);
-        case S -> currentModel.getPlayer().setDownPressed(false);
-        case W -> currentModel.getPlayer().setUpPressed(false);
       }
     }
+    // } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
+    //
+    // }
   }
 
   private int getWindowCenterX() {

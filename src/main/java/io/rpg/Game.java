@@ -1,12 +1,13 @@
 package io.rpg;
 
 import io.rpg.controller.Controller;
+import io.rpg.model.actions.Action;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.jetbrains.annotations.NotNull;
 
 public class Game {
   private Controller controller;
+  private Action onStart;
 
   private Game() {
 
@@ -20,8 +21,10 @@ public class Game {
     this.controller = controller;
   }
 
-  public void setMainStage(Stage stage) {
+  public void start(Stage stage) {
+    stage.show();
     controller.setMainStage(stage);
+    controller.onAction(onStart);
   }
 
   public static class Builder {
@@ -39,6 +42,11 @@ public class Game {
     public Builder setController(Controller controller) {
       assert controller != null : "Attempt to set null controller";
       game.setController(controller);
+      return this;
+    }
+
+    public Builder setOnStartAction(Action onStart) {
+      game.onStart = onStart;
       return this;
     }
   }

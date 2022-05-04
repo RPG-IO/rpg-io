@@ -39,7 +39,7 @@ public class Main extends Application {
 
     // TODO: 04.05.2022 Null check for game was already made but IDE still screams
     Game game = initializationResult.getOkValue();
-    game.setMainStage(stage);
+    game.start(stage);
 
     stage.setScene(game.getWorldView());
 
