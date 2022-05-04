@@ -1,9 +1,7 @@
 package io.rpg.viewmodel;
 
-import io.rpg.model.data.MouseClickedEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -11,17 +9,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class QuestionPopupViewModel {
 
   @FXML private Label questionLabel;
   @FXML private Pane backgroundPane;
   @FXML private ImageView backgroundImage;
   @FXML private Button aButton, bButton, cButton, dButton;
-  private final Set<Scene> onClickedObservers = new HashSet<>();
-
 
   public void setQuestion(String question, String[] answers) {
     questionLabel.setText(question);
@@ -42,10 +35,10 @@ public class QuestionPopupViewModel {
 
   public void setButtonCallback(char buttonCode, EventHandler<? super MouseEvent> callback) {
     switch (buttonCode) {
-      case 'A'-> aButton.setOnMouseClicked(callback);
-      case 'B'-> bButton.setOnMouseClicked(callback);
-      case 'C'-> cButton.setOnMouseClicked(callback);
-      case 'D'-> dButton.setOnMouseClicked(callback);
+      case 'A' -> aButton.setOnMouseClicked(callback);
+      case 'B' -> bButton.setOnMouseClicked(callback);
+      case 'C' -> cButton.setOnMouseClicked(callback);
+      case 'D' -> dButton.setOnMouseClicked(callback);
     }
   }
 }
