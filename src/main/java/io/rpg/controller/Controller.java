@@ -1,5 +1,6 @@
 package io.rpg.controller;
 
+import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Vector;
@@ -13,6 +14,7 @@ import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +29,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   private LinkedHashMap<String, LocationView> tagToLocationViewMap;
   private Logger logger;
   private final PopupController popupController = new PopupController();
+  private Stage mainStage;
 
 
   public Controller() {
@@ -49,6 +52,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     this.currentView = this.tagToLocationViewMap.get(rootTag);
   }
 
+  public void setMainStage(Stage mainStage) {
+    this.mainStage = mainStage;
+  }
+
   public void setModel(@NotNull LocationModel model) {
     this.tagToLocationModelMap.put(model.getTag(), model);
     currentModel = model;
@@ -62,6 +69,13 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     for (GameObjectView view : views) {
       view.addOnClickedObserver(this);
     }
+  }
+
+  private void onAction(LocationChangeAction action) {
+    Scene nextView = this.tagToLocationViewMap.get(action.destinationLocationTag);
+    LocationModel nextModel = this.tagToLocationModelMap.get(action.destinationLocationTag);
+
+
   }
 
   public Scene getView() {

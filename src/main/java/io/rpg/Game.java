@@ -2,6 +2,7 @@ package io.rpg;
 
 import io.rpg.controller.Controller;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
 public class Game {
@@ -11,16 +12,16 @@ public class Game {
 
   }
 
-  public void setLocationControllerForLocationTag(String tag) {
-    // tutaj przyda sie hashmapa: nazwa lokacji -> kontroller
-  }
-
   public Scene getWorldView() {
     return controller.getView();
   }
 
   public void setController(Controller controller) {
     this.controller = controller;
+  }
+
+  public void setMainStage(Stage stage) {
+    controller.setMainStage(stage);
   }
 
   public static class Builder {
