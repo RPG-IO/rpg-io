@@ -24,6 +24,10 @@ public class QuestionPopupViewModel {
     dButton.setText("D: " + answers[3]);
   }
 
+  public void setQuestionLabel(String text) {
+    questionLabel.setText(text);
+  }
+
   public void setTextSize(int size) {
     questionLabel.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + size);
   }
@@ -45,6 +49,13 @@ public class QuestionPopupViewModel {
 
   public void setButtonCallback(char buttonCode, EventHandler<? super MouseEvent> callback) {
     getButtonFromCode(buttonCode).setOnMouseClicked(callback);
+  }
+
+  public void removeButtonCallbacks() {
+    aButton.setOnMouseClicked(null);
+    bButton.setOnMouseClicked(null);
+    cButton.setOnMouseClicked(null);
+    dButton.setOnMouseClicked(null);
   }
 
   public void highlightCorrect(char buttonCode) {
