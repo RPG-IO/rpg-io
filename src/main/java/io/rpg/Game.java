@@ -13,10 +13,6 @@ public class Game {
 
   }
 
-  public Scene getWorldView() {
-    return controller.getView();
-  }
-
   public void setController(Controller controller) {
     this.controller = controller;
   }

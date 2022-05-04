@@ -99,4 +99,8 @@ public class Player extends GameObject {
       gameObjectView.setY(this.pixelPosition.y);
     }
   }
+
+  public void setPosition(Position position) {
+    pixelPosition = new Vector(position);
+  }
 }

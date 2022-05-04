@@ -1,6 +1,7 @@
 package io.rpg.controller;
 
 import io.rpg.model.data.KeyboardEvent;
+import io.rpg.model.data.Position;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.Player;
 import io.rpg.view.GameObjectView;
@@ -41,10 +42,18 @@ public class PlayerController implements KeyboardEvent.Observer {
     }
   }
 
-  public void teleportTo(LocationModel model, LocationView view) {
+  /**
+   * Changes player location. Removes listener from old location.
+   *
+   * @param model new location model.
+   * @param view new location view.
+   * @param playerPosition new player position.
+   */
+  public void teleportTo(LocationModel model, LocationView view, Position playerPosition) {
     onChangeLocation.run();
     updateOnChangeLocation(model, view);
 
+    player.setPosition(playerPosition);
     model.setPlayer(player);
     view.addChild(playerView);
     view.addKeyboardEventObserver(this);

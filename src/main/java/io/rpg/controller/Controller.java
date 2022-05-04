@@ -70,12 +70,6 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     this.currentView = currentView;
   }
 
-  public void registerToViews(List<GameObjectView> views) {
-    for (GameObjectView view : views) {
-      view.addOnClickedObserver(this);
-    }
-  }
-
   public void onAction(Action action) {
     Class<?>[] args = {action.getClass()};
     Method onSpecificAction;
@@ -103,7 +97,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     LocationView nextView = this.tagToLocationViewMap.get(action.destinationLocationTag);
     LocationModel nextModel = this.tagToLocationModelMap.get(action.destinationLocationTag);
 
-    playerController.teleportTo(nextModel, nextView);
+    playerController.teleportTo(nextModel, nextView, action.playerPosition);
 
     this.currentModel = nextModel;
     this.currentView = nextView;
@@ -153,7 +147,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       switch (payload.getCode()) {
         case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
         case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
-        case L -> onAction((Action) new LocationChangeAction("location-2", new Position(2, 2)));
+        case L -> onAction((Action) new LocationChangeAction("location-2", new Position(1, 2)));
       }
     }
     // } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
@@ -186,10 +180,6 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       }
     }
     logger.info("Controller notified on click from " + event.source());
-  }
-
-  private void setPlayer(Player gameObject) {
-    currentModel.setPlayer(gameObject);
   }
 
   public static class Builder {

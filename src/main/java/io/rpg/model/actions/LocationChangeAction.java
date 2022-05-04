@@ -8,7 +8,7 @@ import io.rpg.model.data.Position;
 
 public class LocationChangeAction implements Action {
   public final String destinationLocationTag;
-  private Position playerPosition;
+  public final Position playerPosition;
 
   public LocationChangeAction(String destinationLocationTag, Position playerPosition) {
     this.destinationLocationTag = destinationLocationTag;
