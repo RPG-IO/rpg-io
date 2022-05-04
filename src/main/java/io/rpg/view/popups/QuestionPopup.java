@@ -53,8 +53,11 @@ public class QuestionPopup extends Scene {
     if (answer == correctAnswer){
       System.out.println("Correct!");
     } else {
+      viewModel.highlightWrong(answer);
       System.out.println("Answer " + answer + " is incorrect. The correct answer is " + correctAnswer + ": " + question.answers()[getAnswerIndex(correctAnswer)]);
     }
+
+    viewModel.highlightCorrect(correctAnswer);
   }
 
   private int getAnswerIndex(char answerCode) {

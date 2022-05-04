@@ -33,12 +33,27 @@ public class QuestionPopupViewModel {
     backgroundImage.setImage(image);
   }
 
+  private Button getButtonFromCode(char buttonCode) {
+    return switch (buttonCode) {
+      case 'A' -> aButton;
+      case 'B' -> bButton;
+      case 'C' -> cButton;
+      case 'D' -> dButton;
+      default -> throw new IllegalStateException("Unexpected value: " + buttonCode);
+    };
+  }
+
   public void setButtonCallback(char buttonCode, EventHandler<? super MouseEvent> callback) {
-    switch (buttonCode) {
-      case 'A' -> aButton.setOnMouseClicked(callback);
-      case 'B' -> bButton.setOnMouseClicked(callback);
-      case 'C' -> cButton.setOnMouseClicked(callback);
-      case 'D' -> dButton.setOnMouseClicked(callback);
-    }
+    getButtonFromCode(buttonCode).setOnMouseClicked(callback);
+  }
+
+  public void highlightCorrect(char buttonCode) {
+    Button button = getButtonFromCode(buttonCode);
+    button.setStyle(button.getStyle() + "-fx-border-color: #3b803b; -fx-border-width: 5px;");
+  }
+
+  public void highlightWrong(char buttonCode) {
+    Button button = getButtonFromCode(buttonCode);
+    button.setStyle(button.getStyle() + "-fx-border-color: #a93e3e; -fx-border-width: 5px;");
   }
 }
