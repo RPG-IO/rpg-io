@@ -112,4 +112,11 @@ public class LocationView extends Scene
     }
   }
 
+  public void removeChild(GameObjectView view) {
+    viewModel.getForegroundPane().getChildren().remove(view);
+  }
+
+  public void addChild(GameObjectView view) {
+    viewModel.getForegroundPane().getChildren().add(view);
+  }
 }

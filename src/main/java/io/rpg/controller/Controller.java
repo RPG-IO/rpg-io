@@ -100,14 +100,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       return;
     }
 
-    if (currentView != null) {
-      ((LocationView) currentView).removeKeyboardEventObserver(playerController);
-    }
-
     LocationView nextView = this.tagToLocationViewMap.get(action.destinationLocationTag);
-    nextView.addKeyboardEventObserver(playerController);
     LocationModel nextModel = this.tagToLocationModelMap.get(action.destinationLocationTag);
 
+    playerController.teleportTo(nextModel, nextView);
 
     this.currentModel = nextModel;
     this.currentView = nextView;
@@ -141,10 +137,6 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       return Result.error(new Exception("Empty tag to location view map!"));
     else if (tagToLocationViewMap.size() != tagToLocationModelMap.size())
       return Result.error(new Exception("Mismatched sizes of maps!"));
-    else if (currentView == null)
-      return Result.error(new Exception("No current view set!"));
-    else if (currentModel ==  null)
-      return Result.error(new Exception("No current model set!"));
     else
       return Result.ok(this);
   }
@@ -200,54 +192,14 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     currentModel.setPlayer(gameObject);
   }
 
-  // TODO: temporary solution
-  public void setPlayerView(GameObjectView playerView) {
-    ((LocationView) currentView).getViewModel().addChild(playerView);
-  }
-
   public static class Builder {
     private final Controller controller;
-    private boolean isViewSet = false;
-    private boolean isModelSet = false;
-
-    private Player player;
 
     public Builder() {
       controller = new Controller();
     }
 
-    public Builder setTagToLocationModelMap(LinkedHashMap<String, LocationModel> tagToLocationModelMap) {
-      controller.setTagToLocationModelMap(tagToLocationModelMap);
-      return this;
-    }
-
-    public Builder setTagToLocationViewMap(LinkedHashMap<String, LocationView> tagToLocationViewMap) {
-      controller.setTagToLocationViewMap(tagToLocationViewMap);
-      return this;
-    }
-
-    public Builder setModel(@NotNull LocationModel model) {
-      if (!isModelSet) {
-        isModelSet = true;
-        controller.setModel(model);
-        return this;
-      } else {
-        throw new IllegalStateException("Attempt to set model for the second time!");
-      }
-    }
-
-    public Builder setView(Scene currentView) {
-      if (!isViewSet) {
-        isViewSet = true;
-        controller.setView(currentView);
-        return this;
-      } else {
-        throw new IllegalStateException("Attempt to set view for the second time!");
-      }
-    }
-
     public Controller build() {
-      controller.setPlayer(player);
       Result<Controller, Exception> validationResult = controller.validate();
       if (validationResult.isError()) {
         throw new IllegalStateException(validationResult.getErrorValue());
@@ -271,11 +223,6 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
     public Builder addModelForTag(String tag, LocationModel model) {
       controller.getTagToLocationModelMap().put(tag, model);
-      return this;
-    }
-
-    public Builder setPlayer(Player gameObject) {
-      player = gameObject;
       return this;
     }
 

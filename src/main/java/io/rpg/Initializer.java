@@ -78,9 +78,7 @@ public class Initializer {
 
       assert view != null;
 
-      gameObjectViews.forEach(view_ -> {
-        view.getViewModel().addChild(view_);
-      });
+      gameObjectViews.forEach(view::addChild);
 
       model.addOnLocationModelStateChangeObserver(view);
 

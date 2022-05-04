@@ -1,20 +1,21 @@
 package io.rpg.controller;
 
-import io.rpg.model.actions.Action;
-import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.KeyboardEvent;
-import io.rpg.model.data.Position;
+import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.Player;
 import io.rpg.view.GameObjectView;
+import io.rpg.view.LocationView;
 import javafx.scene.input.KeyEvent;
 
 public class PlayerController implements KeyboardEvent.Observer {
   private final Player player;
   private final GameObjectView playerView;
+  private Runnable onChangeLocation;
 
   public PlayerController(Player player, GameObjectView playerView) {
     this.player = player;
     this.playerView = playerView;
+    this.onChangeLocation = () -> {};
 
     player.addGameObjectStateChangeObserver(playerView);
     player.setGameObjectView(playerView);
@@ -40,4 +41,19 @@ public class PlayerController implements KeyboardEvent.Observer {
     }
   }
 
+  public void teleportTo(LocationModel model, LocationView view) {
+    onChangeLocation.run();
+    updateOnChangeLocation(model, view);
+
+    model.setPlayer(player);
+    view.addChild(playerView);
+    view.addKeyboardEventObserver(this);
+  }
+
+  private void updateOnChangeLocation(LocationModel model, LocationView view) {
+    this.onChangeLocation = () -> {
+      view.removeKeyboardEventObserver(this);
+      view.removeChild(this.playerView);
+    };
+  }
 }

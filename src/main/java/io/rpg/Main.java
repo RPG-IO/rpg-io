@@ -41,10 +41,6 @@ public class Main extends Application {
     Game game = initializationResult.getOkValue();
     game.start(stage);
 
-    stage.setScene(game.getWorldView());
-
-    stage.show();
-
     AnimationTimer animationTimer = new AnimationTimer() {
       long lastUpdate = -1;
 
