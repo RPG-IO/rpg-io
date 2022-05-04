@@ -30,6 +30,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   private LinkedHashMap<String, LocationView> tagToLocationViewMap;
   private Logger logger;
   private final PopupController popupController = new PopupController();
+  private PlayerController playerController;
   private Stage mainStage;
 
 
@@ -78,8 +79,9 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       return;
     }
 
-    Scene nextView = this.tagToLocationViewMap.get(action.destinationLocationTag);
+    LocationView nextView = this.tagToLocationViewMap.get(action.destinationLocationTag);
     LocationModel nextModel = this.tagToLocationModelMap.get(action.destinationLocationTag);
+
     this.currentModel = nextModel;
     this.currentView = nextView;
     mainStage.setScene(nextView);
@@ -256,6 +258,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     public Builder setPlayer(Player gameObject) {
       player = gameObject;
       return this;
+    }
+
+    public void setPlayerController(PlayerController playerController) {
+      controller.playerController = playerController;
     }
   }
   public LocationModel getCurrentModel() {
