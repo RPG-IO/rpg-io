@@ -1,5 +1,6 @@
 package io.rpg.view.popups;
 
+import io.rpg.model.object.Question;
 import io.rpg.viewmodel.QuestionPopupViewModel;
 import io.rpg.viewmodel.TextPopupViewModel;
 import javafx.event.EventHandler;
@@ -19,12 +20,12 @@ public class QuestionPopup extends Scene {
   private final QuestionPopupViewModel viewModel;
   private final char correctAnswer;
 
-  public QuestionPopup(String question, String [] answers, char correctAnswer, String backgroundPath) {
-    this(question, answers, correctAnswer);
+  public QuestionPopup(Question question, String backgroundPath) {
+    this(question);
     viewModel.setBackgroundImage(backgroundPath);
   }
 
-  public QuestionPopup(String question, String [] answers, char correctAnswer) {
+  public QuestionPopup(Question question) {
     super(new Group(), Color.TRANSPARENT);
 
     FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(QuestionPopupViewModel.class.getResource("question-popup-view.fxml")));
@@ -39,9 +40,9 @@ public class QuestionPopup extends Scene {
     this.setRoot(root);
 
     viewModel = loader.getController();
-    viewModel.setQuestion(question, answers);
+    viewModel.setQuestion(question.question(), question.answers());
 
-    this.correctAnswer = correctAnswer;
+    this.correctAnswer = question.correctAnswer();
     this.setFill(Color.TRANSPARENT);
   }
 }

@@ -16,10 +16,10 @@ public class QuestionPopupViewModel {
 
   public void setQuestion(String question, String[] answers) {
     questionLabel.setText(question);
-    aButton.setText(answers[0]);
-    bButton.setText(answers[1]);
-    cButton.setText(answers[2]);
-    dButton.setText(answers[3]);
+    aButton.setText("A: " + answers[0]);
+    bButton.setText("B: " + answers[1]);
+    cButton.setText("C: " + answers[2]);
+    dButton.setText("D: " + answers[3]);
     System.out.println("set");
   }
 

@@ -16,27 +16,27 @@
       </ImageView>
       <Label fx:id="questionLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="42.0" layoutY="52.0" prefHeight="138.0" prefWidth="416.0" text="QUESTION" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
-            <Font name="Monospaced Bold" size="25.0" />
+            <Font name="Monospaced Bold" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="bButton" cancelButton="true" contentDisplay="CENTER" layoutX="260.0" layoutY="202.0" mnemonicParsing="false" prefHeight="101.0" prefWidth="203.0" style="-fx-background-color: BB722E;" stylesheets="@../../../css/styles.css" text="B:" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="bButton" cancelButton="true" contentDisplay="CENTER" layoutX="255.0" layoutY="200.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: BB722E;" stylesheets="@../../../css/styles.css" text="B:" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font name="Monospaced Bold" size="20.0" />
+            <Font name="Monospaced Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="aButton" cancelButton="true" contentDisplay="CENTER" layoutX="47.0" layoutY="202.0" mnemonicParsing="false" prefHeight="101.0" prefWidth="203.0" style="-fx-background-color: BB722E;" stylesheets="@../../../css/styles.css" text="A:" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="aButton" cancelButton="true" contentDisplay="CENTER" layoutX="45.0" layoutY="200.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: BB722E;" stylesheets="@../../../css/styles.css" text="A:" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font name="Monospaced Bold" size="20.0" />
+            <Font name="Monospaced Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="dButton" cancelButton="true" contentDisplay="CENTER" layoutX="260.0" layoutY="313.0" mnemonicParsing="false" prefHeight="101.0" prefWidth="203.0" style="-fx-background-color: BB722E;" stylesheets="@../../../css/styles.css" text="D:" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="dButton" cancelButton="true" contentDisplay="CENTER" layoutX="255.0" layoutY="310.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: BB722E;" stylesheets="@../../../css/styles.css" text="D:" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font name="Monospaced Bold" size="20.0" />
+            <Font name="Monospaced Bold" size="14.0" />
          </font>
       </Button>
-      <Button fx:id="cButton" cancelButton="true" contentDisplay="CENTER" layoutX="47.0" layoutY="313.0" mnemonicParsing="false" prefHeight="101.0" prefWidth="203.0" style="-fx-background-color: BB722E;" stylesheets="@../../../css/styles.css" text="C:" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="cButton" cancelButton="true" contentDisplay="CENTER" layoutX="45.0" layoutY="310.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: BB722E;" stylesheets="@../../../css/styles.css" text="C:" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font name="Monospaced Bold" size="20.0" />
+            <Font name="Monospaced Bold" size="14.0" />
          </font>
       </Button>
    </children>
