@@ -46,6 +46,8 @@ public class GameObject implements GameObjectStateChange.Emitter {
   @NotNull
   private final Set<GameObjectStateChange.Observer> stateChangeObservers;
 
+  private int strength;
+
   @Nullable
   public String getAssetPath() {
     return assetPath;
@@ -77,6 +79,14 @@ public class GameObject implements GameObjectStateChange.Emitter {
     this.tag = tag;
     this.position = position;
     this.assetPath = assetPath;
+    this.stateChangeObservers = new LinkedHashSet<>();
+  }
+
+  public GameObject(@Nullable Position position, @NotNull String tag, @Nullable String assetPath, int strength) {
+    this.position = position;
+    this.tag = tag;
+    this.assetPath = assetPath;
+    this.strength = strength;
     this.stateChangeObservers = new LinkedHashSet<>();
   }
 
@@ -131,5 +141,9 @@ public class GameObject implements GameObjectStateChange.Emitter {
     Type(String asString) {
       this.asString = asString;
     }
+  }
+
+  public int getStrength() {
+    return strength;
   }
 }

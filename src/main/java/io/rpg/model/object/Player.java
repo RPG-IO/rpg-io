@@ -19,6 +19,7 @@ public class Player extends GameObject {
   boolean downPressed;
   GameObjectView gameObjectView;
   private Vector pixelPosition;
+  private int points;
 
   //  public GameObject(@NotNull String tag, @NotNull Position position, @NotNull String assetPath) {
 //    this.tag = tag;
@@ -36,6 +37,7 @@ public class Player extends GameObject {
     this.downPressed = false;
     this.strength = 0;
     this.pixelPosition = new Vector(position);
+    this.points = 0;
   }
 
   public void updateStrength(int value) {
@@ -98,5 +100,13 @@ public class Player extends GameObject {
       gameObjectView.setX(this.pixelPosition.x);
       gameObjectView.setY(this.pixelPosition.y);
     }
+  }
+
+  public int getPoints() {
+    return points;
+  }
+
+  public void addPoints(int value){
+    points += value;
   }
 }

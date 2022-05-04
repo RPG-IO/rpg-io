@@ -1,5 +1,6 @@
 package io.rpg.controller;
 
+import io.rpg.model.actions.Battle;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Vector;
@@ -115,6 +116,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         case D -> currentModel.getPlayer().setRightPressed(true);
         case S -> currentModel.getPlayer().setDownPressed(true);
         case W -> currentModel.getPlayer().setUpPressed(true);
+        case X -> battle(new GameObject(null, "opponent", null, 7)); // TODO: put this somewhere else
       }
     } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
       switch (payload.getCode()) {
@@ -124,6 +126,11 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         case W -> currentModel.getPlayer().setUpPressed(false);
       }
     }
+  }
+
+  private void battle(GameObject opponent){
+    Battle battle = new Battle(currentModel.getPlayer(), opponent, 10);
+    popupController.openTextPopup(battle.action(), getWindowCenterX(), getWindowCenterY());
   }
 
   private int getWindowCenterX() {
