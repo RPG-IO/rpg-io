@@ -82,6 +82,7 @@ public class GameObject implements GameObjectStateChange.Emitter {
     this.stateChangeObservers = new LinkedHashSet<>();
   }
 
+  // TODO: remove this ctor when generic properties are implemented
   public GameObject(@Nullable Position position, @NotNull String tag, @Nullable String assetPath, int strength) {
     this.position = position;
     this.tag = tag;
@@ -143,6 +144,7 @@ public class GameObject implements GameObjectStateChange.Emitter {
     }
   }
 
+  // TODO: remove this getter when generic properties are implemented
   public int getStrength() {
     return strength;
   }

@@ -95,8 +95,8 @@ public class Player extends GameObject {
     this.gameObjectView = gameObjectView;
   }
 
-  public void render(){
-    if(gameObjectView!=null){
+  public void render() {
+    if (gameObjectView!=null) {
       gameObjectView.setX(this.pixelPosition.x);
       gameObjectView.setY(this.pixelPosition.y);
     }
@@ -106,7 +106,7 @@ public class Player extends GameObject {
     return points;
   }
 
-  public void addPoints(int value){
+  public void addPoints(int value) {
     points += value;
   }
 }

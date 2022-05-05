@@ -9,6 +9,7 @@ import io.rpg.model.object.CollectibleGameObject;
 import io.rpg.model.object.GameObject;
 import io.rpg.model.object.InteractiveGameObject;
 import io.rpg.model.object.Player;
+import io.rpg.util.BattleResult;
 import io.rpg.util.Result;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
@@ -128,9 +129,9 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     }
   }
 
-  private void battle(GameObject opponent){
+  private void battle(GameObject opponent) {
     Battle battle = new Battle(currentModel.getPlayer(), opponent, 10);
-    popupController.openTextPopup(battle.action(), getWindowCenterX(), getWindowCenterY());
+    popupController.openTextPopup(battle.action().getMessage(), getWindowCenterX(), getWindowCenterY());
   }
 
   private int getWindowCenterX() {

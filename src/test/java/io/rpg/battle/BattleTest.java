@@ -11,14 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class BattleTest {
 
     @Test
-    public void playerShouldWinWhenHasMorePoints(){
+    public void playerShouldWinWhenHasMorePoints() {
         //Given
         Player player = new Player("p1", new Position(2, 3), "assets/stone.png");
         GameObject opponent = new GameObject(null, "opponent", null, -2);
         Battle battle = new Battle(player, opponent, 2);
 
         // When
-        String msg = battle.action();
+        String msg = battle.action().getMessage();
 
         // Then
         assertEquals("You won! Gained 2 points.", msg);
@@ -26,14 +26,14 @@ public class BattleTest {
     }
 
     @Test
-    public void playerShouldDrawWhenHasEqualPoints(){
+    public void playerShouldDrawWhenHasEqualPoints() {
         //Given
         Player player = new Player("p1", new Position(2, 3), "assets/stone.png");
         GameObject opponent = new GameObject(null, "opponent", null, 0);
         Battle battle = new Battle(player, opponent, 2);
 
         // When
-        String msg = battle.action();
+        String msg = battle.action().getMessage();
 
         // Then
         assertEquals("Draw.", msg);
@@ -41,14 +41,14 @@ public class BattleTest {
     }
 
     @Test
-    public void playerShouldLoseWhenHasLessPoints(){
+    public void playerShouldLoseWhenHasLessPoints() {
         //Given
         Player player = new Player("p1", new Position(2, 3), "assets/stone.png");
         GameObject opponent = new GameObject(null, "opponent", null, 2);
         Battle battle = new Battle(player, opponent, 2);
 
         // When
-        String msg = battle.action();
+        String msg = battle.action().getMessage();
 
         // Then
         assertEquals("You lost :(", msg);

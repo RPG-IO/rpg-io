@@ -2,6 +2,7 @@ package io.rpg.model.actions;
 
 import io.rpg.model.object.GameObject;
 import io.rpg.model.object.Player;
+import io.rpg.util.BattleResult;
 
 public class Battle {
     private final Player player;
@@ -14,13 +15,13 @@ public class Battle {
         this.reward = reward;
     }
 
-    public String action(){
-        if(player.getStrength() > opponent.getStrength()){
+    public BattleResult action() {
+        if (player.getStrength() > opponent.getStrength()) {
             player.addPoints(reward);
-            return "You won! Gained " + reward + " points.";
-        }else if(player.getStrength() < opponent.getStrength()){
-            return "You lost :(";
+            return new BattleResult(BattleResult.Result.VICTORY, reward);
+        } else if (player.getStrength() < opponent.getStrength()) {
+            return new BattleResult(BattleResult.Result.DEFEAT, 0);
         }
-        return "Draw.";
+        return new BattleResult(BattleResult.Result.DRAW, 0);
     }
 }
