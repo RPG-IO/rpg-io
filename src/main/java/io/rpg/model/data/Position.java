@@ -9,7 +9,6 @@ import java.util.Objects;
  */
 public class Position {
   public final int row;
-
   public final int col;
 
   public Position(int row, int col) {

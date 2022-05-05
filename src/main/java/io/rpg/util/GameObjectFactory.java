@@ -20,11 +20,10 @@ public class GameObjectFactory {
    * @return game object created based on information located in config
    */
   public static GameObject fromConfig(GameObjectConfig config) {
-    // TODO: add case for Player type here!
     switch (GameObject.Type.valueOf(config.getTypeString().toUpperCase())) {
       case COLLECTIBLE -> { return new CollectibleGameObject(config.getTag(), config.getPosition()); }
       case DIALOG -> { return new DialogGameObject(config.getTag(), config.getPosition()); }
-      case PLAYER -> { return new Player(config.getTag(), config.getPosition(),config.getAssetPath()); }
+      case PLAYER -> { return new Player(config.getTag(), config.getPosition(), config.getAssetPath()); }
       case NAVIGABLE -> { return new NavigationalGameObject(config.getTag(), config.getPosition()); }
       default -> throw new RuntimeException("Unknown GameObject type. This should not happen!");
     }

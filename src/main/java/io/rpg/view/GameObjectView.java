@@ -16,19 +16,13 @@ public class GameObjectView extends ImageView
   private Path path;
   private final Set<MouseClickedEvent.Observer> onClickedObservers;
 
-  private final int SCALE = 64;
 
   public GameObjectView(@NotNull Path assetPath, @NotNull Position position) {
     this.path = assetPath;
-//    String xdpath =
     this.setImage(new Image(resolvePathToJFXFormat(path.toString())));
     // todo: better position class
-    this.setX(position.col * SCALE);
-    this.setY(position.row * SCALE);
-
-    this.setPreserveRatio(true);
-    this.setSmooth(false);
-    this.setFitHeight(SCALE);
+    this.setX(position.col);
+    this.setY(position.row);
 
     this.onClickedObservers = new HashSet<>();
     this.setOnMouseClicked(event -> emitOnMouseClickedEvent(new MouseClickedEvent(this, event)));

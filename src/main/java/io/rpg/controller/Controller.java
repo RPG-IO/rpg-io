@@ -163,11 +163,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   @Override
   public void onMouseClickedEvent(MouseClickedEvent event) {
-    int SCALE = 64;
     Vector playerPos = currentModel.getPlayer().getPixelPosition();
     GameObjectView objectView = event.source();
-    GameObject object = currentModel.getObject((int) objectView.getY() / SCALE, (int) objectView.getX() / SCALE);
-    if (Math.abs(playerPos.x - objectView.getX()) / SCALE <= 1.5 && Math.abs(playerPos.y - objectView.getY()) / SCALE <= 1.5) {
+    GameObject object = currentModel.getObject((int) objectView.getY(), (int) objectView.getX());
+    if (Math.abs(playerPos.x - objectView.getX()) <= 1.5 && Math.abs(playerPos.y - objectView.getY()) <= 1.5) {
       if (object instanceof InteractiveGameObject) {
         ((InteractiveGameObject) object).onAction();
       }

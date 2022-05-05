@@ -22,9 +22,9 @@ public class Player extends GameObject {
 
 
   public Player(@NotNull String tag, @NotNull Position position, @NotNull String assetPath) {
-    super(tag, position, assetPath);
+    super(tag, position);
     this.currentPosition = new Vector(position.col, position.row);
-    this.speed = 100f;
+    this.speed = 6f;
     this.direction = new Vector(0, 0);
     this.rightPressed = false;
     this.leftPressed = false;
