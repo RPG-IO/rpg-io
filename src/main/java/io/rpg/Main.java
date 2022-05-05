@@ -19,7 +19,7 @@ public class Main extends Application {
     Logger logger = LogManager.getLogger(Main.class);
 
     Initializer worldInitializer = new Initializer("configurations/demo-config-1", stage);
-    Result<Game, Exception>  initializationResult = worldInitializer.initialize();
+    Result<Game, Exception> initializationResult = worldInitializer.initialize();
 
     if (initializationResult.isError()) {
       logger.error("Initialization error");
@@ -37,28 +37,25 @@ public class Main extends Application {
       return;
     }
 
+    // TODO: 04.05.2022 Null check for game was already made but IDE still screams
     Game game = initializationResult.getOkValue();
+    game.start(stage);
 
-    stage.setScene(game.getWorldView());
+    AnimationTimer animationTimer = new AnimationTimer() {
+      long lastUpdate = -1;
 
-    stage.show();
-
-    AnimationTimer animationTimer=new AnimationTimer() {
-      long lastUpdate=-1;
       @Override
       public void handle(long now) {
-        if(lastUpdate!=-1){
-          float difference=(now-lastUpdate)/1e6f;
+        if (lastUpdate != -1) {
+          float difference = (now - lastUpdate) / 1e6f;
 
           game.getController().getCurrentModel().update(difference);
-//          locationModel.update(difference);
-          Player player=game.getController().getCurrentModel().getPlayer();
-          if(player!=null){
-//            game.getController().getCurrentModel().getPlayer().render();
+          Player player = game.getController().getCurrentModel().getPlayer();
+          if (player != null) {
             player.render();
           }
         }
-        lastUpdate=now;
+        lastUpdate = now;
       }
     };
 

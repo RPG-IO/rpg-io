@@ -44,6 +44,7 @@ public class LocationModel implements LocationModelStateChange.Emitter {
     return player;
   }
 
+
   public GameObject getObject(int row, int column) {
     GameObject object =  gameObjects.stream().filter(gameObject -> gameObject.getPosition()
                     .equals(new Position(row, column)))
