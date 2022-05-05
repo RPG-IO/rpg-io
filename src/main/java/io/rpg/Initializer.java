@@ -5,6 +5,9 @@ import io.rpg.config.model.PlayerConfig;
 import io.rpg.controller.Controller;
 import io.rpg.config.model.GameWorldConfig;
 import io.rpg.config.model.LocationConfig;
+import io.rpg.controller.PlayerController;
+import io.rpg.model.actions.LocationChangeAction;
+import io.rpg.model.data.Position;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.GameObject;
 import io.rpg.config.model.GameObjectConfig;
@@ -54,6 +57,7 @@ public class Initializer {
 
     GameWorldConfig gameWorldConfig = gameWorldConfigLoadResult.getOkValue();
 
+
     Controller.Builder controllerBuilder = new Controller.Builder();
 
     assert gameWorldConfig.getLocationConfigs() != null;
@@ -74,15 +78,7 @@ public class Initializer {
 
       assert view != null;
 
-      gameObjectViews.forEach(view_ -> {
-        view.getViewModel().addChild(view_);
-      });
-
-      if (locationConfig.getTag().equals(gameWorldConfig.getRootLocation())) {
-        controllerBuilder
-            .setModel(model)
-            .setView(view);
-      }
+      gameObjectViews.forEach(view::addChild);
 
       model.addOnLocationModelStateChangeObserver(view);
 
@@ -98,18 +94,22 @@ public class Initializer {
     // TODO: consider moving it to separate method
     Player player = (Player) GameObjectFactory.fromConfig(gameWorldConfig.getPlayerConfig());
     GameObjectView playerView = GameObjectViewFactory.fromConfig(gameWorldConfig.getPlayerConfig());
-    player.addGameObjectStateChangeObserver(playerView);
-    controllerBuilder.setPlayer(player);
-    player.setGameObjectView(playerView);
+    PlayerController playerController = new PlayerController(player, playerView);
+
+    controllerBuilder.setPlayerController(playerController);
+
 
     Controller controller = controllerBuilder.build();
-    // TODO: this is a temporary solution
-    controller.setPlayerView(playerView);
+//    // TODO: this is a temporary solution
+//    controller.setPlayerView(playerView);
 
     Game.Builder gameBuilder = new Game.Builder();
-    gameBuilder.setController(controller);
+    Game game = gameBuilder
+        .setController(controller)
+        .setOnStartAction(new LocationChangeAction(gameWorldConfig.getRootLocation(), player.getPosition()))
+        .build();
 
-    return Result.ok(gameBuilder.build());
+    return Result.ok(game);
   }
 
   public static List<GameObject> loadGameObjectsForLocation(LocationConfig config) {

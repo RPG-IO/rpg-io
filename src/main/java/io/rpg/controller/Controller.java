@@ -1,7 +1,10 @@
 package io.rpg.controller;
 
+import io.rpg.model.actions.Action;
+import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
+import io.rpg.model.data.Position;
 import io.rpg.model.data.Vector;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.CollectibleGameObject;
@@ -11,8 +14,11 @@ import io.rpg.model.object.Player;
 import io.rpg.util.Result;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +33,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   private LinkedHashMap<String, LocationView> tagToLocationViewMap;
   private Logger logger;
   private final PopupController popupController = new PopupController();
+  private PlayerController playerController;
+  private Stage mainStage;
 
 
   public Controller() {
@@ -49,6 +57,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     this.currentView = this.tagToLocationViewMap.get(rootTag);
   }
 
+  public void setMainStage(Stage mainStage) {
+    this.mainStage = mainStage;
+  }
+
   public void setModel(@NotNull LocationModel model) {
     this.tagToLocationModelMap.put(model.getTag(), model);
     currentModel = model;
@@ -58,10 +70,38 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     this.currentView = currentView;
   }
 
-  public void registerToViews(List<GameObjectView> views) {
-    for (GameObjectView view : views) {
-      view.addOnClickedObserver(this);
+  public void onAction(Action action) {
+    Class<?>[] args = {action.getClass()};
+    Method onSpecificAction;
+
+    try {
+      onSpecificAction = this.getClass().getDeclaredMethod("onAction", args);
+    } catch (NoSuchMethodException e) {
+      logger.error("onAction for " + action.getClass().getSimpleName() + "is not implemented");
+      return;
     }
+
+    try {
+      onSpecificAction.invoke(this, action);
+    } catch (IllegalAccessException | InvocationTargetException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private void onAction(LocationChangeAction action) {
+    if (!this.tagToLocationModelMap.containsKey(action.destinationLocationTag)) {
+      logger.error("Unknown location tag");
+      return;
+    }
+
+    LocationView nextView = this.tagToLocationViewMap.get(action.destinationLocationTag);
+    LocationModel nextModel = this.tagToLocationModelMap.get(action.destinationLocationTag);
+
+    playerController.teleportTo(nextModel, nextView, action.playerPosition);
+
+    this.currentModel = nextModel;
+    this.currentView = nextView;
+    mainStage.setScene(nextView);
   }
 
   public Scene getView() {
@@ -91,10 +131,6 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       return Result.error(new Exception("Empty tag to location view map!"));
     else if (tagToLocationViewMap.size() != tagToLocationModelMap.size())
       return Result.error(new Exception("Mismatched sizes of maps!"));
-    else if (currentView == null)
-      return Result.error(new Exception("No current view set!"));
-    else if (currentModel ==  null)
-      return Result.error(new Exception("No current model set!"));
     else
       return Result.ok(this);
   }
@@ -107,23 +143,16 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
     KeyEvent payload = event.payload();
 
-    if (payload.getEventType() == KeyEvent.KEY_PRESSED){
+    if (payload.getEventType() == KeyEvent.KEY_PRESSED) {
       switch (payload.getCode()) {
         case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
         case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
-        case A -> currentModel.getPlayer().setLeftPressed(true);
-        case D -> currentModel.getPlayer().setRightPressed(true);
-        case S -> currentModel.getPlayer().setDownPressed(true);
-        case W -> currentModel.getPlayer().setUpPressed(true);
-      }
-    } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
-      switch (payload.getCode()) {
-        case A -> currentModel.getPlayer().setLeftPressed(false);
-        case D -> currentModel.getPlayer().setRightPressed(false);
-        case S -> currentModel.getPlayer().setDownPressed(false);
-        case W -> currentModel.getPlayer().setUpPressed(false);
+        case L -> onAction((Action) new LocationChangeAction("location-2", new Position(1, 2)));
       }
     }
+    // } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
+    //
+    // }
   }
 
   private int getWindowCenterX() {
@@ -153,58 +182,14 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     logger.info("Controller notified on click from " + event.source());
   }
 
-  private void setPlayer(Player gameObject) {
-    currentModel.setPlayer(gameObject);
-  }
-
-  // TODO: temporary solution
-  public void setPlayerView(GameObjectView playerView) {
-    ((LocationView) currentView).getViewModel().addChild(playerView);
-  }
-
   public static class Builder {
     private final Controller controller;
-    private boolean isViewSet = false;
-    private boolean isModelSet = false;
-
-    private Player player;
 
     public Builder() {
       controller = new Controller();
     }
 
-    public Builder setTagToLocationModelMap(LinkedHashMap<String, LocationModel> tagToLocationModelMap) {
-      controller.setTagToLocationModelMap(tagToLocationModelMap);
-      return this;
-    }
-
-    public Builder setTagToLocationViewMap(LinkedHashMap<String, LocationView> tagToLocationViewMap) {
-      controller.setTagToLocationViewMap(tagToLocationViewMap);
-      return this;
-    }
-
-    public Builder setModel(@NotNull LocationModel model) {
-      if (!isModelSet) {
-        isModelSet = true;
-        controller.setModel(model);
-        return this;
-      } else {
-        throw new IllegalStateException("Attempt to set model for the second time!");
-      }
-    }
-
-    public Builder setView(Scene currentView) {
-      if (!isViewSet) {
-        isViewSet = true;
-        controller.setView(currentView);
-        return this;
-      } else {
-        throw new IllegalStateException("Attempt to set view for the second time!");
-      }
-    }
-
     public Controller build() {
-      controller.setPlayer(player);
       Result<Controller, Exception> validationResult = controller.validate();
       if (validationResult.isError()) {
         throw new IllegalStateException(validationResult.getErrorValue());
@@ -231,9 +216,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       return this;
     }
 
-    public Builder setPlayer(Player gameObject) {
-      player = gameObject;
-      return this;
+    public void setPlayerController(PlayerController playerController) {
+      controller.playerController = playerController;
     }
   }
   public LocationModel getCurrentModel() {

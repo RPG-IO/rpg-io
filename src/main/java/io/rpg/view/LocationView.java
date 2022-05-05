@@ -9,6 +9,8 @@ import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.GameObject;
 import io.rpg.viewmodel.LocationViewModel;
 import io.rpg.config.model.LocationConfig;
+import java.util.Collection;
+import java.util.Collections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -89,7 +91,8 @@ public class LocationView extends Scene
 
   @Override
   public void emitKeyboardEvent(KeyboardEvent event) {
-    onKeyPressedObservers.forEach(observer -> {
+    List<KeyboardEvent.Observer> observers = new ArrayList<>(onKeyPressedObservers);
+    observers.forEach(observer -> {
       observer.onKeyboardEvent(event);
     });
   }
@@ -102,15 +105,21 @@ public class LocationView extends Scene
   }
 
 
-  List<GameObjectView> gameObjectViews=new ArrayList<>();
+  List<GameObjectView> gameObjectViews = new ArrayList<>();
 
-  public void createViewsForObjects(LocationModel locationModel){
-    for(GameObject g: locationModel.getGameObjects()){
-      GameObjectView gameObjectView=new GameObjectView(Path.of(g.getAssetPath()),g.getPosition());
+  public void createViewsForObjects(LocationModel locationModel) {
+    for (GameObject g : locationModel.getGameObjects()) {
+      GameObjectView gameObjectView = new GameObjectView(Path.of(g.getAssetPath()), g.getPosition());
       gameObjectViews.add(gameObjectView);
-//      g.view=gameObjectView;
       viewModel.getForegroundPane().getChildren().add(gameObjectView);
     }
   }
 
+  public void removeChild(GameObjectView view) {
+    viewModel.getForegroundPane().getChildren().remove(view);
+  }
+
+  public void addChild(GameObjectView view) {
+    viewModel.getForegroundPane().getChildren().add(view);
+  }
 }
