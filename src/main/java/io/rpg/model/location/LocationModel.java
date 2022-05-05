@@ -46,23 +46,15 @@ public class LocationModel implements LocationModelStateChange.Emitter {
 
 
   public GameObject getObject(int row, int column) {
-    GameObject object =  gameObjects.stream().filter(gameObject -> gameObject.getPosition()
-                    .equals(new Position(row, column)))
-                    .findFirst().orElse(null);
+    GameObject object = gameObjects.stream().filter(gameObject -> gameObject.getPosition()
+            .equals(new Position(row, column)))
+        .findFirst().orElse(null);
     if (object == null) {
       throw new NullPointerException("No object found on (" + row + ", " + column + ")");
     }
     return object;
   }
-  
-  /**
-   * Private setter for Builder usage only.
-   *
-   * @param tag tag for the location
-   */
-  private void setTag(String tag) {
-    this.tag = tag;
-  }
+
 
 //  @UnmodifiableView
 //  public List<GameObject> getGameObjects() {
@@ -120,8 +112,7 @@ public class LocationModel implements LocationModelStateChange.Emitter {
     }
 
     public Builder setTag(@NotNull String tag) {
-      assert tag != null : "Location tag must not be null!";
-      locationModel.setTag(tag);
+      locationModel.tag = tag;
       return this;
     }
 
@@ -136,12 +127,13 @@ public class LocationModel implements LocationModelStateChange.Emitter {
       return locationModel;
     }
   }
+
   public List<GameObject> getGameObjects() {
     return gameObjects;
   }
 
-  public void update(float elapsed){
-    if(player!=null){
+  public void update(float elapsed) {
+    if (player != null) {
       player.update(elapsed);
     }
   }
