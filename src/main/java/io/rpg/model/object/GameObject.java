@@ -70,13 +70,8 @@ public class GameObject implements GameObjectStateChange.Emitter {
   }
 
   public GameObject(@NotNull String tag, @NotNull Position position) {
-    this(tag, position, "");
-  }
-
-  public GameObject(@NotNull String tag, @NotNull Position position, @NotNull String assetPath) {
     this.tag = tag;
     this.position = position;
-    this.assetPath = assetPath;
     this.stateChangeObservers = new LinkedHashSet<>();
   }
 
@@ -95,6 +90,7 @@ public class GameObject implements GameObjectStateChange.Emitter {
   public void removeGameObjectStateChangeObserver(GameObjectStateChange.Observer observer) {
     this.stateChangeObservers.remove(observer);
   }
+
 
   public String getFieldDescription() {
     StringBuilder builder = new StringBuilder();

@@ -79,7 +79,7 @@ public class ConfigLoaderTest {
     //    "tag": "player",
     //    "position": { "row": 4, "col": 5 },
     //    "type": "player",
-    //    "assetPath": "assets/stone.png",
+    //    "assetPath": "assets/stone.png", (Removed)
     //    "location": "location-1"
     //  }
     PlayerConfig actualPlayerConfig = config.getPlayerConfig();
@@ -87,6 +87,6 @@ public class ConfigLoaderTest {
     Assertions.assertEquals("player", actualPlayerConfig.getTag());
     Assertions.assertEquals("player", actualPlayerConfig.getTypeString());
     Assertions.assertEquals(new Position(4, 5), actualPlayerConfig.getPosition());
-    Assertions.assertEquals("assets/stone.png", actualPlayerConfig.getAssetPath());
+    // Assertions.assertEquals("assets/stone.png", actualPlayerConfig.getAssetPath());
   }
 }
