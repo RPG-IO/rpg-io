@@ -1,5 +1,7 @@
 package io.rpg.controller;
 
+import io.rpg.model.object.Question;
+import io.rpg.view.popups.QuestionPopup;
 import io.rpg.view.popups.TextImagePopup;
 import io.rpg.view.popups.TextPopup;
 import javafx.scene.image.Image;
@@ -49,6 +51,13 @@ public class PopupController {
     openTextImagePopup("You earned " + pointsCount + " points!", coinImage, x, y);
   }
 
+  public void openQuestionPopup(Question question, int x, int y) {
+    QuestionPopup popupScene = new QuestionPopup(question);
+    popupStage.setScene(popupScene);
+    popupStage.show();
+    popupStage.setX(x - popupScene.getWidth() / 2);
+    popupStage.setY(y - popupScene.getHeight() / 2);
+  }
 
   public void hidePopup() {
     popupStage.hide();

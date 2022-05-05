@@ -7,10 +7,7 @@ import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
 import io.rpg.model.data.Vector;
 import io.rpg.model.location.LocationModel;
-import io.rpg.model.object.CollectibleGameObject;
-import io.rpg.model.object.GameObject;
-import io.rpg.model.object.InteractiveGameObject;
-import io.rpg.model.object.Player;
+import io.rpg.model.object.*;
 import io.rpg.util.Result;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
@@ -147,6 +144,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       switch (payload.getCode()) {
         case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
         case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
+        case Q -> popupController.openQuestionPopup(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'), getWindowCenterX(), getWindowCenterY());
         case L -> onAction((Action) new LocationChangeAction("location-2", new Position(1, 2)));
       }
     }
