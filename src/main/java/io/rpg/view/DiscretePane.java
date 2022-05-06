@@ -1,45 +1,73 @@
 package io.rpg.view;
 
-import java.util.List;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+/**
+ * Custom pane. It scales children to correct size and lays them in correct spot.
+ */
 public class DiscretePane extends Pane {
   private static final double FIELD_SIZE = 64;
 
+  /**
+   * Creates a DiscretePane.
+   */
+  public DiscretePane() {
+    super();
+    getChildren().addListener((ListChangeListener<Node>) c -> {
+      while (c.next()) {
+        if (c.wasAdded()) {
+          c.getAddedSubList().forEach(this::modifyNewChild);
+        }
+      }
+    });
+  }
+
+  private void modifyNewChild(Node node) {
+    node.maxWidth(FIELD_SIZE);
+    node.maxHeight(FIELD_SIZE);
+    if (node instanceof ImageView imageView) {
+      imageView.setFitWidth(FIELD_SIZE);
+      imageView.setFitHeight(FIELD_SIZE);
+    }
+  }
+
+
   @Override
   protected void layoutChildren() {
-    List<Node> managed = getManagedChildren();
-    Insets insets = getInsets();
-    Pos align = Pos.CENTER;
-    double top = snapSpaceY(insets.getTop());
-    double left = snapSpaceX(insets.getLeft());
+    double baselineOffset = 0;
+    for (Node child : getManagedChildren()) {
 
+      Point2D position = calcLayoutPosition(child);
 
+      layoutInArea(child,
+          position.getX(),
+          position.getY(),
+          FIELD_SIZE,
+          FIELD_SIZE,
+          baselineOffset,
+          HPos.LEFT,
+          VPos.TOP);
+    }
+  }
 
+  private Point2D calcLayoutPosition(Node child) {
+    double x;
+    double y;
 
-    double x = left + FIELD_SIZE;
-    double y = top;
-    double baselineOffset = -1;
-
-    for (int i = 0, size = managed.size(); i < size; i++) {
-      Node child = managed.get(i);
-      child.maxWidth(FIELD_SIZE);
-      child.maxHeight(FIELD_SIZE);
-      if (child instanceof ImageView imageView){
-        imageView.setFitWidth(FIELD_SIZE);
-        imageView.setFitHeight(FIELD_SIZE);
-        layoutInArea(child,imageView.getX() * FIELD_SIZE , imageView.getY() * FIELD_SIZE, FIELD_SIZE, FIELD_SIZE,
-            baselineOffset,
-            HPos.LEFT, VPos.TOP);
-      }
-
+    if (child instanceof GameObjectView gameObjectView) {
+      x = gameObjectView.getX() * FIELD_SIZE;
+      y = gameObjectView.getY() * FIELD_SIZE;
+    } else {
+      x = child.getLayoutX();
+      y = child.getLayoutY();
     }
 
+    return new Point2D(x, y);
   }
 }
