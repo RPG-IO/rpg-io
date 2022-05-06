@@ -61,8 +61,8 @@ public class PopupController {
 
     popupStage.show();
 
-    popupStage.setX(x);
-    popupStage.setY(y);
+    popupStage.setX(x - popupScene.getWidth() / 2);
+    popupStage.setY(y - popupScene.getHeight() / 2);
 
   }
 
