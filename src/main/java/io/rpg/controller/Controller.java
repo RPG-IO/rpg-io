@@ -5,7 +5,6 @@ import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
-import io.rpg.model.data.Vector;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.*;
 import io.rpg.util.Result;
@@ -13,6 +12,7 @@ import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -163,10 +163,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   @Override
   public void onMouseClickedEvent(MouseClickedEvent event) {
-    Vector playerPos = currentModel.getPlayer().getPixelPosition();
+    Point2D playerPos = currentModel.getPlayer().getPixelPosition();
     GameObjectView objectView = event.source();
     GameObject object = currentModel.getObject((int) objectView.getY(), (int) objectView.getX());
-    if (Math.abs(playerPos.x - objectView.getX()) <= 1.5 && Math.abs(playerPos.y - objectView.getY()) <= 1.5) {
+    if (Math.abs(playerPos.getX() - objectView.getX()) <= 1.5 && Math.abs(playerPos.getY() - objectView.getY()) <= 1.5) {
       if (object instanceof InteractiveGameObject) {
         ((InteractiveGameObject) object).onAction();
       }

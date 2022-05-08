@@ -1,18 +1,14 @@
 package io.rpg.model.object;
 
-import io.rpg.config.model.GameObjectConfig;
 import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.Position;
-import io.rpg.model.data.Vector;
-import io.rpg.view.GameObjectView;
-import javafx.scene.image.ImageView;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.lang.reflect.Field;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
+import javafx.geometry.Point2D;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Class representing common state properties for all
@@ -20,15 +16,11 @@ import java.util.Set;
  */
 public class GameObject implements GameObjectStateChange.Emitter {
 
-//  protected Vector currentPosition;
-
-//  public GameObjectView view;
-
   /**
    * Position of game object in model's representation of location.
    */
   @Nullable
-  protected Position position;
+  protected Point2D position;
 
   /**
    * Unique identifier of this game object.
@@ -37,19 +29,8 @@ public class GameObject implements GameObjectStateChange.Emitter {
   @NotNull
   private final String tag;
 
-  /**
-   *
-   */
-  @Nullable
-  protected String assetPath;
-
   @NotNull
   private final Set<GameObjectStateChange.Observer> stateChangeObservers;
-
-  @Nullable
-  public String getAssetPath() {
-    return assetPath;
-  }
 
   /**
    * Unique identifier of this game object.
@@ -66,12 +47,13 @@ public class GameObject implements GameObjectStateChange.Emitter {
    */
   @Nullable
   public Position getPosition() {
-    return position;
+    assert position != null;
+    return new Position((int) position.getY(), (int) position.getX());
   }
 
   public GameObject(@NotNull String tag, @NotNull Position position) {
     this.tag = tag;
-    this.position = position;
+    this.position = new Point2D(position.col, position.row);
     this.stateChangeObservers = new LinkedHashSet<>();
   }
 

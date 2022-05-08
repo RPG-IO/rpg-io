@@ -1,13 +1,10 @@
 package io.rpg.util;
 
 import io.rpg.config.model.GameObjectConfig;
-import io.rpg.model.data.Vector;
 import io.rpg.model.object.*;
-import javafx.scene.image.Image;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Exposes collection of methods to create {@link io.rpg.model.object.GameObject} class instances.
