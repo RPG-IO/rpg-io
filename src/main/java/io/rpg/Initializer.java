@@ -95,8 +95,6 @@ public class Initializer {
 
 
     Controller controller = controllerBuilder.build();
-//    // TODO: this is a temporary solution
-//    controller.setPlayerView(playerView);
 
     Game.Builder gameBuilder = new Game.Builder();
     Game game = gameBuilder

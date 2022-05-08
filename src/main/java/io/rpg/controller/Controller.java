@@ -163,10 +163,11 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   @Override
   public void onMouseClickedEvent(MouseClickedEvent event) {
-    Point2D playerPos = currentModel.getPlayer().getPixelPosition();
+    Point2D playerPos = currentModel.getPlayer().getExactPosition();
     GameObjectView objectView = event.source();
     GameObject object = currentModel.getObject((int) objectView.getY(), (int) objectView.getX());
-    if (Math.abs(playerPos.getX() - objectView.getX()) <= 1.5 && Math.abs(playerPos.getY() - objectView.getY()) <= 1.5) {
+    double distance = playerPos.distance(objectView.getX(), objectView.getY());
+    if (distance < 1.5) {
       if (object instanceof InteractiveGameObject) {
         ((InteractiveGameObject) object).onAction();
       }

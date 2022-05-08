@@ -20,7 +20,7 @@ public class GameObject implements GameObjectStateChange.Emitter {
    * Position of game object in model's representation of location.
    */
   @Nullable
-  protected Point2D position;
+  protected Point2D exactPosition;
 
   /**
    * Unique identifier of this game object.
@@ -47,13 +47,26 @@ public class GameObject implements GameObjectStateChange.Emitter {
    */
   @Nullable
   public Position getPosition() {
-    assert position != null;
-    return new Position((int) position.getY(), (int) position.getX());
+    assert exactPosition != null;
+    return new Position((int) Math.round(exactPosition.getY()), (int) Math.round(exactPosition.getX()));
+  }
+
+  public void setExactPosition(Point2D position) {
+    emitPositionChangeEvent(this.exactPosition, position);
+    this.exactPosition = position;
+  }
+
+  private void emitPositionChangeEvent(Point2D oldPosition, Point2D newPosition) {
+    // TODO: 08.05.2022
+  }
+
+  public Point2D getExactPosition() {
+    return exactPosition;
   }
 
   public GameObject(@NotNull String tag, @NotNull Position position) {
     this.tag = tag;
-    this.position = new Point2D(position.col, position.row);
+    this.exactPosition = new Point2D(position.col, position.row);
     this.stateChangeObservers = new LinkedHashSet<>();
   }
 
@@ -96,6 +109,10 @@ public class GameObject implements GameObjectStateChange.Emitter {
     builder.append("\n{\n");
     builder.append(getFieldDescription());
     return builder.append("}").toString();
+  }
+
+  public void setPosition(Position playerPosition) {
+    setExactPosition(new Point2D(playerPosition.col, playerPosition.row));
   }
 
   public enum Type {

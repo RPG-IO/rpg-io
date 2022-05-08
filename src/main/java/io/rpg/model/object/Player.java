@@ -14,7 +14,6 @@ public class Player extends GameObject {
   private boolean upPressed;
   private boolean downPressed;
   private GameObjectView gameObjectView;
-  private Point2D pixelPosition;
 
 
   public Player(@NotNull String tag, @NotNull Position position, @NotNull String assetPath) {
@@ -25,17 +24,12 @@ public class Player extends GameObject {
     this.upPressed = false;
     this.downPressed = false;
     this.strength = 0;
-    this.pixelPosition = new Point2D(position.col, position.row);
   }
 
   public void updateStrength(int value) {
     strength += value;
   }
 
-
-  public Point2D getPixelPosition() {
-    return pixelPosition;
-  }
 
   public void update(float elapsed) {
     float y = 0;
@@ -59,8 +53,9 @@ public class Player extends GameObject {
 
     Point2D nextPosition = new Point2D(x, y)
         .multiply(speed * elapsed / 1000)
-        .add(this.pixelPosition);
-    this.pixelPosition = nextPosition;
+        .add(this.getExactPosition());
+
+    this.setExactPosition(nextPosition);
   }
 
   public void setRightPressed(boolean rightPressed) {
@@ -89,12 +84,10 @@ public class Player extends GameObject {
 
   public void render() {
     if (gameObjectView != null) {
-      gameObjectView.setX(this.pixelPosition.getX());
-      gameObjectView.setY(this.pixelPosition.getY());
+      Point2D pos = this.getExactPosition();
+      gameObjectView.setX(pos.getX());
+      gameObjectView.setY(pos.getY());
     }
   }
 
-  public void setPosition(Position position) {
-    pixelPosition = new Point2D(position.col, position.row);
-  }
 }
