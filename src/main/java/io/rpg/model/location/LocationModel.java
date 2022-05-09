@@ -5,6 +5,7 @@ import io.rpg.model.data.Position;
 import io.rpg.model.object.Player;
 import io.rpg.model.object.GameObject;
 import io.rpg.util.Result;
+import javafx.geometry.Point2D;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,8 @@ public class LocationModel implements LocationModelStateChange.Emitter {
   private List<GameObject> gameObjects;
   private Player player;
 
+  public final Point2D bounds;
+
   private final Set<LocationModelStateChange.Observer> locationModelStateChangeObservers;
 
   public LocationModel(@NotNull String tag, @NotNull List<GameObject> gameObjects) {
@@ -30,6 +33,7 @@ public class LocationModel implements LocationModelStateChange.Emitter {
 
   private LocationModel() {
     this.locationModelStateChangeObservers = new LinkedHashSet<>();
+    bounds = new Point2D(9.5, 9.5); // TODO: 09.05.2022 Implement loading from config
   }
 
   public void setPlayer(@NotNull Player player) {
@@ -44,6 +48,9 @@ public class LocationModel implements LocationModelStateChange.Emitter {
     return player;
   }
 
+  public Point2D getBounds() {
+    return bounds;
+  }
 
   public GameObject getObject(int row, int column) {
     GameObject object = gameObjects.stream().filter(gameObject -> gameObject.getPosition()
@@ -70,6 +77,7 @@ public class LocationModel implements LocationModelStateChange.Emitter {
    */
   private void setGameObjects(List<GameObject> gameObjects) {
     this.gameObjects = gameObjects;
+    gameObjects.forEach(go -> go.setPositionBounds(bounds));
   }
 
   @Override

@@ -40,6 +40,8 @@ public class GameObject implements GameObjectStateChange.Emitter {
     return tag;
   }
 
+  private Point2D positionBounds;
+
   /**
    * Position of game object in model's representation of location.
    *
@@ -52,8 +54,24 @@ public class GameObject implements GameObjectStateChange.Emitter {
   }
 
   public void setExactPosition(Point2D position) {
-    emitPositionChangeEvent(this.exactPosition, position);
-    this.exactPosition = position;
+    Point2D boundPosition = accountForBounds(position);
+    if (!boundPosition.equals(position)) {
+      emitBoundCrossedEvent(position.subtract(boundPosition));
+    }
+
+    emitPositionChangeEvent(this.exactPosition, boundPosition);
+    this.exactPosition = boundPosition;
+  }
+
+  private void emitBoundCrossedEvent(Point2D crossedBy) {
+    // TODO: 09.05.2022
+  }
+
+  // TODO: 09.05.2022 I need a better name for this method
+  private Point2D accountForBounds(Point2D pos) {
+    double x = Math.max(0, Math.min(positionBounds. getX(), pos.getX()));
+    double y = Math.max(0, Math.min(positionBounds. getY(), pos.getY()));
+    return new Point2D(x, y);
   }
 
   private void emitPositionChangeEvent(Point2D oldPosition, Point2D newPosition) {
@@ -114,6 +132,12 @@ public class GameObject implements GameObjectStateChange.Emitter {
   public void setPosition(Position playerPosition) {
     setExactPosition(new Point2D(playerPosition.col, playerPosition.row));
   }
+
+  public void setPositionBounds(Point2D bounds) {
+    this.positionBounds = bounds;
+  }
+
+
 
   public enum Type {
     NAVIGABLE("navigable"),

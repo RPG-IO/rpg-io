@@ -53,6 +53,7 @@ public class PlayerController implements KeyboardEvent.Observer {
     onChangeLocation.run();
     updateOnChangeLocation(model, view);
 
+    player.setPositionBounds(model.getBounds());
     player.setPosition(playerPosition);
     model.setPlayer(player);
     view.addChild(playerView);
