@@ -6,6 +6,9 @@ import java.lang.reflect.Field;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,8 +22,7 @@ public class GameObject implements GameObjectStateChange.Emitter {
   /**
    * Position of game object in model's representation of location.
    */
-  @Nullable
-  protected Point2D exactPosition;
+  private final SimpleObjectProperty<Point2D> exactPositionProperty;
 
   /**
    * Unique identifier of this game object.
@@ -40,7 +42,12 @@ public class GameObject implements GameObjectStateChange.Emitter {
     return tag;
   }
 
-  private Point2D positionBounds;
+
+  public GameObject(@NotNull String tag, @NotNull Position position) {
+    this.tag = tag;
+    this.stateChangeObservers = new LinkedHashSet<>();
+    this.exactPositionProperty = new SimpleObjectProperty<>(new Point2D(position.col, position.row));
+  }
 
   /**
    * Position of game object in model's representation of location.
@@ -49,43 +56,20 @@ public class GameObject implements GameObjectStateChange.Emitter {
    */
   @Nullable
   public Position getPosition() {
-    assert exactPosition != null;
+    Point2D exactPosition = getExactPosition();
     return new Position((int) Math.round(exactPosition.getY()), (int) Math.round(exactPosition.getX()));
   }
 
   public void setExactPosition(Point2D position) {
-    Point2D boundPosition = accountForBounds(position);
-    if (!boundPosition.equals(position)) {
-      emitBoundCrossedEvent(position.subtract(boundPosition));
-    }
-
-    emitPositionChangeEvent(this.exactPosition, boundPosition);
-    this.exactPosition = boundPosition;
-  }
-
-  private void emitBoundCrossedEvent(Point2D crossedBy) {
-    // TODO: 09.05.2022
-  }
-
-  // TODO: 09.05.2022 I need a better name for this method
-  private Point2D accountForBounds(Point2D pos) {
-    double x = Math.max(0, Math.min(positionBounds. getX(), pos.getX()));
-    double y = Math.max(0, Math.min(positionBounds. getY(), pos.getY()));
-    return new Point2D(x, y);
-  }
-
-  private void emitPositionChangeEvent(Point2D oldPosition, Point2D newPosition) {
-    // TODO: 08.05.2022
+    exactPositionProperty.setValue(position);
   }
 
   public Point2D getExactPosition() {
-    return exactPosition;
+    return exactPositionProperty.getValue();
   }
 
-  public GameObject(@NotNull String tag, @NotNull Position position) {
-    this.tag = tag;
-    this.exactPosition = new Point2D(position.col, position.row);
-    this.stateChangeObservers = new LinkedHashSet<>();
+  public ObservableValue<Point2D> getExactPositionProperty() {
+    return exactPositionProperty;
   }
 
   @Override
@@ -131,10 +115,6 @@ public class GameObject implements GameObjectStateChange.Emitter {
 
   public void setPosition(Position playerPosition) {
     setExactPosition(new Point2D(playerPosition.col, playerPosition.row));
-  }
-
-  public void setPositionBounds(Point2D bounds) {
-    this.positionBounds = bounds;
   }
 
 
