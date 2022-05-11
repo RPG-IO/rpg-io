@@ -176,6 +176,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         popupController.openTextImagePopup("Picked up an item!", objectView.getImage(), getWindowCenterX(), getWindowCenterY());
         objectView.setVisible(false);
       }
+
+      if (object instanceof DialogGameObject) {
+        popupController.openDialoguePopup("<FILLER TEXT>", objectView.getImage(), getWindowCenterX(), getWindowCenterY()); //TODO load text from config
+      }
     }
     logger.info("Controller notified on click from " + event.source());
   }
