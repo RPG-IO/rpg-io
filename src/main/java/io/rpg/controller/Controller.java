@@ -177,8 +177,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         objectView.setVisible(false);
       }
 
-      if (object instanceof DialogGameObject) {
-        popupController.openDialoguePopup("<FILLER TEXT>", objectView.getImage(), getWindowCenterX(), getWindowCenterY()); //TODO load text from config
+      if (object instanceof DialogGameObject) { //TODO: change action invocation to GameObject.onAction()
+        popupController.openDialoguePopup("<FILLER TEXT>", objectView.getImage(), getWindowCenterX(), getWindowCenterY()); //TODO: load text from config
       }
     }
     logger.info("Controller notified on click from " + event.source());

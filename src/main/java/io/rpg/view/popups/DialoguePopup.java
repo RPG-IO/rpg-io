@@ -20,10 +20,10 @@ public class DialoguePopup extends Scene {
   private final List<String> textPages;
   private int currentPage = 0;
 
-  public DialoguePopup(String text, Image npcImage, String backgroundPath, String buttonPath) {
+  public DialoguePopup(String text, Image npcImage, String backgroundPath, String npcFramePath) {
     this(text, npcImage);
     viewModel.setBackgroundImage(backgroundPath);
-    viewModel.setCloseButtonImage(buttonPath);
+    viewModel.setNpcFrameImage(npcFramePath);
   }
 
   public DialoguePopup(String text, Image npcImage) {
@@ -40,11 +40,6 @@ public class DialoguePopup extends Scene {
 
     viewModel = loader.getController();
     viewModel.setNpcImage(npcImage);
-    viewModel.setBackgroundImage("file:assets/popup-background.png"); //images do not load from fxml on my computer
-    viewModel.setCloseButtonImage("file:assets/close-button.png");
-    viewModel.setNextButtonImage("file:assets/right-arrow.png");
-    viewModel.setPreviousButtonImage("file:assets/left-arrow.png");
-    viewModel.setNpcFrameImage("file:assets/npc-frame.png");
     this.setFill(Color.TRANSPARENT);
 
     textPages = List.of(text.split("(?<=\\G.{200})")); //split text into 200-letter pages
