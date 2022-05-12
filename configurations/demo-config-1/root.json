@@ -2,7 +2,8 @@
   "tag": "GameByConfig1",
   "locationTags": [
     "location-1",
-    "location-2"
+    "location-2",
+    "location-3"
   ],
   "rootLocation": "location-1",
   "player": {

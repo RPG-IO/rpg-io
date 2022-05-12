@@ -5,7 +5,8 @@
     { "tag": "object-2", "position": { "row": 6, "col": 3 }, "type": "collectible", "assetPath": "assets/key.png" },
     { "tag": "object-3", "position": { "row": 1, "col": 1 }, "type": "quiz", "assetPath": "assets/zombie.png" },
     { "tag": "object-4", "position": { "row": 3, "col": 2 }, "type": "dialog", "assetPath": "assets/zombie.png" },
-    { "tag": "object-5", "position": { "row": 8, "col": 8 }, "type": "dialog", "assetPath": "assets/chest.png" }
+    { "tag": "object-5", "position": { "row": 8, "col": 8 }, "type": "dialog", "assetPath": "assets/chest.png" },
+    { "tag": "object-6", "position": { "row": 5, "col": 5 }, "type": "navigable", "assetPath": "assets/stone.png", "to": "location-2" }
   ],
   "backgroundPath": "assets/map.png",
   "width": 10,
