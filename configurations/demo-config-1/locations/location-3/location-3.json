@@ -1,0 +1,9 @@
+{
+  "tag": "location-3",
+  "objects": [
+    { "tag": "object-1", "position": { "row": 4, "col": 4 }, "type": "collectible", "assetPath": "assets/diamond.png" },
+    { "tag": "object-2", "position": { "row": 3, "col": 4 }, "type": "dialog", "assetPath": "assets/zombie.png" },
+    { "tag": "object-3", "position": { "row": 5, "col": 4 }, "type": "dialog", "assetPath": "assets/zombie.png" }
+  ],
+  "backgroundPath": "assets/map.png"
+}

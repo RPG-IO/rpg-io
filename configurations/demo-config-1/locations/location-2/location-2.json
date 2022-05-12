@@ -1,0 +1,13 @@
+{
+  "tag": "location-2",
+  "objects": [
+    { "tag": "object-1", "position": { "row": 3, "col": 4 }, "type": "collectible", "assetPath": "assets/diamond.png" },
+    { "tag": "object-2", "position": { "row": 6, "col": 2 }, "type": "collectible", "assetPath": "assets/key.png" },
+    { "tag": "object-3", "position": { "row": 1, "col": 4 }, "type": "dialog", "assetPath": "assets/zombie.png" },
+    { "tag": "object-4", "position": { "row": 3, "col": 5 }, "type": "dialog", "assetPath": "assets/zombie.png" },
+    { "tag": "object-5", "position": { "row": 7, "col": 9 }, "type": "dialog", "assetPath": "assets/zombie.png" },
+    { "tag": "object-6", "position": { "row": 8, "col": 8 }, "type": "dialog", "assetPath": "assets/chest.png" },
+    { "tag": "object-7", "position": { "row": 7, "col": 7 }, "type": "navigable", "assetPath": "assets/stone.png", "to": "location-3" }
+  ],
+  "backgroundPath": "assets/map.png"
+}
