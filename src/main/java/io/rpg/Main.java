@@ -49,7 +49,7 @@ public class Main extends Application {
         if (lastUpdate != -1) {
           float difference = (now - lastUpdate) / 1e6f;
 
-          game.getController().getCurrentModel().update(difference);
+          game.getController().getPlayerController().getPlayer().update(difference);
         }
         lastUpdate = now;
       }

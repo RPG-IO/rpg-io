@@ -163,7 +163,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   @Override
   public void onMouseClickedEvent(MouseClickedEvent event) {
-    Point2D playerPos = currentModel.getPlayer().getExactPosition();
+    Point2D playerPos = playerController.getPlayer().getExactPosition();
     GameObjectView objectView = event.source();
     GameObject object = currentModel.getObject((int) objectView.getPosition().getY(), (int) objectView.getPosition().getX());
     double distance = playerPos.distance(objectView.getPosition());
@@ -179,6 +179,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     }
 
     logger.info("Controller notified on click from " + event.source());
+  }
+
+  public PlayerController getPlayerController() {
+    return playerController;
   }
 
   public static class Builder {

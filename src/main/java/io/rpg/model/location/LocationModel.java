@@ -22,7 +22,7 @@ public class LocationModel implements LocationModelStateChange.Emitter {
   private String tag;
   private List<GameObject> gameObjects;
   private HashMap<GameObject, ChangeListener<Point2D>> boundsCorrectors;
-  private Player player;
+  private HashMap<Point2D, GameObject> point2DGameObjectHashMap;
   public final Point2D bounds;
 
   private final Set<LocationModelStateChange.Observer> locationModelStateChangeObservers;
@@ -37,19 +37,12 @@ public class LocationModel implements LocationModelStateChange.Emitter {
   private LocationModel() {
     this.locationModelStateChangeObservers = new LinkedHashSet<>();
     this.boundsCorrectors = new HashMap<>();
+    this.point2DGameObjectHashMap = new HashMap<>();
     bounds = new Point2D(9.5, 9.5); // TODO: 09.05.2022 Implement loading from config
-  }
-
-  public void setPlayer(@NotNull Player player) {
-    this.player = player;
   }
 
   public String getTag() {
     return tag;
-  }
-
-  public Player getPlayer() {
-    return player;
   }
 
   public GameObject getObject(int row, int column) {
@@ -81,14 +74,25 @@ public class LocationModel implements LocationModelStateChange.Emitter {
     gameObjects.forEach(g -> checkAndCorrectGameObjectPosition(g, g.getExactPosition(), g.getExactPosition()));
   }
 
-  public void registerGameObject(GameObject gameObject) {
+  public void addGameObject(GameObject gameObject) {
+    gameObjects.add(gameObject);
+    registerGameObject(gameObject);
+    checkAndCorrectGameObjectPosition(gameObject, gameObject.getExactPosition(), gameObject.getExactPosition());
+  }
+
+  private void registerGameObject(GameObject gameObject) {
     ChangeListener<Point2D> boundCorrector =
         (observable, oldValue, newValue) -> checkAndCorrectGameObjectPosition(gameObject, oldValue, newValue);
     gameObject.getExactPositionProperty().addListener(boundCorrector);
     boundsCorrectors.put(gameObject, boundCorrector);
   }
 
-  public void unRegisterGameObject(GameObject gameObject) {
+  public void removeGameObject(GameObject gameObject) {
+    gameObjects.remove(gameObject);
+    unRegisterGameObject(gameObject);
+  }
+
+  private void unRegisterGameObject(GameObject gameObject) {
     ChangeListener<Point2D> boundCorrector = boundsCorrectors.remove(gameObject);
     gameObject.getExactPositionProperty().removeListener(boundCorrector);
   }
@@ -133,6 +137,7 @@ public class LocationModel implements LocationModelStateChange.Emitter {
     });
   }
 
+
   public Result<Void, Void> validate() {
     if (tag == null || gameObjects == null) {
       return Result.error(null);
@@ -169,12 +174,6 @@ public class LocationModel implements LocationModelStateChange.Emitter {
       }
 
       return locationModel;
-    }
-  }
-
-  public void update(float elapsed) {
-    if (player != null) {
-      player.update(elapsed);
     }
   }
 

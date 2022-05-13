@@ -63,11 +63,9 @@ test {
 
 compileJava {
     options.compilerArgs += ["--add-exports=javafx.graphics/com.sun.javafx.scene=io.rpg"]
-
 }
 
 run {
-
     jvmArgs = ['--add-exports=javafx.graphics/com.sun.javafx.scene=io.rpg']
 }
 
