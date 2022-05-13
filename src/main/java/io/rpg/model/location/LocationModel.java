@@ -7,6 +7,7 @@ import io.rpg.util.Result;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Point2D;
@@ -44,16 +45,9 @@ public class LocationModel implements LocationModelStateChange.Emitter {
     return tag;
   }
 
-  public GameObject getObject(int row, int column) {
-    GameObject object = gameObjects.stream().filter(gameObject -> gameObject.getPosition()
-            .equals(new Position(row, column)))
-        .findFirst().orElse(null);
-    if (object == null) {
-      throw new NullPointerException("No object found on (" + row + ", " + column + ")");
-    }
-    return object;
+  public Optional<GameObject> getObject(Position position) {
+    return Optional.ofNullable(positionGameObjectMap.get(position));
   }
-
 
   /**
    * Private setter for Builder usage only. Notice that ownership of {@link GameObject}s is not
@@ -79,7 +73,8 @@ public class LocationModel implements LocationModelStateChange.Emitter {
   private void registerGameObject(GameObject gameObject) {
     ChangeListener<Point2D> positionListener =
         (observable, oldValue, newValue) -> onGameObjectPositionChange(gameObject, oldValue, newValue);
-    gameObject.getExactPositionProperty().addListener(positionListener);
+    gameObject.getExactPositionProperty()
+              .addListener(positionListener);
     positionListeners.put(gameObject, positionListener);
   }
 
@@ -91,7 +86,8 @@ public class LocationModel implements LocationModelStateChange.Emitter {
 
   private void unRegisterGameObject(GameObject gameObject) {
     ChangeListener<Point2D> positionListener = positionListeners.remove(gameObject);
-    gameObject.getExactPositionProperty().removeListener(positionListener);
+    gameObject.getExactPositionProperty()
+              .removeListener(positionListener);
   }
 
   private void onGameObjectPositionChange(GameObject gameObject, Point2D oldPosition, Point2D newPosition) {
@@ -99,12 +95,13 @@ public class LocationModel implements LocationModelStateChange.Emitter {
 
     Position newPos = new Position(newPosition);
     Position oldPos = new Position(oldPosition);
-    if(newPos.equals(oldPos)) {
+    if (newPos.equals(oldPos)) {
       return;
     }
 
     // Collision check
-    if(positionGameObjectMap.containsKey(newPos) && !positionGameObjectMap.get(newPos).equals(gameObject)) {
+    if (positionGameObjectMap.containsKey(newPos) && !positionGameObjectMap.get(newPos)
+                                                                           .equals(gameObject)) {
       gameObject.setExactPosition(oldPosition);
       return;
     }
@@ -129,7 +126,8 @@ public class LocationModel implements LocationModelStateChange.Emitter {
     }
 
     gameObject.setExactPosition(boundPosition);
-    Point2D boundsCrossedDirection = newPosition.subtract(boundPosition).normalize();
+    Point2D boundsCrossedDirection = newPosition.subtract(boundPosition)
+                                                .normalize();
 
     emitBoundCrossedEvent(boundsCrossedDirection);
   }

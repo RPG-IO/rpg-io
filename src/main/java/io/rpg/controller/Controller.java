@@ -12,6 +12,7 @@ import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -165,7 +166,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   public void onMouseClickedEvent(MouseClickedEvent event) {
     Point2D playerPos = playerController.getPlayer().getExactPosition();
     GameObjectView objectView = event.source();
-    GameObject object = currentModel.getObject((int) objectView.getPosition().getY(), (int) objectView.getPosition().getX());
+    Position position = new Position(objectView.getPosition());
+    GameObject object = currentModel.getObject(position)
+                                    .orElseThrow(() -> new RuntimeException("No object present at position " + position));
+
     double distance = playerPos.distance(objectView.getPosition());
     if (distance < 1.5) {
       if (object instanceof InteractiveGameObject) {
@@ -175,6 +179,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       if (object instanceof CollectibleGameObject) {
         popupController.openTextImagePopup("Picked up an item!", objectView.getImage(), getWindowCenterX(), getWindowCenterY());
         objectView.setVisible(false);
+        currentModel.removeGameObject(object);
       }
     }
 
