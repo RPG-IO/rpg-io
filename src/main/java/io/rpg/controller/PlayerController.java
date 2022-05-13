@@ -16,6 +16,7 @@ public class PlayerController implements KeyboardEvent.Observer {
   public PlayerController(Player player, GameObjectView playerView) {
     this.player = player;
     this.playerView = playerView;
+    playerView.bindToGameObject(player);
     this.onChangeLocation = () -> {};
 
     player.addGameObjectStateChangeObserver(playerView);

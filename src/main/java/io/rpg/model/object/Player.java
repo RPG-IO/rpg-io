@@ -82,12 +82,4 @@ public class Player extends GameObject {
     this.gameObjectView = gameObjectView;
   }
 
-  public void render() {
-    if (gameObjectView != null) {
-      Point2D pos = this.getExactPosition();
-      gameObjectView.setX(pos.getX());
-      gameObjectView.setY(pos.getY());
-    }
-  }
-
 }

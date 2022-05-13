@@ -128,6 +128,7 @@ public class Initializer {
 
       // registration
       gameObject.addGameObjectStateChangeObserver(gameObjectView);
+      gameObjectView.bindToGameObject(gameObject);
     }
   }
 

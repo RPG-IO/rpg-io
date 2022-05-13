@@ -50,10 +50,6 @@ public class Main extends Application {
           float difference = (now - lastUpdate) / 1e6f;
 
           game.getController().getCurrentModel().update(difference);
-          Player player = game.getController().getCurrentModel().getPlayer();
-          if (player != null) {
-            player.render();
-          }
         }
         lastUpdate = now;
       }

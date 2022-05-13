@@ -61,6 +61,16 @@ test {
     useJUnitPlatform()
 }
 
+compileJava {
+    options.compilerArgs += ["--add-exports=javafx.graphics/com.sun.javafx.scene=io.rpg"]
+
+}
+
+run {
+
+    jvmArgs = ['--add-exports=javafx.graphics/com.sun.javafx.scene=io.rpg']
+}
+
 jlink {
     imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']

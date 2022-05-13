@@ -172,10 +172,6 @@ public class LocationModel implements LocationModelStateChange.Emitter {
     }
   }
 
-  public List<GameObject> getGameObjects() {
-    return gameObjects;
-  }
-
   public void update(float elapsed) {
     if (player != null) {
       player.update(elapsed);

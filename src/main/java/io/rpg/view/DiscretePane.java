@@ -61,8 +61,7 @@ public class DiscretePane extends Pane {
     double y;
 
     if (child instanceof GameObjectView gameObjectView) {
-      x = gameObjectView.getX() * FIELD_SIZE;
-      y = gameObjectView.getY() * FIELD_SIZE;
+      return gameObjectView.getPosition().multiply(FIELD_SIZE);
     } else {
       x = child.getLayoutX();
       y = child.getLayoutY();
