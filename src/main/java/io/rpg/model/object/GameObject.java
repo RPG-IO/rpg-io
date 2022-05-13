@@ -57,7 +57,7 @@ public class GameObject implements GameObjectStateChange.Emitter {
   @Nullable
   public Position getPosition() {
     Point2D exactPosition = getExactPosition();
-    return new Position((int) Math.round(exactPosition.getY()), (int) Math.round(exactPosition.getX()));
+    return new Position(exactPosition);
   }
 
   public void setExactPosition(Point2D position) {
