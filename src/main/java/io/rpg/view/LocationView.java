@@ -1,16 +1,11 @@
 package io.rpg.view;
 
-import io.rpg.Game;
-import io.rpg.Initializer;
-import io.rpg.config.model.GameObjectConfig;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.LocationModelStateChange;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.GameObject;
 import io.rpg.viewmodel.LocationViewModel;
 import io.rpg.config.model.LocationConfig;
-import java.util.Collection;
-import java.util.Collections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,7 +26,6 @@ import java.util.Set;
 
 public class LocationView extends Scene
     implements KeyboardEvent.Emitter, LocationModelStateChange.Observer {
-  static final int SCALE = 32; // TODO: REMOVE THIS
   private final static URL FXML_URL = LocationViewModel.class.getResource("location-view.fxml");
 
   private final Logger logger;
@@ -100,20 +94,13 @@ public class LocationView extends Scene
   @Override
   public void onLocationModelStateChange(LocationModelStateChange event) {
     // TODO: implement state change & appropriate events
-    // most likely here we watn to pass this event to LocationViewModel or even
+    // most likely here we want to pass this event to LocationViewModel or even
     // make LocationViewModel implement LocationModelStateChange.Observer
   }
 
 
   List<GameObjectView> gameObjectViews = new ArrayList<>();
 
-  public void createViewsForObjects(LocationModel locationModel) {
-    for (GameObject g : locationModel.getGameObjects()) {
-      GameObjectView gameObjectView = new GameObjectView(Path.of(g.getAssetPath()), g.getPosition());
-      gameObjectViews.add(gameObjectView);
-      viewModel.getForegroundPane().getChildren().add(gameObjectView);
-    }
-  }
 
   public void removeChild(GameObjectView view) {
     viewModel.getForegroundPane().getChildren().remove(view);

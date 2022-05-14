@@ -5,7 +5,6 @@ import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
-import io.rpg.model.data.Vector;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.*;
 import io.rpg.util.Result;
@@ -13,6 +12,8 @@ import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.function.Supplier;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -135,7 +136,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   @Override
   public void onKeyboardEvent(KeyboardEvent event) {
     // TODO: implement event handling
-    logger.info("Controller notified on key pressed from " + event.source());
+    logger.trace("Controller notified on key pressed from " + event.source());
     //TODO: call Player::set...Pressed depending on keyCode and whether the key was pressed or released
 
     KeyEvent payload = event.payload();
@@ -163,11 +164,14 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   @Override
   public void onMouseClickedEvent(MouseClickedEvent event) {
-    int SCALE = 64;
-    Vector playerPos = currentModel.getPlayer().getPixelPosition();
+    Point2D playerPos = playerController.getPlayer().getExactPosition();
     GameObjectView objectView = event.source();
-    GameObject object = currentModel.getObject((int) objectView.getY() / SCALE, (int) objectView.getX() / SCALE);
-    if (Math.abs(playerPos.x - objectView.getX()) / SCALE <= 1.5 && Math.abs(playerPos.y - objectView.getY()) / SCALE <= 1.5) {
+    Position position = new Position(objectView.getPosition());
+    GameObject object = currentModel.getObject(position)
+                                    .orElseThrow(() -> new RuntimeException("No object present at position " + position));
+
+    double distance = playerPos.distance(objectView.getPosition());
+    if (distance < 1.5) {
       if (object instanceof InteractiveGameObject) {
         ((InteractiveGameObject) object).onAction();
       }
@@ -175,9 +179,15 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       if (object instanceof CollectibleGameObject) {
         popupController.openTextImagePopup("Picked up an item!", objectView.getImage(), getWindowCenterX(), getWindowCenterY());
         objectView.setVisible(false);
+        currentModel.removeGameObject(object);
       }
     }
+
     logger.info("Controller notified on click from " + event.source());
+  }
+
+  public PlayerController getPlayerController() {
+    return playerController;
   }
 
   public static class Builder {
