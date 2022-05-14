@@ -124,6 +124,7 @@ public class GameObject implements GameObjectStateChange.Emitter {
     NAVIGABLE("navigable"),
     DIALOG("dialog"),
     PLAYER("player"),
+    QUIZ("quiz"),
     COLLECTIBLE("collectible");
 
     private final String asString;

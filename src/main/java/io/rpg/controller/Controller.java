@@ -2,6 +2,7 @@ package io.rpg.controller;
 
 import io.rpg.model.actions.Action;
 import io.rpg.model.actions.LocationChangeAction;
+import io.rpg.model.actions.QuizAction;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
@@ -101,6 +102,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     mainStage.setScene(nextView);
   }
 
+  private void onAction(QuizAction action) {
+    popupController.openQuestionPopup(action.question, getWindowCenterX(), getWindowCenterY());
+  }
+
   public Scene getView() {
     return currentView;
   }
@@ -175,6 +180,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       if (object instanceof CollectibleGameObject) {
         popupController.openTextImagePopup("Picked up an item!", objectView.getImage(), getWindowCenterX(), getWindowCenterY());
         objectView.setVisible(false);
+      } else if (object instanceof QuizGameObject) {
+        onAction((Action) new QuizAction(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C')));
       }
     }
     logger.info("Controller notified on click from " + event.source());
