@@ -45,6 +45,8 @@ public class QuestionPopup extends Scene {
     viewModel.setButtonCallback('C', event -> this.answerSelected('C'));
     viewModel.setButtonCallback('D', event -> this.answerSelected('D'));
 
+    viewModel.setBackgroundImage("file:assets/popup-background-3.png");
+
     this.setFill(Color.TRANSPARENT);
   }
 
