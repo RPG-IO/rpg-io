@@ -31,14 +31,13 @@ public class LocationModel implements LocationModelStateChange.Emitter {
     this();
     this.tag = tag;
     this.gameObjects = gameObjects;
-
   }
 
   private LocationModel() {
     this.locationModelStateChangeObservers = new LinkedHashSet<>();
     this.positionListeners = new HashMap<>();
     this.positionGameObjectMap = new HashMap<>();
-    bounds = new Point2D(9.5, 9.5); // TODO: 09.05.2022 Implement loading from config
+    bounds = new Point2D(10, 10); // TODO: 09.05.2022 Implement loading from config
   }
 
   public String getTag() {
@@ -136,8 +135,9 @@ public class LocationModel implements LocationModelStateChange.Emitter {
   }
 
   private Point2D getBoundPosition(Point2D pos) {
-    double x = Math.max(0, Math.min(bounds.getX(), pos.getX()));
-    double y = Math.max(0, Math.min(bounds.getY(), pos.getY()));
+    double offset = 0.3; // it should be less than 0.5
+    double x = Math.max(-offset, Math.min(bounds.getX() - 1 + offset, pos.getX()));
+    double y = Math.max(-offset, Math.min(bounds.getY() - 1 + offset, pos.getY()));
     return new Point2D(x, y);
   }
 
