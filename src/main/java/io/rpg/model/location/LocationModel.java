@@ -109,8 +109,6 @@ public class LocationModel implements LocationModelStateChange.Emitter {
     if (gameObject.equals(positionGameObjectMap.get(oldPos))) {
       changeField(gameObject, oldPos, newPos);
     }
-
-
   }
 
   private void changeField(GameObject gameObject, Position oldPos, Position newPos) {
