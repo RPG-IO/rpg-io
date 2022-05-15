@@ -1,5 +1,6 @@
 package io.rpg.viewmodel;
 
+import io.rpg.model.object.Question;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,12 +17,12 @@ public class QuestionPopupViewModel {
   @FXML private ImageView backgroundImage;
   @FXML private Button aButton, bButton, cButton, dButton;
 
-  public void setQuestion(String question, String[] answers) {
-    questionLabel.setText(question);
-    aButton.setText("A: " + answers[0]);
-    bButton.setText("B: " + answers[1]);
-    cButton.setText("C: " + answers[2]);
-    dButton.setText("D: " + answers[3]);
+  public void setQuestion(Question question) {
+    questionLabel.setText(question.getQuestion());
+    aButton.setText("A: " + question.getAnswerA());
+    bButton.setText("B: " + question.getAnswerB());
+    cButton.setText("C: " + question.getAnswerC());
+    dButton.setText("D: " + question.getAnswerD());
   }
 
   public void setQuestionLabel(String text) {
