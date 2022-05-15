@@ -73,6 +73,6 @@ public class PlayerController implements KeyboardEvent.Observer {
   }
 
   public void addPoints(int pointsCount) {
-    // TODO
+    player.addPoints(pointsCount);
   }
 }
