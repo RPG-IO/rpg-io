@@ -1,5 +1,7 @@
 package io.rpg.model.location;
 
+import io.rpg.model.actions.ActionConsumer;
+import io.rpg.model.actions.BaseActionEmitter;
 import io.rpg.model.data.LocationModelStateChange;
 import io.rpg.model.data.Position;
 import io.rpg.model.object.GameObject;
@@ -18,14 +20,14 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Represents single location in our game.
  */
-public class LocationModel implements LocationModelStateChange.Emitter {
+public class LocationModel extends BaseActionEmitter implements LocationModelStateChange.Emitter {
   private String tag;
   private List<GameObject> gameObjects;
   private final HashMap<GameObject, ChangeListener<Point2D>> positionListeners;
   private final HashMap<Position, GameObject> positionGameObjectMap;
   public final Point2D bounds;
-
   private final Set<LocationModelStateChange.Observer> locationModelStateChangeObservers;
+
 
   public LocationModel(@NotNull String tag, @NotNull List<GameObject> gameObjects) {
     this();
@@ -158,6 +160,11 @@ public class LocationModel implements LocationModelStateChange.Emitter {
     });
   }
 
+  @Override
+  public void setActionConsumer(ActionConsumer actionConsumer) {
+    super.setActionConsumer(actionConsumer);
+    gameObjects.forEach((g) -> g.setActionConsumer(actionConsumer));
+  }
 
   public Result<Void, Void> validate() {
     if (tag == null || gameObjects == null) {

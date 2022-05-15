@@ -1,12 +1,13 @@
 package io.rpg.model.object;
 
+import io.rpg.model.actions.Action;
+import io.rpg.model.actions.BaseActionEmitter;
 import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.Position;
 import java.lang.reflect.Field;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;
@@ -17,12 +18,14 @@ import org.jetbrains.annotations.Nullable;
  * Class representing common state properties for all
  * objects appearing in the game.
  */
-public class GameObject implements GameObjectStateChange.Emitter {
+public class GameObject extends BaseActionEmitter implements GameObjectStateChange.Emitter {
 
   /**
    * Position of game object in model's representation of location.
    */
   private final SimpleObjectProperty<Point2D> exactPositionProperty;
+  private Action onRightClickAction;
+  private Action onLeftClickAction;
 
   /**
    * Unique identifier of this game object.
@@ -47,6 +50,8 @@ public class GameObject implements GameObjectStateChange.Emitter {
     this.tag = tag;
     this.stateChangeObservers = new LinkedHashSet<>();
     this.exactPositionProperty = new SimpleObjectProperty<>(new Point2D(position.col, position.row));
+    this.onLeftClickAction = Action.VOID;
+    this.onRightClickAction = Action.VOID;
   }
 
   /**
@@ -117,7 +122,21 @@ public class GameObject implements GameObjectStateChange.Emitter {
     setExactPosition(new Point2D(playerPosition.col, playerPosition.row));
   }
 
+  public void setOnRightClickAction(Action onRightClickAction) {
+    this.onRightClickAction = onRightClickAction;
+  }
 
+  public void setOnLeftClickAction(Action onLeftClickAction) {
+    this.onLeftClickAction = onLeftClickAction;
+  }
+
+  public void onRightClick() {
+    emitAction(onRightClickAction);
+  }
+
+  public void onLeftClick() {
+    emitAction(onLeftClickAction);
+  }
 
   public enum Type {
     NAVIGABLE("navigable"),
