@@ -37,10 +37,10 @@ public class InventoryPopup extends Scene {
         ImageView imageView=new ImageView(GameObjectView.resolvePathToJFXFormat("assets/popup-background.png"));
         imageView.setX(0);
         imageView.setY(0);
-        label=new Label("hwdp");
+        label=new Label();
         label.setLayoutX(300);
         label.setLayoutY(100);
-        label.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + 26);
+        label.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + 18);
         group.getChildren().add(imageView);
         group.getChildren().add(label);
         for (int i = 0; i <inventory.items.size(); i++) {
