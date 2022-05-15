@@ -4,7 +4,10 @@ import io.rpg.model.object.Question;
 import io.rpg.view.popups.QuestionPopup;
 import io.rpg.view.popups.TextImagePopup;
 import io.rpg.view.popups.TextPopup;
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -51,6 +54,16 @@ public class PopupController {
     openTextImagePopup("You earned " + pointsCount + " points!", coinImage, x, y);
   }
 
+  public void openQuestionPopup(Question question, int x, int y, EventHandler<? super MouseEvent> successCallback, EventHandler<? super MouseEvent> failureCallback) {
+    QuestionPopup popupScene = new QuestionPopup(question);
+    popupScene.setSuccessCallback(successCallback);
+    popupScene.setFailureCallback(failureCallback);
+    popupStage.setScene(popupScene);
+    popupStage.show();
+    popupStage.setX(x - popupScene.getWidth() / 2);
+    popupStage.setY(y - popupScene.getHeight() / 2);
+  }
+
   public void openQuestionPopup(Question question, int x, int y) {
     QuestionPopup popupScene = new QuestionPopup(question);
     popupStage.setScene(popupScene);
@@ -58,6 +71,7 @@ public class PopupController {
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
   }
+
 
   public void hidePopup() {
     popupStage.hide();

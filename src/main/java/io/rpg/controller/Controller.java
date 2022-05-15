@@ -103,7 +103,22 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(QuizAction action) {
-    popupController.openQuestionPopup(action.question, getWindowCenterX(), getWindowCenterY());
+    popupController.openQuestionPopup(
+        action.question,
+        getWindowCenterX(), getWindowCenterY(),
+        event -> acceptQuizResult(true, action.pointsToEarn),
+        event -> acceptQuizResult(false, 0)
+    );
+  }
+
+  public void acceptQuizResult(boolean correct, int pointsCount) {
+    if (correct) {
+      playerController.addPoints(pointsCount);
+      popupController.openPointsPopup(pointsCount, getWindowCenterX(), getWindowCenterY());
+    } else {
+      popupController.hidePopup();
+      System.out.println("wrong answer");
+    }
   }
 
   public Scene getView() {

@@ -65,4 +65,8 @@ public class PlayerController implements KeyboardEvent.Observer {
       view.removeChild(this.playerView);
     };
   }
+
+  public void addPoints(int pointsCount) {
+    // TODO
+  }
 }

@@ -2,10 +2,13 @@ package io.rpg.view.popups;
 
 import io.rpg.model.object.Question;
 import io.rpg.viewmodel.QuestionPopupViewModel;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
@@ -15,6 +18,8 @@ public class QuestionPopup extends Scene {
 
   private final QuestionPopupViewModel viewModel;
   private final Question question;
+  private EventHandler<? super MouseEvent> successCallback;
+  private EventHandler<? super MouseEvent> failureCallback;
 
   public QuestionPopup(Question question, String backgroundPath) {
     this(question);
@@ -54,9 +59,11 @@ public class QuestionPopup extends Scene {
     char correctAnswer = question.correctAnswer();
     if (answer == correctAnswer){
       viewModel.setQuestionLabel("Correct!");
+      this.setOnMouseClicked(this.successCallback);
     } else {
       viewModel.highlightWrong(answer);
       viewModel.setQuestionLabel("Answer " + answer + " is incorrect. The correct answer is " + correctAnswer + ": " + question.answers()[getAnswerIndex(correctAnswer)]);
+      this.setOnMouseClicked(this.failureCallback);
     }
 
     viewModel.highlightCorrect(correctAnswer);
@@ -71,5 +78,13 @@ public class QuestionPopup extends Scene {
       case 'D' -> 3;
       default -> throw new IllegalStateException("Unexpected answer code: " + answerCode);
     };
+  }
+
+  public void setSuccessCallback(EventHandler<? super MouseEvent> successCallback) {
+    this.successCallback = successCallback;
+  }
+
+  public void setFailureCallback(EventHandler<? super MouseEvent> failureCallback) {
+    this.failureCallback = failureCallback;
   }
 }
