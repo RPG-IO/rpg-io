@@ -8,7 +8,6 @@ import java.lang.reflect.Field;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;
