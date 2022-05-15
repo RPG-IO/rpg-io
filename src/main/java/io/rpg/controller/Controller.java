@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -172,15 +173,13 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
                                     .orElseThrow(() -> new RuntimeException("No object present at position " + position));
 
     double distance = playerPos.distance(objectView.getPosition());
-    if (distance < 1.5) {
-      if (object instanceof InteractiveGameObject) {
-        ((InteractiveGameObject) object).onAction();
-      }
 
-      if (object instanceof CollectibleGameObject) {
-        popupController.openTextImagePopup("Picked up an item!", objectView.getImage(), getWindowCenterX(), getWindowCenterY());
-        objectView.setVisible(false);
-        currentModel.removeGameObject(object);
+    if (distance < 1.5) {
+      MouseButton button = event.payload().getButton();
+      if (button.equals(MouseButton.PRIMARY)) {
+        object.onLeftClick();
+      } else if (button.equals(MouseButton.SECONDARY)) {
+        object.onRightClick();
       }
     }
 
@@ -204,6 +203,9 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       if (validationResult.isError()) {
         throw new IllegalStateException(validationResult.getErrorValue());
       }
+
+      controller.tagToLocationModelMap.values().forEach(location -> location.setActionConsumer(controller));
+      controller.playerController.getPlayer().setActionConsumer(controller);
 
       return controller;
     }
@@ -229,8 +231,5 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     public void setPlayerController(PlayerController playerController) {
       controller.playerController = playerController;
     }
-  }
-  public LocationModel getCurrentModel() {
-    return currentModel;
   }
 }
