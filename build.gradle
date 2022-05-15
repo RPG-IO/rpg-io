@@ -55,10 +55,20 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:${junitVersion}")
+    testImplementation("org.mockito:mockito-core:3.+")
 }
 
 test {
     useJUnitPlatform()
+}
+
+compileJava {
+    options.compilerArgs += ["--add-exports=javafx.graphics/com.sun.javafx.scene=io.rpg"]
+}
+
+run {
+    jvmArgs = ['--add-exports=javafx.graphics/com.sun.javafx.scene=io.rpg']
 }
 
 jlink {

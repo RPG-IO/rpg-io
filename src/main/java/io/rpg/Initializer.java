@@ -1,16 +1,13 @@
 package io.rpg;
 
 import io.rpg.config.ConfigLoader;
-import io.rpg.config.model.PlayerConfig;
 import io.rpg.controller.Controller;
 import io.rpg.config.model.GameWorldConfig;
 import io.rpg.config.model.LocationConfig;
 import io.rpg.controller.PlayerController;
 import io.rpg.model.actions.LocationChangeAction;
-import io.rpg.model.data.Position;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.GameObject;
-import io.rpg.config.model.GameObjectConfig;
 import io.rpg.model.object.Player;
 import io.rpg.util.GameObjectFactory;
 import io.rpg.util.GameObjectViewFactory;
@@ -79,7 +76,6 @@ public class Initializer {
       assert view != null;
 
       gameObjectViews.forEach(view::addChild);
-
       model.addOnLocationModelStateChangeObserver(view);
 
       controllerBuilder
@@ -87,7 +83,6 @@ public class Initializer {
           .addModelForTag(locationConfig.getTag(), model)
           .registerToViews(gameObjectViews);
 
-      view.createViewsForObjects(model);
     }
 
     // Player is created separately
@@ -100,8 +95,6 @@ public class Initializer {
 
 
     Controller controller = controllerBuilder.build();
-//    // TODO: this is a temporary solution
-//    controller.setPlayerView(playerView);
 
     Game.Builder gameBuilder = new Game.Builder();
     Game game = gameBuilder
@@ -135,6 +128,7 @@ public class Initializer {
 
       // registration
       gameObject.addGameObjectStateChangeObserver(gameObjectView);
+      gameObjectView.bindToGameObject(gameObject);
     }
   }
 
