@@ -1,6 +1,7 @@
 package io.rpg.controller;
 
 import io.rpg.model.actions.Action;
+import io.rpg.model.actions.ActionConsumer;
 import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
@@ -12,7 +13,6 @@ import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.function.Supplier;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Observer {
+public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Observer, ActionConsumer {
   private Scene currentView;
   private LinkedHashMap<String, LocationModel> tagToLocationModelMap;
   private LocationModel currentModel;
@@ -68,7 +68,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     this.currentView = currentView;
   }
 
-  public void onAction(Action action) {
+  @Override
+  public void consumeAction(Action action) {
     Class<?>[] args = {action.getClass()};
     Method onSpecificAction;
 
@@ -146,7 +147,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
         case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
         case Q -> popupController.openQuestionPopup(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'), getWindowCenterX(), getWindowCenterY());
-        case L -> onAction((Action) new LocationChangeAction("location-2", new Position(1, 2)));
+        case L -> consumeAction((Action) new LocationChangeAction("location-2", new Position(1, 2)));
       }
     }
     // } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
@@ -189,6 +190,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   public PlayerController getPlayerController() {
     return playerController;
   }
+
 
   public static class Builder {
     private final Controller controller;
