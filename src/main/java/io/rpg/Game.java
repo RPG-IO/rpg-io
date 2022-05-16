@@ -2,7 +2,6 @@ package io.rpg;
 
 import io.rpg.controller.Controller;
 import io.rpg.model.actions.Action;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Game {
@@ -20,7 +19,7 @@ public class Game {
   public void start(Stage stage) {
     stage.show();
     controller.setMainStage(stage);
-    controller.onAction(onStart);
+    controller.consumeAction(onStart);
   }
 
   public static class Builder {

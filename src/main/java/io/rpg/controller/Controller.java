@@ -1,11 +1,11 @@
 package io.rpg.controller;
 
 import io.rpg.model.actions.Action;
+import io.rpg.model.actions.ActionConsumer;
 import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
-import io.rpg.model.data.Vector;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.*;
 import io.rpg.util.Result;
@@ -13,8 +13,10 @@ import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Observer {
+public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Observer, ActionConsumer {
   private Scene currentView;
   private LinkedHashMap<String, LocationModel> tagToLocationModelMap;
   private LocationModel currentModel;
@@ -67,7 +69,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     this.currentView = currentView;
   }
 
-  public void onAction(Action action) {
+  @Override
+  public void consumeAction(Action action) {
     Class<?>[] args = {action.getClass()};
     Method onSpecificAction;
 
@@ -135,7 +138,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   @Override
   public void onKeyboardEvent(KeyboardEvent event) {
     // TODO: implement event handling
-    logger.info("Controller notified on key pressed from " + event.source());
+    logger.trace("Controller notified on key pressed from " + event.source());
     //TODO: call Player::set...Pressed depending on keyCode and whether the key was pressed or released
 
     KeyEvent payload = event.payload();
@@ -145,7 +148,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
         case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
         case Q -> popupController.openQuestionPopup(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'), getWindowCenterX(), getWindowCenterY());
-        case L -> onAction((Action) new LocationChangeAction("location-2", new Position(1, 2)));
+        case L -> consumeAction((Action) new LocationChangeAction("location-2", new Position(1, 2)));
       }
     }
     // } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
@@ -163,26 +166,34 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   @Override
   public void onMouseClickedEvent(MouseClickedEvent event) {
-    int SCALE = 64;
-    Vector playerPos = currentModel.getPlayer().getPixelPosition();
+    Point2D playerPos = playerController.getPlayer().getExactPosition();
     GameObjectView objectView = event.source();
-    GameObject object = currentModel.getObject((int) objectView.getY() / SCALE, (int) objectView.getX() / SCALE);
-    if (Math.abs(playerPos.x - objectView.getX()) / SCALE <= 1.5 && Math.abs(playerPos.y - objectView.getY()) / SCALE <= 1.5) {
-      if (object instanceof InteractiveGameObject) {
-        ((InteractiveGameObject) object).onAction();
-      }
+    Position position = new Position(objectView.getPosition());
+    GameObject object = currentModel.getObject(position)
+                                    .orElseThrow(() -> new RuntimeException("No object present at position " + position));
 
-      if (object instanceof CollectibleGameObject) {
-        popupController.openTextImagePopup("Picked up an item!", objectView.getImage(), getWindowCenterX(), getWindowCenterY());
-        objectView.setVisible(false);
+    double distance = playerPos.distance(objectView.getPosition());
+
+    if (distance < 1.5) {
+      MouseButton button = event.payload().getButton();
+      if (button.equals(MouseButton.PRIMARY)) {
+        object.onLeftClick();
+      } else if (button.equals(MouseButton.SECONDARY)) {
+        object.onRightClick();
       }
 
       if (object instanceof DialogGameObject) { //TODO: change action invocation to GameObject.onAction()
         popupController.openDialoguePopup("<FILLER TEXT>", objectView.getImage(), getWindowCenterX(), getWindowCenterY()); //TODO: load text from config
       }
     }
+
     logger.info("Controller notified on click from " + event.source());
   }
+
+  public PlayerController getPlayerController() {
+    return playerController;
+  }
+
 
   public static class Builder {
     private final Controller controller;
@@ -196,6 +207,9 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       if (validationResult.isError()) {
         throw new IllegalStateException(validationResult.getErrorValue());
       }
+
+      controller.tagToLocationModelMap.values().forEach(location -> location.setActionConsumer(controller));
+      controller.playerController.getPlayer().setActionConsumer(controller);
 
       return controller;
     }
@@ -221,8 +235,5 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     public void setPlayerController(PlayerController playerController) {
       controller.playerController = playerController;
     }
-  }
-  public LocationModel getCurrentModel() {
-    return currentModel;
   }
 }
