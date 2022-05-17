@@ -46,6 +46,7 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
     this.directionToLocationMap = new HashMap<>();
 
     directionToLocationMap.put(MapDirection.NORTH, "location-1");
+    directionToLocationMap.put(MapDirection.SOUTH, "location-1");
     directionToLocationMap.put(MapDirection.WEST, "location-2");
   }
 
@@ -148,6 +149,10 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
   }
 
   private void emitBoundCrossedAction(GameObject gameObject, Point2D boundsCrossedDirection) {
+    // guard against non cardinal directions vector
+    if ((boundsCrossedDirection.angle(1, 0) % 90) != 0) {
+      return;
+    }
     MapDirection direction = MapDirection.fromDirectionVector(boundsCrossedDirection);
     Point2D position = gameObject.getExactPosition();
     Point2D nextPosition = position.subtract(boundsCrossedDirection.multiply(20));
