@@ -125,6 +125,8 @@ public class ConfigLoader {
     logger.info("GameWorldConfig loaded");
     logger.info(gameWorldConfig.toString());
 
+
+
     // we assume here that gameWorldConfig was validated in loadGameWorldConfig method
 
     for (String locationTag : gameWorldConfig.getLocationTags()) {
@@ -178,10 +180,8 @@ public class ConfigLoader {
                   + gameObjectConfig.getTag() + " failed."
                   + (exceptionMessage != null ? "Reason: " + exceptionMessage : "No reason provided"));
             },
-            () -> {
-              logger.warn("Validation for game object config with tag: "
-                  + gameObjectConfig.getTag() + " failed with null result.");
-            });
+            () -> logger.warn("Validation for game object config with tag: "
+                + gameObjectConfig.getTag() + " failed with null result."));
           } else {
             logger.info("Loaded GameObjectConfig for tag: " + gameObjectConfig.getTag() + ":" + gameObjectConfig);
           }
