@@ -1,0 +1,6 @@
+configurations/                   @kkafar
+config/                           @kkafar
+docs/configuration.md             @kkafar
+docs/linter-setup.md              @kkafar
+*.gradle                          @kkafar
+src/main/java/io/rpg/config/*     @kkafar
