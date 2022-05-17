@@ -5,6 +5,9 @@ import io.rpg.config.model.GameObjectConfig;
 import io.rpg.config.model.GameWorldConfig;
 import io.rpg.config.model.LocationConfig;
 import io.rpg.util.Result;
+import io.rpg.view.popups.QuestionPopup;
+import io.rpg.view.popups.TextImagePopup;
+import io.rpg.view.popups.TextPopup;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -125,7 +128,11 @@ public class ConfigLoader {
     logger.info("GameWorldConfig loaded");
     logger.info(gameWorldConfig.toString());
 
-
+    QuestionPopup.setBackgroundPath(gameWorldConfig.getQuizPopupBackground());
+    TextPopup.setBackgroundPath(gameWorldConfig.getTextPopupBackground());
+    TextImagePopup.setBackgroundPath(gameWorldConfig.getTextImagePopupBackground());
+    TextPopup.setButtonPath(gameWorldConfig.getTextPopupButton());
+    TextImagePopup.setButtonPath(gameWorldConfig.getTextImagePopupButton());
 
     // we assume here that gameWorldConfig was validated in loadGameWorldConfig method
 

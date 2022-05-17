@@ -142,26 +142,30 @@ public class GameWorldConfig {
   }
 
   public String getQuizPopupBackground() {
-    return quizPopupBackground;
+    return resolvePathFormat(quizPopupBackground);
   }
 
   public String getTextPopupButton() {
-    return textPopupButton;
+    return resolvePathFormat(textPopupButton);
   }
 
   public String getTextImagePopupBackground() {
-    return textImagePopupBackground;
+    return resolvePathFormat(textImagePopupBackground);
   }
 
   public String getTextImagePopupButton() {
-    return textImagePopupButton;
+    return resolvePathFormat(textImagePopupButton);
   }
 
   public String getTextPopupBackground() {
-    return textPopupBackground;
+    return resolvePathFormat(textPopupBackground);
   }
 
   public String getInventoryPopupBackground() {
-    return inventoryPopupBackground;
+    return resolvePathFormat(inventoryPopupBackground);
+  }
+
+  public static String resolvePathFormat(String path) {
+    return "file:" + path;
   }
 }
