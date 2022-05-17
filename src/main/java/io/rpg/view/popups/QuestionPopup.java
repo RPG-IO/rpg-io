@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
@@ -59,15 +58,16 @@ public class QuestionPopup extends Scene {
     char correctAnswer = question.getCorrectAnswerChar();
     if (answer == correctAnswer){
       viewModel.setQuestionLabel("Correct!");
+      viewModel.setAllButtonsCallback(this.successCallback);
       this.setOnMouseClicked(this.successCallback);
     } else {
       viewModel.highlightWrong(answer);
       viewModel.setQuestionLabel("Answer " + answer + " is incorrect. The correct answer is " + correctAnswer + ": " + question.getCorrectAnswer());
+      viewModel.setAllButtonsCallback(this.failureCallback);
       this.setOnMouseClicked(this.failureCallback);
     }
 
     viewModel.highlightCorrect(correctAnswer);
-    viewModel.removeButtonCallbacks();
   }
 
   public void setSuccessCallback(EventHandler<? super MouseEvent> successCallback) {

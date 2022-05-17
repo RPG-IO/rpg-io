@@ -48,11 +48,11 @@ public class QuestionPopupViewModel {
     getButtonFromCode(buttonCode).setOnMouseClicked(callback);
   }
 
-  public void removeButtonCallbacks() {
-    aButton.setOnMouseClicked(null);
-    bButton.setOnMouseClicked(null);
-    cButton.setOnMouseClicked(null);
-    dButton.setOnMouseClicked(null);
+  public void setAllButtonsCallback(EventHandler<? super MouseEvent> callback) {
+    aButton.setOnMouseClicked(callback);
+    bButton.setOnMouseClicked(callback);
+    cButton.setOnMouseClicked(callback);
+    dButton.setOnMouseClicked(callback);
   }
 
   public void highlightCorrect(char buttonCode) {

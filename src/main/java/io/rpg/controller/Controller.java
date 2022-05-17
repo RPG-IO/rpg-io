@@ -106,18 +106,22 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(QuizAction action) {
+    int pointsCount = action.getPointsToEarn();
     popupController.openQuestionPopup(
         action.question,
         getWindowCenterX(), getWindowCenterY(),
-        event -> acceptQuizResult(true, action.pointsToEarn),
+        event -> acceptQuizResult(true, pointsCount),
         event -> acceptQuizResult(false, 0)
     );
+    action.setPointsToEarn(0);
   }
 
   public void acceptQuizResult(boolean correct, int pointsCount) {
     if (correct) {
       playerController.addPoints(pointsCount);
-      popupController.openPointsPopup(pointsCount, getWindowCenterX(), getWindowCenterY());
+      popupController.hidePopup();
+      if (pointsCount > 0)
+        popupController.openPointsPopup(pointsCount, getWindowCenterX(), getWindowCenterY());
     } else {
       popupController.hidePopup();
       System.out.println("wrong answer");

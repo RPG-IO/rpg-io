@@ -9,10 +9,19 @@ import io.rpg.model.object.Question;
 public class QuizAction implements Action {
 
   public final Question question;
-  public final int pointsToEarn;
+  private int pointsToEarn;
 
   public QuizAction(Question question) {
     this.question = question;
     this.pointsToEarn = 10;
   }
+
+  public void setPointsToEarn(int pointsToEarn) {
+    this.pointsToEarn = pointsToEarn;
+  }
+
+  public int getPointsToEarn() {
+    return pointsToEarn;
+  }
+
 }
