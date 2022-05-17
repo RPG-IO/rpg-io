@@ -2,6 +2,7 @@ package io.rpg.controller;
 
 import io.rpg.model.actions.Action;
 import io.rpg.model.actions.ActionConsumer;
+import io.rpg.model.actions.DialogueAction;
 import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
@@ -104,6 +105,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     mainStage.setScene(nextView);
   }
 
+  private void onAction(DialogueAction action) {
+    popupController.openDialoguePopup(action.text, action.image, getWindowCenterX(), getWindowCenterY()); //TODO: load text from config
+  }
+
   public Scene getView() {
     return currentView;
   }
@@ -180,10 +185,6 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         object.onLeftClick();
       } else if (button.equals(MouseButton.SECONDARY)) {
         object.onRightClick();
-      }
-
-      if (object instanceof DialogGameObject) { //TODO: change action invocation to GameObject.onAction()
-        popupController.openDialoguePopup("<FILLER TEXT>", objectView.getImage(), getWindowCenterX(), getWindowCenterY()); //TODO: load text from config
       }
     }
 
