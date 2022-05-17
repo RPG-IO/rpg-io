@@ -54,7 +54,6 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
     this.exactPositionProperty = new SimpleObjectProperty<>(new Point2D(position.col, position.row));
     this.onLeftClickAction = Action.VOID;
     this.onRightClickAction = Action.VOID;
-    this.onLeftClickAction = new DialogueAction("<FILLER TEXT>", new Image("file:assets/zombie.png")); //TODO: read action config from file
   }
 
   /**
