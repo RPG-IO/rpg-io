@@ -44,6 +44,14 @@ public class GameWorldConfig {
    */
   private String rootLocation;
 
+  private String quizPopupBackground;
+  private String textPopupButton;
+  private String textImagePopupBackground;
+  private String textImagePopupButton;
+  private String textPopupBackground;
+  private String inventoryPopupBackground;
+
+
   /**
    * Unique tag for the game. This can be treated as name of the game.
    *
@@ -82,13 +90,12 @@ public class GameWorldConfig {
     return playerConfig;
   }
 
+
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
     builder.append("\n{\n").append("\ttag: ").append(tag).append('\n');
-    locationTags.forEach(location -> {
-      builder.append("\tlocation-tag: ").append(location).append('\n');
-    });
+    locationTags.forEach(location -> builder.append("\tlocation-tag: ").append(location).append('\n'));
     return builder.append("}\n").toString();
   }
 
@@ -132,5 +139,29 @@ public class GameWorldConfig {
     } else {
       return Result.ok(this);
     }
+  }
+
+  public String getQuizPopupBackground() {
+    return quizPopupBackground;
+  }
+
+  public String getTextPopupButton() {
+    return textPopupButton;
+  }
+
+  public String getTextImagePopupBackground() {
+    return textImagePopupBackground;
+  }
+
+  public String getTextImagePopupButton() {
+    return textImagePopupButton;
+  }
+
+  public String getTextPopupBackground() {
+    return textPopupBackground;
+  }
+
+  public String getInventoryPopupBackground() {
+    return inventoryPopupBackground;
   }
 }
