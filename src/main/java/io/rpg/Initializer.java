@@ -14,6 +14,7 @@ import io.rpg.util.GameObjectViewFactory;
 import io.rpg.util.Result;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
+import javafx.geometry.Point2D;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -69,7 +70,9 @@ public class Initializer {
 
       LocationModel model = new LocationModel.Builder()
           .setTag(locationConfig.getTag())
-          .setGameObjects(gameObjects).build();
+          .setBounds(new Point2D(locationConfig.getWidth(), locationConfig.getHeight()))
+          .setGameObjects(gameObjects)
+          .build();
 
       LocationView view = loadLocationViewFromConfig(locationConfig);
 
