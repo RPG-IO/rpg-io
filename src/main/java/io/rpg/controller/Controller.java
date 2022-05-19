@@ -2,6 +2,7 @@ package io.rpg.controller;
 
 import io.rpg.model.actions.Action;
 import io.rpg.model.actions.ActionConsumer;
+import io.rpg.model.actions.GameEndAction;
 import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
@@ -9,6 +10,7 @@ import io.rpg.model.data.Position;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.*;
 import io.rpg.util.Result;
+import io.rpg.view.GameEndView;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
 import java.lang.reflect.InvocationTargetException;
@@ -17,6 +19,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -104,6 +107,12 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     mainStage.setScene(nextView);
   }
 
+  private void onAction(GameEndAction action) {
+    GameEndView view = GameEndView.load();
+    view.setDescription(action.description);
+    mainStage.setScene(view);
+  }
+
   public Scene getView() {
     return currentView;
   }
@@ -149,6 +158,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
         case Q -> popupController.openQuestionPopup(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'), getWindowCenterX(), getWindowCenterY());
         case L -> consumeAction((Action) new LocationChangeAction("location-2", new Position(1, 2)));
+        case U -> consumeAction(new GameEndAction("You have pressed the forbidden button"));
       }
     }
     // } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
