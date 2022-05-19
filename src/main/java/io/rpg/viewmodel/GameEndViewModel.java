@@ -10,10 +10,8 @@ import javafx.scene.control.Label;
 
 public class GameEndViewModel {
   public static final String GAME_END_VIEW_FXML = "game-end-view.fxml";
-
   private Parent parent;
-  @FXML
-  private Label descriptionLabel;
+  @FXML  private Label descriptionLabel;
 
   public static GameEndViewModel load() throws IOException {
     URL url = Objects.requireNonNull(GameEndViewModel.class.getResource(GAME_END_VIEW_FXML));

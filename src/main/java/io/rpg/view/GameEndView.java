@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 
 public class GameEndView extends Scene {
   private GameEndViewModel viewModel;
+
   private GameEndView(Parent parent) {
     super(parent);
   }
