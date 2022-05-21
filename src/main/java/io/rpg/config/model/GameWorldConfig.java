@@ -133,7 +133,7 @@ public class GameWorldConfig {
     Result<GameWorldConfig, Exception> stageOneValidationResult = validateStageOne();
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
 
-    if (stageOneValidationResult.isError()) {
+    if (stageOneValidationResult.isErr()) {
       builder.combine(stageOneValidationResult.getErrValue().getMessage());
     }
     if (locationConfigs.size() < 1) {

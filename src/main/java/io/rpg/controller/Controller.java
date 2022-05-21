@@ -253,7 +253,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
     public Controller build() {
       Result<Controller, Exception> validationResult = controller.validate();
-      if (validationResult.isError()) {
+      if (validationResult.isErr()) {
         throw new IllegalStateException(validationResult.getErrValue());
       }
 

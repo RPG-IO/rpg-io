@@ -37,7 +37,7 @@ public class Result<OkT, ErrorT> {
     return new Result<>(null, null, Type.ERROR);
   }
 
-  public boolean isError() {
+  public boolean isErr() {
     return type == Type.ERROR;
   }
 
@@ -61,7 +61,7 @@ public class Result<OkT, ErrorT> {
 
   @Nullable
   public ErrorT getErrValue() {
-    if (isError()) {
+    if (isErr()) {
       return errorValue;
     } else {
       throw new IllegalStateException("Attempt to access error value on ok result!");

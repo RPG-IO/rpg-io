@@ -42,7 +42,7 @@ public class Initializer {
   public Result<Game, Exception> initialize() {
     Result<GameWorldConfig, Exception> gameWorldConfigLoadResult = configLoader.load();
 
-    if (gameWorldConfigLoadResult.isError()) {
+    if (gameWorldConfigLoadResult.isErr()) {
       gameWorldConfigLoadResult.getErrorValueOpt().ifPresentOrElse(
           ex -> logger.error(ex.getMessage()),
           () -> logger.error("Unknown error returned from config loader")

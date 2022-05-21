@@ -201,7 +201,7 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
       Result<Void, Void> result = locationModel.validate();
 
       // TODO(@kkafar): Handle this in better way. Consider returning the result.
-      if (result.isError()) {
+      if (result.isErr()) {
         logger.error("Error occurred while building LocationModel.");
       }
 

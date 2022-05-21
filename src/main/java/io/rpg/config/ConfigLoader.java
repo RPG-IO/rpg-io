@@ -112,7 +112,7 @@ public class ConfigLoader {
 
     Result<GameWorldConfig, Exception> configLoadResult = loadGameWorldConfig();
 
-    if (configLoadResult.isError()) {
+    if (configLoadResult.isErr()) {
       logger.error("Error while loading GameWorldConfig");
       configLoadResult.getErrorValueOpt().ifPresent(ex -> logger.error(ex.getMessage()));
       return configLoadResult;
@@ -133,7 +133,7 @@ public class ConfigLoader {
 
         Result<LocationConfig, Exception> locationConfigLoadingResult = loadLocationConfig(locationTag);
 
-        if (locationConfigLoadingResult.isError()) {
+        if (locationConfigLoadingResult.isErr()) {
           return Result.err(locationConfigLoadingResult.getErrValue());
         } else if (locationConfigLoadingResult.isOkValueNull()) {
           return Result.err(new RuntimeException("Null LocationConfig returned for location with tag: " + locationTag));
@@ -170,7 +170,7 @@ public class ConfigLoader {
         for (GameObjectConfig gameObjectConfig : locationConfig.getObjects()) {
           Result<GameObjectConfig, Exception> result = gameObjectConfig.validate();
 
-          if (result.isError()) {
+          if (result.isErr()) {
             // TODO: consider returning loading error here
             result.getErrorValueOpt().ifPresentOrElse(ex -> {
               String exceptionMessage = ex.getMessage();
@@ -196,7 +196,7 @@ public class ConfigLoader {
     }
 
     Result<GameWorldConfig, Exception> validationResult = gameWorldConfig.validate();
-    if (validationResult.isError()) {
+    if (validationResult.isErr()) {
       return Result.err(validationResult.getErrValue());
     }
 
@@ -250,7 +250,7 @@ public class ConfigLoader {
     Result<LocationConfig, Exception> locationConfigValidationResult =
         config.validate();
 
-    if (locationConfigValidationResult.isError()) {
+    if (locationConfigValidationResult.isErr()) {
       return locationConfigValidationResult;
     } else {
       config.setPath(locationDir);

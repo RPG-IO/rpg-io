@@ -21,7 +21,7 @@ public class Main extends Application {
     Initializer worldInitializer = new Initializer("configurations/demo-config-1", stage);
     Result<Game, Exception> initializationResult = worldInitializer.initialize();
 
-    if (initializationResult.isError()) {
+    if (initializationResult.isErr()) {
       logger.error("Initialization error");
 
       initializationResult.getErrorValueOpt().ifPresentOrElse(
