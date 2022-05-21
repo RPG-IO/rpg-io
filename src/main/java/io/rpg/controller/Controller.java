@@ -106,7 +106,9 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(ShowDescriptionAction action) {
-    popupController.openTextImagePopup(action.description, action.image, getWindowCenterX(), getWindowCenterY());
+    if (!action.description.isEmpty()) {
+      popupController.openTextImagePopup(action.description, action.image, getWindowCenterX(), getWindowCenterY());
+    }
   }
 
   public Scene getView() {
