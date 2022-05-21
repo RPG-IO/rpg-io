@@ -50,6 +50,11 @@ public class Result<OkT, ErrorT> {
     return type;
   }
 
+  /**
+   * If the result is OK, then returns the wrapped nullable value, else it throws.
+   *
+   * @return wrapped value or throws {@link IllegalStateException}.
+   */
   @Nullable
   public OkT getOkValue() {
     if (isOk()) {
@@ -59,6 +64,11 @@ public class Result<OkT, ErrorT> {
     }
   }
 
+  /**
+   * If the result is ERR, then returns the wrapped nullable, error value, else it throws.
+   *
+   * @return wrapped error value or throws {@link IllegalStateException}.
+   */
   @Nullable
   public ErrorT getErrValue() {
     if (isErr()) {
@@ -86,6 +96,9 @@ public class Result<OkT, ErrorT> {
     return Optional.ofNullable(getErrValue());
   }
 
+  /**
+   * Describes the result type.
+   */
   public enum Type {
     OK, ERROR
   }
