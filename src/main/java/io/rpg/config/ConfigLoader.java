@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -110,7 +112,7 @@ public class ConfigLoader {
   public Result<GameWorldConfig, Exception> load() {
     logger.info("Loading GameWorldConfig");
 
-    Result<GameWorldConfig, Exception> configLoadResult = loadGameWorldConfig();
+    Result<GameWorldConfig, Exception> configLoadResult = loadRootFile();
 
     if (configLoadResult.isErr()) {
       logger.error("Error while loading GameWorldConfig");
@@ -203,9 +205,26 @@ public class ConfigLoader {
     return Result.ok(validationResult.getOkValue());
   }
 
+  /**
+   * Attempts to load {@link GameWorldConfig} with initial information provided in
+   * configuration root file.
+   * Notice that it does not fully initialise the {@link GameWorldConfig}.
+   * Information it fulfills is: <br>
+   * <ol>
+   *   <li>location tags</li>
+   *   <li>player config</li>
+   *   <li>root location tag</li>
+   *   <li>game tag</li>
+   * </ol>
+   * Location tags are loaded from configuration root file & also all locations that are not specified in
+   * root file but their directories exist in `locations` directory are added. Player config must be specified inside
+   * configuration root file, same for game tag & root location tag.
+   *
+   * @return Initially loaded {@link GameWorldConfig} or an exception.
+   */
   @NotNull
-  Result<GameWorldConfig, Exception> loadGameWorldConfig() {
-    logger.info("Loading game world config");
+  Result<GameWorldConfig, Exception> loadRootFile() {
+    logger.info("Loading configuration from root file");
 
     BufferedReader reader;
 
@@ -223,6 +242,31 @@ public class ConfigLoader {
     // GameWorldConfig is loaded in two stages right now
     // todo: fix this! Separate initial GameWorldConfig to different class
     Result<GameWorldConfig, Exception> configLoadResult = gameWorldConfigShell.validateStageOne();
+
+    if (configLoadResult.isErr()) {
+      return configLoadResult;
+    }
+
+    GameWorldConfig config = configLoadResult.getOkValue();
+
+    try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(locationsDirPath)) {
+      for (Path path : directoryStream) {
+        if (Files.isDirectory(path)) {
+          String locationTag = path.getFileName().toString();
+          logger.info("Detected location directory: " + locationTag);
+          if (config.getLocationTags().contains(locationTag)) {
+            logger.info(locationTag + " location already declared in root file");
+          } else {
+            logger.info(locationTag + " location added to locations list");
+            config.getLocationTags().add(locationTag);
+          }
+        } else {
+          logger.warn("Non-directory file of name " + path + " detected inside locations directory");
+        }
+      }
+    } catch (IOException ex) {
+      logger.error("IOException while iterating over locations dir content:\n" + ex.getMessage());
+    }
 
     return configLoadResult;
   }
