@@ -93,6 +93,6 @@ public class ActionConfig {
     }
 
     return builder.isEmpty() ? Result.ok() :
-        Result.error(new IllegalStateException(builder.toString()));
+        Result.err(new IllegalStateException(builder.toString()));
   }
 }

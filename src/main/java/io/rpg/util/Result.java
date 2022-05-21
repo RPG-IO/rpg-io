@@ -29,11 +29,11 @@ public class Result<OkT, ErrorT> {
     return new Result<>(null, null, Type.OK);
   }
 
-  public static <S, E> Result<S, E> error(@Nullable E errorValue) {
+  public static <S, E> Result<S, E> err(@Nullable E errorValue) {
     return new Result<>(null, errorValue, Type.ERROR);
   }
 
-  public static <S, E> Result<S, E> error() {
+  public static <S, E> Result<S, E> err() {
     return new Result<>(null, null, Type.ERROR);
   }
 

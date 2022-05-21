@@ -1,7 +1,6 @@
 package io.rpg.config.model;
 
 import com.google.gson.annotations.SerializedName;
-import io.rpg.Game;
 import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.Result;
 
@@ -122,7 +121,7 @@ public class GameWorldConfig {
     }
 
     return builder.isEmpty() ? Result.ok(this) :
-        Result.error(new IllegalStateException(builder.toString()));
+        Result.err(new IllegalStateException(builder.toString()));
   }
 
   /**
@@ -142,6 +141,6 @@ public class GameWorldConfig {
     }
 
     return builder.isEmpty() ? Result.ok(this) :
-        Result.error(new IllegalStateException(builder.toString()));
+        Result.err(new IllegalStateException(builder.toString()));
   }
 }

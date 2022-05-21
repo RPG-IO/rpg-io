@@ -74,7 +74,7 @@ public class GameObjectConfig {
     }
 
     return builder.isEmpty() ? Result.ok(this) :
-        Result.error(new IllegalStateException(builder.toString()));
+        Result.err(new IllegalStateException(builder.toString()));
   }
 
   public void updateFrom(GameObjectConfig gameObjectConfig) {

@@ -117,7 +117,7 @@ public class ConfigLoader {
       configLoadResult.getErrorValueOpt().ifPresent(ex -> logger.error(ex.getMessage()));
       return configLoadResult;
     } else if (configLoadResult.getOkValue() == null) {
-      return Result.error(new RuntimeException("loadGameWorldConfig returned null config"));
+      return Result.err(new RuntimeException("loadGameWorldConfig returned null config"));
     }
 
     GameWorldConfig gameWorldConfig = configLoadResult.getOkValue();
@@ -134,9 +134,9 @@ public class ConfigLoader {
         Result<LocationConfig, Exception> locationConfigLoadingResult = loadLocationConfig(locationTag);
 
         if (locationConfigLoadingResult.isError()) {
-          return Result.error(locationConfigLoadingResult.getErrorValue());
+          return Result.err(locationConfigLoadingResult.getErrorValue());
         } else if (locationConfigLoadingResult.isOkValueNull()) {
-          return Result.error(new RuntimeException("Null LocationConfig returned for location with tag: " + locationTag));
+          return Result.err(new RuntimeException("Null LocationConfig returned for location with tag: " + locationTag));
         }
 
         LocationConfig locationConfig = locationConfigLoadingResult.getOkValue();
@@ -197,7 +197,7 @@ public class ConfigLoader {
 
     Result<GameWorldConfig, Exception> validationResult = gameWorldConfig.validate();
     if (validationResult.isError()) {
-      return Result.error(validationResult.getErrorValue());
+      return Result.err(validationResult.getErrorValue());
     }
 
     return Result.ok(validationResult.getOkValue());
@@ -212,7 +212,7 @@ public class ConfigLoader {
     try {
       reader = new BufferedReader(new FileReader(rootFilePath.toString()));
     } catch (FileNotFoundException exception) {
-      return Result.error(exception);
+      return Result.err(exception);
     }
 
     // after loading a object from JSON we should always call the validate method
@@ -234,14 +234,14 @@ public class ConfigLoader {
 
     if (!Files.isDirectory(locationDir)) {
       logger.error(ERR_LOCATION_DIR_FNF_FOR_TAG + locationTag);
-      return Result.error(new FileNotFoundException(ERR_LOCATION_DIR_FNF_FOR_TAG + locationTag));
+      return Result.err(new FileNotFoundException(ERR_LOCATION_DIR_FNF_FOR_TAG + locationTag));
     }
 
     Path locationConfigJson = locationDir.resolve(locationTag + ".json");
 
     if (!Files.isReadable(locationConfigJson)) {
       logger.error(ERR_LOCATION_CFG_NR_FOR_TAG + locationTag);
-      return Result.error(new RuntimeException(ERR_LOCATION_DIR_FNF_FOR_TAG + locationTag));
+      return Result.err(new RuntimeException(ERR_LOCATION_DIR_FNF_FOR_TAG + locationTag));
     }
 
     BufferedReader reader = new BufferedReader(new FileReader(locationConfigJson.toString()));

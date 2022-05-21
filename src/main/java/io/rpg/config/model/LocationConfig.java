@@ -82,6 +82,6 @@ public class LocationConfig {
     }
 
     return builder.isEmpty() ? Result.ok(this) :
-        Result.error(new IllegalStateException(builder.toString()));
+        Result.err(new IllegalStateException(builder.toString()));
   }
 }
