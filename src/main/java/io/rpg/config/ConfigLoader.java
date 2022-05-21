@@ -134,7 +134,7 @@ public class ConfigLoader {
         Result<LocationConfig, Exception> locationConfigLoadingResult = loadLocationConfig(locationTag);
 
         if (locationConfigLoadingResult.isError()) {
-          return Result.err(locationConfigLoadingResult.getErrorValue());
+          return Result.err(locationConfigLoadingResult.getErrValue());
         } else if (locationConfigLoadingResult.isOkValueNull()) {
           return Result.err(new RuntimeException("Null LocationConfig returned for location with tag: " + locationTag));
         }
@@ -197,7 +197,7 @@ public class ConfigLoader {
 
     Result<GameWorldConfig, Exception> validationResult = gameWorldConfig.validate();
     if (validationResult.isError()) {
-      return Result.err(validationResult.getErrorValue());
+      return Result.err(validationResult.getErrValue());
     }
 
     return Result.ok(validationResult.getOkValue());

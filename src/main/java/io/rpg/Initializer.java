@@ -47,7 +47,7 @@ public class Initializer {
           ex -> logger.error(ex.getMessage()),
           () -> logger.error("Unknown error returned from config loader")
       );
-      return Result.err(gameWorldConfigLoadResult.getErrorValue());
+      return Result.err(gameWorldConfigLoadResult.getErrValue());
     } else if (gameWorldConfigLoadResult.isOkValueNull()) {
       logger.error("ConfigLoader fetched null GameWorldConfig");
       return Result.err(new RuntimeException("ConfigLoader fetched null GameWorldConfig"));

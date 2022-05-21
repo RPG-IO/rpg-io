@@ -134,7 +134,7 @@ public class GameWorldConfig {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
 
     if (stageOneValidationResult.isError()) {
-      builder.combine(stageOneValidationResult.getErrorValue().getMessage());
+      builder.combine(stageOneValidationResult.getErrValue().getMessage());
     }
     if (locationConfigs.size() < 1) {
       builder.append("No location configs loaded");

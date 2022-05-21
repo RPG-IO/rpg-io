@@ -60,7 +60,7 @@ public class Result<OkT, ErrorT> {
   }
 
   @Nullable
-  public ErrorT getErrorValue() {
+  public ErrorT getErrValue() {
     if (isError()) {
       return errorValue;
     } else {
@@ -83,7 +83,7 @@ public class Result<OkT, ErrorT> {
 
   @NotNull
   public Optional<ErrorT> getErrorValueOpt() {
-    return Optional.ofNullable(getErrorValue());
+    return Optional.ofNullable(getErrValue());
   }
 
   public enum Type {

@@ -254,7 +254,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     public Controller build() {
       Result<Controller, Exception> validationResult = controller.validate();
       if (validationResult.isError()) {
-        throw new IllegalStateException(validationResult.getErrorValue());
+        throw new IllegalStateException(validationResult.getErrValue());
       }
 
       controller.tagToLocationModelMap.values().forEach(location -> location.setActionConsumer(controller));
