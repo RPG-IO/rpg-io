@@ -44,6 +44,9 @@ public class GameWorldConfig {
    */
   private String rootLocation;
 
+  /**
+   * Specifies the assets for each popup
+   */
   private String quizPopupBackground;
   private String textPopupButton;
   private String textImagePopupBackground;
