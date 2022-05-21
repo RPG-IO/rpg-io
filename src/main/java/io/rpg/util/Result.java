@@ -51,13 +51,13 @@ public class Result<OkT, ErrorT> {
   }
 
   /**
-   * If the result is OK, then returns the wrapped nullable value, else it throws.
+   * If the result is OK and the value is not null, then returns the wrapped nullable value, else it throws.
    *
    * @return wrapped value or throws {@link IllegalStateException}.
    */
-  @Nullable
+  @NotNull
   public OkT getOkValue() {
-    if (isOk()) {
+    if (isOk() && okValue != null) {
       return okValue;
     } else {
       throw new IllegalStateException("Attempt to access ok value on error result!");
@@ -65,13 +65,13 @@ public class Result<OkT, ErrorT> {
   }
 
   /**
-   * If the result is ERR, then returns the wrapped nullable, error value, else it throws.
+   * If the result is ERR and the value is not null, then returns the wrapped nullable, error value, else it throws.
    *
    * @return wrapped error value or throws {@link IllegalStateException}.
    */
-  @Nullable
+  @NotNull
   public ErrorT getErrValue() {
-    if (isErr()) {
+    if (isErr() && errorValue != null) {
       return errorValue;
     } else {
       throw new IllegalStateException("Attempt to access error value on ok result!");
@@ -82,18 +82,18 @@ public class Result<OkT, ErrorT> {
     return okValue == null;
   }
 
-  public boolean isErrorValueNull() {
+  public boolean isErrValueNull() {
     return errorValue == null;
   }
 
   @NotNull
   public Optional<OkT> getOkValueOpt() {
-    return Optional.ofNullable(getOkValue());
+    return Optional.ofNullable(okValue != null ? getOkValue() : null);
   }
 
   @NotNull
-  public Optional<ErrorT> getErrorValueOpt() {
-    return Optional.ofNullable(getErrValue());
+  public Optional<ErrorT> getErrValueOpt() {
+    return Optional.ofNullable(errorValue != null ? getErrValue() : null);
   }
 
   /**

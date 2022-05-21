@@ -114,7 +114,7 @@ public class ConfigLoader {
 
     if (configLoadResult.isErr()) {
       logger.error("Error while loading GameWorldConfig");
-      configLoadResult.getErrorValueOpt().ifPresent(ex -> logger.error(ex.getMessage()));
+      configLoadResult.getErrValueOpt().ifPresent(ex -> logger.error(ex.getMessage()));
       return configLoadResult;
     } else if (configLoadResult.getOkValue() == null) {
       return Result.err(new RuntimeException("loadGameWorldConfig returned null config"));
@@ -172,7 +172,7 @@ public class ConfigLoader {
 
           if (result.isErr()) {
             // TODO: consider returning loading error here
-            result.getErrorValueOpt().ifPresentOrElse(ex -> {
+            result.getErrValueOpt().ifPresentOrElse(ex -> {
               String exceptionMessage = ex.getMessage();
               logger.warn("Validation for game object config with tag: "
                   + gameObjectConfig.getTag() + " failed."

@@ -24,7 +24,7 @@ public class Main extends Application {
     if (initializationResult.isErr()) {
       logger.error("Initialization error");
 
-      initializationResult.getErrorValueOpt().ifPresentOrElse(
+      initializationResult.getErrValueOpt().ifPresentOrElse(
           ex -> {
             logger.error(ex.getMessage());
             ex.printStackTrace();
