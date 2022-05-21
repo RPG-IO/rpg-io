@@ -5,6 +5,7 @@ import io.rpg.model.actions.ActionConsumer;
 import io.rpg.model.data.Position;
 import io.rpg.model.object.GameObject;
 import java.util.ArrayList;
+import javafx.geometry.Point2D;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,6 +20,7 @@ class LocationModelTest {
     locationModel = builder
         .setGameObjects(new ArrayList<>())
         .setTag("test")
+        .setBounds(new Point2D(10, 10))
         .build();
   }
 

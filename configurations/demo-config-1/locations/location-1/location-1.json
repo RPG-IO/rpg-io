@@ -7,5 +7,7 @@
     { "tag": "object-4", "position": { "row": 3, "col": 2 }, "type": "dialog", "assetPath": "assets/zombie.png" },
     { "tag": "object-5", "position": { "row": 8, "col": 8 }, "type": "dialog", "assetPath": "assets/chest.png" }
   ],
-  "backgroundPath": "assets/map.png"
+  "backgroundPath": "assets/map.png",
+  "width": 10,
+  "height": 10
 }
