@@ -2,6 +2,7 @@ package io.rpg.controller;
 
 import io.rpg.model.actions.Action;
 import io.rpg.model.actions.ActionConsumer;
+import io.rpg.model.actions.ShowDescriptionAction;
 import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
@@ -102,6 +103,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     this.currentModel = nextModel;
     this.currentView = nextView;
     mainStage.setScene(nextView);
+  }
+
+  private void onAction(ShowDescriptionAction action) {
+    popupController.openTextImagePopup(action.description, action.image, getWindowCenterX(), getWindowCenterY());
   }
 
   public Scene getView() {
