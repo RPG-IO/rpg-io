@@ -129,6 +129,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       popupController.hidePopup();
       System.out.println("wrong answer");
     }
+  }
 
   private void onAction(GameEndAction action) {
     GameEndView view = GameEndView.load();
