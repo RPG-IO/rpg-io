@@ -72,4 +72,8 @@ public class PlayerController implements KeyboardEvent.Observer {
   public Player getPlayer() {
     return player;
   }
+
+  public void addPoints(int pointsCount) {
+    player.addPoints(pointsCount);
+  }
 }

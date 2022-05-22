@@ -28,7 +28,7 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
   private final HashMap<GameObject, ChangeListener<Point2D>> positionListeners;
   private final HashMap<Position, GameObject> positionGameObjectMap;
   private final HashMap<MapDirection, String> directionToLocationMap;
-  public final Point2D bounds;
+  public Point2D bounds;
   private final Set<LocationModelStateChange.Observer> locationModelStateChangeObservers;
 
 
@@ -42,7 +42,6 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
     this.locationModelStateChangeObservers = new LinkedHashSet<>();
     this.positionListeners = new HashMap<>();
     this.positionGameObjectMap = new HashMap<>();
-    this.bounds = new Point2D(10, 10); // TODO: 09.05.2022 Implement loading from config
     this.directionToLocationMap = new HashMap<>();
 
     directionToLocationMap.put(MapDirection.NORTH, "location-1");
@@ -215,6 +214,11 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
 
     public Builder setGameObjects(@NotNull List<GameObject> gameObjects) {
       locationModel.setGameObjects(gameObjects);
+      return this;
+    }
+
+    public Builder setBounds(Point2D bounds) {
+      locationModel.bounds = bounds;
       return this;
     }
 

@@ -15,6 +15,8 @@ public class QuestionPopup extends Scene {
 
   private final QuestionPopupViewModel viewModel;
   private final Question question;
+  private Runnable successCallback;
+  private Runnable failureCallback;
 
   public QuestionPopup(Question question, String backgroundPath) {
     this(question);
@@ -38,36 +40,39 @@ public class QuestionPopup extends Scene {
     this.setRoot(root);
 
     viewModel = loader.getController();
-    viewModel.setQuestion(question.question(), question.answers());
+    viewModel.setQuestion(question);
 
     viewModel.setButtonCallback('A', event -> this.answerSelected('A'));
     viewModel.setButtonCallback('B', event -> this.answerSelected('B'));
     viewModel.setButtonCallback('C', event -> this.answerSelected('C'));
     viewModel.setButtonCallback('D', event -> this.answerSelected('D'));
 
+    viewModel.setBackgroundImage("file:assets/popup-background-3.png");
+
     this.setFill(Color.TRANSPARENT);
   }
 
   public void answerSelected(char answer) {
-    char correctAnswer = question.correctAnswer();
+    char correctAnswer = question.getCorrectAnswerChar();
     if (answer == correctAnswer){
       viewModel.setQuestionLabel("Correct!");
+      viewModel.setAllButtonsCallback(event -> this.successCallback.run());
+      this.setOnMouseClicked(event -> this.successCallback.run());
     } else {
       viewModel.highlightWrong(answer);
-      viewModel.setQuestionLabel("Answer " + answer + " is incorrect. The correct answer is " + correctAnswer + ": " + question.answers()[getAnswerIndex(correctAnswer)]);
+      viewModel.setQuestionLabel("Answer " + answer + " is incorrect. The correct answer is " + correctAnswer + ": " + question.getCorrectAnswer());
+      viewModel.setAllButtonsCallback(event -> this.failureCallback.run());
+      this.setOnMouseClicked(event -> this.failureCallback.run());
     }
 
     viewModel.highlightCorrect(correctAnswer);
-    viewModel.removeButtonCallbacks();
   }
 
-  private int getAnswerIndex(char answerCode) {
-    return switch (answerCode) {
-      case 'A' -> 0;
-      case 'B' -> 1;
-      case 'C' -> 2;
-      case 'D' -> 3;
-      default -> throw new IllegalStateException("Unexpected answer code: " + answerCode);
-    };
+  public void setSuccessCallback(Runnable successCallback) {
+    this.successCallback = successCallback;
+  }
+
+  public void setFailureCallback(Runnable failureCallback) {
+    this.failureCallback = failureCallback;
   }
 }

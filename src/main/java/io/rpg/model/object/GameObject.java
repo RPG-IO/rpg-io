@@ -2,6 +2,8 @@ package io.rpg.model.object;
 
 import io.rpg.model.actions.Action;
 import io.rpg.model.actions.BaseActionEmitter;
+import io.rpg.model.actions.DialogueAction;
+import io.rpg.model.actions.QuizAction;
 import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.Position;
 import java.lang.reflect.Field;
@@ -11,6 +13,7 @@ import java.util.Set;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,7 +53,7 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
     this.tag = tag;
     this.stateChangeObservers = new LinkedHashSet<>();
     this.exactPositionProperty = new SimpleObjectProperty<>(new Point2D(position.col, position.row));
-    this.onLeftClickAction = Action.VOID;
+    this.onLeftClickAction = new QuizAction(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'));
     this.onRightClickAction = Action.VOID;
   }
 
@@ -142,6 +145,7 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
     NAVIGABLE("navigable"),
     DIALOG("dialog"),
     PLAYER("player"),
+    QUIZ("quiz"),
     COLLECTIBLE("collectible");
 
     private final String asString;

@@ -22,6 +22,7 @@ public class GameObjectFactory {
       case DIALOG -> { return new DialogGameObject(config.getTag(), config.getPosition()); }
       case PLAYER -> { return new Player(config.getTag(), config.getPosition(), config.getAssetPath()); }
       case NAVIGABLE -> { return new NavigationalGameObject(config.getTag(), config.getPosition()); }
+      case QUIZ -> { return new QuizGameObject(config.getTag(), config.getPosition()); }
       default -> throw new RuntimeException("Unknown GameObject type. This should not happen!");
     }
   }
