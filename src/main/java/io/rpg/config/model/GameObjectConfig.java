@@ -1,5 +1,6 @@
 package io.rpg.config.model;
 
+import com.google.gson.annotations.SerializedName;
 import io.rpg.model.data.Position;
 import io.rpg.util.DataObjectDescriptionProvider;
 import io.rpg.util.ErrorMessageBuilder;
@@ -33,15 +34,25 @@ public class GameObjectConfig {
   protected String assetPath;
 
   /**
-   *
-   */
-  private String type;
-
-  /**
    * Config for the action triggered when object is pressed.
    */
   @Nullable
-  private ActionConfig onPress;
+  @SerializedName(value = "onClick", alternate = {"onPress", "on-press", "on-click"})
+  private ActionConfig onClick;
+
+  /**
+   * Config for the action triggered when the object is right-clicked.
+   */
+  @Nullable
+  @SerializedName(value = "onRightClick", alternate = {"on-right-click", "onRightPress", "on-right-press"})
+  private ActionConfig onRightClick;
+
+  /**
+   * Config for the action triggered when the object is left-clicked.
+   */
+  @Nullable
+  @SerializedName(value = "onLeftClick", alternate = {"on-left-click", "onLeftPress", "on-left-press"})
+  private ActionConfig onLeftClick;
 
   /**
    * Config for the action triggered when player approaches
@@ -53,11 +64,6 @@ public class GameObjectConfig {
   public GameObjectConfig(@NotNull String tag, @NotNull Position position) {
     this.tag = tag;
     this.position = position;
-  }
-
-  public String getTypeString() {
-    assert type != null : "Attempt to access uninitialized \"type\" field!";
-    return type;
   }
 
   @NotNull
@@ -76,8 +82,18 @@ public class GameObjectConfig {
   }
 
   @Nullable
-  public ActionConfig getOnPress() {
-    return onPress;
+  public ActionConfig getOnClick() {
+    return onClick;
+  }
+
+  @Nullable
+  public ActionConfig getOnRightClick() {
+    return onRightClick;
+  }
+
+  @Nullable
+  public ActionConfig getOnLeftClick() {
+    return onLeftClick;
   }
 
   @Nullable
@@ -124,11 +140,20 @@ public class GameObjectConfig {
     if (gameObjectConfig.position != null) {
       this.position = gameObjectConfig.position;
     }
-    if (gameObjectConfig.getTypeString() != null) {
-      this.type = gameObjectConfig.getTypeString();
-    }
     if (gameObjectConfig.assetPath != null) {
       this.assetPath = gameObjectConfig.assetPath;
+    }
+    if (gameObjectConfig.onApproach != null) {
+      this.onApproach = gameObjectConfig.onApproach;
+    }
+    if (gameObjectConfig.onLeftClick != null) {
+      this.onLeftClick = gameObjectConfig.onLeftClick;
+    }
+    if (gameObjectConfig.onRightClick != null) {
+      this.onRightClick = gameObjectConfig.onRightClick;
+    }
+    if (gameObjectConfig.onClick != null) {
+      this.onClick = gameObjectConfig.onClick;
     }
   }
 
