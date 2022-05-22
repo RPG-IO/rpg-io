@@ -1,6 +1,7 @@
 package io.rpg.config.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Since;
 import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.Result;
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +37,20 @@ public class ActionConfig {
   private String actionTypeString;
 
   /**
+   * Action to be triggered before the proper action is executed.
+   */
+  @Nullable
+  @SerializedName(value = "before", alternate = {"beforeAction", "before-action"})
+  private ActionConfig beforeAction;
+
+  /**
+   * Action to be triggered after the proper action had been executed.
+   */
+  @Nullable
+  @SerializedName(value = "after", alternate = {"afterAction", "after-action"})
+  private ActionConfig afterAction;
+
+  /**
    * Package scoped constructor, meant for test purposes only.
    */
   ActionConfig(@NotNull String tag, @NotNull String actionType) {
@@ -69,6 +84,16 @@ public class ActionConfig {
   @Nullable
   public String getActionTypeString() {
     return actionTypeString;
+  }
+
+  @Nullable
+  public ActionConfig getBeforeAction() {
+    return beforeAction;
+  }
+
+  @Nullable
+  public ActionConfig getAfterAction() {
+    return afterAction;
   }
 
   /**
