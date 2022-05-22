@@ -213,7 +213,6 @@ public class ConfigLoader {
       Result<GameObjectConfig, Exception> result = gameObjectConfig.validate();
 
       if (result.isErr()) {
-        // TODO: consider returning loading error here
         result.getErrValueOpt().ifPresentOrElse(ex -> {
           String exceptionMessage = ex.getMessage();
           logger.warn("Validation for game object config with tag: "
@@ -223,6 +222,8 @@ public class ConfigLoader {
             logger.warn("Validation for game object config with tag: "
                 + gameObjectConfig.getTag() + " failed with null result.");
           });
+        return Result.err(new Exception("Validation for game object config with tag: " + gameObjectConfig.getTag()
+            + " failed."));
       } else {
         logger.info("Loaded GameObjectConfig for tag: " + gameObjectConfig.getTag() + ":" + gameObjectConfig);
       }
