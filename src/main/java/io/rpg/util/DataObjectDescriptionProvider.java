@@ -1,24 +1,22 @@
 package io.rpg.util;
 
-import io.rpg.config.model.GameObjectConfig;
-
-import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class DataObjectDescriptionProvider {
-  public static String getFieldDescription(Object object, Class clazz) {
+  public static String getFieldDescription(Object object, Class<?> clazz) {
     StringBuilder builder = new StringBuilder();
-    for (Field field : clazz.getDeclaredFields()) {
+    Arrays.stream(clazz.getDeclaredFields()).filter(field -> !field.getName().startsWith("$")).forEach(field -> {
       try {
-        Optional<Object> fieldValue = Optional.ofNullable(field.get(object));
-        fieldValue.ifPresent(_fieldValue -> builder.append('\t')
+        field.setAccessible(true);
+        Optional.ofNullable(field.get(object)).ifPresent(value -> builder.append('\t')
             .append(field.getName())
             .append(": ")
-            .append(_fieldValue)
+            .append(value)
             .append(",\n")
         );
       } catch (IllegalAccessException ignored) { /* noop */ }
-    }
+    });
     return builder.toString();
   }
 
