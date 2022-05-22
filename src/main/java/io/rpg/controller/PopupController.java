@@ -51,6 +51,16 @@ public class PopupController {
     openTextImagePopup("You earned " + pointsCount + " points!", coinImage, x, y);
   }
 
+  public void openQuestionPopup(Question question, int x, int y, Runnable successCallback, Runnable failureCallback) {
+    QuestionPopup popupScene = new QuestionPopup(question);
+    popupScene.setSuccessCallback(successCallback);
+    popupScene.setFailureCallback(failureCallback);
+    popupStage.setScene(popupScene);
+    popupStage.show();
+    popupStage.setX(x - popupScene.getWidth() / 2);
+    popupStage.setY(y - popupScene.getHeight() / 2);
+  }
+
   public void openQuestionPopup(Question question, int x, int y) {
     QuestionPopup popupScene = new QuestionPopup(question);
     popupStage.setScene(popupScene);
@@ -58,6 +68,7 @@ public class PopupController {
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
   }
+
 
   public void hidePopup() {
     popupStage.hide();

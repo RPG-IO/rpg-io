@@ -3,17 +3,23 @@ package io.rpg.controller;
 import io.rpg.model.actions.Action;
 import io.rpg.model.actions.ActionConsumer;
 import io.rpg.model.actions.ShowDescriptionAction;
+import io.rpg.model.actions.GameEndAction;
 import io.rpg.model.actions.LocationChangeAction;
+import io.rpg.model.actions.QuizAction;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
 import io.rpg.model.location.LocationModel;
-import io.rpg.model.object.*;
+import io.rpg.model.object.GameObject;
+import io.rpg.model.object.Question;
 import io.rpg.util.Result;
+import io.rpg.view.GameEndView;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
+import java.util.List;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -22,9 +28,6 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.LinkedHashMap;
-import java.util.List;
 
 public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Observer, ActionConsumer {
   private Scene currentView;
@@ -111,6 +114,39 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     }
   }
 
+  private void onAction(QuizAction action) {
+    int pointsCount = action.getPointsToEarn();
+    popupController.openQuestionPopup(
+        action.question,
+        getWindowCenterX(), getWindowCenterY(),
+        () -> acceptQuizResult(true, pointsCount),
+        () -> acceptQuizResult(false, 0)
+    );
+    action.setPointsToEarn(0);
+  }
+
+  public void acceptQuizResult(boolean correct, int pointsCount) {
+    if (correct) {
+      playerController.addPoints(pointsCount);
+      popupController.hidePopup();
+      if (pointsCount > 0)
+        popupController.openPointsPopup(pointsCount, getWindowCenterX(), getWindowCenterY());
+    } else {
+      popupController.hidePopup();
+      System.out.println("wrong answer");
+    }
+  }
+
+  private void onAction(GameEndAction action) {
+    GameEndView view = GameEndView.load();
+    view.setDescription(action.description);
+    double prevWidth = mainStage.getWidth();
+    double prevHeight = mainStage.getHeight();
+    mainStage.setScene(view);
+    mainStage.setWidth(prevWidth);
+    mainStage.setHeight(prevHeight);
+  }
+  
   public Scene getView() {
     return currentView;
   }
@@ -155,7 +191,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
         case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
         case Q -> popupController.openQuestionPopup(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'), getWindowCenterX(), getWindowCenterY());
-        case L -> consumeAction((Action) new LocationChangeAction("location-2", new Position(1, 2)));
+        case L -> consumeAction(new LocationChangeAction("location-2", new Position(1, 2)));
+        case U -> consumeAction(new GameEndAction("You have pressed the forbidden button"));
       }
     }
     // } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
