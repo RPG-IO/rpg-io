@@ -31,7 +31,13 @@ public class GameObjectConfig {
    * Path to the image representing this object.
    */
   @Nullable
-  protected String assetPath;
+  private String assetPath;
+
+  /**
+   * Description of the object.
+   */
+  @Nullable
+  private String description;
 
   /**
    * Config for the action triggered when object is pressed.
@@ -74,6 +80,10 @@ public class GameObjectConfig {
   @Nullable
   public String getAssetPath() {
     return assetPath;
+  }
+
+  public String getDescription() {
+    return description;
   }
 
   @Nullable
