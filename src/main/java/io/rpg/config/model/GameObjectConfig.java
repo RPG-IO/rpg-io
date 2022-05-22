@@ -31,6 +31,7 @@ public class GameObjectConfig {
    * Path to the image representing this object.
    */
   @Nullable
+  @SerializedName(value = "asset-path", alternate = {"assetPath", "asset"})
   private String assetPath;
 
   /**
@@ -65,6 +66,7 @@ public class GameObjectConfig {
    * the object.
    */
   @Nullable
+  @SerializedName(value = "onApproach", alternate = {"on-approach"})
   private ActionConfig onApproach;
 
   public GameObjectConfig(@NotNull String tag, @NotNull Position position) {

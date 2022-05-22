@@ -7,8 +7,9 @@
 3. [`locations` directory](#locations-directory)
 4. [Location configuration](#location-configuration)
 5. [`GameObject` configuration](#gameobject-configuration)
-6. [Example of full configuration structure](#example-of-full-configuration-structure)
-7. [Example configurations](#example-configurations)
+6. [Action configuration](#action-configuration)
+7. [Example of full configuration structure](#example-of-full-configuration-structure)
+8. [Example configurations](#example-configurations)
 
 ## Root directory
 
@@ -31,10 +32,8 @@ File in `json` format. Specifies a single object that must specify
 following props:
 
 * `tag` - It represents the game's name.
-* `locations` - List of location tags. Only locations mentioned here are
-    loaded by the engine. However, this is a subject to change. In the future
-    we want to load all the locations specified in `locations` directory w/o the need
-    to specify their tags here.
+* `locations` - List of location tags. All the locations specified in `locations` are loaded, however this field is left
+    for backward-compatibility.
 * `player` - Player object specification. It follows the `GameObject` specification
     rules. (TODO: add hyperlink to that section)
 * `rootLocation` - `tag` of first-to-be-displayed location.
@@ -66,11 +65,9 @@ must exactly match location's tag.
 
 Each subdirectory contains detailed location configuration (explained below).
 
-In the future, there will be no need to define locations tags in `root.json`. 
-Instead, names of the subdirectories will be treated as location tags & 
+Names of the subdirectories are treated as location tags & 
 location object will be created, by the engine for every subdirectory that contains
-correct location configuration (right now, the engine creates it only for the 
-locations mentioned in `root.json`).
+correct location configuration .
 
 
 e.g., there are two location configured in the game: `location-1`, `location-2`:
@@ -101,11 +98,13 @@ It consists of:
 * `tag` - Location tag. Must be unique across all locations in the game. \
     It is possible that in future versions it will be removed and location 
     tag will be deduced from directory name.
-* `objects` - List of `GameObject` configurations. 
+* `objects` - List of `GameObject` configurations. This field was left for backward compat, but it also allows you to 
+    configure small objects in-line w/o need to create separate config file for them.
 * `backgroundPath` - Path to the background asset. As any path, it must be eiter absolute or relative to the engine's source root.
 
-In the future, we plan to drop necessity of specifying objects in location config. Instead,
-all the objects configured in `objects` directory will be loaded.
+All the objects configured in `objects` directory are loaded. You don't have to specify them inside `<location-tag>.json` file.
+Note however, that object tags must be unique (as for now, in the future we plan to introduce special prefix for tag, that will
+allow for multiple objects with the same tag).
 
 location config example:
 
@@ -135,8 +134,18 @@ location-1
 * `tag` - Unique id for the object across all game objects.
 * `position` - Position of the object in the location. See examples.
 * `assetPath` - Path to the asset representing this game object. As any path, it must be eiter absolute or relative to the engine's source root.
-* *(optional)* `onPress` - Configuration for the action to be triggered when user clicks on the object. See [action configuration](TODO!!).
-* *(optional)* `onApproach` - Configuration for the action to be triggered when user comes close enough to the object. See [action configuration](TODO!!!).
+    Aliases: `asset-path`, `asset`.
+* *(optional)* `onClick` - Configuration for the action to be triggered when user clicks on the object. See [action configuration](#action-configuration).
+    Aliases: `onPress`, `on-press`, `on-click`.
+* *(optional)* `onLeftClick` - Configuration for the action to be triggered when user left-clicks on the object. See [action configuration](#action-configuration).
+    Aliases: `on-left-click`, `onLeftPress`, `on-left-press`.
+* *(optional)* `onRightClick` - Configuration for the action to be triggered when user right-clicks on the object. see [action configuration](#action-configuration).
+    Aliases: `on-left-click`, `onRightPress`, `on-right-press`.
+* *(optional)* `onApproach` - Configuration for the action to be triggered when user comes close enough to the object. See [action configuration](#action-configuration).
+    Aliases: `on-approach`.
+
+## Action configuration
+
 
 
 ## Example of full configuration structure
