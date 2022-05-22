@@ -6,6 +6,4 @@ public class GameEndAction implements Action {
   public GameEndAction(String description) {
     this.description = description;
   }
-
-
 }
