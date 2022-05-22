@@ -165,6 +165,9 @@ public class GameObjectConfig {
     if (gameObjectConfig.onClick != null) {
       this.onClick = gameObjectConfig.onClick;
     }
+    if (gameObjectConfig.description != null) {
+      this.description = gameObjectConfig.description;
+    }
   }
 
   @Override
