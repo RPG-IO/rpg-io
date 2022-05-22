@@ -2,12 +2,10 @@ package io.rpg.view.popups;
 
 import io.rpg.model.object.Question;
 import io.rpg.viewmodel.QuestionPopupViewModel;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
@@ -17,8 +15,8 @@ public class QuestionPopup extends Scene {
 
   private final QuestionPopupViewModel viewModel;
   private final Question question;
-  private EventHandler<? super MouseEvent> successCallback;
-  private EventHandler<? super MouseEvent> failureCallback;
+  private Runnable successCallback;
+  private Runnable failureCallback;
 
   public QuestionPopup(Question question, String backgroundPath) {
     this(question);
@@ -58,23 +56,23 @@ public class QuestionPopup extends Scene {
     char correctAnswer = question.getCorrectAnswerChar();
     if (answer == correctAnswer){
       viewModel.setQuestionLabel("Correct!");
-      viewModel.setAllButtonsCallback(this.successCallback);
-      this.setOnMouseClicked(this.successCallback);
+      viewModel.setAllButtonsCallback(event -> this.successCallback.run());
+      this.setOnMouseClicked(event -> this.successCallback.run());
     } else {
       viewModel.highlightWrong(answer);
       viewModel.setQuestionLabel("Answer " + answer + " is incorrect. The correct answer is " + correctAnswer + ": " + question.getCorrectAnswer());
-      viewModel.setAllButtonsCallback(this.failureCallback);
-      this.setOnMouseClicked(this.failureCallback);
+      viewModel.setAllButtonsCallback(event -> this.failureCallback.run());
+      this.setOnMouseClicked(event -> this.failureCallback.run());
     }
 
     viewModel.highlightCorrect(correctAnswer);
   }
 
-  public void setSuccessCallback(EventHandler<? super MouseEvent> successCallback) {
+  public void setSuccessCallback(Runnable successCallback) {
     this.successCallback = successCallback;
   }
 
-  public void setFailureCallback(EventHandler<? super MouseEvent> failureCallback) {
+  public void setFailureCallback(Runnable failureCallback) {
     this.failureCallback = failureCallback;
   }
 }

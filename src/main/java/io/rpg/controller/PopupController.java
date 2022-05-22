@@ -4,10 +4,7 @@ import io.rpg.model.object.Question;
 import io.rpg.view.popups.QuestionPopup;
 import io.rpg.view.popups.TextImagePopup;
 import io.rpg.view.popups.TextPopup;
-import javafx.event.EventHandler;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -54,7 +51,7 @@ public class PopupController {
     openTextImagePopup("You earned " + pointsCount + " points!", coinImage, x, y);
   }
 
-  public void openQuestionPopup(Question question, int x, int y, EventHandler<? super MouseEvent> successCallback, EventHandler<? super MouseEvent> failureCallback) {
+  public void openQuestionPopup(Question question, int x, int y, Runnable successCallback, Runnable failureCallback) {
     QuestionPopup popupScene = new QuestionPopup(question);
     popupScene.setSuccessCallback(successCallback);
     popupScene.setFailureCallback(failureCallback);

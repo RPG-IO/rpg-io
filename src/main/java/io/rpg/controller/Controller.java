@@ -113,8 +113,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     popupController.openQuestionPopup(
         action.question,
         getWindowCenterX(), getWindowCenterY(),
-        event -> acceptQuizResult(true, pointsCount),
-        event -> acceptQuizResult(false, 0)
+        () -> acceptQuizResult(true, pointsCount),
+        () -> acceptQuizResult(false, 0)
     );
     action.setPointsToEarn(0);
   }
@@ -139,7 +139,6 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     mainStage.setScene(view);
     mainStage.setWidth(prevWidth);
     mainStage.setHeight(prevHeight);
-
   }
 
   public Scene getView() {
