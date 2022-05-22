@@ -87,9 +87,6 @@ public class ActionConfig {
 
     if (actionTypeString == null) {
       builder.append("No action type provided");
-    } else if (false) {
-      // TODO: validate action type (?)
-      builder.append("Invalid action type: " + actionTypeString);
     }
 
     return builder.isEmpty() ? Result.ok() :
