@@ -189,9 +189,20 @@ public class ConfigLoader {
             logger.info("Detected configuration for object with tag: " + objectTag);
             GameObjectConfig config = gson.fromJson(Files.newBufferedReader(objectConfigPath), GameObjectConfig.class);
 
+            Result<GameObjectConfig, Exception> validationResult = config.validate();
+
+            if (validationResult.isErr()) {
+              String error = "Validation for object with tag: " + objectTag + " failed."
+                  + (validationResult.isErrValueNull() ? "No reason provided."
+                  : "Reason: " + validationResult.getErrValue().getMessage());
+              logger.error(error);
+              return Result.err(new Exception(error));
+            }
+
             if (!config.getTag().equals(objectTag)) {
-              logger.warn("Objects tag does not match file name!");
-              continue;
+              String error = "Object tag: " + config.getTag() + " does not match tag deduced from file name: " + objectTag;
+              logger.error(error);
+              return Result.err(new Exception(error));
             }
 
             locationConfig.getGameObjectConfigForTag(objectTag).ifPresentOrElse(existingConfig -> {
