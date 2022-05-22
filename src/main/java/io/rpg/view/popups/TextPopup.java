@@ -37,6 +37,8 @@ public class TextPopup extends Scene {
 
     viewModel = loader.getController();
     viewModel.setText(text);
+    viewModel.setBackgroundImage("file:assets/popup-background.png");
+    viewModel.setOkButtonImage("file:assets/button-image.png");
     this.setFill(Color.TRANSPARENT);
   }
 

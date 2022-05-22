@@ -4,6 +4,7 @@ import io.rpg.model.actions.Action;
 import io.rpg.model.actions.ActionConsumer;
 import io.rpg.model.actions.GameEndAction;
 import io.rpg.model.actions.LocationChangeAction;
+import io.rpg.model.actions.QuizAction;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
@@ -104,6 +105,30 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     this.currentModel = nextModel;
     this.currentView = nextView;
     mainStage.setScene(nextView);
+  }
+
+
+  private void onAction(QuizAction action) {
+    int pointsCount = action.getPointsToEarn();
+    popupController.openQuestionPopup(
+        action.question,
+        getWindowCenterX(), getWindowCenterY(),
+        () -> acceptQuizResult(true, pointsCount),
+        () -> acceptQuizResult(false, 0)
+    );
+    action.setPointsToEarn(0);
+  }
+
+  public void acceptQuizResult(boolean correct, int pointsCount) {
+    if (correct) {
+      playerController.addPoints(pointsCount);
+      popupController.hidePopup();
+      if (pointsCount > 0)
+        popupController.openPointsPopup(pointsCount, getWindowCenterX(), getWindowCenterY());
+    } else {
+      popupController.hidePopup();
+      System.out.println("wrong answer");
+    }
   }
 
   private void onAction(GameEndAction action) {
