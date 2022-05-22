@@ -2,6 +2,7 @@ package io.rpg.controller;
 
 import io.rpg.model.actions.Action;
 import io.rpg.model.actions.ActionConsumer;
+import io.rpg.model.actions.ShowDescriptionAction;
 import io.rpg.model.actions.GameEndAction;
 import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.actions.QuizAction;
@@ -107,6 +108,11 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     mainStage.setScene(nextView);
   }
 
+  private void onAction(ShowDescriptionAction action) {
+    if (!action.description.isEmpty()) {
+      popupController.openTextImagePopup(action.description, action.image, getWindowCenterX(), getWindowCenterY());
+    }
+  }
 
   private void onAction(QuizAction action) {
     int pointsCount = action.getPointsToEarn();
@@ -140,7 +146,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     mainStage.setWidth(prevWidth);
     mainStage.setHeight(prevHeight);
   }
-
+  
   public Scene getView() {
     return currentView;
   }
