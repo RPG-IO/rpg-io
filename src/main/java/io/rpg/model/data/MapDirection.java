@@ -18,7 +18,6 @@ public enum MapDirection {
    * @param v Vector with one coordinate equal to 0 and another equal to 1 or -1.
    * @return MapDirection.
    */
-
   public static MapDirection fromDirectionVector(Point2D v) {
     v = v.normalize();
 
