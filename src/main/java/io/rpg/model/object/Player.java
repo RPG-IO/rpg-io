@@ -14,6 +14,7 @@ public class Player extends GameObject {
   private boolean upPressed;
   private boolean downPressed;
   private GameObjectView gameObjectView;
+  private int points;
 
 
   public Player(@NotNull String tag, @NotNull Position position, @NotNull String assetPath) {
@@ -36,7 +37,7 @@ public class Player extends GameObject {
     float x = 0;
 //        the sum tells us the direction
     if (upPressed) {
-      y += -1;
+      y -= 1;
     }
 
     if (downPressed) {
@@ -44,7 +45,7 @@ public class Player extends GameObject {
     }
 
     if (leftPressed) {
-      x += -1;
+      x -= 1;
     }
 
     if (rightPressed) {
@@ -80,6 +81,14 @@ public class Player extends GameObject {
 
   public void setGameObjectView(GameObjectView gameObjectView) {
     this.gameObjectView = gameObjectView;
+  }
+
+  public int getPoints() {
+    return points;
+  }
+
+  public void addPoints(int value) {
+    points += value;
   }
 
 }
