@@ -1,8 +1,6 @@
 package io.rpg.config.model;
 
 import io.rpg.model.data.Position;
-import io.rpg.model.object.GameObject;
-import io.rpg.model.object.GameObjects;
 import io.rpg.util.DataObjectDescriptionProvider;
 import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.Result;
@@ -16,12 +14,28 @@ import org.jetbrains.annotations.Nullable;
 public class GameObjectConfig {
 
   /**
+   * Position of game object in model's representation of location.
+   */
+  @Nullable
+  protected Position position;
+
+  /**
+   * Unique identifier of this game object.
+   * This value is set in location
+   */
+  @NotNull
+  private String tag;
+
+  /**
+   * Path to the image representing this object.
+   */
+  @Nullable
+  protected String assetPath;
+
+  /**
    *
    */
   private String type;
-  private String tag;
-  private Position position;
-  private String assetPath;
 
   /**
    * Config for the action triggered when object is pressed.
@@ -41,21 +55,46 @@ public class GameObjectConfig {
     this.position = position;
   }
 
+  public String getTypeString() {
+    assert type != null : "Attempt to access uninitialized \"type\" field!";
+    return type;
+  }
+
+  @NotNull
   public String getTag() {
     return tag;
   }
 
-  public Position getPosition() {
-    return position;
-  }
-
+  @Nullable
   public String getAssetPath() {
     return assetPath;
   }
 
-  public String getTypeString() {
-    assert type != null : "Attempt to access uninitialized \"type\" field!";
-    return type;
+  @Nullable
+  public ActionConfig getOnApproach() {
+    return onApproach;
+  }
+
+  @Nullable
+  public ActionConfig getOnPress() {
+    return onPress;
+  }
+
+  @Nullable
+  public Position getPosition() {
+    return position;
+  }
+
+  /**
+   * Only validates presence of objects tag. Meant for use in some special cases in {@link io.rpg.config.ConfigLoader}.
+   *
+   * @return maybe-valid {@link GameObjectConfig} or exception.
+   */
+  public Result<GameObjectConfig, Exception> validateBasic() {
+    if (tag == null || tag.isBlank()) {
+      return Result.err(new Exception("Invalid or no tag provided"));
+    }
+    return Result.ok();
   }
 
   /**
@@ -66,28 +105,36 @@ public class GameObjectConfig {
   public Result<GameObjectConfig, Exception> validate() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
 
-    if (!GameObjects.isValidType(type)) {
-      // TODO: remove this validation as there is no longer
-      // bounding between object type and action.
-
-      builder.append("Invalid object type: " + type);
+    if (tag == null) {
+      builder.append("No tag provided");
+    } else if (tag.isBlank()) {
+      builder.append("Blank tag");
+    }
+    if (assetPath == null || assetPath.isBlank()) {
+      builder.append("Invalid path to asset");
+    }
+    if (position == null) {
+      builder.append("No position provided");
     }
 
-    return builder.isEmpty() ? Result.ok(this) :
-        Result.err(new IllegalStateException(builder.toString()));
+    return builder.isEmpty() ? Result.ok(this) : Result.err(new Exception(builder.toString()));
   }
 
   public void updateFrom(GameObjectConfig gameObjectConfig) {
-    this.position = gameObjectConfig.position;
+    if (gameObjectConfig.position != null) {
+      this.position = gameObjectConfig.position;
+    }
     if (gameObjectConfig.getTypeString() != null) {
       this.type = gameObjectConfig.getTypeString();
+    }
+    if (gameObjectConfig.assetPath != null) {
+      this.assetPath = gameObjectConfig.assetPath;
     }
   }
 
   @Override
   public String toString() {
     return DataObjectDescriptionProvider.combineDescriptions(
-        DataObjectDescriptionProvider.getFieldDescription(this, GameObject.class),
         DataObjectDescriptionProvider.getFieldDescription(this, GameObjectConfig.class)
     );
   }

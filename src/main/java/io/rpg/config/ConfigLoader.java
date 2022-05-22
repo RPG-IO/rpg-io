@@ -189,7 +189,7 @@ public class ConfigLoader {
             logger.info("Detected configuration for object with tag: " + objectTag);
             GameObjectConfig config = gson.fromJson(Files.newBufferedReader(objectConfigPath), GameObjectConfig.class);
 
-            Result<GameObjectConfig, Exception> validationResult = config.validate();
+            Result<GameObjectConfig, Exception> validationResult = config.validateBasic();
 
             if (validationResult.isErr()) {
               String error = "Validation for object with tag: " + objectTag + " failed."
