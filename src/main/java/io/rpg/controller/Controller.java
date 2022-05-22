@@ -2,6 +2,7 @@ package io.rpg.controller;
 
 import io.rpg.model.actions.Action;
 import io.rpg.model.actions.ActionConsumer;
+import io.rpg.model.actions.DialogueAction;
 import io.rpg.model.actions.ShowDescriptionAction;
 import io.rpg.model.actions.GameEndAction;
 import io.rpg.model.actions.LocationChangeAction;
@@ -106,6 +107,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     this.currentModel = nextModel;
     this.currentView = nextView;
     mainStage.setScene(nextView);
+  }
+
+  private void onAction(DialogueAction action) {
+    popupController.openDialoguePopup(action.text, action.image, getWindowCenterX(), getWindowCenterY()); //TODO: load text from config
   }
 
   private void onAction(ShowDescriptionAction action) {
