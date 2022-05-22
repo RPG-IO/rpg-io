@@ -179,10 +179,6 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       return Result.err(new Exception("Empty tag to location view map!"));
     else if (tagToLocationViewMap.size() != tagToLocationModelMap.size())
       return Result.err(new Exception("Mismatched sizes of maps!"));
-    else if (currentView == null)
-      return Result.err(new Exception("No current view set!"));
-    else if (currentModel ==  null)
-      return Result.err(new Exception("No current model set!"));
     else
       return Result.ok(this);
   }
