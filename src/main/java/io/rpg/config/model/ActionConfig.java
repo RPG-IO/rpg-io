@@ -19,7 +19,7 @@ public class ActionConfig {
    * blank string.
    */
   @Nullable
-  private final String tag;
+  private String tag;
 
   /**
    * String representing action type.
@@ -33,7 +33,7 @@ public class ActionConfig {
    */
   @Nullable
   @SerializedName("type")
-  private final String actionTypeString;
+  private String actionTypeString;
 
   /**
    * Package scoped constructor, meant for test purposes only.
