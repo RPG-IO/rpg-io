@@ -20,6 +20,4 @@ public class LocationChangeAction implements Action {
     this.destinationLocationTag = destinationLocationTag;
     this.playerPosition = playerPosition;
   }
-
-
 }
