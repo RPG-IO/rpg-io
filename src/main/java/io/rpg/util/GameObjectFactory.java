@@ -4,7 +4,6 @@ import io.rpg.config.model.GameObjectConfig;
 import io.rpg.model.object.*;
 
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Exposes collection of methods to create {@link io.rpg.model.object.GameObject} class instances.
@@ -36,7 +35,7 @@ public class GameObjectFactory {
    * @param configs descriptions of object properties
    * @return game objects created based on information located in config list
    */
-  public static LinkedList<GameObject> fromConfigList(List<GameObjectConfig> configs) {
+  public static LinkedList<GameObject> fromConfigs(Iterable<GameObjectConfig> configs) {
     LinkedList<GameObject> gameObjects = new LinkedList<>();
     for (GameObjectConfig config : configs) {
       gameObjects.add(fromConfig(config));

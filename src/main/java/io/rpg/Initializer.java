@@ -109,11 +109,11 @@ public class Initializer {
   }
 
   public static List<GameObject> loadGameObjectsForLocation(LocationConfig config) {
-    return GameObjectFactory.fromConfigList(config.getObjects());
+    return GameObjectFactory.fromConfigs(config.getObjects());
   }
 
   public static List<GameObjectView> loadGameObjectViewsForLocation(LocationConfig config) {
-    return GameObjectViewFactory.fromConfigList(config.getObjects());
+    return GameObjectViewFactory.fromConfigs(config.getObjects());
   }
 
   public static void registerGameObjectViewsToModel(List<GameObject> gameObjects,
