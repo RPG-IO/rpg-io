@@ -9,6 +9,8 @@ import io.rpg.util.Result;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -193,23 +195,57 @@ public class ActionConfigBundle {
   }
 
   Result<Void, Exception> validateForQuizAction() {
-    return Result.ok();
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
+    if (questions == null || questions.size() == 0) {
+      builder.append("No questions provided");
+    }
+    return builder.isEmpty() ? Result.ok() : Result.err(new IllegalStateException(builder.toString()));
   }
 
   Result<Void, Exception> validateForDialogueAction() {
-    return Result.ok();
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
+    if (description == null) {
+      builder.append("No description provided");
+    }
+    if (assetPath == null) {
+      builder.append("No asset path provided");
+    } else if (!Files.isRegularFile(Path.of(assetPath))) {
+      builder.append("Provided asset path does not point to a regular file");
+    }
+    return builder.isEmpty() ? Result.ok() : Result.err(new IllegalStateException(builder.toString()));
   }
 
   Result<Void, Exception> validateForGameEndAction() {
-    return Result.ok();
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
+    if (description == null) {
+      builder.append("No description provided");
+    }
+    return builder.isEmpty() ? Result.ok() : Result.err(new IllegalStateException(builder.toString()));
   }
 
   Result<Void, Exception> validateForLocationChangeAction() {
-    return Result.ok();
+    // Note that the fact whether the location with provided tag exists is not checked.
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
+    if (targetLocationTag == null || targetLocationTag.isBlank()) {
+      builder.append("Invalid location tag provided");
+    }
+    if (targetPosition ==  null) {
+      builder.append("No target position provided");
+    }
+    return builder.isEmpty() ? Result.ok() : Result.err(new IllegalStateException(builder.toString()));
   }
 
   Result<Void, Exception> validateForShowDescriptionAction() {
-    return Result.ok();
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
+    if (description == null) {
+      builder.append("No description provided");
+    }
+    if (assetPath == null) {
+      builder.append("No asset path provided");
+    } else if (!Files.isRegularFile(Path.of(assetPath))) {
+      builder.append("Provided asset path does not point to a regular file");
+    }
+    return builder.isEmpty() ? Result.ok() : Result.err(new IllegalStateException(builder.toString()));
   }
 
   Result<Void, Exception> validateBasic() {
