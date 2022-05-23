@@ -2,12 +2,13 @@
   "tag": "object-4",
   "assetPath": "assets/zombie.png",
   "type": "dialog",
-  "question": {
-    "header": "Warunkiem uznania oznaczenia za znak towarowy jest: ",
+  "questions": {
+    "question": "Warunkiem uznania oznaczenia za znak towarowy jest: ",
     "a": "estetyczny wygląd",
     "b": "zdolność odróżniająca znaku",
     "c": "możliwość graficznego przedstawienia znaku",
     "d": "żadne z powyższych",
     "correct": "b"
-  }
+  },
+  "reward": 5
 }

@@ -1,0 +1,3 @@
+{
+  "onLeftClick": {"type": "game-end", "description": "You won, congratulations!"}
+}

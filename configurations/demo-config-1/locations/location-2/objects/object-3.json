@@ -1,12 +1,13 @@
 {
   "tag": "object-3",
   "assetPath": "assets/zombie.png",
-  "question": {
-    "header": "Autorskie prawa osobiste przysługują: ",
+  "questions": {
+    "question": "Autorskie prawa osobiste przysługują: ",
     "a": "twórcy",
     "b": "pracodawcy lub twórcy w określonych ustawą przypadkach",
     "c": "inwestorowi lub twórcyc",
     "d": "żadne z powyższych",
     "correct": "a"
-  }
+  },
+  "reward": 5
 }

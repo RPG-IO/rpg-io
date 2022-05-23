@@ -1,0 +1,3 @@
+{
+  "onLeftClick": {"type": "location-change", "target-location": "location-2", "target-position": {"row": 9, "col": 0}}
+}
