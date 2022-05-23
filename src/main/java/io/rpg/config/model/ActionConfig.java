@@ -2,10 +2,13 @@ package io.rpg.config.model;
 
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.annotations.Since;
+import io.rpg.model.object.Question;
 import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.Result;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * Represents action configuration.
@@ -51,6 +54,54 @@ public class ActionConfig {
   private ActionConfig afterAction;
 
   /**
+   * {@link io.rpg.model.actions.DialogueAction} <br>
+   * TODO
+   */
+  @Nullable
+  @SerializedName(value = "statements", alternate = {"text", "dialogueStatements", "dialogue-statements"})
+  private List<String> dialogueStatements;
+
+  /**
+   * {@link io.rpg.model.actions.DialogueAction} <br>
+   * {@link io.rpg.model.actions.ShowDescriptionAction} <br>
+   * TODO
+   */
+  @Nullable
+  @SerializedName(value = "assetPath", alternate = {"asset", "asset-path"})
+  private String assetPath;
+
+  /**
+   * {@link io.rpg.model.actions.GameEndAction} <br>
+   * {@link io.rpg.model.actions.ShowDescriptionAction} <br>
+   * TODO
+   */
+  @Nullable
+  private String description;
+
+  /**
+   * {@link io.rpg.model.actions.LocationChangeAction} <br>
+   * TODO
+   */
+  @Nullable
+  @SerializedName(value = "targetLocation", alternate = {"target-location", "target"})
+  private String targetLocationTag;
+
+  /**
+   * {@link io.rpg.model.actions.QuizAction} <br>
+   * TODO
+   */
+  @Nullable
+  // TODO: Create QuestionConfig model class
+  private List<Question> questions;
+
+
+  @Nullable
+  @SerializedName(value = "reward", alternate = {"reward-points", "rewardPoints"})
+  // TODO: consider introducing reward type & then we can parse the reward string
+  // accordingly
+  private Integer rewardPoints;
+
+  /**
    * Package scoped constructor, meant for test purposes only.
    */
   ActionConfig(@NotNull String tag, @NotNull String actionType) {
@@ -94,6 +145,36 @@ public class ActionConfig {
   @Nullable
   public ActionConfig getAfterAction() {
     return afterAction;
+  }
+
+  @Nullable
+  public List<String> getDialogueStatements() {
+    return dialogueStatements;
+  }
+
+  @Nullable
+  public String getDescription() {
+    return description;
+  }
+
+  @Nullable
+  public String getAssetPath() {
+    return assetPath;
+  }
+
+  @Nullable
+  public Integer getRewardPoints() {
+    return rewardPoints;
+  }
+
+  @Nullable
+  public List<Question> getQuestions() {
+    return questions;
+  }
+
+  @Nullable
+  public String getTargetLocationTag() {
+    return targetLocationTag;
   }
 
   /**
