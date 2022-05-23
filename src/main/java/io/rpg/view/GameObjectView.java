@@ -1,37 +1,44 @@
 package io.rpg.view;
 
+import com.sun.javafx.scene.ImageViewHelper;
 import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
+import io.rpg.model.object.GameObject;
+import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.jetbrains.annotations.NotNull;
-
-import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.Set;
 
 public class GameObjectView extends ImageView
     implements MouseClickedEvent.Emitter, GameObjectStateChange.Observer {
   private Path path;
   private final Set<MouseClickedEvent.Observer> onClickedObservers;
+  private final SimpleObjectProperty<Point2D> position;
 
-  private final int SCALE = 64;
 
   public GameObjectView(@NotNull Path assetPath, @NotNull Position position) {
     this.path = assetPath;
-//    String xdpath =
     this.setImage(new Image(resolvePathToJFXFormat(path.toString())));
-    // todo: better position class
-    this.setX(position.col * SCALE);
-    this.setY(position.row * SCALE);
-
-    this.setPreserveRatio(true);
-    this.setSmooth(false);
-    this.setFitHeight(SCALE);
-
+    this.position = new SimpleObjectProperty<>(new Point2D(position.col, position.row));
+    setLayoutUpdateOnPositionChange();
     this.onClickedObservers = new HashSet<>();
     this.setOnMouseClicked(event -> emitOnMouseClickedEvent(new MouseClickedEvent(this, event)));
+  }
+
+  private void setLayoutUpdateOnPositionChange() {
+    this.position.addListener((observable, oldValue, newValue) -> {
+      if (Objects.equals(oldValue, newValue)) {
+        return;
+      }
+
+      ImageViewHelper.geomChanged(this);
+    });
   }
 
   public static String resolvePathToJFXFormat(String path) {
@@ -43,6 +50,14 @@ public class GameObjectView extends ImageView
   public void emitOnMouseClickedEvent(MouseClickedEvent event) {
     System.out.println("Object clicked");
     onClickedObservers.forEach(listener -> listener.onMouseClickedEvent(event));
+  }
+
+  public void bindToGameObject(GameObject gameObject) {
+    this.position.bind(gameObject.getExactPositionProperty());
+  }
+
+  public Point2D getPosition() {
+    return position.get();
   }
 
   @Override

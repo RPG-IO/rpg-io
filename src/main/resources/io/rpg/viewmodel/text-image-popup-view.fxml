@@ -19,7 +19,7 @@
             <Font name="Monospaced Bold" size="25.0" />
          </font>
       </Label>
-      <Button fx:id="okButton" cancelButton="true" contentDisplay="CENTER" layoutX="215.0" layoutY="205.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: transparent;" stylesheets="@../../../css/styles.css" text="OK" textAlignment="CENTER" textFill="#0d0c14">
+      <Button fx:id="okButton" cancelButton="true" contentDisplay="CENTER" layoutX="215.0" layoutY="205.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: transparent;" styleClass="ok_button" stylesheets="@../../../css/styles.css" text="OK" textAlignment="CENTER" textFill="#0d0c14">
          <font>
             <Font name="Monospaced Bold" size="20.0" />
          </font>

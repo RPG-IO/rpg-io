@@ -1,34 +1,34 @@
 package io.rpg.model.object;
 
-import io.rpg.config.model.GameObjectConfig;
+import io.rpg.model.actions.Action;
+import io.rpg.model.actions.BaseActionEmitter;
+import io.rpg.model.actions.DialogueAction;
+import io.rpg.model.actions.QuizAction;
 import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.Position;
-import io.rpg.model.data.Vector;
-import io.rpg.view.GameObjectView;
-import javafx.scene.image.ImageView;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.lang.reflect.Field;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Class representing common state properties for all
  * objects appearing in the game.
  */
-public class GameObject implements GameObjectStateChange.Emitter {
-
-//  protected Vector currentPosition;
-
-//  public GameObjectView view;
+public class GameObject extends BaseActionEmitter implements GameObjectStateChange.Emitter {
 
   /**
    * Position of game object in model's representation of location.
    */
-  @Nullable
-  protected Position position;
+  private final SimpleObjectProperty<Point2D> exactPositionProperty;
+  private Action onRightClickAction;
+  private Action onLeftClickAction;
 
   /**
    * Unique identifier of this game object.
@@ -36,12 +36,6 @@ public class GameObject implements GameObjectStateChange.Emitter {
    */
   @NotNull
   private final String tag;
-
-  /**
-   *
-   */
-  @Nullable
-  protected String assetPath;
 
   @NotNull
   private final Set<GameObjectStateChange.Observer> stateChangeObservers;
@@ -61,6 +55,15 @@ public class GameObject implements GameObjectStateChange.Emitter {
     return tag;
   }
 
+
+  public GameObject(@NotNull String tag, @NotNull Position position) {
+    this.tag = tag;
+    this.stateChangeObservers = new LinkedHashSet<>();
+    this.exactPositionProperty = new SimpleObjectProperty<>(new Point2D(position.col, position.row));
+    this.onLeftClickAction = new QuizAction(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'));
+    this.onRightClickAction = Action.VOID;
+  }
+
   /**
    * Position of game object in model's representation of location.
    *
@@ -68,18 +71,20 @@ public class GameObject implements GameObjectStateChange.Emitter {
    */
   @Nullable
   public Position getPosition() {
-    return position;
+    Point2D exactPosition = getExactPosition();
+    return new Position(exactPosition);
   }
 
-  public GameObject(@NotNull String tag, @NotNull Position position) {
-    this(tag, position, "");
+  public void setExactPosition(Point2D position) {
+    exactPositionProperty.setValue(position);
   }
 
-  public GameObject(@NotNull String tag, @NotNull Position position, @NotNull String assetPath) {
-    this.tag = tag;
-    this.position = position;
-    this.assetPath = assetPath;
-    this.stateChangeObservers = new LinkedHashSet<>();
+  public Point2D getExactPosition() {
+    return exactPositionProperty.getValue();
+  }
+
+  public ObservableValue<Point2D> getExactPositionProperty() {
+    return exactPositionProperty;
   }
 
   // TODO: remove this ctor when generic properties are implemented
@@ -107,6 +112,7 @@ public class GameObject implements GameObjectStateChange.Emitter {
     this.stateChangeObservers.remove(observer);
   }
 
+
   public String getFieldDescription() {
     StringBuilder builder = new StringBuilder();
     for (Field field : GameObject.class.getDeclaredFields()) {
@@ -131,10 +137,31 @@ public class GameObject implements GameObjectStateChange.Emitter {
     return builder.append("}").toString();
   }
 
+  public void setPosition(Position playerPosition) {
+    setExactPosition(new Point2D(playerPosition.col, playerPosition.row));
+  }
+
+  public void setOnRightClickAction(Action onRightClickAction) {
+    this.onRightClickAction = onRightClickAction;
+  }
+
+  public void setOnLeftClickAction(Action onLeftClickAction) {
+    this.onLeftClickAction = onLeftClickAction;
+  }
+
+  public void onRightClick() {
+    emitAction(onRightClickAction);
+  }
+
+  public void onLeftClick() {
+    emitAction(onLeftClickAction);
+  }
+
   public enum Type {
     NAVIGABLE("navigable"),
     DIALOG("dialog"),
     PLAYER("player"),
+    QUIZ("quiz"),
     COLLECTIBLE("collectible");
 
     private final String asString;

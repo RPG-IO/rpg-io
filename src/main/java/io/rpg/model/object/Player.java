@@ -1,10 +1,8 @@
 package io.rpg.model.object;
 
 import io.rpg.model.data.Position;
-import io.rpg.model.data.Vector;
 import io.rpg.view.GameObjectView;
-import io.rpg.model.object.GameObject;
-import javafx.scene.image.Image;
+import javafx.geometry.Point2D;
 import org.jetbrains.annotations.NotNull;
 
 public class Player extends GameObject {
@@ -26,11 +24,19 @@ public class Player extends GameObject {
 //    this.position = position;
 //    this.assetPath = assetPath;
 //  }
+  private int strength;
+  private float speed;
+  private boolean rightPressed;
+  private boolean leftPressed;
+  private boolean upPressed;
+  private boolean downPressed;
+  private GameObjectView gameObjectView;
+  private int points;
+
+
   public Player(@NotNull String tag, @NotNull Position position, @NotNull String assetPath) {
-    super(tag, position, assetPath);
-    this.currentPosition=new Vector(position.col, position.row);
-    this.speed = 100f;
-    this.direction = new Vector(0, 0);
+    super(tag, position);
+    this.speed = 6f;
     this.rightPressed = false;
     this.leftPressed = false;
     this.upPressed = false;
@@ -44,31 +50,32 @@ public class Player extends GameObject {
     strength += value;
   }
 
-  public void setDirection(Vector direction) {
-    this.direction = direction;
-  }
-
-  public Vector getPixelPosition() {
-    return pixelPosition;
-  }
 
   public void update(float elapsed) {
     float y = 0;
     float x = 0;
 //        the sum tells us the direction
-    if (upPressed)
-      y += -1;
+    if (upPressed) {
+      y -= 1;
+    }
 
-    if (downPressed)
+    if (downPressed) {
       y += 1;
+    }
 
-    if (leftPressed)
-      x += -1;
+    if (leftPressed) {
+      x -= 1;
+    }
 
-    if (rightPressed)
+    if (rightPressed) {
       x += 1;
+    }
 
-    this.pixelPosition = new Vector(this.pixelPosition.x + speed * x * elapsed / 1000, this.pixelPosition.y + speed * y * elapsed / 1000);
+    Point2D nextPosition = new Point2D(x, y)
+        .multiply(speed * elapsed / 1000)
+        .add(this.getExactPosition());
+
+    this.setExactPosition(nextPosition);
   }
 
   public void setRightPressed(boolean rightPressed) {
@@ -109,4 +116,13 @@ public class Player extends GameObject {
   public void addPoints(int value) {
     points += value;
   }
+  
+  public int getPoints() {
+    return points;
+  }
+
+  public void addPoints(int value) {
+    points += value;
+  }
+
 }

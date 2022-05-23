@@ -25,7 +25,7 @@ public class TextPopupViewModel {
   }
 
   public void setTextSize(int size) {
-    label.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + size);
+    label.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + size + ";");
   }
 
   public void setBackgroundImage(String url) {

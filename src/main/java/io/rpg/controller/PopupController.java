@@ -1,11 +1,13 @@
 package io.rpg.controller;
 
+import io.rpg.model.object.Question;
+import io.rpg.view.popups.DialoguePopup;
+import io.rpg.view.popups.QuestionPopup;
 import io.rpg.view.popups.TextImagePopup;
 import io.rpg.view.popups.TextPopup;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
 
 public class PopupController {
 
@@ -49,10 +51,38 @@ public class PopupController {
     openTextImagePopup("You earned " + pointsCount + " points!", coinImage, x, y);
   }
 
+  public void openQuestionPopup(Question question, int x, int y, Runnable successCallback, Runnable failureCallback) {
+    QuestionPopup popupScene = new QuestionPopup(question);
+    popupScene.setSuccessCallback(successCallback);
+    popupScene.setFailureCallback(failureCallback);
+    popupStage.setScene(popupScene);
+    popupStage.show();
+    popupStage.setX(x - popupScene.getWidth() / 2);
+    popupStage.setY(y - popupScene.getHeight() / 2);
+  }
+
+  public void openQuestionPopup(Question question, int x, int y) {
+    QuestionPopup popupScene = new QuestionPopup(question);
+    popupStage.setScene(popupScene);
+    popupStage.show();
+    popupStage.setX(x - popupScene.getWidth() / 2);
+    popupStage.setY(y - popupScene.getHeight() / 2);
+  }
+  
+  public void openDialoguePopup(String text, Image npcImage, int x, int y) {
+    DialoguePopup popupScene = new DialoguePopup(text, npcImage);
+    popupStage.setScene(popupScene);
+
+    popupStage.show();
+
+    popupStage.setX(x - popupScene.getWidth() / 2);
+    popupStage.setY(y - popupScene.getHeight() / 2);
+
+    popupScene.setCloseButtonCallback(event -> popupStage.hide());
+  }
+
 
   public void hidePopup() {
     popupStage.hide();
   }
-
 }
-
