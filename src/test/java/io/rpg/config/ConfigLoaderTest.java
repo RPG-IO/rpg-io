@@ -86,7 +86,6 @@ public class ConfigLoaderTest {
     PlayerConfig actualPlayerConfig = config.getPlayerConfig();
 
     Assertions.assertEquals("player", actualPlayerConfig.getTag());
-    Assertions.assertEquals("player", actualPlayerConfig.getTypeString());
     Assertions.assertEquals(new Position(4, 5), actualPlayerConfig.getPosition());
     // Assertions.assertEquals("assets/stone.png", actualPlayerConfig.getAssetPath());
   }
