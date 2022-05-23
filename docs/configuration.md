@@ -146,6 +146,55 @@ location-1
 
 ## Action configuration
 
+As for now we support 5 kinds of actions:
+
+[//]: # (TODO: Add descriptions for these action types)
+
+* `quiz`
+* `game-end`
+* `location-change`
+* `show-description`
+* `dialogue`
+
+For each kind configuration differs a bit, because different information is required. Let's take a closer look at the
+common part first. Each action consists of following properties
+
+* `tag` - Action tag; this is required however it is not used for now. Action tag does not have to be unique for now.
+* `type` - One of action types mentioned above.
+* *(optional)* `before` - Configuration of action to be triggered before the proper action is executed,
+  e.g. you may want to change location before starting the dialogue. (TODO: Logic is not implemented as for now).
+* *(optional)* `after` - Configuration of action to be triggered after the proper action is executed, e.g. you may want
+    give player some output or item. (TODO: Logic is not implemented as for now).
+
+Let's look at specific action types:
+
+* `quiz`:
+  * `questions` - **List** of `Question` objects. Right now, **only one question is supported**, however you must provide this
+    parameter as a list.
+    `Question` object should be configured as follows:
+      * `question` - The text to be displayed as a question.
+      * `a` - Answer A.
+      * `b` - Answer B.
+      * `c` - Answer C.
+      * `d` - Answer D.
+      * `correct` - Single character denoting the correct answer.
+  * `reward` - Number of points as a reward for choosing the right answer.
+* `game-end`:
+  * `description` - Additional text to be displayed.
+* `location-change`:
+  * `target-location` - Tag of the target location.
+  * `target-position` - Initial position of the player in target location.
+  
+    Aliases: `targetLocation`, `target`
+* `show-description`:
+  * `assetPath` - Path to the image with background for the dialogue window. As any path, it must be eiter absolute or relative to the engine's source root.
+    Aliases: `asset-path`, `asset`.
+  * `description` - Additional information about the object.
+* `dialogue`:
+  * `statements` - **List** of statements to be said. Right now, **only one statement is supported**, however you must provide it 
+    as a list. Aliases: `text`, `dialogue-statements`, `dialogueStatements`. \\
+  * `assetPath` - Path to the image with background for the dialogue window. As any path, it must be eiter absolute or relative to the engine's source root.
+    Aliases: `asset-path`, `asset`.
 
 
 ## Example of full configuration structure
