@@ -91,4 +91,7 @@ public class Player extends GameObject {
     points += value;
   }
 
+  public int getStrength() {
+    return strength;
+  }
 }

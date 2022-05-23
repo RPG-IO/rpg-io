@@ -1,18 +1,14 @@
 package io.rpg.controller;
 
-import io.rpg.model.actions.Action;
-import io.rpg.model.actions.ActionConsumer;
-import io.rpg.model.actions.DialogueAction;
-import io.rpg.model.actions.ShowDescriptionAction;
-import io.rpg.model.actions.GameEndAction;
-import io.rpg.model.actions.LocationChangeAction;
-import io.rpg.model.actions.QuizAction;
+import io.rpg.model.actions.*;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.GameObject;
+import io.rpg.model.object.Player;
 import io.rpg.model.object.Question;
+import io.rpg.util.BattleResult;
 import io.rpg.util.Result;
 import io.rpg.view.GameEndView;
 import io.rpg.view.GameObjectView;
@@ -150,6 +146,22 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     mainStage.setScene(view);
     mainStage.setWidth(prevWidth);
     mainStage.setHeight(prevHeight);
+  }
+
+  private void onAction(BattleAction action) {
+    Player player = playerController.getPlayer();
+    GameObject opponent = action.getOpponent();
+    int reward = action.getReward();
+    BattleResult result;
+    if (player.getStrength() > opponent.getStrength()) {
+      player.addPoints(reward);
+      result = new BattleResult(BattleResult.Result.VICTORY, reward);
+    } else if (player.getStrength() < opponent.getStrength()) {
+      result = new BattleResult(BattleResult.Result.DEFEAT, 0);
+    } else {
+      result = new BattleResult(BattleResult.Result.DRAW, 0);
+    }
+    popupController.openTextPopup(result.getMessage(), getWindowCenterX(), getWindowCenterY());
   }
   
   public Scene getView() {

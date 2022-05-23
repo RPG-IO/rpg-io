@@ -27,6 +27,7 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
   private final SimpleObjectProperty<Point2D> exactPositionProperty;
   private Action onRightClickAction;
   private Action onLeftClickAction;
+  private int strength;
 
   /**
    * Unique identifier of this game object.
@@ -53,6 +54,11 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
     this.exactPositionProperty = new SimpleObjectProperty<>(new Point2D(position.col, position.row));
     this.onLeftClickAction = new QuizAction(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'));
     this.onRightClickAction = Action.VOID;
+  }
+
+  public GameObject(@NotNull String tag, @NotNull Position position, int strength) {
+    this(tag, position);
+    this.strength = strength;
   }
 
   /**
