@@ -1,5 +1,6 @@
 package io.rpg.config.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import io.rpg.model.actions.ActionType;
 import io.rpg.model.object.Question;
@@ -38,7 +39,8 @@ public class ActionConfigBundle {
    */
   @Nullable
   @SerializedName("type")
-  private String actionTypeString;
+//  private String actionType;
+  private ActionType actionType;
 
   /**
    * Action to be triggered before the proper action is executed.
@@ -105,9 +107,9 @@ public class ActionConfigBundle {
   /**
    * Package scoped constructor, meant for test purposes only.
    */
-  ActionConfigBundle(@NotNull String tag, @NotNull String actionType) {
+  ActionConfigBundle(@NotNull String tag, @NotNull ActionType actionType) {
     this.tag = tag;
-    this.actionTypeString = actionType;
+    this.actionType = actionType;
   }
 
   /**
@@ -134,8 +136,8 @@ public class ActionConfigBundle {
    * blank string.
    */
   @Nullable
-  public String getActionTypeString() {
-    return actionTypeString;
+  public ActionType getActionType() {
+    return actionType;
   }
 
   @Nullable
@@ -206,8 +208,8 @@ public class ActionConfigBundle {
       builder.append("Blank tag");
     }
 
-    if (actionTypeString == null) {
-      builder.append("No action type provided");
+    if (actionType == null) {
+      builder.append("No action type or invalid action type provided");
     }
 
     return builder.isEmpty() ? Result.ok() :
@@ -227,21 +229,15 @@ public class ActionConfigBundle {
       return result;
     }
 
-    // actionTypeString can not be null here, guaranteed by validateBasic method
+    // actionType can not be null here, guaranteed by validateBasic method
     //noinspection ConstantConditions
-    Optional<ActionType> actionType = ActionType.fromString(actionTypeString);
-
-    if (actionType.isPresent()) {
-      switch (actionType.get()) {
-        case Dialogue -> { return validateForDialogueAction(); }
-        case GameEnd -> { return validateForGameEndAction(); }
-        case LocationChange -> { return validateForLocationChangeAction(); }
-        case Quiz -> { return validateForQuizAction(); }
-        case ShowDescription -> { return validateForShowDescriptionAction(); }
-        default -> { return Result.err(new RuntimeException("Invalid result returned by ActionType.fromString(..) method")); }
-      }
-    } else {
-      return Result.err(new IllegalStateException("Invalid action type provided: " + actionTypeString));
+    switch (actionType) {
+      case Dialogue -> { return validateForDialogueAction(); }
+      case GameEnd -> { return validateForGameEndAction(); }
+      case LocationChange -> { return validateForLocationChangeAction(); }
+      case Quiz -> { return validateForQuizAction(); }
+      case ShowDescription -> { return validateForShowDescriptionAction(); }
+      default -> { return Result.err(new RuntimeException("Invalid result returned")); }
     }
   }
 }

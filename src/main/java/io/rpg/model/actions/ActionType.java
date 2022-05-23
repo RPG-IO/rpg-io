@@ -1,12 +1,23 @@
 package io.rpg.model.actions;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Optional;
 
 public enum ActionType {
+  @SerializedName("quiz")
   Quiz("quiz"),
+
+  @SerializedName("game-end")
   GameEnd("game-end"),
+
+  @SerializedName("location-change")
   LocationChange("location-change"),
+
+  @SerializedName("show-description")
   ShowDescription("show-description"),
+
+  @SerializedName("dialogue")
   Dialogue("dialogue");
 
   private final String asString;
