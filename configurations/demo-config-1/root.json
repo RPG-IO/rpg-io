@@ -5,7 +5,7 @@
     "location-2",
     "location-3"
   ],
-  "rootLocation": "location-3",
+  "rootLocation": "location-1",
   "player": {
     "tag": "player",
     "position": { "row": 4, "col": 5 },
