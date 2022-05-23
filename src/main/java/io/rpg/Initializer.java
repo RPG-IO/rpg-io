@@ -62,6 +62,7 @@ public class Initializer {
     assert gameWorldConfig.getLocationConfigs().size() > 0 : "There must be at least one location config specified";
 
     for (LocationConfig locationConfig : gameWorldConfig.getLocationConfigs()) {
+      assert locationConfig != null;
 
       List<GameObject> gameObjects = loadGameObjectsForLocation(locationConfig);
       List<GameObjectView> gameObjectViews = loadGameObjectViewsForLocation(locationConfig);

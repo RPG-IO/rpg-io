@@ -21,12 +21,12 @@ public class GameObjectFactory {
    */
   public static GameObject fromConfig(GameObjectConfig config) {
 
-    Action onLeftClickAction = ActionFactory.fromConfig(config.getOnLeftClick());
-    Action onRightClickAction = ActionFactory.fromConfig(config.getOnRightClick());
+    Action onLeftClickAction = config.getOnLeftClick() != null ? ActionFactory.fromConfig(config.getOnLeftClick()) : null;
+    Action onRightClickAction = config.getOnRightClick() != null ? ActionFactory.fromConfig(config.getOnRightClick()) : null;
 
     // Not implemented in model for now, however they should be
-    Action onClickAction = ActionFactory.fromConfig(config.getOnClick());
-    Action onApproach = ActionFactory.fromConfig(config.getOnApproach());
+    Action onClickAction = config.getOnClick() != null ? ActionFactory.fromConfig(config.getOnClick()) : null;
+    Action onApproach = config.getOnApproach() != null ? ActionFactory.fromConfig(config.getOnApproach()) : null;
 
     if (config instanceof PlayerConfig) {
       Player player = new Player(config.getTag(), config.getPosition(), config.getAssetPath());
