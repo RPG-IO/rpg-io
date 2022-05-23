@@ -106,7 +106,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(DialogueAction action) {
-    popupController.openDialoguePopup(action.text, action.image, getWindowCenterX(), getWindowCenterY()); //TODO: load text from config
+    popupController.openDialoguePopup(action.text, action.image, getWindowCenterX(), getWindowCenterY());
   }
 
   private void onAction(ShowDescriptionAction action) {
@@ -186,11 +186,11 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   public Result<Controller, Exception> validate() {
     if (tagToLocationModelMap.size() == 0)
-      return Result.error(new Exception("Empty tag to location model map!"));
+      return Result.err(new Exception("Empty tag to location model map!"));
     else if (tagToLocationViewMap.size() == 0)
-      return Result.error(new Exception("Empty tag to location view map!"));
+      return Result.err(new Exception("Empty tag to location view map!"));
     else if (tagToLocationViewMap.size() != tagToLocationModelMap.size())
-      return Result.error(new Exception("Mismatched sizes of maps!"));
+      return Result.err(new Exception("Mismatched sizes of maps!"));
     else
       return Result.ok(this);
   }
@@ -261,8 +261,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
     public Controller build() {
       Result<Controller, Exception> validationResult = controller.validate();
-      if (validationResult.isError()) {
-        throw new IllegalStateException(validationResult.getErrorValue());
+      if (validationResult.isErr()) {
+        throw new IllegalStateException(validationResult.getErrValue());
       }
 
       controller.tagToLocationModelMap.values().forEach(location -> location.setActionConsumer(controller));

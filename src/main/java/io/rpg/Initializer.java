@@ -33,7 +33,7 @@ public class Initializer {
 
   private final Logger logger;
 
-  public Initializer(@NotNull String pathToConfigDir, Stage mainStage) {
+  public Initializer(@NotNull String pathToConfigDir, @NotNull Stage mainStage) {
     this.configLoader = new ConfigLoader(pathToConfigDir);
     this.mainStage = mainStage;
     this.logger = LogManager.getLogger(Initializer.class);
@@ -42,15 +42,15 @@ public class Initializer {
   public Result<Game, Exception> initialize() {
     Result<GameWorldConfig, Exception> gameWorldConfigLoadResult = configLoader.load();
 
-    if (gameWorldConfigLoadResult.isError()) {
-      gameWorldConfigLoadResult.getErrorValueOpt().ifPresentOrElse(
+    if (gameWorldConfigLoadResult.isErr()) {
+      gameWorldConfigLoadResult.getErrValueOpt().ifPresentOrElse(
           ex -> logger.error(ex.getMessage()),
           () -> logger.error("Unknown error returned from config loader")
       );
-      return Result.error(gameWorldConfigLoadResult.getErrorValue());
+      return Result.err(gameWorldConfigLoadResult.getErrValue());
     } else if (gameWorldConfigLoadResult.isOkValueNull()) {
       logger.error("ConfigLoader fetched null GameWorldConfig");
-      return Result.error(new RuntimeException("ConfigLoader fetched null GameWorldConfig"));
+      return Result.err(new RuntimeException("ConfigLoader fetched null GameWorldConfig"));
     }
 
     GameWorldConfig gameWorldConfig = gameWorldConfigLoadResult.getOkValue();
@@ -62,6 +62,7 @@ public class Initializer {
     assert gameWorldConfig.getLocationConfigs().size() > 0 : "There must be at least one location config specified";
 
     for (LocationConfig locationConfig : gameWorldConfig.getLocationConfigs()) {
+      assert locationConfig != null;
 
       List<GameObject> gameObjects = loadGameObjectsForLocation(locationConfig);
       List<GameObjectView> gameObjectViews = loadGameObjectViewsForLocation(locationConfig);
@@ -109,11 +110,11 @@ public class Initializer {
   }
 
   public static List<GameObject> loadGameObjectsForLocation(LocationConfig config) {
-    return GameObjectFactory.fromConfigList(config.getObjects());
+    return GameObjectFactory.fromConfigs(config.getObjects());
   }
 
   public static List<GameObjectView> loadGameObjectViewsForLocation(LocationConfig config) {
-    return GameObjectViewFactory.fromConfigList(config.getObjects());
+    return GameObjectViewFactory.fromConfigs(config.getObjects());
   }
 
   public static void registerGameObjectViewsToModel(List<GameObject> gameObjects,

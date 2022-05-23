@@ -31,7 +31,7 @@ public class GameObjectViewFactory {
    * @param configs descriptions of object properties
    * @return game object views created based on information located in config list
    */
-  public static LinkedList<GameObjectView> fromConfigList(List<GameObjectConfig> configs) {
+  public static LinkedList<GameObjectView> fromConfigs(Iterable<GameObjectConfig> configs) {
     LinkedList<GameObjectView> gameObjects = new LinkedList<>();
     for (GameObjectConfig config : configs) {
       gameObjects.add(fromConfig(config));

@@ -10,13 +10,17 @@ import io.rpg.view.popups.TextImagePopup;
 import io.rpg.view.popups.TextPopup;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 /**
  * This class exposes methods to load user specified configuration into
@@ -113,20 +117,22 @@ public class ConfigLoader {
   public Result<GameWorldConfig, Exception> load() {
     logger.info("Loading GameWorldConfig");
 
-    Result<GameWorldConfig, Exception> configLoadResult = loadGameWorldConfig();
+    Result<GameWorldConfig, Exception> configLoadResult = loadRootFile();
 
-    if (configLoadResult.isError()) {
+    if (configLoadResult.isErr()) {
       logger.error("Error while loading GameWorldConfig");
-      configLoadResult.getErrorValueOpt().ifPresent(ex -> logger.error(ex.getMessage()));
+      configLoadResult.getErrValueOpt().ifPresent(ex -> logger.error(ex.getMessage()));
       return configLoadResult;
-    } else if (configLoadResult.getOkValue() == null) {
-      return Result.error(new RuntimeException("loadGameWorldConfig returned null config"));
     }
 
-    GameWorldConfig gameWorldConfig = configLoadResult.getOkValue();
+    Optional<GameWorldConfig> gameWorldConfigOpt = configLoadResult.getOkValueOpt();
 
-    logger.info("GameWorldConfig loaded");
-    logger.info(gameWorldConfig.toString());
+    if (gameWorldConfigOpt.isEmpty()) {
+      return Result.err(new RuntimeException("loadGameWorldConfig returned null config"));
+    }
+    GameWorldConfig gameWorldConfig = gameWorldConfigOpt.get();
+
+    logger.info("GameWorldConfig loaded: \n" + gameWorldConfig);
 
     QuestionPopup.setBackgroundPath(gameWorldConfig.getQuizPopupBackground());
     TextPopup.setBackgroundPath(gameWorldConfig.getTextPopupBackground());
@@ -135,17 +141,14 @@ public class ConfigLoader {
     TextImagePopup.setButtonPath(gameWorldConfig.getTextImagePopupButton());
 
     // we assume here that gameWorldConfig was validated in loadGameWorldConfig method
-
     for (String locationTag : gameWorldConfig.getLocationTags()) {
       try {
-        logger.info("Loading location config for tag: " + locationTag);
-
         Result<LocationConfig, Exception> locationConfigLoadingResult = loadLocationConfig(locationTag);
 
-        if (locationConfigLoadingResult.isError()) {
-          return Result.error(locationConfigLoadingResult.getErrorValue());
+        if (locationConfigLoadingResult.isErr()) {
+          return Result.err(locationConfigLoadingResult.getErrValue());
         } else if (locationConfigLoadingResult.isOkValueNull()) {
-          return Result.error(new RuntimeException("Null LocationConfig returned for location with tag: " + locationTag));
+          return Result.err(new RuntimeException("Null LocationConfig returned for location with tag: " + locationTag));
         }
 
         LocationConfig locationConfig = locationConfigLoadingResult.getOkValue();
@@ -156,73 +159,129 @@ public class ConfigLoader {
         // locationConfig can not be null here, we checked this case earlier
         logger.info(locationConfig.toString());
 
-        assert locationConfig.getPath() != null : "Path to location dir must be set in its loader";
-        Path objectsDir = locationConfig.getPath().resolve(ConfigConstants.OBJECTS_DIR);
+        Result<Void, Exception> result = loadGameObjectsForLocation(locationConfig);
 
-        // TODO: @kkafar: Load objects from inside objects directory
-        // TODO: consider extracting this code to method
-        if (Files.isDirectory(objectsDir)) { // there is directory with additional object configurations
-          for (GameObjectConfig gameObjectConfig : locationConfig.getObjects()) {
-            Path gameObjectConfigSpec = objectsDir.resolve(gameObjectConfig.getTag() + ".json"); // TODO
-            // there is additional spec for this game object
-            if (Files.isReadable(gameObjectConfigSpec)) {
-              logger.info("Detected additional spec for object with tag: " + gameObjectConfig.getTag());
-              BufferedReader reader = new BufferedReader(new FileReader(gameObjectConfigSpec.toString()));
-              GameObjectConfig config = gson.fromJson(reader, GameObjectConfig.class);
-              gameObjectConfig.updateFrom(config);
-            }
-          }
+        if (result.isErr()) {
+          result.getErrValueOpt().ifPresentOrElse(err -> {
+            logger.warn("An error occurred while loading config for location with tag: " + locationTag + "\n"
+                + err.getMessage());
+          }, () -> {
+            logger.warn("An unknown error occurred while loading config for location with tag: " + locationTag);
+          });
         }
 
-        // game configs validation
-        // TODO: consider extracting this code to separate method
-        for (GameObjectConfig gameObjectConfig : locationConfig.getObjects()) {
-          Result<GameObjectConfig, Exception> result = gameObjectConfig.validate();
-
-          if (result.isError()) {
-            // TODO: consider returning loading error here
-            result.getErrorValueOpt().ifPresentOrElse(ex -> {
-              String exceptionMessage = ex.getMessage();
-              logger.warn("Validation for game object config with tag: "
-                  + gameObjectConfig.getTag() + " failed."
-                  + (exceptionMessage != null ? "Reason: " + exceptionMessage : "No reason provided"));
-            },
-            () -> logger.warn("Validation for game object config with tag: "
-                + gameObjectConfig.getTag() + " failed with null result."));
-          } else {
-            logger.info("Loaded GameObjectConfig for tag: " + gameObjectConfig.getTag() + ":" + gameObjectConfig);
-          }
-
-        }
-
-
-      } catch (FileNotFoundException e) {
-        logger.warn("Failed to load location config for tag: " + locationTag);
+      } catch (IOException e) {
+        logger.warn("Failed to load location config for tag: " + locationTag + ": \n" + e.getMessage());
         e.printStackTrace();
       }
     }
 
     Result<GameWorldConfig, Exception> validationResult = gameWorldConfig.validate();
-    if (validationResult.isError()) {
-      return Result.error(validationResult.getErrorValue());
+    if (validationResult.isErr()) {
+      return Result.err(validationResult.getErrValue());
     }
 
     return Result.ok(validationResult.getOkValue());
   }
 
   @NotNull
-  Result<GameWorldConfig, Exception> loadGameWorldConfig() {
-    logger.info("Loading game world config");
+  private Result<Void, Exception> loadGameObjectsForLocation(LocationConfig locationConfig) throws IOException {
+    assert locationConfig.getPath() != null : "Path to location dir must be set in its loader";
+    Path objectsDir = locationConfig.getPath().resolve(ConfigConstants.OBJECTS_DIR);
+
+    if (Files.isDirectory(objectsDir)) { // there is directory with additional object configurations
+      try (DirectoryStream<Path> objectConfigPathStream = Files.newDirectoryStream(objectsDir)) {
+        for (Path objectConfigPath : objectConfigPathStream) {
+          if (Files.isReadable(objectConfigPath)) {
+            String objectTag = FilenameUtils.removeExtension(objectConfigPath.getFileName().toString());
+            logger.info("Detected configuration for object with tag: " + objectTag);
+            GameObjectConfig config = gson.fromJson(Files.newBufferedReader(objectConfigPath), GameObjectConfig.class);
+
+            Result<GameObjectConfig, Exception> validationResult = config.validateBasic();
+
+            if (validationResult.isErr()) {
+              String error = "Validation for object with tag: " + objectTag + " failed."
+                  + (validationResult.isErrValueNull() ? "No reason provided."
+                  : "Reason: " + validationResult.getErrValue().getMessage());
+              logger.error(error);
+              return Result.err(new Exception(error));
+            }
+
+            if (!config.getTag().equals(objectTag)) {
+              String error = "Object tag: " + config.getTag() + " does not match tag deduced from file name: " + objectTag;
+              logger.error(error);
+              return Result.err(new Exception(error));
+            }
+
+            locationConfig.getGameObjectConfigForTag(objectTag).ifPresentOrElse(existingConfig -> {
+              logger.debug("Updating configuration for object with tag: " + objectTag);
+              existingConfig.updateFrom(config);
+            }, () -> {
+              logger.debug("Added new configuration for object with tag: " + objectTag);
+              locationConfig.addObjectConfig(config);
+            });
+          } else {
+            logger.warn("Detected non-readable file: " + objectConfigPath + " inside objects directory");
+          }
+        }
+      }
+    }
+
+    // game configs validation
+    for (GameObjectConfig gameObjectConfig : locationConfig.getObjects()) {
+      Result<GameObjectConfig, Exception> result = gameObjectConfig.validate();
+
+      if (result.isErr()) {
+        result.getErrValueOpt().ifPresentOrElse(ex -> {
+          String exceptionMessage = ex.getMessage();
+          logger.warn("Validation for game object config with tag: "
+              + gameObjectConfig.getTag() + " failed."
+              + (exceptionMessage != null ? "Reason: " + exceptionMessage : "No reason provided"));
+          }, () -> {
+            logger.warn("Validation for game object config with tag: "
+                + gameObjectConfig.getTag() + " failed with null result.");
+          });
+        return Result.err(new Exception("Validation for game object config with tag: " + gameObjectConfig.getTag()
+            + " failed."));
+      } else {
+        logger.info("Loaded GameObjectConfig for tag: " + gameObjectConfig.getTag() + ":" + gameObjectConfig);
+      }
+    }
+
+    return Result.ok();
+  }
+
+  /**
+   * Attempts to load {@link GameWorldConfig} with initial information provided in
+   * configuration root file.
+   * Notice that it does not fully initialise the {@link GameWorldConfig}.
+   * Information it fulfills is: <br>
+   * <ol>
+   *   <li>location tags</li>
+   *   <li>player config</li>
+   *   <li>root location tag</li>
+   *   <li>game tag</li>
+   * </ol>
+   * Location tags are loaded from configuration root file & also all locations that are not specified in
+   * root file but their directories exist in `locations` directory are added. Player config must be specified inside
+   * configuration root file, same for game tag & root location tag.
+   *
+   * @return Initially loaded {@link GameWorldConfig} or an exception.
+   */
+  @NotNull
+  Result<GameWorldConfig, Exception> loadRootFile() {
+    logger.info("Loading configuration from root file");
 
     BufferedReader reader;
 
     try {
       reader = new BufferedReader(new FileReader(rootFilePath.toString()));
     } catch (FileNotFoundException exception) {
-      return Result.error(exception);
+      return Result.err(exception);
     }
 
     // after loading a object from JSON we should always call the validate method
+    // load information from configuration root file
     GameWorldConfig gameWorldConfigShell = gson.fromJson(reader, GameWorldConfig.class);
 
     System.out.println(gameWorldConfigShell.toString());
@@ -230,6 +289,32 @@ public class ConfigLoader {
     // GameWorldConfig is loaded in two stages right now
     // todo: fix this! Separate initial GameWorldConfig to different class
     Result<GameWorldConfig, Exception> configLoadResult = gameWorldConfigShell.validateStageOne();
+
+    if (configLoadResult.isErr()) {
+      return configLoadResult;
+    }
+
+    GameWorldConfig config = configLoadResult.getOkValue();
+
+    // detect all locations not specified explicitly in configuration root file
+    try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(locationsDirPath)) {
+      for (Path path : directoryStream) {
+        if (Files.isDirectory(path)) {
+          String locationTag = path.getFileName().toString();
+          logger.info("Detected location directory: " + locationTag);
+          if (config.getLocationTags().contains(locationTag)) {
+            logger.info(locationTag + " location already declared in root file");
+          } else {
+            logger.info(locationTag + " location added to locations list");
+            config.getLocationTags().add(locationTag);
+          }
+        } else {
+          logger.warn("Non-directory file of name " + path + " detected inside locations directory");
+        }
+      }
+    } catch (IOException ex) {
+      logger.error("IOException while iterating over locations dir content:\n" + ex.getMessage());
+    }
 
     return configLoadResult;
   }
@@ -241,14 +326,14 @@ public class ConfigLoader {
 
     if (!Files.isDirectory(locationDir)) {
       logger.error(ERR_LOCATION_DIR_FNF_FOR_TAG + locationTag);
-      return Result.error(new FileNotFoundException(ERR_LOCATION_DIR_FNF_FOR_TAG + locationTag));
+      return Result.err(new FileNotFoundException(ERR_LOCATION_DIR_FNF_FOR_TAG + locationTag));
     }
 
     Path locationConfigJson = locationDir.resolve(locationTag + ".json");
 
     if (!Files.isReadable(locationConfigJson)) {
       logger.error(ERR_LOCATION_CFG_NR_FOR_TAG + locationTag);
-      return Result.error(new RuntimeException(ERR_LOCATION_DIR_FNF_FOR_TAG + locationTag));
+      return Result.err(new RuntimeException(ERR_LOCATION_DIR_FNF_FOR_TAG + locationTag));
     }
 
     BufferedReader reader = new BufferedReader(new FileReader(locationConfigJson.toString()));
@@ -257,7 +342,7 @@ public class ConfigLoader {
     Result<LocationConfig, Exception> locationConfigValidationResult =
         config.validate();
 
-    if (locationConfigValidationResult.isError()) {
+    if (locationConfigValidationResult.isErr()) {
       return locationConfigValidationResult;
     } else {
       config.setPath(locationDir);

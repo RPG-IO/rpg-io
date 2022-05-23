@@ -3,7 +3,7 @@ package io.rpg.model.object;
 import com.google.gson.annotations.SerializedName;
 
 public class Question {
-  @SerializedName(value = "header")
+  @SerializedName(value = "header", alternate = {"question"})
   private String question;
 
   @SerializedName(value = "a", alternate = {"A"})

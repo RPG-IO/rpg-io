@@ -197,9 +197,9 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
 
   public Result<Void, Void> validate() {
     if (tag == null || gameObjects == null) {
-      return Result.error(null);
+      return Result.err();
     }
-    return Result.ok(null);
+    return Result.ok();
   }
 
   public static class Builder {
@@ -231,7 +231,7 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
       Result<Void, Void> result = locationModel.validate();
 
       // TODO(@kkafar): Handle this in better way. Consider returning the result.
-      if (result.isError()) {
+      if (result.isErr()) {
         logger.error("Error occurred while building LocationModel.");
       }
 

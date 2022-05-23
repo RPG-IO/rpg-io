@@ -1,13 +1,17 @@
 package io.rpg.config.model;
 
 
+import io.rpg.Game;
+import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.Result;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Optional;
+import java.util.Set;
 
 public class LocationConfig {
   public static final int MAX_HEIGHT = 10;
@@ -16,7 +20,7 @@ public class LocationConfig {
   private String tag;
 
   @NotNull
-  private ArrayList<GameObjectConfig> objects;
+  private Set<GameObjectConfig> objects;
 
   @Nullable
   private Path path;
@@ -30,7 +34,7 @@ public class LocationConfig {
   // This class is not meant to be instantiated
   // by hand. Only Gson should be able to do so
   private LocationConfig() {
-    objects = new ArrayList<>();
+    objects = new LinkedHashSet<>();
   }
 
   @Nullable
@@ -44,8 +48,35 @@ public class LocationConfig {
   }
 
   @NotNull
-  public List<GameObjectConfig> getObjects() {
+  public Set<GameObjectConfig> getObjects() {
+    // objects actually might be null when this class is instantiated via Gson &
+    // there is no objects param in JSON
+    if (objects == null) {
+      objects = new LinkedHashSet<>();
+    }
     return objects;
+  }
+
+  public void addObjectConfig(@NotNull GameObjectConfig config) {
+    objects.add(config);
+  }
+
+  /**
+   * Checks whether object with given tag has already been initialized.
+   *
+   * @param tag of a object
+   * @return true if {@link GameObjectConfig} for object with given tag already exists.
+   */
+  public Optional<GameObjectConfig> getGameObjectConfigForTag(@Nullable String tag) {
+    if (tag == null) {
+      return Optional.empty();
+    }
+    for (GameObjectConfig config : objects) {
+      if (config.getTag().equals(tag)) {
+        return Optional.of(config);
+      }
+    }
+    return Optional.empty();
   }
 
   @Nullable
@@ -66,15 +97,22 @@ public class LocationConfig {
   }
 
   public Result<LocationConfig, Exception> validate() {
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
     if (tag == null) {
-      return Result.error(new IllegalStateException("Null tag"));
-    } else if (backgroundPath == null || backgroundPath.isBlank()) {
-      // TODO: Validate the backgroundPath here
-      return Result.error(new IllegalStateException("Empty string as background path"));
-    } else if (width > MAX_WIDTH || height > MAX_HEIGHT) {
-      return Result.error(new IllegalStateException("Size of location is greater than max size"));
-    } else {
-      return Result.ok(this);
+      builder.append("Null tag");
     }
+    if (backgroundPath == null) {
+      builder.append("No background path provided");
+    } else if (backgroundPath.isBlank()) {
+      builder.append("Blank background path");
+    } else if (!Files.isRegularFile(Path.of(backgroundPath))) {
+      builder.append("Provided background path: \"" + backgroundPath
+          + "\" does not point to a regular file");
+    } else if (objects == null) {
+      builder.append("No objects specified");
+    }
+
+    return builder.isEmpty() ? Result.ok(this) :
+        Result.err(new IllegalStateException(builder.toString()));
   }
 }

@@ -1,13 +1,12 @@
 package io.rpg.config.model;
 
+import com.google.gson.annotations.SerializedName;
 import io.rpg.model.data.Position;
-import io.rpg.model.object.GameObject;
-import io.rpg.model.object.GameObjects;
+import io.rpg.util.DataObjectDescriptionProvider;
+import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.Result;
 import org.jetbrains.annotations.NotNull;
-
-import java.lang.reflect.Field;
-import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents {@link io.rpg.model.object.GameObject} configuration provided by user
@@ -15,31 +14,115 @@ import java.util.Optional;
  */
 public class GameObjectConfig {
 
-  private String type;
+  /**
+   * Position of game object in model's representation of location.
+   */
+  @Nullable
+  protected Position position;
+
+  /**
+   * Unique identifier of this game object.
+   * This value is set in location
+   */
+  @NotNull
   private String tag;
-  private Position position;
+
+  /**
+   * Path to the image representing this object.
+   */
+  @Nullable
+  @SerializedName(value = "asset-path", alternate = {"assetPath", "asset"})
   private String assetPath;
+
+  /**
+   * Description of the object.
+   */
+  @Nullable
+  private String description;
+
+  /**
+   * Config for the action triggered when object is pressed.
+   */
+  @Nullable
+  @SerializedName(value = "onClick", alternate = {"onPress", "on-press", "on-click"})
+  private ActionConfigBundle onClick;
+
+  /**
+   * Config for the action triggered when the object is right-clicked.
+   */
+  @Nullable
+  @SerializedName(value = "onRightClick", alternate = {"on-right-click", "onRightPress", "on-right-press"})
+  private ActionConfigBundle onRightClick;
+
+  /**
+   * Config for the action triggered when the object is left-clicked.
+   */
+  @Nullable
+  @SerializedName(value = "onLeftClick", alternate = {"on-left-click", "onLeftPress", "on-left-press"})
+  private ActionConfigBundle onLeftClick;
+
+  /**
+   * Config for the action triggered when player approaches
+   * the object.
+   */
+  @Nullable
+  @SerializedName(value = "onApproach", alternate = {"on-approach"})
+  private ActionConfigBundle onApproach;
 
   public GameObjectConfig(@NotNull String tag, @NotNull Position position) {
     this.tag = tag;
     this.position = position;
   }
 
+  @NotNull
   public String getTag() {
     return tag;
   }
 
-  public Position getPosition() {
-    return position;
-  }
-
+  @Nullable
   public String getAssetPath() {
     return assetPath;
   }
 
-  public String getTypeString() {
-    assert type != null : "Attempt to access uninitialized \"type\" field!";
-    return type;
+  public String getDescription() {
+    return description;
+  }
+
+  @Nullable
+  public ActionConfigBundle getOnApproach() {
+    return onApproach;
+  }
+
+  @Nullable
+  public ActionConfigBundle getOnClick() {
+    return onClick;
+  }
+
+  @Nullable
+  public ActionConfigBundle getOnRightClick() {
+    return onRightClick;
+  }
+
+  @Nullable
+  public ActionConfigBundle getOnLeftClick() {
+    return onLeftClick;
+  }
+
+  @Nullable
+  public Position getPosition() {
+    return position;
+  }
+
+  /**
+   * Only validates presence of objects tag. Meant for use in some special cases in {@link io.rpg.config.ConfigLoader}.
+   *
+   * @return maybe-valid {@link GameObjectConfig} or exception.
+   */
+  public Result<GameObjectConfig, Exception> validateBasic() {
+    if (tag == null || tag.isBlank()) {
+      return Result.err(new Exception("Invalid or no tag provided"));
+    }
+    return Result.ok();
   }
 
   /**
@@ -48,38 +131,51 @@ public class GameObjectConfig {
    * @return Object in valid state or exception.
    */
   public Result<GameObjectConfig, Exception> validate() {
-    if (!GameObjects.isValidType(type)) {
-      return Result.error(new IllegalStateException("Invalid object type: " + type));
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
+
+    if (tag == null) {
+      builder.append("No tag provided");
+    } else if (tag.isBlank()) {
+      builder.append("Blank tag");
     }
-    return Result.ok(this);
+    if (assetPath == null || assetPath.isBlank()) {
+      builder.append("Invalid path to asset");
+    }
+    if (position == null) {
+      builder.append("No position provided");
+    }
+
+    return builder.isEmpty() ? Result.ok(this) : Result.err(new Exception(builder.toString()));
   }
 
   public void updateFrom(GameObjectConfig gameObjectConfig) {
-    this.position = gameObjectConfig.position;
-    if (gameObjectConfig.getTypeString() != null) {
-      this.type = gameObjectConfig.getTypeString();
+    if (gameObjectConfig.position != null) {
+      this.position = gameObjectConfig.position;
     }
-  }
-
-  public String getFieldDescription() {
-    StringBuilder builder = new StringBuilder();
-    for (Field field : GameObjectConfig.class.getDeclaredFields()) {
-      try {
-        Optional<Object> fieldValue = Optional.ofNullable(field.get(this));
-        fieldValue.ifPresent(_fieldValue -> builder.append('\t')
-            .append(field.getName())
-            .append(": ")
-            .append(_fieldValue)
-            .append(",\n")
-        );
-      } catch (IllegalAccessException ignored) { /* noop */ }
+    if (gameObjectConfig.assetPath != null) {
+      this.assetPath = gameObjectConfig.assetPath;
     }
-    return builder.toString();
+    if (gameObjectConfig.onApproach != null) {
+      this.onApproach = gameObjectConfig.onApproach;
+    }
+    if (gameObjectConfig.onLeftClick != null) {
+      this.onLeftClick = gameObjectConfig.onLeftClick;
+    }
+    if (gameObjectConfig.onRightClick != null) {
+      this.onRightClick = gameObjectConfig.onRightClick;
+    }
+    if (gameObjectConfig.onClick != null) {
+      this.onClick = gameObjectConfig.onClick;
+    }
+    if (gameObjectConfig.description != null) {
+      this.description = gameObjectConfig.description;
+    }
   }
 
   @Override
   public String toString() {
-    return "\n{\n" + getFieldDescription() + "}";
+    return DataObjectDescriptionProvider.combineDescriptions(
+        DataObjectDescriptionProvider.getFieldDescription(this, GameObjectConfig.class)
+    );
   }
-
 }
