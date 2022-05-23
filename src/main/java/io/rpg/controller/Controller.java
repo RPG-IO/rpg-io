@@ -149,7 +149,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(BattleAction action) {
-    Player player = action.getPlayer();
+    Player player = playerController.getPlayer();
     GameObject opponent = action.getOpponent();
     int reward = action.getReward();
     BattleResult result;
