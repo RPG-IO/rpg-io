@@ -138,7 +138,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     return (int) (currentView.getWindow().getY() + currentView.getWindow().getHeight() / 2);
   }
 
-  private void onAction(BattleAction action){
+  private void onAction(BattleAction action) {
     Player player = action.getPlayer();
     GameObject opponent = action.getOpponent();
     int reward = action.getReward();
