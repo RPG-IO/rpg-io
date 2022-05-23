@@ -1,6 +1,7 @@
 package io.rpg.config.model;
 
 import com.google.gson.annotations.SerializedName;
+import io.rpg.model.actions.ActionType;
 import io.rpg.model.object.Question;
 import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.Result;
@@ -8,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents action configuration.
@@ -176,13 +178,27 @@ public class ActionConfigBundle {
     return targetLocationTag;
   }
 
-  /**
-   * Validates object state.
-   *
-   * @return Result.ok when object has valid internal state or Result.error
-   * with enclosed exception explaining the cause.
-   */
-  public Result<Void, Exception> validate() {
+  Result<Void, Exception> validateForQuizAction() {
+    return Result.ok();
+  }
+
+  Result<Void, Exception> validateForDialogueAction() {
+    return Result.ok();
+  }
+
+  Result<Void, Exception> validateForGameEndAction() {
+    return Result.ok();
+  }
+
+  Result<Void, Exception> validateForLocationChangeAction() {
+    return Result.ok();
+  }
+
+  Result<Void, Exception> validateForShowDescriptionAction() {
+    return Result.ok();
+  }
+
+  Result<Void, Exception> validateBasic() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
     if (tag == null) {
       builder.append("Null tag");
@@ -196,5 +212,36 @@ public class ActionConfigBundle {
 
     return builder.isEmpty() ? Result.ok() :
         Result.err(new IllegalStateException(builder.toString()));
+  }
+
+  /**
+   * Validates object state.
+   *
+   * @return Result.ok when object has valid internal state or Result.error
+   * with enclosed exception explaining the cause.
+   */
+  public Result<Void, Exception> validate() {
+    Result<Void, Exception> result = validateBasic();
+
+    if (result.isErr()) {
+      return result;
+    }
+
+    // actionTypeString can not be null here, guaranteed by validateBasic method
+    //noinspection ConstantConditions
+    Optional<ActionType> actionType = ActionType.fromString(actionTypeString);
+
+    if (actionType.isPresent()) {
+      switch (actionType.get()) {
+        case Dialogue -> { return validateForDialogueAction(); }
+        case GameEnd -> { return validateForGameEndAction(); }
+        case LocationChange -> { return validateForLocationChangeAction(); }
+        case Quiz -> { return validateForQuizAction(); }
+        case ShowDescription -> { return validateForShowDescriptionAction(); }
+        default -> { return Result.err(new RuntimeException("Invalid result returned by ActionType.fromString(..) method")); }
+      }
+    } else {
+      return Result.err(new IllegalStateException("Invalid action type provided: " + actionTypeString));
+    }
   }
 }

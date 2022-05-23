@@ -19,7 +19,7 @@ public enum ActionType {
     return asString;
   }
 
-  public Optional<ActionType> fromString(String action) {
+  public static Optional<ActionType> fromString(String action) {
     switch (action) {
       case "quiz" -> { return Optional.of(Quiz); }
       case "game-end" -> { return Optional.of(GameEnd); }
