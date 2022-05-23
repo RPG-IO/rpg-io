@@ -2,6 +2,7 @@ package io.rpg.util;
 
 import io.rpg.config.model.GameObjectConfig;
 import io.rpg.config.model.PlayerConfig;
+import io.rpg.model.actions.Action;
 import io.rpg.model.object.GameObject;
 import io.rpg.model.object.Player;
 
@@ -19,10 +20,25 @@ public class GameObjectFactory {
    * @return game object created based on information located in config
    */
   public static GameObject fromConfig(GameObjectConfig config) {
+
+    Action onLeftClickAction = ActionFactory.fromConfig(config.getOnLeftClick());
+    Action onRightClickAction = ActionFactory.fromConfig(config.getOnRightClick());
+
+    // Not implemented in model for now, however they should be
+    Action onClickAction = ActionFactory.fromConfig(config.getOnClick());
+    Action onApproach = ActionFactory.fromConfig(config.getOnApproach());
+
     if (config instanceof PlayerConfig) {
-      return new Player(config.getTag(), config.getPosition(), config.getAssetPath());
+      Player player = new Player(config.getTag(), config.getPosition(), config.getAssetPath());
+      player.setOnLeftClickAction(onLeftClickAction);
+      player.setOnRightClickAction(onRightClickAction);
+      return player;
     } else {
       GameObject gameObject = new GameObject(config.getTag(), config.getPosition());
+
+      gameObject.setOnLeftClickAction(onLeftClickAction);
+      gameObject.setOnRightClickAction(onRightClickAction);;
+
       // TODO: Create ActionFactory & inflate the actions
       return gameObject;
     }
