@@ -2,21 +2,18 @@ package io.rpg.model.object;
 
 import io.rpg.model.actions.Action;
 import io.rpg.model.actions.BaseActionEmitter;
-import io.rpg.model.actions.DialogueAction;
 import io.rpg.model.actions.QuizAction;
 import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.Position;
-import java.lang.reflect.Field;
 import io.rpg.util.DataObjectDescriptionProvider;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Class representing common state properties for all
@@ -122,19 +119,5 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
 
   public void onLeftClick() {
     emitAction(onLeftClickAction);
-  }
-
-  public enum Type {
-    NAVIGABLE("navigable"),
-    DIALOG("dialog"),
-    PLAYER("player"),
-    QUIZ("quiz"),
-    COLLECTIBLE("collectible");
-
-    private final String asString;
-
-    Type(String asString) {
-      this.asString = asString;
-    }
   }
 }
