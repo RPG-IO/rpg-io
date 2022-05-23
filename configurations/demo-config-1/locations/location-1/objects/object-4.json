@@ -2,10 +2,6 @@
   "tag": "object-4",
   "assetPath": "assets/zombie.png",
   "type": "dialog",
-  "position": {
-    "row": 3,
-    "col": 2
-  },
   "question": {
     "header": "Warunkiem uznania oznaczenia za znak towarowy jest: ",
     "a": "estetyczny wygląd",

@@ -1,11 +1,6 @@
 {
   "tag": "object-3",
   "assetPath": "assets/zombie.png",
-  "type": "dialog",
-  "position": {
-    "row": 1,
-    "col": 4
-  },
   "question": {
     "header": "Autorskie prawa osobiste przysługują: ",
     "a": "twórcy",
