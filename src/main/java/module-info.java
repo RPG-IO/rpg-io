@@ -11,11 +11,12 @@ module io.rpg {
   requires org.jetbrains.annotations;
   requires org.apache.logging.log4j;
   requires org.apache.logging.log4j.core;
+  requires org.apache.commons.io;
 
-  opens io.rpg to javafx.fxml;
   opens io.rpg.model.location to com.google.gson;
   opens io.rpg.model.object to com.google.gson;
   opens io.rpg.model.data to com.google.gson;
+  opens io.rpg.model.actions to com.google.gson;
 
   opens io.rpg.viewmodel to javafx.fxml;
   opens io.rpg.view to javafx.fxml;

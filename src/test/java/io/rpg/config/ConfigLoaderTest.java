@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Set;
 
 public class ConfigLoaderTest {
   private static final String configDirPath = "configurations/unit-test-configurations";
@@ -60,11 +61,11 @@ public class ConfigLoaderTest {
       throw new RuntimeException("Not existing configuration directory \"" + fullConfigPath + "\".");
     }
 
-    List<String> expectedLocationNames = List.of("location-1", "location-2");
+    Set<String> expectedLocationNames = Set.of("location-1", "location-2");
     String testTag = "test-config-1-full";
 
     ConfigLoader configLoader = new ConfigLoader(fullConfigPath);
-    Result<GameWorldConfig, Exception> loadingResult = configLoader.loadGameWorldConfig();
+    Result<GameWorldConfig, Exception> loadingResult = configLoader.loadRootFile();
 
     GameWorldConfig config = loadingResult.getOkValue();
 
@@ -72,7 +73,7 @@ public class ConfigLoaderTest {
 
     Assertions.assertEquals(testTag, config.getTag());
 
-    List<String> actualLocationNames = config.getLocationTags();
+    Set<String> actualLocationNames = config.getLocationTags();
     Assertions.assertEquals(expectedLocationNames, actualLocationNames);
 
     //   "player": {
@@ -85,7 +86,6 @@ public class ConfigLoaderTest {
     PlayerConfig actualPlayerConfig = config.getPlayerConfig();
 
     Assertions.assertEquals("player", actualPlayerConfig.getTag());
-    Assertions.assertEquals("player", actualPlayerConfig.getTypeString());
     Assertions.assertEquals(new Position(4, 5), actualPlayerConfig.getPosition());
     // Assertions.assertEquals("assets/stone.png", actualPlayerConfig.getAssetPath());
   }
