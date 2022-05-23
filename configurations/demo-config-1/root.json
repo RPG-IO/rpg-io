@@ -12,7 +12,6 @@
     "assetPath": "assets/knight.png",
     "location": "location-1"
   },
-
   "textPopupBackground": "assets/popup-background.png",
   "textPopupButton": "assets/button-image.png",
   "textImagePopupBackground": "assets/popup-background-2.png",
