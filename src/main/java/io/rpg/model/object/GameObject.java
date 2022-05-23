@@ -126,4 +126,8 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
   public void onLeftClick() {
     emitAction(onLeftClickAction);
   }
+
+  public int getStrength() {
+    return strength;
+  }
 }
