@@ -2,6 +2,7 @@ package io.rpg.config.model;
 
 import com.google.gson.annotations.SerializedName;
 import io.rpg.model.actions.ActionType;
+import io.rpg.model.data.Position;
 import io.rpg.model.object.Question;
 import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.Result;
@@ -86,6 +87,14 @@ public class ActionConfigBundle {
   @Nullable
   @SerializedName(value = "targetLocation", alternate = {"target-location", "target"})
   private String targetLocationTag;
+
+  /**
+   * {@link io.rpg.model.actions.LocationChangeAction} <br>
+   * TODO
+   */
+  @Nullable
+  @SerializedName(value = "targetPosition", alternate = {"target-position", "position"})
+  private Position targetPosition;
 
   /**
    * {@link io.rpg.model.actions.QuizAction} <br>
