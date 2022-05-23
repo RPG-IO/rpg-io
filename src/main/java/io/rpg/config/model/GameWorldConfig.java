@@ -3,6 +3,8 @@ package io.rpg.config.model;
 import com.google.gson.annotations.SerializedName;
 import io.rpg.util.Result;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +47,7 @@ public class GameWorldConfig {
   private String rootLocation;
 
   /**
-   * Specifies the assets for each popup
+   * Specifies the assets for each popup.
    */
   private String quizPopupBackground;
   private String textPopupButton;
@@ -123,6 +125,18 @@ public class GameWorldConfig {
       return Result.error(new IllegalStateException("No player config provided"));
     } else if (rootLocation == null) {
       return Result.error(new IllegalStateException("No root location set!"));
+    } else if (quizPopupBackground == null || !Files.isRegularFile(Path.of(quizPopupBackground))) {
+      return Result.error(new IllegalStateException("Invalid quiz popup background specified"));
+    } else if (textImagePopupBackground == null || !Files.isRegularFile(Path.of(textImagePopupBackground))) {
+      return Result.error(new IllegalStateException("Invalid text image popup background specified"));
+    } else if (textPopupButton == null || !Files.isRegularFile(Path.of(textPopupButton))) {
+      return Result.error(new IllegalStateException("Invalid text popup button specified"));
+    } else if (textImagePopupButton == null || !Files.isRegularFile(Path.of(textImagePopupButton))) {
+      return Result.error(new IllegalStateException("Invalid text image popup button specified"));
+    } else if (textPopupBackground == null || !Files.isRegularFile(Path.of(textPopupBackground))) {
+      return Result.error(new IllegalStateException("Invalid text popup background specified"));
+    } else if (inventoryPopupBackground == null || !Files.isRegularFile(Path.of(inventoryPopupBackground))) {
+      return Result.error(new IllegalStateException("Invalid inventory popup background specified"));
     } else {
       return Result.ok(this);
     }
