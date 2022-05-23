@@ -6,6 +6,7 @@ import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.Player;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
+import javafx.geometry.Point2D;
 import javafx.scene.input.KeyEvent;
 
 public class PlayerController implements KeyboardEvent.Observer {
@@ -50,11 +51,11 @@ public class PlayerController implements KeyboardEvent.Observer {
    * @param view new location view.
    * @param playerPosition new player position.
    */
-  public void teleportTo(LocationModel model, LocationView view, Position playerPosition) {
+  public void teleportTo(LocationModel model, LocationView view, Point2D playerPosition) {
     onChangeLocation.run();
     updateOnChangeLocation(model, view);
 
-    player.setPosition(playerPosition);
+    player.setExactPosition(playerPosition);
     model.addGameObject(player);
     view.addChild(playerView);
     view.addKeyboardEventObserver(this);

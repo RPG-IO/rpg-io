@@ -2,7 +2,9 @@ package io.rpg.model.location;
 
 import io.rpg.model.actions.ActionConsumer;
 import io.rpg.model.actions.BaseActionEmitter;
+import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.LocationModelStateChange;
+import io.rpg.model.data.MapDirection;
 import io.rpg.model.data.Position;
 import io.rpg.model.object.GameObject;
 import io.rpg.util.Result;
@@ -25,6 +27,7 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
   private List<GameObject> gameObjects;
   private final HashMap<GameObject, ChangeListener<Point2D>> positionListeners;
   private final HashMap<Position, GameObject> positionGameObjectMap;
+  private final HashMap<MapDirection, String> directionToLocationMap;
   public Point2D bounds;
   private final Set<LocationModelStateChange.Observer> locationModelStateChangeObservers;
 
@@ -39,6 +42,11 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
     this.locationModelStateChangeObservers = new LinkedHashSet<>();
     this.positionListeners = new HashMap<>();
     this.positionGameObjectMap = new HashMap<>();
+    this.directionToLocationMap = new HashMap<>();
+
+    directionToLocationMap.put(MapDirection.NORTH, "location-1");
+    directionToLocationMap.put(MapDirection.SOUTH, "location-1");
+    directionToLocationMap.put(MapDirection.WEST, "location-2");
   }
 
   public String getTag() {
@@ -52,22 +60,23 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
   /**
    * Private setter for Builder usage only. Notice that ownership of {@link GameObject}s is not
    * transferred to LocationModel.
-   * TODO: Transfer ownership of objects to LoactionModel.
+   * TODO: Transfer ownership of objects to LocationModel.
    *
    * @param gameObjects game object for location
    */
   private void setGameObjects(List<GameObject> gameObjects) {
     this.gameObjects = gameObjects;
     gameObjects.forEach(this::registerGameObject);
-    gameObjects.forEach(g -> checkAndCorrectBoundsCrossing(g, g.getExactPosition()));
+    gameObjects.forEach(g -> checkAndCorrectBoundsCrossing(g, g.getExactPosition(), false));
     gameObjects.forEach(g -> positionGameObjectMap.put(g.getPosition(), g));
   }
 
   public void addGameObject(GameObject gameObject) {
     gameObjects.add(gameObject);
+    checkAndCorrectBoundsCrossing(gameObject, gameObject.getExactPosition(), false);
     positionGameObjectMap.put(gameObject.getPosition(), gameObject);
     registerGameObject(gameObject);
-    checkAndCorrectBoundsCrossing(gameObject, gameObject.getExactPosition());
+
   }
 
   private void registerGameObject(GameObject gameObject) {
@@ -91,7 +100,11 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
   }
 
   private void onGameObjectPositionChange(GameObject gameObject, Point2D oldPosition, Point2D newPosition) {
-    checkAndCorrectBoundsCrossing(gameObject, newPosition);
+    boolean changeOccurred = checkAndCorrectBoundsCrossing(gameObject, newPosition, true);
+
+    if (changeOccurred) {
+      return;
+    }
 
     Position newPos = new Position(newPosition);
     Position oldPos = new Position(oldPosition);
@@ -117,23 +130,40 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
   }
 
 
-  private void checkAndCorrectBoundsCrossing(GameObject gameObject, Point2D newPosition) {
+  private boolean checkAndCorrectBoundsCrossing(GameObject gameObject, Point2D newPosition, boolean emitAction) {
     Point2D boundPosition = getBoundPosition(newPosition);
     if (boundPosition.equals(newPosition)) {
-      return;
+      return false;
     }
 
     gameObject.setExactPosition(boundPosition);
     Point2D boundsCrossedDirection = newPosition.subtract(boundPosition)
                                                 .normalize();
 
-    emitBoundCrossedEvent(boundsCrossedDirection);
+    if (emitAction) {
+      emitBoundCrossedAction(gameObject, boundsCrossedDirection);
+    }
+
+    return true;
   }
 
-  private void emitBoundCrossedEvent(Point2D boundsCrossedDirection) {
-    // TODO: 10.05.2022 Bound crossed action
-    System.out.println(boundsCrossedDirection);
+  private void emitBoundCrossedAction(GameObject gameObject, Point2D boundsCrossedDirection) {
+    // guard against non cardinal directions vector
+    if ((boundsCrossedDirection.angle(1, 0) % 90) != 0) {
+      return;
+    }
+    MapDirection direction = MapDirection.fromDirectionVector(boundsCrossedDirection);
+    Point2D position = gameObject.getExactPosition();
+    Point2D nextPosition = position.subtract(boundsCrossedDirection.multiply(20));
+    if (!directionToLocationMap.containsKey(direction)) {
+      return;
+    }
+
+    String location = directionToLocationMap.get(direction);
+    LocationChangeAction action = new LocationChangeAction(location, nextPosition);
+    emitAction(action);
   }
+
 
   private Point2D getBoundPosition(Point2D pos) {
     double offset = 0.3; // it should be less than 0.5
