@@ -1,7 +1,10 @@
 package io.rpg.util;
 
 import io.rpg.config.model.GameObjectConfig;
-import io.rpg.model.object.*;
+import io.rpg.config.model.PlayerConfig;
+import io.rpg.model.object.GameObject;
+import io.rpg.model.object.Player;
+
 
 import java.util.LinkedList;
 
@@ -16,13 +19,12 @@ public class GameObjectFactory {
    * @return game object created based on information located in config
    */
   public static GameObject fromConfig(GameObjectConfig config) {
-    switch (GameObject.Type.valueOf(config.getTypeString().toUpperCase())) {
-      case COLLECTIBLE -> { return new CollectibleGameObject(config.getTag(), config.getPosition()); }
-      case DIALOG -> { return new DialogGameObject(config.getTag(), config.getPosition()); }
-      case PLAYER -> { return new Player(config.getTag(), config.getPosition(), config.getAssetPath()); }
-      case NAVIGABLE -> { return new NavigationalGameObject(config.getTag(), config.getPosition()); }
-      case QUIZ -> { return new QuizGameObject(config.getTag(), config.getPosition()); }
-      default -> throw new RuntimeException("Unknown GameObject type. This should not happen!");
+    if (config instanceof PlayerConfig) {
+      return new Player(config.getTag(), config.getPosition(), config.getAssetPath());
+    } else {
+      GameObject gameObject = new GameObject(config.getTag(), config.getPosition());
+      // TODO: Create ActionFactory & inflate the actions
+      return gameObject;
     }
   }
 

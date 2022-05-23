@@ -1,6 +1,5 @@
 package io.rpg.config.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import io.rpg.model.actions.ActionType;
 import io.rpg.model.object.Question;
@@ -10,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Represents action configuration.
