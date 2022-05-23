@@ -3,6 +3,7 @@ package io.rpg.util;
 import io.rpg.config.model.ActionConfigBundle;
 import io.rpg.model.actions.*;
 import io.rpg.model.object.Question;
+import javafx.scene.image.Image;
 
 public class ActionFactory {
   /**
@@ -47,15 +48,15 @@ public class ActionFactory {
   }
 
   private static DialogueAction dialogueActionFromConfig(ActionConfigBundle config) {
-//    return new DialogueAction(config.getDescription(), config.getAssetPath());
-    return null;
+    // TODO: Move Image creation inside DialogueAction? Idk tbh.
+    return new DialogueAction(config.getDescription(), new Image(config.getAssetPath()));
   }
 
   private static LocationChangeAction locationChangeActionFromConfig(ActionConfigBundle config) {
-    return null;
+    return new LocationChangeAction(config.getTargetLocationTag(), config.getTargetPosition());
   }
 
   private static ShowDescriptionAction showDescriptionActionFromConfig(ActionConfigBundle config) {
-    return null;
+    return new ShowDescriptionAction(config.getDescription(), new Image(config.getAssetPath()));
   }
 }

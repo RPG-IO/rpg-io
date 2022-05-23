@@ -183,6 +183,11 @@ public class ActionConfigBundle {
   }
 
   @Nullable
+  public Position getTargetPosition() {
+    return targetPosition;
+  }
+
+  @Nullable
   public String getTargetLocationTag() {
     return targetLocationTag;
   }
