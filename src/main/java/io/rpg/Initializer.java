@@ -14,6 +14,7 @@ import io.rpg.util.GameObjectViewFactory;
 import io.rpg.util.Result;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
+import io.rpg.view.popups.DialoguePopup;
 import io.rpg.view.popups.QuestionPopup;
 import io.rpg.view.popups.TextImagePopup;
 import io.rpg.view.popups.TextPopup;
@@ -64,6 +65,8 @@ public class Initializer {
     TextImagePopup.setBackgroundPath(gameWorldConfig.getTextImagePopupBackground());
     TextPopup.setButtonPath(gameWorldConfig.getTextPopupButton());
     TextImagePopup.setButtonPath(gameWorldConfig.getTextImagePopupButton());
+    DialoguePopup.setBackgroundPath(gameWorldConfig.getDialoguePopupBackground());
+    DialoguePopup.setNpcFramePath(gameWorldConfig.getNpcFrame());
 
     Controller.Builder controllerBuilder = new Controller.Builder();
 

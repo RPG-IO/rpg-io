@@ -64,6 +64,8 @@ public class GameWorldConfig {
   private String textImagePopupButton;
   private String textPopupBackground;
   private String inventoryPopupBackground;
+  private String dialoguePopupBackground;
+  private String npcFrame;
 
 
   /**
@@ -157,6 +159,12 @@ public class GameWorldConfig {
 		if (inventoryPopupBackground == null || !Files.isRegularFile(Path.of(inventoryPopupBackground))) {
 			builder.append("Invalid inventory popup background specified");
     }
+    if (dialoguePopupBackground == null || !Files.isRegularFile(Path.of(dialoguePopupBackground))) {
+      builder.append("Invalid dialogue popup background specified");
+    }
+    if (npcFrame == null || !Files.isRegularFile(Path.of(npcFrame))) {
+      builder.append("Invalid NPC Frame specified");
+    }
 
     return builder.isEmpty() ? Result.ok(this) :
         Result.err(new IllegalStateException(builder.toString()));
@@ -204,6 +212,14 @@ public class GameWorldConfig {
 
   public String getInventoryPopupBackground() {
     return resolvePathFormat(inventoryPopupBackground);
+  }
+
+  public String getDialoguePopupBackground() {
+    return resolvePathFormat(dialoguePopupBackground);
+  }
+
+  public String getNpcFrame() {
+    return resolvePathFormat(npcFrame);
   }
 
   public static String resolvePathFormat(String path) {
