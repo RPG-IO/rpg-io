@@ -72,6 +72,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   @Override
   public void consumeAction(Action action) {
+    if (Action.VOID.equals(action)) {
+      logger.trace("VOID action consumed");
+    }
+
     Class<?>[] args = {action.getClass()};
     Method onSpecificAction;
 
