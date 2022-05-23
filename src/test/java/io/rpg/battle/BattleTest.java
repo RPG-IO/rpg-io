@@ -24,7 +24,7 @@ public class BattleTest {
             result = new BattleResult(BattleResult.Result.VICTORY, reward);
         } else if (player.getStrength() < opponent.getStrength()) {
             result = new BattleResult(BattleResult.Result.DEFEAT, 0);
-        }else{
+        } else {
             result = new BattleResult(BattleResult.Result.DRAW, 0);
         }
 
