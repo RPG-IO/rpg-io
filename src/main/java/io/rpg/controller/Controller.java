@@ -1,6 +1,6 @@
 package io.rpg.controller;
 
-import io.rpg.model.actions.Battle;
+import io.rpg.model.actions.BattleAction;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Vector;
@@ -18,6 +18,7 @@ import javafx.scene.input.KeyEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -117,7 +118,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         case D -> currentModel.getPlayer().setRightPressed(true);
         case S -> currentModel.getPlayer().setDownPressed(true);
         case W -> currentModel.getPlayer().setUpPressed(true);
-        case X -> battle(new GameObject(null, "opponent", null, 7)); // TODO: put this somewhere else
+        case X -> onAction(new BattleAction(currentModel.getPlayer(), new GameObject(null, "opponent", null, 7), 5)); // TODO: put this somewhere else
       }
     } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
       switch (payload.getCode()) {
@@ -129,17 +130,28 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     }
   }
 
-  private void battle(GameObject opponent) {
-    Battle battle = new Battle(currentModel.getPlayer(), opponent, 10);
-    popupController.openTextPopup(battle.action().getMessage(), getWindowCenterX(), getWindowCenterY());
-  }
-
   private int getWindowCenterX() {
     return (int) (currentView.getWindow().getX() + currentView.getWindow().getWidth() / 2);
   }
 
   private int getWindowCenterY() {
     return (int) (currentView.getWindow().getY() + currentView.getWindow().getHeight() / 2);
+  }
+
+  private void onAction(BattleAction action){
+    Player player = action.getPlayer();
+    GameObject opponent = action.getOpponent();
+    int reward = action.getReward();
+    BattleResult result;
+    if (player.getStrength() > opponent.getStrength()) {
+      player.addPoints(reward);
+      result = new BattleResult(BattleResult.Result.VICTORY, reward);
+    } else if (player.getStrength() < opponent.getStrength()) {
+      result = new BattleResult(BattleResult.Result.DEFEAT, 0);
+    }else{
+      result = new BattleResult(BattleResult.Result.DRAW, 0);
+    }
+    popupController.openTextPopup(result.getMessage(), getWindowCenterX(), getWindowCenterY());
   }
 
   @Override
