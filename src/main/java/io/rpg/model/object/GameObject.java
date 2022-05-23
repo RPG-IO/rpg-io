@@ -111,11 +111,11 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
     setExactPosition(new Point2D(playerPosition.col, playerPosition.row));
   }
 
-  public void setOnRightClickAction(Action onRightClickAction) {
+  public void setOnRightClickAction(@NotNull Action onRightClickAction) {
     this.onRightClickAction = onRightClickAction;
   }
 
-  public void setOnLeftClickAction(Action onLeftClickAction) {
+  public void setOnLeftClickAction(@NotNull Action onLeftClickAction) {
     this.onLeftClickAction = onLeftClickAction;
   }
 
