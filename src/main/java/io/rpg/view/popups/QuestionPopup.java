@@ -18,10 +18,7 @@ public class QuestionPopup extends Scene {
   private Runnable successCallback;
   private Runnable failureCallback;
 
-  public QuestionPopup(Question question, String backgroundPath) {
-    this(question);
-    viewModel.setBackgroundImage(backgroundPath);
-  }
+  private static String backgroundPath;
 
   public QuestionPopup(Question question) {
     super(new Group(), Color.TRANSPARENT);
@@ -47,9 +44,13 @@ public class QuestionPopup extends Scene {
     viewModel.setButtonCallback('C', event -> this.answerSelected('C'));
     viewModel.setButtonCallback('D', event -> this.answerSelected('D'));
 
-    viewModel.setBackgroundImage("file:assets/popup-background-3.png");
+    viewModel.setBackgroundImage(backgroundPath);
 
     this.setFill(Color.TRANSPARENT);
+  }
+
+  public static void setBackgroundPath(String backgroundPath) {
+    QuestionPopup.backgroundPath = backgroundPath;
   }
 
   public void answerSelected(char answer) {

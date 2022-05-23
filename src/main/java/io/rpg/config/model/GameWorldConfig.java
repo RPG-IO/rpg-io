@@ -45,6 +45,17 @@ public class GameWorldConfig {
   private String rootLocation;
 
   /**
+   * Specifies the assets for each popup
+   */
+  private String quizPopupBackground;
+  private String textPopupButton;
+  private String textImagePopupBackground;
+  private String textImagePopupButton;
+  private String textPopupBackground;
+  private String inventoryPopupBackground;
+
+
+  /**
    * Unique tag for the game. This can be treated as name of the game.
    *
    * @return String representing name of the game.
@@ -82,13 +93,12 @@ public class GameWorldConfig {
     return playerConfig;
   }
 
+
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
     builder.append("\n{\n").append("\ttag: ").append(tag).append('\n');
-    locationTags.forEach(location -> {
-      builder.append("\tlocation-tag: ").append(location).append('\n');
-    });
+    locationTags.forEach(location -> builder.append("\tlocation-tag: ").append(location).append('\n'));
     return builder.append("}\n").toString();
   }
 
@@ -132,5 +142,33 @@ public class GameWorldConfig {
     } else {
       return Result.ok(this);
     }
+  }
+
+  public String getQuizPopupBackground() {
+    return resolvePathFormat(quizPopupBackground);
+  }
+
+  public String getTextPopupButton() {
+    return resolvePathFormat(textPopupButton);
+  }
+
+  public String getTextImagePopupBackground() {
+    return resolvePathFormat(textImagePopupBackground);
+  }
+
+  public String getTextImagePopupButton() {
+    return resolvePathFormat(textImagePopupButton);
+  }
+
+  public String getTextPopupBackground() {
+    return resolvePathFormat(textPopupBackground);
+  }
+
+  public String getInventoryPopupBackground() {
+    return resolvePathFormat(inventoryPopupBackground);
+  }
+
+  public static String resolvePathFormat(String path) {
+    return "file:" + path;
   }
 }
