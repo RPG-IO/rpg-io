@@ -14,6 +14,9 @@ import io.rpg.util.GameObjectViewFactory;
 import io.rpg.util.Result;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
+import io.rpg.view.popups.QuestionPopup;
+import io.rpg.view.popups.TextImagePopup;
+import io.rpg.view.popups.TextPopup;
 import javafx.geometry.Point2D;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
@@ -55,6 +58,12 @@ public class Initializer {
 
     GameWorldConfig gameWorldConfig = gameWorldConfigLoadResult.getOkValue();
 
+    // set assets for popups
+    QuestionPopup.setBackgroundPath(gameWorldConfig.getQuizPopupBackground());
+    TextPopup.setBackgroundPath(gameWorldConfig.getTextPopupBackground());
+    TextImagePopup.setBackgroundPath(gameWorldConfig.getTextImagePopupBackground());
+    TextPopup.setButtonPath(gameWorldConfig.getTextPopupButton());
+    TextImagePopup.setButtonPath(gameWorldConfig.getTextImagePopupButton());
 
     Controller.Builder controllerBuilder = new Controller.Builder();
 

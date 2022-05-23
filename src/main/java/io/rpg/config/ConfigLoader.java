@@ -134,12 +134,6 @@ public class ConfigLoader {
 
     logger.info("GameWorldConfig loaded: \n" + gameWorldConfig);
 
-    QuestionPopup.setBackgroundPath(gameWorldConfig.getQuizPopupBackground());
-    TextPopup.setBackgroundPath(gameWorldConfig.getTextPopupBackground());
-    TextImagePopup.setBackgroundPath(gameWorldConfig.getTextImagePopupBackground());
-    TextPopup.setButtonPath(gameWorldConfig.getTextPopupButton());
-    TextImagePopup.setButtonPath(gameWorldConfig.getTextImagePopupButton());
-
     // we assume here that gameWorldConfig was validated in loadGameWorldConfig method
     for (String locationTag : gameWorldConfig.getLocationTags()) {
       try {
