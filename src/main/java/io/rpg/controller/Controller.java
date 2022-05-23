@@ -110,7 +110,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(DialogueAction action) {
-    popupController.openDialoguePopup(action.text, action.image, getWindowCenterX(), getWindowCenterY()); //TODO: load text from config
+    popupController.openDialoguePopup(action.text, action.image, getWindowCenterX(), getWindowCenterY());
   }
 
   private void onAction(ShowDescriptionAction action) {
