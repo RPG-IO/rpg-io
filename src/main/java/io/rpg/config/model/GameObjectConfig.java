@@ -13,12 +13,28 @@ import java.util.Optional;
  * Represents {@link io.rpg.model.object.GameObject} configuration provided by user
  * in configuration files.
  */
-public class GameObjectConfig extends GameObject {
+public class GameObjectConfig {
 
   private String type;
+  private String tag;
+  private Position position;
+  private String assetPath;
 
   public GameObjectConfig(@NotNull String tag, @NotNull Position position) {
-    super(tag, position);
+    this.tag = tag;
+    this.position = position;
+  }
+
+  public String getTag() {
+    return tag;
+  }
+
+  public Position getPosition() {
+    return position;
+  }
+
+  public String getAssetPath() {
+    return assetPath;
   }
 
   public String getTypeString() {
@@ -39,14 +55,9 @@ public class GameObjectConfig extends GameObject {
   }
 
   public void updateFrom(GameObjectConfig gameObjectConfig) {
-    if (gameObjectConfig.getPosition() != null) {
-      this.position = gameObjectConfig.getPosition();
-    }
+    this.position = gameObjectConfig.position;
     if (gameObjectConfig.getTypeString() != null) {
       this.type = gameObjectConfig.getTypeString();
-    }
-    if (gameObjectConfig.getAssetPath() != null) {
-      this.assetPath = gameObjectConfig.assetPath;
     }
   }
 
@@ -68,9 +79,7 @@ public class GameObjectConfig extends GameObject {
 
   @Override
   public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("\n{\n").append(super.getFieldDescription()).append(getFieldDescription());
-    return builder.append("}").toString();
+    return "\n{\n" + getFieldDescription() + "}";
   }
 
 }

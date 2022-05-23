@@ -1,26 +1,36 @@
 package io.rpg.model.location;
 
+import io.rpg.model.actions.ActionConsumer;
+import io.rpg.model.actions.BaseActionEmitter;
+import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.LocationModelStateChange;
+import io.rpg.model.data.MapDirection;
 import io.rpg.model.data.Position;
-import io.rpg.model.object.Player;
 import io.rpg.model.object.GameObject;
 import io.rpg.util.Result;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import javafx.beans.value.ChangeListener;
+import javafx.geometry.Point2D;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.UnmodifiableView;
-
-import java.util.*;
 
 /**
  * Represents single location in our game.
  */
-public class LocationModel implements LocationModelStateChange.Emitter {
+public class LocationModel extends BaseActionEmitter implements LocationModelStateChange.Emitter {
   private String tag;
   private List<GameObject> gameObjects;
-  private Player player;
-
+  private final HashMap<GameObject, ChangeListener<Point2D>> positionListeners;
+  private final HashMap<Position, GameObject> positionGameObjectMap;
+  private final HashMap<MapDirection, String> directionToLocationMap;
+  public Point2D bounds;
   private final Set<LocationModelStateChange.Observer> locationModelStateChangeObservers;
+
 
   public LocationModel(@NotNull String tag, @NotNull List<GameObject> gameObjects) {
     this();
@@ -30,53 +40,136 @@ public class LocationModel implements LocationModelStateChange.Emitter {
 
   private LocationModel() {
     this.locationModelStateChangeObservers = new LinkedHashSet<>();
-  }
+    this.positionListeners = new HashMap<>();
+    this.positionGameObjectMap = new HashMap<>();
+    this.directionToLocationMap = new HashMap<>();
 
-  public void setPlayer(@NotNull Player player) {
-    this.player = player;
+    directionToLocationMap.put(MapDirection.NORTH, "location-1");
+    directionToLocationMap.put(MapDirection.SOUTH, "location-1");
+    directionToLocationMap.put(MapDirection.WEST, "location-2");
   }
 
   public String getTag() {
     return tag;
   }
 
-  public Player getPlayer() {
-    return player;
+  public Optional<GameObject> getObject(Position position) {
+    return Optional.ofNullable(positionGameObjectMap.get(position));
   }
-
-  public GameObject getObject(int row, int column) {
-    GameObject object =  gameObjects.stream().filter(gameObject -> gameObject.getPosition()
-                    .equals(new Position(row, column)))
-                    .findFirst().orElse(null);
-    if (object == null) {
-      throw new NullPointerException("No object found on (" + row + ", " + column + ")");
-    }
-    return object;
-  }
-  
-  /**
-   * Private setter for Builder usage only.
-   *
-   * @param tag tag for the location
-   */
-  private void setTag(String tag) {
-    this.tag = tag;
-  }
-
-//  @UnmodifiableView
-//  public List<GameObject> getGameObjects() {
-//    return Collections.unmodifiableList(gameObjects);
-//  }
 
   /**
    * Private setter for Builder usage only. Notice that ownership of {@link GameObject}s is not
    * transferred to LocationModel.
-   * TODO: Transfer ownership of objects to LoactionModel.
+   * TODO: Transfer ownership of objects to LocationModel.
    *
    * @param gameObjects game object for location
    */
   private void setGameObjects(List<GameObject> gameObjects) {
     this.gameObjects = gameObjects;
+    gameObjects.forEach(this::registerGameObject);
+    gameObjects.forEach(g -> checkAndCorrectBoundsCrossing(g, g.getExactPosition(), false));
+    gameObjects.forEach(g -> positionGameObjectMap.put(g.getPosition(), g));
+  }
+
+  public void addGameObject(GameObject gameObject) {
+    gameObjects.add(gameObject);
+    checkAndCorrectBoundsCrossing(gameObject, gameObject.getExactPosition(), false);
+    positionGameObjectMap.put(gameObject.getPosition(), gameObject);
+    registerGameObject(gameObject);
+
+  }
+
+  private void registerGameObject(GameObject gameObject) {
+    ChangeListener<Point2D> positionListener =
+        (observable, oldValue, newValue) -> onGameObjectPositionChange(gameObject, oldValue, newValue);
+    gameObject.getExactPositionProperty()
+              .addListener(positionListener);
+    positionListeners.put(gameObject, positionListener);
+  }
+
+  public void removeGameObject(GameObject gameObject) {
+    gameObjects.remove(gameObject);
+    positionGameObjectMap.remove(gameObject.getPosition());
+    unRegisterGameObject(gameObject);
+  }
+
+  private void unRegisterGameObject(GameObject gameObject) {
+    ChangeListener<Point2D> positionListener = positionListeners.remove(gameObject);
+    gameObject.getExactPositionProperty()
+              .removeListener(positionListener);
+  }
+
+  private void onGameObjectPositionChange(GameObject gameObject, Point2D oldPosition, Point2D newPosition) {
+    boolean changeOccurred = checkAndCorrectBoundsCrossing(gameObject, newPosition, true);
+
+    if (changeOccurred) {
+      return;
+    }
+
+    Position newPos = new Position(newPosition);
+    Position oldPos = new Position(oldPosition);
+    if (newPos.equals(oldPos)) {
+      return;
+    }
+
+    // Collision check
+    if (positionGameObjectMap.containsKey(newPos) && !positionGameObjectMap.get(newPos)
+                                                                           .equals(gameObject)) {
+      gameObject.setExactPosition(oldPosition);
+      return;
+    }
+
+    if (gameObject.equals(positionGameObjectMap.get(oldPos))) {
+      changeField(gameObject, oldPos, newPos);
+    }
+  }
+
+  private void changeField(GameObject gameObject, Position oldPos, Position newPos) {
+    positionGameObjectMap.remove(oldPos);
+    positionGameObjectMap.put(newPos, gameObject);
+  }
+
+
+  private boolean checkAndCorrectBoundsCrossing(GameObject gameObject, Point2D newPosition, boolean emitAction) {
+    Point2D boundPosition = getBoundPosition(newPosition);
+    if (boundPosition.equals(newPosition)) {
+      return false;
+    }
+
+    gameObject.setExactPosition(boundPosition);
+    Point2D boundsCrossedDirection = newPosition.subtract(boundPosition)
+                                                .normalize();
+
+    if (emitAction) {
+      emitBoundCrossedAction(gameObject, boundsCrossedDirection);
+    }
+
+    return true;
+  }
+
+  private void emitBoundCrossedAction(GameObject gameObject, Point2D boundsCrossedDirection) {
+    // guard against non cardinal directions vector
+    if ((boundsCrossedDirection.angle(1, 0) % 90) != 0) {
+      return;
+    }
+    MapDirection direction = MapDirection.fromDirectionVector(boundsCrossedDirection);
+    Point2D position = gameObject.getExactPosition();
+    Point2D nextPosition = position.subtract(boundsCrossedDirection.multiply(20));
+    if (!directionToLocationMap.containsKey(direction)) {
+      return;
+    }
+
+    String location = directionToLocationMap.get(direction);
+    LocationChangeAction action = new LocationChangeAction(location, nextPosition);
+    emitAction(action);
+  }
+
+
+  private Point2D getBoundPosition(Point2D pos) {
+    double offset = 0.3; // it should be less than 0.5
+    double x = Math.max(-offset, Math.min(bounds.getX() - 1 + offset, pos.getX()));
+    double y = Math.max(-offset, Math.min(bounds.getY() - 1 + offset, pos.getY()));
+    return new Point2D(x, y);
   }
 
   @Override
@@ -94,6 +187,12 @@ public class LocationModel implements LocationModelStateChange.Emitter {
     locationModelStateChangeObservers.forEach(observer -> {
       observer.onLocationModelStateChange(event);
     });
+  }
+
+  @Override
+  public void setActionConsumer(ActionConsumer actionConsumer) {
+    super.setActionConsumer(actionConsumer);
+    gameObjects.forEach((g) -> g.setActionConsumer(actionConsumer));
   }
 
   public Result<Void, Void> validate() {
@@ -118,9 +217,13 @@ public class LocationModel implements LocationModelStateChange.Emitter {
       return this;
     }
 
+    public Builder setBounds(Point2D bounds) {
+      locationModel.bounds = bounds;
+      return this;
+    }
+
     public Builder setTag(@NotNull String tag) {
-      assert tag != null : "Location tag must not be null!";
-      locationModel.setTag(tag);
+      locationModel.tag = tag;
       return this;
     }
 
@@ -133,15 +236,6 @@ public class LocationModel implements LocationModelStateChange.Emitter {
       }
 
       return locationModel;
-    }
-  }
-  public List<GameObject> getGameObjects() {
-    return gameObjects;
-  }
-
-  public void update(float elapsed){
-    if(player!=null){
-      player.update(elapsed);
     }
   }
 

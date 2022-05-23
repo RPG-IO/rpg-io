@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocationConfig {
+  public static final int MAX_HEIGHT = 10;
+  public static final int MAX_WIDTH = 10;
   @Nullable
   private String tag;
 
@@ -21,6 +23,9 @@ public class LocationConfig {
 
   @Nullable
   private String backgroundPath;
+
+  private int width;
+  private int height;
 
   // This class is not meant to be instantiated
   // by hand. Only Gson should be able to do so
@@ -52,12 +57,22 @@ public class LocationConfig {
     this.path = path;
   }
 
+  public int getWidth() {
+    return width;
+  }
+
+  public int getHeight() {
+    return height;
+  }
+
   public Result<LocationConfig, Exception> validate() {
     if (tag == null) {
       return Result.error(new IllegalStateException("Null tag"));
     } else if (backgroundPath == null || backgroundPath.isBlank()) {
       // TODO: Validate the backgroundPath here
       return Result.error(new IllegalStateException("Empty string as background path"));
+    } else if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+      return Result.error(new IllegalStateException("Size of location is greater than max size"));
     } else {
       return Result.ok(this);
     }
