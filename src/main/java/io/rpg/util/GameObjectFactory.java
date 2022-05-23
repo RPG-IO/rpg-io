@@ -1,10 +1,13 @@
 package io.rpg.util;
 
 import io.rpg.config.model.GameObjectConfig;
-import io.rpg.model.object.*;
+import io.rpg.config.model.PlayerConfig;
+import io.rpg.model.actions.Action;
+import io.rpg.model.object.GameObject;
+import io.rpg.model.object.Player;
+
 
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Exposes collection of methods to create {@link io.rpg.model.object.GameObject} class instances.
@@ -17,13 +20,27 @@ public class GameObjectFactory {
    * @return game object created based on information located in config
    */
   public static GameObject fromConfig(GameObjectConfig config) {
-    switch (GameObject.Type.valueOf(config.getTypeString().toUpperCase())) {
-      case COLLECTIBLE -> { return new CollectibleGameObject(config.getTag(), config.getPosition()); }
-      case DIALOG -> { return new DialogGameObject(config.getTag(), config.getPosition()); }
-      case PLAYER -> { return new Player(config.getTag(), config.getPosition(), config.getAssetPath()); }
-      case NAVIGABLE -> { return new NavigationalGameObject(config.getTag(), config.getPosition()); }
-      case QUIZ -> { return new QuizGameObject(config.getTag(), config.getPosition()); }
-      default -> throw new RuntimeException("Unknown GameObject type. This should not happen!");
+
+    Action onLeftClickAction = config.getOnLeftClick() != null ? ActionFactory.fromConfig(config.getOnLeftClick()) : null;
+    Action onRightClickAction = config.getOnRightClick() != null ? ActionFactory.fromConfig(config.getOnRightClick()) : null;
+
+    // Not implemented in model for now, however they should be
+    Action onClickAction = config.getOnClick() != null ? ActionFactory.fromConfig(config.getOnClick()) : null;
+    Action onApproach = config.getOnApproach() != null ? ActionFactory.fromConfig(config.getOnApproach()) : null;
+
+    if (config instanceof PlayerConfig) {
+      Player player = new Player(config.getTag(), config.getPosition(), config.getAssetPath());
+      player.setOnLeftClickAction(onLeftClickAction);
+      player.setOnRightClickAction(onRightClickAction);
+      return player;
+    } else {
+      GameObject gameObject = new GameObject(config.getTag(), config.getPosition());
+
+      gameObject.setOnLeftClickAction(onLeftClickAction);
+      gameObject.setOnRightClickAction(onRightClickAction);;
+
+      // TODO: Create ActionFactory & inflate the actions
+      return gameObject;
     }
   }
 
@@ -36,7 +53,7 @@ public class GameObjectFactory {
    * @param configs descriptions of object properties
    * @return game objects created based on information located in config list
    */
-  public static LinkedList<GameObject> fromConfigList(List<GameObjectConfig> configs) {
+  public static LinkedList<GameObject> fromConfigs(Iterable<GameObjectConfig> configs) {
     LinkedList<GameObject> gameObjects = new LinkedList<>();
     for (GameObjectConfig config : configs) {
       gameObjects.add(fromConfig(config));

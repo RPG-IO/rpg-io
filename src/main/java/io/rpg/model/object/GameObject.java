@@ -5,15 +5,15 @@ import io.rpg.model.actions.BaseActionEmitter;
 import io.rpg.model.actions.QuizAction;
 import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.Position;
-import java.lang.reflect.Field;
-import java.util.LinkedHashSet;
-import java.util.Optional;
-import java.util.Set;
+import io.rpg.util.DataObjectDescriptionProvider;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Class representing common state properties for all
@@ -100,29 +100,11 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
     this.stateChangeObservers.remove(observer);
   }
 
-
-  public String getFieldDescription() {
-    StringBuilder builder = new StringBuilder();
-    for (Field field : GameObject.class.getDeclaredFields()) {
-      try {
-        Optional<Object> fieldValue = Optional.ofNullable(field.get(this));
-        fieldValue.ifPresent(_fieldValue -> builder.append('\t')
-            .append(field.getName())
-            .append(": ")
-            .append(_fieldValue)
-            .append(",\n")
-        );
-      } catch (IllegalAccessException ignored) { /* noop */ }
-    }
-    return builder.toString();
-  }
-
   @Override
   public String toString() {
-    StringBuilder builder = new StringBuilder();
-    builder.append("\n{\n");
-    builder.append(getFieldDescription());
-    return builder.append("}").toString();
+    return DataObjectDescriptionProvider.combineDescriptions(
+        DataObjectDescriptionProvider.getFieldDescription(this, GameObject.class)
+    );
   }
 
   public void setPosition(Position playerPosition) {
@@ -143,20 +125,6 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
 
   public void onLeftClick() {
     emitAction(onLeftClickAction);
-  }
-
-  public enum Type {
-    NAVIGABLE("navigable"),
-    DIALOG("dialog"),
-    PLAYER("player"),
-    QUIZ("quiz"),
-    COLLECTIBLE("collectible");
-
-    private final String asString;
-
-    Type(String asString) {
-      this.asString = asString;
-    }
   }
 
   public int getStrength() {

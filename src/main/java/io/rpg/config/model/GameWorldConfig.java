@@ -1,10 +1,13 @@
 package io.rpg.config.model;
 
 import com.google.gson.annotations.SerializedName;
+import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.Result;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This class in not meant to be instantiated by hand. It is used by {@link io.rpg.config.ConfigLoader}
@@ -14,13 +17,15 @@ public class GameWorldConfig {
   /**
    * Unique tag for the game. This can be treated as name of the game.
    */
+  @SerializedName(value = "tag", alternate = {"id"})
   private String tag;
 
   /**
    * List that contains all the names of locations specified by user.
    * This filed is inflated from information in root.json file.
    */
-  private ArrayList<String> locationTags;
+  @SerializedName(value = "locations", alternate = {"locationTags", "location-tags"})
+  private Set<String> locationTags;
 
   /**
    * Contains inflated {@link io.rpg.config.model.LocationConfig}s of all the
@@ -31,17 +36,21 @@ public class GameWorldConfig {
   /**
    * Configuration for the player object.
    */
-  @SerializedName("player")
+  @SerializedName(value = "player", alternate = {"playerConfig", "player-config"})
   private PlayerConfig playerConfig;
 
+  /**
+   * Private ctor as this class is not meant to be instantiated manually in any scenario.
+   */
   private GameWorldConfig() {
-    locationTags = new ArrayList<>();
+    locationTags = new LinkedHashSet<>();
     locationConfigs = new ArrayList<>();
   }
 
   /**
    * Describes tag of the root location. (The location that is displayed first)
    */
+  @SerializedName(value = "rootLocation", alternate = {"root-location"})
   private String rootLocation;
 
   /**
@@ -56,7 +65,7 @@ public class GameWorldConfig {
   /**
    * @return List containing names of locations.
    */
-  public List<String> getLocationTags() {
+  public Set<String> getLocationTags() {
     return locationTags;
   }
 
@@ -105,17 +114,22 @@ public class GameWorldConfig {
    * @return Current configuration state or exception.
    */
   public Result<GameWorldConfig, Exception> validateStageOne() {
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
     if (locationTags.size() < 1) {
-      return Result.error(new IllegalStateException("No location tags detected"));
-    } else if (tag == null) {
-      return Result.error(new IllegalStateException("Null tag"));
-    } else if (playerConfig == null) {
-      return Result.error(new IllegalStateException("No player config provided"));
-    } else if (rootLocation == null) {
-      return Result.error(new IllegalStateException("No root location set!"));
-    } else {
-      return Result.ok(this);
+      builder.append("No location tags detected");
     }
+    if (tag == null) {
+      builder.append("Null tag");
+    }
+    if (playerConfig == null) {
+      builder.append("No player config provided");
+    }
+    if (rootLocation == null) {
+      builder.append("No root location set!");
+    }
+
+    return builder.isEmpty() ? Result.ok(this) :
+        Result.err(new IllegalStateException(builder.toString()));
   }
 
   /**
@@ -125,12 +139,16 @@ public class GameWorldConfig {
    */
   public Result<GameWorldConfig, Exception> validate() {
     Result<GameWorldConfig, Exception> stageOneValidationResult = validateStageOne();
-    if (stageOneValidationResult.isError()) {
-      return stageOneValidationResult;
-    } else if (locationConfigs.size() < 1) {
-      return Result.error(new IllegalStateException("No location configs loaded"));
-    } else {
-      return Result.ok(this);
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
+
+    if (stageOneValidationResult.isErr()) {
+      builder.combine(stageOneValidationResult.getErrValue().getMessage());
     }
+    if (locationConfigs.size() < 1) {
+      builder.append("No location configs loaded");
+    }
+
+    return builder.isEmpty() ? Result.ok(this) :
+        Result.err(new IllegalStateException(builder.toString()));
   }
 }
