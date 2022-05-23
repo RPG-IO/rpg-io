@@ -1,7 +1,6 @@
 package io.rpg.config.model;
 
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.annotations.Since;
 import io.rpg.model.object.Question;
 import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.Result;
@@ -13,7 +12,7 @@ import java.util.List;
 /**
  * Represents action configuration.
  */
-public class ActionConfig {
+public class ActionConfigBundle {
   /**
    * Unique tag, representing the action.
    *
@@ -44,14 +43,14 @@ public class ActionConfig {
    */
   @Nullable
   @SerializedName(value = "before", alternate = {"beforeAction", "before-action"})
-  private ActionConfig beforeAction;
+  private ActionConfigBundle beforeAction;
 
   /**
    * Action to be triggered after the proper action had been executed.
    */
   @Nullable
   @SerializedName(value = "after", alternate = {"afterAction", "after-action"})
-  private ActionConfig afterAction;
+  private ActionConfigBundle afterAction;
 
   /**
    * {@link io.rpg.model.actions.DialogueAction} <br>
@@ -104,7 +103,7 @@ public class ActionConfig {
   /**
    * Package scoped constructor, meant for test purposes only.
    */
-  ActionConfig(@NotNull String tag, @NotNull String actionType) {
+  ActionConfigBundle(@NotNull String tag, @NotNull String actionType) {
     this.tag = tag;
     this.actionTypeString = actionType;
   }
@@ -138,12 +137,12 @@ public class ActionConfig {
   }
 
   @Nullable
-  public ActionConfig getBeforeAction() {
+  public ActionConfigBundle getBeforeAction() {
     return beforeAction;
   }
 
   @Nullable
-  public ActionConfig getAfterAction() {
+  public ActionConfigBundle getAfterAction() {
     return afterAction;
   }
 

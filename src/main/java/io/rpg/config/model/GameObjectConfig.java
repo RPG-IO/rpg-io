@@ -45,21 +45,21 @@ public class GameObjectConfig {
    */
   @Nullable
   @SerializedName(value = "onClick", alternate = {"onPress", "on-press", "on-click"})
-  private ActionConfig onClick;
+  private ActionConfigBundle onClick;
 
   /**
    * Config for the action triggered when the object is right-clicked.
    */
   @Nullable
   @SerializedName(value = "onRightClick", alternate = {"on-right-click", "onRightPress", "on-right-press"})
-  private ActionConfig onRightClick;
+  private ActionConfigBundle onRightClick;
 
   /**
    * Config for the action triggered when the object is left-clicked.
    */
   @Nullable
   @SerializedName(value = "onLeftClick", alternate = {"on-left-click", "onLeftPress", "on-left-press"})
-  private ActionConfig onLeftClick;
+  private ActionConfigBundle onLeftClick;
 
   /**
    * Config for the action triggered when player approaches
@@ -67,7 +67,7 @@ public class GameObjectConfig {
    */
   @Nullable
   @SerializedName(value = "onApproach", alternate = {"on-approach"})
-  private ActionConfig onApproach;
+  private ActionConfigBundle onApproach;
 
   public GameObjectConfig(@NotNull String tag, @NotNull Position position) {
     this.tag = tag;
@@ -89,22 +89,22 @@ public class GameObjectConfig {
   }
 
   @Nullable
-  public ActionConfig getOnApproach() {
+  public ActionConfigBundle getOnApproach() {
     return onApproach;
   }
 
   @Nullable
-  public ActionConfig getOnClick() {
+  public ActionConfigBundle getOnClick() {
     return onClick;
   }
 
   @Nullable
-  public ActionConfig getOnRightClick() {
+  public ActionConfigBundle getOnRightClick() {
     return onRightClick;
   }
 
   @Nullable
-  public ActionConfig getOnLeftClick() {
+  public ActionConfigBundle getOnLeftClick() {
     return onLeftClick;
   }
 
