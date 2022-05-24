@@ -43,7 +43,8 @@
     { "tag": "object-4", "position": { "row": 6, "col": 0 }, "assetPath": "assets/zombie.png" },
     { "tag": "object-5", "position": { "row": 5, "col": 8 }, "assetPath": "assets/zombie.png" },
     { "tag": "object-6", "position": { "row": 7, "col": 4 }, "assetPath": "assets/chest.png" },
-    { "tag": "object-7", "position": { "row": 7, "col": 7 }, "assetPath": "assets/bush.png" }
+    { "tag": "object-7", "position": { "row": 7, "col": 7 }, "assetPath": "assets/bush.png" },
+    { "tag": "object-8", "position": { "row": 8, "col": 8 }, "assetPath": "assets/coin.png" }
   ],
   "backgroundPath": "assets/map.png",
   "north": "location-3",
