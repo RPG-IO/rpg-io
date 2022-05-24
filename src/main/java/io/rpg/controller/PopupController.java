@@ -52,7 +52,7 @@ public class PopupController {
   public void openPointsPopup(int pointsCount, int x, int y) {
     openTextImagePopup("You earned " + pointsCount + " points!", coinImage, x, y);
   }
-  public void openInventoryPopup(Inventory inventory,int x, int y){
+  public void openInventoryPopup(Inventory inventory,int x, int y) {
 //    InventoryPopup inventoryPopup=new InventoryPopup();
 //    final Stage popupStage = new Stage(StageStyle.TRANSPARENT);
 
