@@ -1,0 +1,20 @@
+{
+  "tag": "object-3",
+  "assetPath": "assets/zombie.png",
+  "type": "dialog",
+  "onLeftClick": {
+    "tag": "quiz",
+    "type": "quiz",
+    "questions": [
+      {
+        "question": "Programy komputerowe chronione są: ",
+        "a": "prawem autorskim, co wyklucza możliwość uzyskania ochrony patentowej przez program komputerowy",
+        "b": "prawem autorskim, a w pewnych przypadkach mogą uzyskać ochronę patentową",
+        "c": "jak utwory literackie",
+        "d": "nie są chronione",
+        "correct": "b"
+      }
+    ],
+    "reward": 5
+  }
+}

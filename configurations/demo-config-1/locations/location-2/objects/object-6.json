@@ -1,0 +1,4 @@
+{
+  "tag": "object-6",
+  "onLeftClick": {"tag": "action", "type": "dialogue", "statements": ["A very old chest."], "assetPath": "assets/chest.png"}
+}

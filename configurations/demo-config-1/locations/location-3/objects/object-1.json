@@ -1,0 +1,4 @@
+{
+  "tag": "object-1",
+  "onLeftClick": {"tag": "actiontag", "type": "game-end", "description": "You won, congratulations!"}
+}

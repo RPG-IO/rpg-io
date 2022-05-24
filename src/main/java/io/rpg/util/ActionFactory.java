@@ -49,7 +49,7 @@ public class ActionFactory {
 
   private static DialogueAction dialogueActionFromConfig(ActionConfigBundle config) {
     // TODO: Move Image creation inside DialogueAction? Idk tbh.
-    return new DialogueAction(config.getDescription(), new Image(config.getAssetPath()));
+    return new DialogueAction(config.getDialogueStatements().get(0), new Image("file:" + config.getAssetPath()));
   }
 
   private static LocationChangeAction locationChangeActionFromConfig(ActionConfigBundle config) {
@@ -57,6 +57,6 @@ public class ActionFactory {
   }
 
   private static ShowDescriptionAction showDescriptionActionFromConfig(ActionConfigBundle config) {
-    return new ShowDescriptionAction(config.getDescription(), new Image(config.getAssetPath()));
+    return new ShowDescriptionAction(config.getDescription(), new Image("file:" + config.getAssetPath()));
   }
 }
