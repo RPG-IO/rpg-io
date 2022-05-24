@@ -1,3 +1,4 @@
 {
-  "onLeftClick": {"type": "location-change", "target-location": "location-2", "target-position": {"row": 9, "col": 0}}
+  "tag": "object-1",
+  "onLeftClick": {"tag": "change-location", "type": "location-change", "target-location": "location-2", "target-position": {"row": 9, "col": 0}}
 }

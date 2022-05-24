@@ -1,1 +1,11 @@
-{ "tag": "object-6", "position": { "row": 6, "col": 1 }, "type": "dialog", "assetPath": "assets/zombie.png" }
+{
+  "tag": "object-6",
+  "position": { "row": 6, "col": 1 },
+  "assetPath": "assets/zombie.png",
+  "onLeftClick": {
+    "tag": "change-location",
+    "type": "location-change",
+    "target-location": "location-2",
+    "target-position": { "row": 6, "col": 1 }
+  }
+}

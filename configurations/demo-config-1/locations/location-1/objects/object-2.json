@@ -1,3 +1,4 @@
 {
-  "onLeftClick": {"type": "dialogue", "statements": "A key."}
+  "tag": "object-2",
+  "onLeftClick": {"tag": "dialogue-action", "type": "dialogue", "statements": ["A key.,A, keyA, key.A, key.A, key.A, key.A, key.A, key.A key."], "assetPath": "assets/key.png"}
 }
