@@ -8,7 +8,7 @@ public class InventoryGameObjectView extends ImageView {
     CollectibleGameObject collectibleGameObject;
 
     public InventoryGameObjectView(CollectibleGameObject collectibleGameObject) {
-        this.collectibleGameObject=collectibleGameObject;
+        this.collectibleGameObject = collectibleGameObject;
         Image image=new Image(GameObjectView.resolvePathToJFXFormat(collectibleGameObject.getAssetPath()));
         setImage(image);
     }
