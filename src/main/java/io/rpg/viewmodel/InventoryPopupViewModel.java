@@ -10,8 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class InventoryPopupViewModel {
-    @FXML
-    private Label label;
+    @FXML private Label label;
     @FXML private Pane backgroundPane;
     @FXML private ImageView backgroundImage;
     @FXML private Button okButton;
