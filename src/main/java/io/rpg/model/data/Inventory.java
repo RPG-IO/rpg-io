@@ -1,19 +1,19 @@
 package io.rpg.model.data;
 
-import io.rpg.model.object.CollectibleGameObject;
+import io.rpg.model.object.GameObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Inventory {
 
-    public List<CollectibleGameObject> items;
+  public List<GameObject> items;
 
-    public Inventory(){
-        items = new ArrayList<>();
-    }
-    public void add(CollectibleGameObject object){
-        items.add(object);
-    }
+  public Inventory() {
+    items = new ArrayList<>();
+  }
 
+  public void add(GameObject object) {
+    items.add(object);
+  }
 }

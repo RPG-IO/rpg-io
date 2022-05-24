@@ -1,15 +1,16 @@
 package io.rpg.view;
 
 import io.rpg.model.object.CollectibleGameObject;
+import io.rpg.model.object.GameObject;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class InventoryGameObjectView extends ImageView {
-    CollectibleGameObject collectibleGameObject;
+  GameObject collectibleGameObject;
 
-    public InventoryGameObjectView(CollectibleGameObject collectibleGameObject) {
-        this.collectibleGameObject = collectibleGameObject;
-        Image image=new Image(GameObjectView.resolvePathToJFXFormat(collectibleGameObject.getAssetPath()));
-        setImage(image);
-    }
+  public InventoryGameObjectView(GameObject collectibleGameObject) {
+    this.collectibleGameObject = collectibleGameObject;
+    Image image = new Image(GameObjectView.resolvePathToJFXFormat("assets/key.png"));
+    setImage(image);
+  }
 }

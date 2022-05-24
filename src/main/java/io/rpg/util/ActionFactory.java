@@ -34,6 +34,9 @@ public class ActionFactory {
       case Battle -> {
         return battleActionFromConfig(config);
       }
+      case Collect -> {
+        return collectActionFromConfig(config);
+      }
       default -> {
         throw new IllegalArgumentException("Unexpected action type!");
       }
@@ -65,5 +68,9 @@ public class ActionFactory {
 
   private static BattleAction battleActionFromConfig(ActionConfigBundle config) {
     return new BattleAction(config.getRewardPoints());
+  }
+
+  private static CollectAction collectActionFromConfig(ActionConfigBundle config) {
+    return new CollectAction();
   }
 }

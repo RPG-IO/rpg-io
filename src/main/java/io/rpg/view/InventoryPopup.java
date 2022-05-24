@@ -25,56 +25,54 @@ import java.util.List;
 import java.util.Objects;
 
 public class InventoryPopup extends Scene {
-    final int PADDING_LEFT=25;
-    final int PADDING_TOP=20;
-    @FXML private Label label;
+  final int PADDING_LEFT = 25;
+  final int PADDING_TOP = 20;
+  @FXML
+  private Label label;
 
-    public InventoryPopup(Inventory inventory) {
+  public InventoryPopup(Inventory inventory) {
 
-        super(new Group(), Color.TRANSPARENT);
-        Group group=new Group();
-        //TODO: load asset path from config
-        ImageView imageView=new ImageView(GameObjectView.resolvePathToJFXFormat("assets/popup-background.png"));
-        imageView.setX(0);
-        imageView.setY(0);
-        label=new Label();
-        label.setLayoutX(300);
-        label.setLayoutY(100);
-        label.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + 18);
-        group.getChildren().add(imageView);
-        group.getChildren().add(label);
-        for (int i = 0; i <inventory.items.size(); i++) {
+    super(new Group(), Color.TRANSPARENT);
+    Group group = new Group();
+    //TODO: load asset path from config
+    ImageView imageView = new ImageView(GameObjectView.resolvePathToJFXFormat("assets/popup-background.png"));
+    imageView.setX(0);
+    imageView.setY(0);
+    label = new Label();
+    label.setLayoutX(300);
+    label.setLayoutY(100);
+    label.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + 18);
+    group.getChildren().add(imageView);
+    group.getChildren().add(label);
+    for (int i = 0; i < inventory.items.size(); i++) {
 //            String assetPath=inventory.items.get(i).getAssetPath();
 //            to display objects in the menu
 //            wrapperClass to store information about object which we display
-            InventoryGameObjectView imageGameObjectView=new InventoryGameObjectView(inventory.items.get(i));
+      InventoryGameObjectView imageGameObjectView = new InventoryGameObjectView(inventory.items.get(i));
 
-            imageGameObjectView.setX(i*50+PADDING_LEFT);
-            imageGameObjectView.setY(0+PADDING_TOP);
-            imageGameObjectView.setOnMouseEntered(event->{
-                InventoryGameObjectView src=(InventoryGameObjectView) event.getSource();
+      imageGameObjectView.setX(i * 50 + PADDING_LEFT);
+      imageGameObjectView.setY(0 + PADDING_TOP);
+      imageGameObjectView.setOnMouseEntered(event -> {
+        InventoryGameObjectView src = (InventoryGameObjectView) event.getSource();
 //                System.out.println("over the item "+src.collectibleGameObject.getAssetPath());
-                label.setText(src.collectibleGameObject.getAssetPath());
-            });
-            
-            imageGameObjectView.setOnMouseExited(event->{
-                label.setText("");
-            });
+        label.setText("stub description");
+      });
 
-            imageGameObjectView.setOnMouseClicked(event->{
+      imageGameObjectView.setOnMouseExited(event -> {
+        label.setText("");
+      });
 
-                System.out.println("Object clicked");
-                InventoryGameObjectView src = (InventoryGameObjectView) event.getSource();
-                System.out.println(src.collectibleGameObject.getAssetPath());
+      imageGameObjectView.setOnMouseClicked(event -> {
 
-                System.out.println();
-            });
-            group.getChildren().add(imageGameObjectView);
+        System.out.println("Object clicked");
+        InventoryGameObjectView src = (InventoryGameObjectView) event.getSource();
+        System.out.println();
+      });
+      group.getChildren().add(imageGameObjectView);
 
-        }
-
-        this.setRoot(group);
-        this.setFill(Color.TRANSPARENT);
     }
+    this.setRoot(group);
+    this.setFill(Color.TRANSPARENT);
+  }
 
 }
