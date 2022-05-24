@@ -1,13 +1,19 @@
 {
   "tag": "object-3",
   "assetPath": "assets/zombie.png",
-  "questions": {
-    "question": "Warunkiem uznania oznaczenia za znak towarowy jest: ",
-    "a": "estetyczny wygląd",
-    "b": "zdolność odróżniająca znaku",
-    "c": "możliwość graficznego przedstawienia znaku",
-    "d": "żadne z powyższych",
-    "correct": "b"
-  },
-  "reward": 5
+  "onLeftClick": {
+    "tag": "actiontag",
+    "type": "quiz",
+    "questions": [
+      {
+        "question": "Warunkiem uznania oznaczenia za znak towarowy jest: ",
+        "a": "estetyczny wygląd",
+        "b": "zdolność odróżniająca znaku",
+        "c": "możliwość graficznego przedstawienia znaku",
+        "d": "żadne z powyższych",
+        "correct": "b"
+      }
+    ],
+    "reward": 5
+  }
 }
