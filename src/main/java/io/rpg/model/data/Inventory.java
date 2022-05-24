@@ -10,7 +10,7 @@ public class Inventory {
     public List<CollectibleGameObject> items;
 
     public Inventory(){
-        items=new ArrayList<>();
+        items = new ArrayList<>();
     }
     public void add(CollectibleGameObject object){
         items.add(object);
