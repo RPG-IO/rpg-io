@@ -130,4 +130,5 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
   public int getStrength() {
     return strength;
   }
+
 }

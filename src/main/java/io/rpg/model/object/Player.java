@@ -1,9 +1,12 @@
 package io.rpg.model.object;
 
+import io.rpg.model.data.Inventory;
 import io.rpg.model.data.Position;
 import io.rpg.view.GameObjectView;
 import javafx.geometry.Point2D;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class Player extends GameObject {
 
@@ -15,6 +18,7 @@ public class Player extends GameObject {
   private boolean downPressed;
   private GameObjectView gameObjectView;
   private int points;
+  Inventory inventory;
 
 
   public Player(@NotNull String tag, @NotNull Position position, @NotNull String assetPath) {
@@ -25,6 +29,7 @@ public class Player extends GameObject {
     this.upPressed = false;
     this.downPressed = false;
     this.strength = 0;
+    this.inventory = new Inventory();
   }
 
   public void updateStrength(int value) {
@@ -93,5 +98,9 @@ public class Player extends GameObject {
 
   public int getStrength() {
     return strength;
+	}
+
+  public Inventory getInventory() {
+    return inventory;
   }
 }

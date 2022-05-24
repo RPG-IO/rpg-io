@@ -4,6 +4,7 @@ import io.rpg.config.model.GameObjectConfig;
 import io.rpg.config.model.PlayerConfig;
 import io.rpg.model.actions.Action;
 import io.rpg.model.actions.BattleAction;
+import io.rpg.model.actions.CollectAction;
 import io.rpg.model.actions.ShowDescriptionAction;
 import io.rpg.model.object.GameObject;
 import io.rpg.model.object.Player;
@@ -56,8 +57,14 @@ public class GameObjectFactory {
       if (onLeftClickAction instanceof BattleAction) {
         ((BattleAction) onLeftClickAction).setOpponent(gameObject);
       }
+      if (onLeftClickAction instanceof CollectAction) {
+        ((CollectAction) onLeftClickAction).setOwner(gameObject);
+      }
       if (onRightClickAction instanceof BattleAction) {
         ((BattleAction) onRightClickAction).setOpponent(gameObject);
+      }
+      if (onRightClickAction instanceof CollectAction) {
+        ((CollectAction) onRightClickAction).setOwner(gameObject);
       }
 
       // TODO: Create ActionFactory & inflate the actions
