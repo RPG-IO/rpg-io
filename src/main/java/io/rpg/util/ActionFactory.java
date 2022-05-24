@@ -31,6 +31,9 @@ public class ActionFactory {
       case ShowDescription -> {
         return showDescriptionActionFromConfig(config);
       }
+      case Battle -> {
+        return battleActionFromConfig(config);
+      }
       default -> {
         throw new IllegalArgumentException("Unexpected action type!");
       }
@@ -58,5 +61,9 @@ public class ActionFactory {
 
   private static ShowDescriptionAction showDescriptionActionFromConfig(ActionConfigBundle config) {
     return new ShowDescriptionAction(config.getDescription(), new Image("file:" + config.getAssetPath()));
+  }
+
+  private static BattleAction battleActionFromConfig(ActionConfigBundle config) {
+    return new BattleAction(config.getRewardPoints());
   }
 }

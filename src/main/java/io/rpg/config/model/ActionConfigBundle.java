@@ -107,7 +107,6 @@ public class ActionConfigBundle {
   // TODO: Create QuestionConfig model class
   private List<Question> questions;
 
-
   @Nullable
   @SerializedName(value = "reward", alternate = {"reward-points", "rewardPoints"})
   // TODO: consider introducing reward type & then we can parse the reward string
@@ -249,6 +248,10 @@ public class ActionConfigBundle {
     return builder.isEmpty() ? Result.ok() : Result.err(new IllegalStateException(builder.toString()));
   }
 
+  Result<Void, Exception> validateForBattle() {
+    return Result.ok();
+  }
+
   Result<Void, Exception> validateBasic() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
     if (tag == null) {
@@ -286,6 +289,7 @@ public class ActionConfigBundle {
       case LocationChange -> { return validateForLocationChangeAction(); }
       case Quiz -> { return validateForQuizAction(); }
       case ShowDescription -> { return validateForShowDescriptionAction(); }
+      case Battle -> { return validateForBattle(); }
       default -> { return Result.err(new RuntimeException("Invalid result returned")); }
     }
   }

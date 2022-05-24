@@ -1,7 +1,7 @@
 {
   "tag": "object-6",
   "position": { "row": 6, "col": 1 },
-  "assetPath": "assets/zombie.png",
+  "assetPath": "assets/bush.png",
   "onLeftClick": {
     "tag": "change-location",
     "type": "location-change",

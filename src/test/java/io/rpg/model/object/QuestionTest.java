@@ -29,7 +29,7 @@ class QuestionTest {
     Assertions.assertEquals(question.getAnswerB(), "2");
     Assertions.assertEquals(question.getAnswerC(), "3");
     Assertions.assertEquals(question.getAnswerD(), "4");
-    Assertions.assertEquals(question.getCorrectAnswerChar(), 'b');
+    Assertions.assertEquals(question.getCorrectAnswerChar(), 'B');
     Assertions.assertEquals(question.getCorrectAnswer(), "2");
   }
 
@@ -52,7 +52,7 @@ class QuestionTest {
     Assertions.assertEquals(question.getAnswerB(), "2");
     Assertions.assertEquals(question.getAnswerC(), "3");
     Assertions.assertEquals(question.getAnswerD(), "4");
-    Assertions.assertEquals(question.getCorrectAnswerChar(), 'b');
+    Assertions.assertEquals(question.getCorrectAnswerChar(), 'B');
     Assertions.assertEquals(question.getCorrectAnswer(), "2");
   }
 

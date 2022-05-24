@@ -158,7 +158,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     GameObject opponent = action.getOpponent();
     int reward = action.getReward();
     BattleResult result;
-    if (player.getStrength() > opponent.getStrength()) {
+    if (player.getPoints() > opponent.getStrength()) {
       player.addPoints(reward);
       result = new BattleResult(BattleResult.Result.VICTORY, reward);
     } else if (player.getStrength() < opponent.getStrength()) {

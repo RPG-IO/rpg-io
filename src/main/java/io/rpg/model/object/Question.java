@@ -61,6 +61,6 @@ public class Question {
   }
 
   public char getCorrectAnswerChar() {
-    return correctAnswerChar;
+    return Character.toUpperCase(correctAnswerChar);
   }
 }

@@ -41,7 +41,7 @@
     { "tag": "mul-1", "position": { "row": 6, "col": 9 }, "assetPath": "assets/bush.png" },
     { "tag": "mul-1", "position": { "row": 7, "col": 9 }, "assetPath": "assets/bush.png" },
     { "tag": "mul-1", "position": { "row": 8, "col": 9 }, "assetPath": "assets/bush.png" },
-    { "tag": "object-1", "position": { "row": 7, "col": 8 }, "assetPath": "assets/diamond.png" },
+    { "tag": "object-1", "position": { "row": 7, "col": 8 }, "assetPath": "assets/bunny.png" },
     { "tag": "object-2", "position": { "row": 6, "col": 3 }, "assetPath": "assets/key.png" },
     { "tag": "object-3", "position": { "row": 2, "col": 0 }, "assetPath": "assets/zombie.png" },
     { "tag": "object-4", "position": { "row": 3, "col": 7 }, "assetPath": "assets/zombie.png" },
