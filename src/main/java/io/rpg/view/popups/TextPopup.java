@@ -15,12 +15,8 @@ import java.util.Objects;
 public class TextPopup extends Scene {
 
   private final TextPopupViewModel viewModel;
-
-  public TextPopup(String text, String backgroundPath, String buttonPath) {
-    this(text);
-    viewModel.setBackgroundImage(backgroundPath);
-    viewModel.setOkButtonImage(buttonPath);
-  }
+  private static String backgroundPath;
+  private static String buttonPath;
 
   public TextPopup(String text) {
     super(new Group(), Color.TRANSPARENT);
@@ -37,9 +33,18 @@ public class TextPopup extends Scene {
 
     viewModel = loader.getController();
     viewModel.setText(text);
-    viewModel.setBackgroundImage("file:assets/popup-background.png");
-    viewModel.setOkButtonImage("file:assets/button-image.png");
+
+    viewModel.setBackgroundImage(backgroundPath);
+    viewModel.setOkButtonImage(buttonPath);
     this.setFill(Color.TRANSPARENT);
+  }
+
+  public static void setBackgroundPath(String backgroundPath) {
+    TextPopup.backgroundPath = backgroundPath;
+  }
+
+  public static void setButtonPath(String buttonPath) {
+    TextPopup.buttonPath = buttonPath;
   }
 
   public void setButtonCallback(EventHandler<? super MouseEvent> callback) {

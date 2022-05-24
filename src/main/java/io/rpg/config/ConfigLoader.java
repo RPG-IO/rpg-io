@@ -129,7 +129,6 @@ public class ConfigLoader {
     }
 
     GameWorldConfig gameWorldConfig = gameWorldConfigOpt.get();
-
     logger.info("GameWorldConfig loaded: \n" + gameWorldConfig);
 
     // we assume here that gameWorldConfig was validated in loadGameWorldConfig method
