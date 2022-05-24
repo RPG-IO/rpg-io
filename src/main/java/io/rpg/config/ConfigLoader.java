@@ -127,7 +127,6 @@ public class ConfigLoader {
     if (gameWorldConfigOpt.isEmpty()) {
       return Result.err(new RuntimeException("loadGameWorldConfig returned null config"));
     }
-
     GameWorldConfig gameWorldConfig = gameWorldConfigOpt.get();
 
     logger.info("GameWorldConfig loaded: \n" + gameWorldConfig);

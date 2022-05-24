@@ -37,6 +37,14 @@ following props:
 * `player` - Player object specification. It follows the `GameObject` specification
     rules. (TODO: add hyperlink to that section)
 * `rootLocation` - `tag` of first-to-be-displayed location.
+* `textPopupBackground` - Url of a picture to be used as a background for all TextPopups
+* `textPopupButton` - Url of a picture to be used as a button image for all TextPopups
+* `textImagePopupBackground` -  Url of a picture to be used as a background for all TextImagePopups
+* `textImagePopupButton` - Url of a picture to be used as a button image for all TextImagePopups
+* `quizPopupBackground` - Url of a picture to be used as a background for all QuizPopups
+* `inventoryPopupBackground` - Url of a picture to be used as a background for the Inventory
+* `dialoguePopupBackground` - Url of a picture to be used as a background for all DialoguePopups
+* `npcFrame` - Url of a picture to be used as a frame around a NPC image in the DialoguePopups
 
 e.g.
 ```json
@@ -53,7 +61,15 @@ e.g.
     "type": "player",
     "assetPath": "assets/stone.png",
     "location": "location-1"
-  }
+  },
+  "textPopupBackground": "assets/popup-background.png",
+  "textPopupButton": "assets/button-image.png",
+  "textImagePopupBackground": "assets/popup-background-2.png",
+  "textImagePopupButton": "assets/button-image-2.png",
+  "quizPopupBackground": "assets/popup-background-3.png",
+  "inventoryPopupBackground": "assets/popup-background.png",
+  "dialoguePopupBackground": "assets/popup-background.png",
+  "npcFrame": "assets/npc-frame.png"
 }
 ```
 

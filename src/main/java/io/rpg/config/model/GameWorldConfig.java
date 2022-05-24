@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.Result;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -54,6 +56,19 @@ public class GameWorldConfig {
   private String rootLocation;
 
   /**
+   * Specifies the assets for each popup.
+   */
+  private String quizPopupBackground;
+  private String textPopupButton;
+  private String textImagePopupBackground;
+  private String textImagePopupButton;
+  private String textPopupBackground;
+  private String inventoryPopupBackground;
+  private String dialoguePopupBackground;
+  private String npcFrame;
+
+
+  /**
    * Unique tag for the game. This can be treated as name of the game.
    *
    * @return String representing name of the game.
@@ -91,13 +106,12 @@ public class GameWorldConfig {
     return playerConfig;
   }
 
+
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
     builder.append("\n{\n").append("\ttag: ").append(tag).append('\n');
-    locationTags.forEach(location -> {
-      builder.append("\tlocation-tag: ").append(location).append('\n');
-    });
+    locationTags.forEach(location -> builder.append("\tlocation-tag: ").append(location).append('\n'));
     return builder.append("}\n").toString();
   }
 
@@ -116,7 +130,7 @@ public class GameWorldConfig {
   public Result<GameWorldConfig, Exception> validateStageOne() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
     if (locationTags.size() < 1) {
-      builder.append("No location tags detected");
+			builder.append("No location tags detected");
     }
     if (tag == null) {
       builder.append("Null tag");
@@ -126,6 +140,30 @@ public class GameWorldConfig {
     }
     if (rootLocation == null) {
       builder.append("No root location set!");
+    }
+    if (quizPopupBackground == null || !Files.isRegularFile(Path.of(quizPopupBackground))) {
+			builder.append("Invalid quiz popup background specified");
+    } 
+		if (textImagePopupBackground == null || !Files.isRegularFile(Path.of(textImagePopupBackground))) {
+			builder.append("Invalid text image popup background specified");
+    } 
+		if (textPopupButton == null || !Files.isRegularFile(Path.of(textPopupButton))) {
+			builder.append("Invalid text popup button specified");
+    } 
+		if (textImagePopupButton == null || !Files.isRegularFile(Path.of(textImagePopupButton))) {
+			builder.append("Invald text image popup button specified");
+    } 
+		if (textPopupBackground == null || !Files.isRegularFile(Path.of(textPopupBackground))) {
+			builder.append("Invalid text popup background specified");
+    } 
+		if (inventoryPopupBackground == null || !Files.isRegularFile(Path.of(inventoryPopupBackground))) {
+			builder.append("Invalid inventory popup background specified");
+    }
+    if (dialoguePopupBackground == null || !Files.isRegularFile(Path.of(dialoguePopupBackground))) {
+      builder.append("Invalid dialogue popup background specified");
+    }
+    if (npcFrame == null || !Files.isRegularFile(Path.of(npcFrame))) {
+      builder.append("Invalid NPC Frame specified");
     }
 
     return builder.isEmpty() ? Result.ok(this) :
@@ -150,5 +188,41 @@ public class GameWorldConfig {
 
     return builder.isEmpty() ? Result.ok(this) :
         Result.err(new IllegalStateException(builder.toString()));
+  }
+
+  public String getQuizPopupBackground() {
+    return resolvePathFormat(quizPopupBackground);
+  }
+
+  public String getTextPopupButton() {
+    return resolvePathFormat(textPopupButton);
+  }
+
+  public String getTextImagePopupBackground() {
+    return resolvePathFormat(textImagePopupBackground);
+  }
+
+  public String getTextImagePopupButton() {
+    return resolvePathFormat(textImagePopupButton);
+  }
+
+  public String getTextPopupBackground() {
+    return resolvePathFormat(textPopupBackground);
+  }
+
+  public String getInventoryPopupBackground() {
+    return resolvePathFormat(inventoryPopupBackground);
+  }
+
+  public String getDialoguePopupBackground() {
+    return resolvePathFormat(dialoguePopupBackground);
+  }
+
+  public String getNpcFrame() {
+    return resolvePathFormat(npcFrame);
+  }
+
+  public static String resolvePathFormat(String path) {
+    return "file:" + path;
   }
 }

@@ -20,11 +20,8 @@ public class DialoguePopup extends Scene {
   private final List<String> textPages;
   private int currentPage = 0;
 
-  public DialoguePopup(String text, Image npcImage, String backgroundPath, String npcFramePath) {
-    this(text, npcImage);
-    viewModel.setBackgroundImage(backgroundPath);
-    viewModel.setNpcFrameImage(npcFramePath);
-  }
+  private static String backgroundPath;
+  private static String npcFramePath;
 
   public DialoguePopup(String text, Image npcImage) {
     super(new Group(), Color.TRANSPARENT);
@@ -41,6 +38,9 @@ public class DialoguePopup extends Scene {
     viewModel = loader.getController();
     viewModel.setNpcImage(npcImage);
     this.setFill(Color.TRANSPARENT);
+
+    viewModel.setBackgroundImage(backgroundPath);
+    viewModel.setNpcFrameImage(npcFramePath);
 
     textPages = List.of(text.split("(?<=\\G.{200})")); //split text into 200-letter pages
     viewModel.setText(textPages.get(currentPage));
@@ -73,4 +73,13 @@ public class DialoguePopup extends Scene {
     }
     viewModel.setNextVisibility(true);
   }
+
+  public static void setBackgroundPath(String backgroundPath) {
+    DialoguePopup.backgroundPath = backgroundPath;
+  }
+
+  public static void setNpcFramePath(String npcFramePath) {
+    DialoguePopup.npcFramePath = npcFramePath;
+  }
+
 }
