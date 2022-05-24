@@ -11,7 +11,8 @@
     "position": { "row": 4, "col": 5 },
     "type": "player",
     "assetPath": "assets/knight.png",
-    "location": "location-1"
+    "location": "location-1",
+    "strength": 911
   },
   "textPopupBackground": "assets/popup-background.png",
   "textPopupButton": "assets/button-image.png",

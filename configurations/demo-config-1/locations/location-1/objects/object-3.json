@@ -16,5 +16,10 @@
       }
     ],
     "reward": 5
+  },
+  "onRightClick": {
+    "tag": "battle",
+    "type": "battle",
+    "reward": 10
   }
 }

@@ -18,7 +18,10 @@ public enum ActionType {
   ShowDescription("show-description"),
 
   @SerializedName("dialogue")
-  Dialogue("dialogue");
+  Dialogue("dialogue"),
+
+  @SerializedName("battle")
+  Battle("battle");
 
   private final String asString;
 
@@ -37,6 +40,7 @@ public enum ActionType {
       case "location-change" -> { return Optional.of(LocationChange); }
       case "show-description" -> { return Optional.of(ShowDescription); }
       case "dialogue" -> { return Optional.of(Dialogue); }
+      case "battle" -> { return Optional.of(Battle); }
       default -> { return Optional.empty(); }
     }
   }
