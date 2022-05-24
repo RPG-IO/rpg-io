@@ -64,7 +64,7 @@ public class InventoryPopup extends Scene {
             imageGameObjectView.setOnMouseClicked(event->{
 
                 System.out.println("Object clicked");
-                InventoryGameObjectView src=(InventoryGameObjectView) event.getSource();
+                InventoryGameObjectView src = (InventoryGameObjectView) event.getSource();
                 System.out.println(src.collectibleGameObject.getAssetPath());
 
                 System.out.println();
