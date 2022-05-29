@@ -1,5 +1,6 @@
 package io.rpg.controller;
 
+import io.rpg.model.object.Player;
 import io.rpg.model.object.Question;
 import io.rpg.view.popups.DialoguePopup;
 import io.rpg.view.popups.QuestionPopup;
@@ -52,11 +53,11 @@ public class PopupController {
   public void openPointsPopup(int pointsCount, int x, int y) {
     openTextImagePopup("You earned " + pointsCount + " points!", coinImage, x, y);
   }
-  public void openInventoryPopup(Inventory inventory,int x, int y) {
+  public void openInventoryPopup(Inventory inventory, int x, int y, Player player) {
 //    InventoryPopup inventoryPopup=new InventoryPopup();
 //    final Stage popupStage = new Stage(StageStyle.TRANSPARENT);
 
-    InventoryPopup popupScene = new InventoryPopup(inventory);
+    InventoryPopup popupScene = new InventoryPopup(inventory,player);
     popupStage.setScene(popupScene);
 
     popupStage.show();
@@ -74,6 +75,7 @@ public class PopupController {
     popupStage.show();
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
+
   }
 
   public void openQuestionPopup(Question question, int x, int y) {

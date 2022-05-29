@@ -13,4 +13,5 @@ public class DialogueAction implements Action {
     this.text = text;
     this.image = image;
   }
+
 }

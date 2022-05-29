@@ -53,9 +53,11 @@ public class QuestionPopup extends Scene {
     QuestionPopup.backgroundPath = backgroundPath;
   }
 
+  //TODO check this method,it does not add the points correctly
   public void answerSelected(char answer) {
     char correctAnswer = question.getCorrectAnswerChar();
     if (answer == correctAnswer){
+//      this.successCallback.run();
       viewModel.setQuestionLabel("Correct!");
       viewModel.setAllButtonsCallback(event -> this.successCallback.run());
       this.setOnMouseClicked(event -> this.successCallback.run());

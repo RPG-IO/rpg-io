@@ -30,7 +30,13 @@ public class InventoryPopup extends Scene {
   @FXML
   private Label label;
 
-  public InventoryPopup(Inventory inventory) {
+  @FXML
+  private Label strengthLabel;
+
+  @FXML
+  private Label pointsLabel;
+
+  public InventoryPopup(Inventory inventory,Player player) {
 
     super(new Group(), Color.TRANSPARENT);
     Group group = new Group();
@@ -38,12 +44,25 @@ public class InventoryPopup extends Scene {
     ImageView imageView = new ImageView(GameObjectView.resolvePathToJFXFormat("assets/popup-background.png"));
     imageView.setX(0);
     imageView.setY(0);
+    this.pointsLabel=new Label();
+    this.pointsLabel.setText("Points :"+String.valueOf(player.getPoints()));
+    this.pointsLabel.setLayoutX(325);
+    this.pointsLabel.setLayoutY(150);
+    this.pointsLabel.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + 18);
+    this.strengthLabel=new Label();
+    this.strengthLabel.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + 18);
+    this.strengthLabel.setText("Strength :"+String.valueOf(player.getStrength()));
+    this.strengthLabel.setLayoutX(325);
+    this.strengthLabel.setLayoutY(200);
     label = new Label();
     label.setLayoutX(300);
     label.setLayoutY(100);
     label.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + 18);
     group.getChildren().add(imageView);
     group.getChildren().add(label);
+    group.getChildren().add(pointsLabel);
+    group.getChildren().add(strengthLabel);
+
     for (int i = 0; i < inventory.items.size(); i++) {
 //            String assetPath=inventory.items.get(i).getAssetPath();
 //            to display objects in the menu

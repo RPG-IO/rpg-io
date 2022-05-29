@@ -20,6 +20,7 @@ public class GameObjectView extends ImageView
   private Path path;
   private final Set<MouseClickedEvent.Observer> onClickedObservers;
   private final SimpleObjectProperty<Point2D> position;
+  GameObject boundObject;
 
 
   public GameObjectView(@NotNull Path assetPath, @NotNull Position position) {
@@ -36,7 +37,6 @@ public class GameObjectView extends ImageView
       if (Objects.equals(oldValue, newValue)) {
         return;
       }
-
       ImageViewHelper.geomChanged(this);
     });
   }
@@ -54,6 +54,7 @@ public class GameObjectView extends ImageView
 
   public void bindToGameObject(GameObject gameObject) {
     this.position.bind(gameObject.getExactPositionProperty());
+    this.boundObject=gameObject;
   }
 
   public Point2D getPosition() {
@@ -74,5 +75,9 @@ public class GameObjectView extends ImageView
   public void onGameObjectStateChange(GameObjectStateChange event) {
     // TODO: implement update logic here or create view model class but it
     // is even more boilerplate
+  }
+
+  public GameObject getBoundObject() {
+    return boundObject;
   }
 }

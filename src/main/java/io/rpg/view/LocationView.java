@@ -8,6 +8,7 @@ import io.rpg.model.object.GameObject;
 import io.rpg.viewmodel.LocationViewModel;
 import io.rpg.config.model.LocationConfig;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -109,4 +110,17 @@ public class LocationView extends Scene
   public void addChild(GameObjectView view) {
     viewModel.getForegroundPane().getChildren().add(view);
   }
+
+  public void removeViewBoundToObject(GameObject gameObject){
+    for(Node node : viewModel.getForegroundPane().getChildren()){
+      if(node instanceof GameObjectView){
+          GameObjectView temp =(GameObjectView)node;
+          if(temp.getBoundObject()==gameObject){
+            removeChild(temp);
+            break;
+          }
+      }
+    }
+  }
+  
 }
