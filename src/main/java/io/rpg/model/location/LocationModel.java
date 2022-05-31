@@ -8,7 +8,9 @@ import io.rpg.model.data.MapDirection;
 import io.rpg.model.data.Position;
 import io.rpg.model.object.GameObject;
 import io.rpg.util.Result;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
@@ -122,6 +124,23 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
     if (gameObject.equals(positionGameObjectMap.get(oldPos))) {
       changeField(gameObject, oldPos, newPos);
     }
+
+    notifyApproachOf(gameObject);
+  }
+
+  private void notifyApproachOf(GameObject gameObject) {
+    Position position = gameObject.getPosition();
+    List<GameObject> neighbors = new ArrayList<>(8);
+
+    for (Iterator<Position> it = position.getNeighborhoodIter(new Position(bounds)); it.hasNext(); ) {
+      Position p = it.next();
+      GameObject neighbor = positionGameObjectMap.get(p);
+      if (neighbor == null) continue;
+
+      neighbors.add(neighbor);
+    }
+
+    neighbors.forEach(GameObject::onApproach);
   }
 
   private void changeField(GameObject gameObject, Position oldPos, Position newPos) {

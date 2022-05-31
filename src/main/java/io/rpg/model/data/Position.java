@@ -58,14 +58,14 @@ public final class Position {
       List<Position> positions = new ArrayList<>(8);
       for (int i = -1; i < 2; i++) {
         for (int j = -1; j < 2; j++) {
-          int col = center.col + i;
-          int row = center.row + j;
+          int col = center.col + j;
+          int row = center.row + i;
 
           if (col < 0 || row < 0) continue;
           if (col >= upperBound.col || row >= upperBound.row) continue;
           if (i == 0 && j == 0) continue;
 
-          positions.add(new Position(col, row));
+          positions.add(new Position(row, col));
         }
       }
 
