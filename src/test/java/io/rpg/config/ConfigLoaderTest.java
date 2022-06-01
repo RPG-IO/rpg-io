@@ -1,5 +1,6 @@
 package io.rpg.config;
 
+import com.kkafara.rt.Result;
 import io.rpg.config.model.GameWorldConfig;
 
 import io.rpg.config.model.PlayerConfig;
@@ -65,7 +66,7 @@ public class ConfigLoaderTest {
     ConfigLoader configLoader = new ConfigLoader(fullConfigPath);
     Result<GameWorldConfig, Exception> loadingResult = configLoader.loadRootFile();
 
-    GameWorldConfig config = loadingResult.getOkValue();
+    GameWorldConfig config = loadingResult.getOk();
 
     Assertions.assertNotNull(config);
 
