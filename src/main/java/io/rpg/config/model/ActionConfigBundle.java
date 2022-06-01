@@ -18,6 +18,7 @@ import java.util.List;
  * Represents action configuration.
  */
 public class ActionConfigBundle implements ConfigWithValidation {
+
   /**
    * Unique tag, representing the action.
    *
@@ -41,8 +42,14 @@ public class ActionConfigBundle implements ConfigWithValidation {
    */
   @Nullable
   @SerializedName("type")
-//  private String actionType;
   private ActionType actionType;
+
+  /**
+   * Condition that needs to be satisfied before the action than be executed.
+   */
+  @Nullable
+  @SerializedName(value = "condition", alternate = {"requires"})
+  private ConditionConfigBundle condition;
 
   /**
    * Action to be triggered before the proper action is executed.
@@ -147,6 +154,11 @@ public class ActionConfigBundle implements ConfigWithValidation {
   @Nullable
   public ActionType getActionType() {
     return actionType;
+  }
+
+  @Nullable
+  public ConditionConfigBundle getCondition() {
+    return condition;
   }
 
   @Nullable
@@ -262,6 +274,9 @@ public class ActionConfigBundle implements ConfigWithValidation {
 
     if (actionType == null) {
       builder.append("No action type or invalid action type provided");
+    }
+    if (condition != null) {
+      condition.validate().ifErr(ex -> builder.append(ex.getMessage()));
     }
 
     return builder.isEmpty() ? Result.ok() :
