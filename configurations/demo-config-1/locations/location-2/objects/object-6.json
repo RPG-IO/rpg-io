@@ -1,6 +1,6 @@
 {
   "tag": "object-6",
-  "onLeftClick": {
+  "onApproach": {
     "tag": "action",
     "type": "dialogue",
     "statements": [

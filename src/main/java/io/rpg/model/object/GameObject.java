@@ -27,6 +27,8 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
   private final SimpleObjectProperty<Point2D> exactPositionProperty;
   private Action onRightClickAction;
   private Action onLeftClickAction;
+  private Action onApproach;
+  private boolean wasOnApproachFired;
   private int strength;
 
   /**
@@ -52,8 +54,10 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
     this.tag = tag;
     this.stateChangeObservers = new LinkedHashSet<>();
     this.exactPositionProperty = new SimpleObjectProperty<>(new Point2D(position.col, position.row));
-    this.onLeftClickAction = new QuizAction(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'));
+    this.onLeftClickAction = Action.VOID;
     this.onRightClickAction = Action.VOID;
+    this.onApproach = Action.VOID;
+    this.wasOnApproachFired = false;
   }
 
   public GameObject(@NotNull String tag, @NotNull Position position, int strength) {
@@ -66,7 +70,6 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
    *
    * @return initial position on object in the model (on the grid)
    */
-  @Nullable
   public Position getPosition() {
     Point2D exactPosition = getExactPosition();
     return new Position(exactPosition);
@@ -129,5 +132,17 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
 
   public int getStrength() {
     return strength;
+  }
+
+  public void onApproach() {
+    if (wasOnApproachFired) {
+      return;
+    }
+    wasOnApproachFired = true;
+    emitAction(onApproach);
+  }
+
+  public void setOnApproach(Action onApproach) {
+    this.onApproach = onApproach;
   }
 }
