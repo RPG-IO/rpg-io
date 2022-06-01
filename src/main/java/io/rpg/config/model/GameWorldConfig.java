@@ -1,21 +1,20 @@
 package io.rpg.config.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.kkafara.rt.Result;
 import io.rpg.util.ErrorMessageBuilder;
-import io.rpg.util.Result;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
  * This class in not meant to be instantiated by hand. It is used by {@link io.rpg.config.ConfigLoader}
  * via Gson.
  */
-public class GameWorldConfig {
+public class GameWorldConfig implements ConfigWithValidation {
   /**
    * Unique tag for the game. This can be treated as name of the game.
    */
@@ -127,7 +126,7 @@ public class GameWorldConfig {
    *
    * @return Current configuration state or exception.
    */
-  public Result<GameWorldConfig, Exception> validateStageOne() {
+  public Result<Void, Exception> validateStageOne() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
     if (locationTags.size() < 1) {
 			builder.append("No location tags detected");
@@ -166,7 +165,7 @@ public class GameWorldConfig {
       builder.append("Invalid NPC Frame specified");
     }
 
-    return builder.isEmpty() ? Result.ok(this) :
+    return builder.isEmpty() ? Result.ok() :
         Result.err(new IllegalStateException(builder.toString()));
   }
 
@@ -175,18 +174,18 @@ public class GameWorldConfig {
    *
    * @return Object with valid state or exception.
    */
-  public Result<GameWorldConfig, Exception> validate() {
-    Result<GameWorldConfig, Exception> stageOneValidationResult = validateStageOne();
+  public Result<Void, Exception> validate() {
+    Result<Void, Exception> stageOneValidationResult = validateStageOne();
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
 
     if (stageOneValidationResult.isErr()) {
-      builder.combine(stageOneValidationResult.getErrValue().getMessage());
+      builder.combine(stageOneValidationResult.getErr().getMessage());
     }
     if (locationConfigs.size() < 1) {
       builder.append("No location configs loaded");
     }
 
-    return builder.isEmpty() ? Result.ok(this) :
+    return builder.isEmpty() ? Result.ok() :
         Result.err(new IllegalStateException(builder.toString()));
   }
 

@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Represents action configuration.
  */
-public class ActionConfigBundle {
+public class ActionConfigBundle implements ConfigWithValidation {
   /**
    * Unique tag, representing the action.
    *
@@ -274,6 +274,7 @@ public class ActionConfigBundle {
    * @return Result.ok when object has valid internal state or Result.error
    * with enclosed exception explaining the cause.
    */
+  @Override
   public Result<Void, Exception> validate() {
     Result<Void, Exception> result = validateBasic();
 
