@@ -2,6 +2,7 @@ package io.rpg.controller;
 
 import com.kkafara.rt.Result;
 import io.rpg.model.actions.*;
+import io.rpg.model.actions.condition.ConditionEngineHolder;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
@@ -13,10 +14,6 @@ import io.rpg.util.BattleResult;
 import io.rpg.view.GameEndView;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.LinkedHashMap;
-import java.util.List;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -25,6 +22,11 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Observer, ActionConsumer {
   private Scene currentView;
@@ -95,6 +97,11 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(LocationChangeAction action) {
+    if (!ConditionEngineHolder.getInstance().evaluate(action.getCondition())) {
+      logger.info("Action not executed due to condition being not satisfied");
+      return;
+    }
+
     if (!this.tagToLocationModelMap.containsKey(action.destinationLocationTag)) {
       logger.error("Unknown location tag");
       return;
@@ -111,16 +118,31 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(DialogueAction action) {
+    if (!ConditionEngineHolder.getInstance().evaluate(action.getCondition())) {
+      logger.info("Action not executed due to condition being not satisfied");
+      return;
+    }
+
     popupController.openDialoguePopup(action.text, action.image, getWindowCenterX(), getWindowCenterY());
   }
 
   private void onAction(ShowDescriptionAction action) {
+    if (!ConditionEngineHolder.getInstance().evaluate(action.getCondition())) {
+      logger.info("Action not executed due to condition being not satisfied");
+      return;
+    }
+
     if (!action.description.isEmpty()) {
       popupController.openTextImagePopup(action.description, action.image, getWindowCenterX(), getWindowCenterY());
     }
   }
 
   private void onAction(QuizAction action) {
+    if (!ConditionEngineHolder.getInstance().evaluate(action.getCondition())) {
+      logger.info("Action not executed due to condition being not satisfied");
+      return;
+    }
+
     int pointsCount = action.getPointsToEarn();
     popupController.openQuestionPopup(
         action.question,
@@ -144,6 +166,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(GameEndAction action) {
+    if (!ConditionEngineHolder.getInstance().evaluate(action.getCondition())) {
+      logger.info("Action not executed due to condition being not satisfied");
+      return;
+    }
     GameEndView view = GameEndView.load();
     view.setDescription(action.description);
     double prevWidth = mainStage.getWidth();
@@ -154,6 +180,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(BattleAction action) {
+    if (!ConditionEngineHolder.getInstance().evaluate(action.getCondition())) {
+      logger.info("Action not executed due to condition being not satisfied");
+      return;
+    }
     Player player = playerController.getPlayer();
     GameObject opponent = action.getOpponent();
     int reward = action.getReward();
