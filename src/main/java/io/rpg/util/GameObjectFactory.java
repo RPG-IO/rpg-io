@@ -33,7 +33,8 @@ public class GameObjectFactory {
           DataObjectDescriptionProvider.combineDescriptions(
               DataObjectDescriptionProvider.getFieldDescription(config, GameObjectConfig.class)
           ),
-          new Image("file:" + config.getAssetPath())
+          new Image("file:" + config.getAssetPath()),
+          null
       );
     }
 
