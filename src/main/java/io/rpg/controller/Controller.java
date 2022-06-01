@@ -213,8 +213,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
         case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
         case Q -> popupController.openQuestionPopup(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'), getWindowCenterX(), getWindowCenterY());
-        case L -> consumeAction(new LocationChangeAction("location-2", new Position(1, 2)));
-        case U -> consumeAction(new GameEndAction("You have pressed the forbidden button"));
+        case L -> consumeAction(new LocationChangeAction("location-2", new Position(1, 2), null));
+        case U -> consumeAction(new GameEndAction("You have pressed the forbidden button", null));
       }
     }
     // } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
