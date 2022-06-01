@@ -9,8 +9,6 @@ public class ConditionConfigBundle implements ConfigWithValidation {
   @Nullable
   private ConditionType type;
 
-  
-
   @Nullable
   public ConditionType getType() {
     return type;
