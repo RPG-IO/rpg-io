@@ -217,9 +217,6 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         case U -> consumeAction(new GameEndAction("You have pressed the forbidden button", null));
       }
     }
-    // } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
-    //
-    // }
   }
 
   private int getWindowCenterX() {
