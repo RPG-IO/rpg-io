@@ -1,10 +1,10 @@
 package io.rpg.config.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.kkafara.rt.Result;
 import io.rpg.model.data.Position;
 import io.rpg.util.DataObjectDescriptionProvider;
 import io.rpg.util.ErrorMessageBuilder;
-import io.rpg.util.Result;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

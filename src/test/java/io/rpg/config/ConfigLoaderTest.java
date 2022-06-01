@@ -4,14 +4,12 @@ import io.rpg.config.model.GameWorldConfig;
 
 import io.rpg.config.model.PlayerConfig;
 import io.rpg.model.data.Position;
-import io.rpg.util.Result;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Set;
 
 public class ConfigLoaderTest {

@@ -1,5 +1,6 @@
 package io.rpg.model.location;
 
+import com.kkafara.rt.Result;
 import io.rpg.model.actions.ActionConsumer;
 import io.rpg.model.actions.BaseActionEmitter;
 import io.rpg.model.actions.LocationChangeAction;
@@ -7,7 +8,7 @@ import io.rpg.model.data.LocationModelStateChange;
 import io.rpg.model.data.MapDirection;
 import io.rpg.model.data.Position;
 import io.rpg.model.object.GameObject;
-import io.rpg.util.Result;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;

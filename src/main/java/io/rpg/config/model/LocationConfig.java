@@ -1,9 +1,8 @@
 package io.rpg.config.model;
 
 
-import io.rpg.Game;
+import com.kkafara.rt.Result;
 import io.rpg.util.ErrorMessageBuilder;
-import io.rpg.util.Result;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
