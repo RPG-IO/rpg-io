@@ -11,6 +11,10 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        name = "JFrogBintray"
+        url = "https://kkafara.jfrog.io/artifactory/kkafara-gradle-release-local/"
+    }
 }
 
 ext {
@@ -54,6 +58,8 @@ dependencies {
     implementation('org.apache.logging.log4j:log4j-core:2.17.2')
 
     implementation('commons-io:commons-io:2.11.0')
+
+    implementation("com.kkafara.rt:result-type:1.0.3")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")

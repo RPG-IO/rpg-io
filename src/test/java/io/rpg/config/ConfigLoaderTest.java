@@ -1,17 +1,16 @@
 package io.rpg.config;
 
+import com.kkafara.rt.Result;
 import io.rpg.config.model.GameWorldConfig;
 
 import io.rpg.config.model.PlayerConfig;
 import io.rpg.model.data.Position;
-import io.rpg.util.Result;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Set;
 
 public class ConfigLoaderTest {
@@ -67,7 +66,7 @@ public class ConfigLoaderTest {
     ConfigLoader configLoader = new ConfigLoader(fullConfigPath);
     Result<GameWorldConfig, Exception> loadingResult = configLoader.loadRootFile();
 
-    GameWorldConfig config = loadingResult.getOkValue();
+    GameWorldConfig config = loadingResult.getOk();
 
     Assertions.assertNotNull(config);
 

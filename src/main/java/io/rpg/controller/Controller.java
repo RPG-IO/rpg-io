@@ -1,5 +1,6 @@
 package io.rpg.controller;
 
+import com.kkafara.rt.Result;
 import io.rpg.model.actions.*;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
@@ -9,7 +10,6 @@ import io.rpg.model.object.GameObject;
 import io.rpg.model.object.Player;
 import io.rpg.model.object.Question;
 import io.rpg.util.BattleResult;
-import io.rpg.util.Result;
 import io.rpg.view.GameEndView;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
@@ -267,7 +267,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     public Controller build() {
       Result<Controller, Exception> validationResult = controller.validate();
       if (validationResult.isErr()) {
-        throw new IllegalStateException(validationResult.getErrValue());
+        throw new IllegalStateException(validationResult.getErr());
       }
 
       controller.tagToLocationModelMap.values().forEach(location -> location.setActionConsumer(controller));

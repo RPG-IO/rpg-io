@@ -4,11 +4,12 @@ import com.google.gson.Gson;
 import io.rpg.config.model.GameObjectConfig;
 import io.rpg.config.model.GameWorldConfig;
 import io.rpg.config.model.LocationConfig;
-import io.rpg.util.Result;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
+
+import com.kkafara.rt.Result;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -118,11 +119,11 @@ public class ConfigLoader {
 
     if (configLoadResult.isErr()) {
       logger.error("Error while loading GameWorldConfig");
-      configLoadResult.getErrValueOpt().ifPresent(ex -> logger.error(ex.getMessage()));
+      configLoadResult.getErrOpt().ifPresent(ex -> logger.error(ex.getMessage()));
       return configLoadResult;
     }
 
-    Optional<GameWorldConfig> gameWorldConfigOpt = configLoadResult.getOkValueOpt();
+    Optional<GameWorldConfig> gameWorldConfigOpt = configLoadResult.getOkOpt();
 
     if (gameWorldConfigOpt.isEmpty()) {
       return Result.err(new RuntimeException("loadGameWorldConfig returned null config"));
@@ -137,12 +138,12 @@ public class ConfigLoader {
         Result<LocationConfig, Exception> locationConfigLoadingResult = loadLocationConfig(locationTag);
 
         if (locationConfigLoadingResult.isErr()) {
-          return Result.err(locationConfigLoadingResult.getErrValue());
+          return Result.err(locationConfigLoadingResult.getErr());
         } else if (locationConfigLoadingResult.isOkValueNull()) {
           return Result.err(new RuntimeException("Null LocationConfig returned for location with tag: " + locationTag));
         }
 
-        LocationConfig locationConfig = locationConfigLoadingResult.getOkValue();
+        LocationConfig locationConfig = locationConfigLoadingResult.getOk();
 
         gameWorldConfig.addLocationConfig(locationConfig);
 
@@ -153,7 +154,7 @@ public class ConfigLoader {
         Result<Void, Exception> result = loadGameObjectsForLocation(locationConfig);
 
         if (result.isErr()) {
-          result.getErrValueOpt().ifPresentOrElse(err -> {
+          result.getErrOpt().ifPresentOrElse(err -> {
             logger.warn("An error occurred while loading config for location with tag: " + locationTag + "\n"
                 + err.getMessage());
           }, () -> {
@@ -167,12 +168,12 @@ public class ConfigLoader {
       }
     }
 
-    Result<GameWorldConfig, Exception> validationResult = gameWorldConfig.validate();
+    Result<Void, Exception> validationResult = gameWorldConfig.validate();
     if (validationResult.isErr()) {
-      return Result.err(validationResult.getErrValue());
+      return Result.err(validationResult.getErr());
     }
 
-    return Result.ok(validationResult.getOkValue());
+    return Result.ok(gameWorldConfig);
   }
 
   @NotNull
@@ -188,12 +189,12 @@ public class ConfigLoader {
             logger.info("Detected configuration for object with tag: " + objectTag);
             GameObjectConfig config = gson.fromJson(Files.newBufferedReader(objectConfigPath), GameObjectConfig.class);
 
-            Result<GameObjectConfig, Exception> validationResult = config.validateBasic();
+            Result<Void, Exception> validationResult = config.validateBasic();
 
             if (validationResult.isErr()) {
               String error = "Validation for object with tag: " + objectTag + " failed."
                   + (validationResult.isErrValueNull() ? "No reason provided."
-                  : "Reason: " + validationResult.getErrValue().getMessage());
+                  : "Reason: " + validationResult.getErr().getMessage());
               logger.error(error);
               return Result.err(new Exception(error));
             }
@@ -220,10 +221,10 @@ public class ConfigLoader {
 
     // game configs validation
     for (GameObjectConfig gameObjectConfig : locationConfig.getObjects()) {
-      Result<GameObjectConfig, Exception> result = gameObjectConfig.validate();
+      Result<Void, Exception> result = gameObjectConfig.validate();
 
       if (result.isErr()) {
-        result.getErrValueOpt().ifPresentOrElse(ex -> {
+        result.getErrOpt().ifPresentOrElse(ex -> {
           String exceptionMessage = ex.getMessage();
           logger.warn("Validation for game object config with tag: "
               + gameObjectConfig.getTag() + " failed."
@@ -279,13 +280,13 @@ public class ConfigLoader {
 
     // GameWorldConfig is loaded in two stages right now
     // todo: fix this! Separate initial GameWorldConfig to different class
-    Result<GameWorldConfig, Exception> configLoadResult = gameWorldConfigShell.validateStageOne();
+    Result<Void, Exception> configLoadResult = gameWorldConfigShell.validateStageOne();
 
     if (configLoadResult.isErr()) {
-      return configLoadResult;
+      return Result.err(configLoadResult.getErrOrNull());
     }
 
-    GameWorldConfig config = configLoadResult.getOkValue();
+    GameWorldConfig config = gameWorldConfigShell;
 
     // detect all locations not specified explicitly in configuration root file
     try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(locationsDirPath)) {
@@ -307,7 +308,7 @@ public class ConfigLoader {
       logger.error("IOException while iterating over locations dir content:\n" + ex.getMessage());
     }
 
-    return configLoadResult;
+    return Result.ok(config);
   }
 
   Result<LocationConfig, Exception> loadLocationConfig(@NotNull String locationTag) throws FileNotFoundException {

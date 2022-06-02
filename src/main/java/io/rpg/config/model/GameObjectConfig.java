@@ -1,10 +1,10 @@
 package io.rpg.config.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.kkafara.rt.Result;
 import io.rpg.model.data.Position;
 import io.rpg.util.DataObjectDescriptionProvider;
 import io.rpg.util.ErrorMessageBuilder;
-import io.rpg.util.Result;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
  * Represents {@link io.rpg.model.object.GameObject} configuration provided by user
  * in configuration files.
  */
-public class GameObjectConfig {
+public class GameObjectConfig implements ConfigWithValidation {
 
   /**
    * Position of game object in model's representation of location.
@@ -118,7 +118,7 @@ public class GameObjectConfig {
    *
    * @return maybe-valid {@link GameObjectConfig} or exception.
    */
-  public Result<GameObjectConfig, Exception> validateBasic() {
+  public Result<Void, Exception> validateBasic() {
     if (tag == null || tag.isBlank()) {
       return Result.err(new Exception("Invalid or no tag provided"));
     }
@@ -130,7 +130,7 @@ public class GameObjectConfig {
    *
    * @return Object in valid state or exception.
    */
-  public Result<GameObjectConfig, Exception> validate() {
+  public Result<Void, Exception> validate() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
 
     if (tag == null) {
@@ -145,7 +145,7 @@ public class GameObjectConfig {
       builder.append("No position provided");
     }
 
-    return builder.isEmpty() ? Result.ok(this) : Result.err(new Exception(builder.toString()));
+    return builder.isEmpty() ? Result.ok() : Result.err(new Exception(builder.toString()));
   }
 
   public void updateFrom(GameObjectConfig gameObjectConfig) {

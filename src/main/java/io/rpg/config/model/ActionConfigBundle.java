@@ -1,11 +1,11 @@
 package io.rpg.config.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.kkafara.rt.Result;
 import io.rpg.model.actions.ActionType;
 import io.rpg.model.data.Position;
 import io.rpg.model.object.Question;
 import io.rpg.util.ErrorMessageBuilder;
-import io.rpg.util.Result;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Represents action configuration.
  */
-public class ActionConfigBundle {
+public class ActionConfigBundle implements ConfigWithValidation {
   /**
    * Unique tag, representing the action.
    *
@@ -274,6 +274,7 @@ public class ActionConfigBundle {
    * @return Result.ok when object has valid internal state or Result.error
    * with enclosed exception explaining the cause.
    */
+  @Override
   public Result<Void, Exception> validate() {
     Result<Void, Exception> result = validateBasic();
 

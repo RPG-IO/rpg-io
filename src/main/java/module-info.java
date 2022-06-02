@@ -12,6 +12,7 @@ module io.rpg {
   requires org.apache.logging.log4j;
   requires org.apache.logging.log4j.core;
   requires org.apache.commons.io;
+  requires result.type;
 
   opens io.rpg.model.location to com.google.gson;
   opens io.rpg.model.object to com.google.gson;
