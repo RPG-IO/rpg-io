@@ -62,6 +62,9 @@ public class GameObjectFactory {
       if (onRightClickAction instanceof BattleAction) {
         ((BattleAction) onRightClickAction).setOpponent(gameObject);
       }
+      if (onApproach instanceof BattleAction) {
+        ((BattleAction) onApproach).setOpponent(gameObject);
+      }
 
       // TODO: Create ActionFactory & inflate the actions
       return gameObject;
