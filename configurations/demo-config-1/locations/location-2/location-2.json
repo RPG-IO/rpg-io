@@ -42,6 +42,9 @@
     { "tag": "object-8", "position": { "row": 8, "col": 8 }, "assetPath": "assets/coin.png" }
   ],
   "backgroundPath": "assets/map.png",
+  "directionToLocationMap": {
+    "SOUTH": "location-1"
+  },
   "north": "location-3",
   "width": 10,
   "height": 10
