@@ -2,7 +2,7 @@ package io.rpg.controller;
 
 import com.kkafara.rt.Result;
 import io.rpg.model.actions.*;
-import io.rpg.model.actions.condition.ConditionEngineHolder;
+import io.rpg.model.actions.condition.ConditionEngine;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
@@ -37,6 +37,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   private final PopupController popupController = new PopupController();
   private PlayerController playerController;
   private Stage mainStage;
+  private final ConditionEngine conditionEngine;
 
 
   public Controller() {
@@ -44,6 +45,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
     tagToLocationModelMap = new LinkedHashMap<>();
     tagToLocationViewMap = new LinkedHashMap<>();
+
+    conditionEngine = new ConditionEngine(this);
   }
 
   public Controller(LinkedHashMap<String, LocationModel> tagToLocationModelMap,
@@ -57,6 +60,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     // TODO: handle errors
     this.currentModel = this.tagToLocationModelMap.get(rootTag);
     this.currentView = this.tagToLocationViewMap.get(rootTag);
+
+    conditionEngine = new ConditionEngine(this);
   }
 
   public void setMainStage(Stage mainStage) {
@@ -97,7 +102,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(LocationChangeAction action) {
-    if (!ConditionEngineHolder.getInstance().evaluate(action.getCondition())) {
+    if (!conditionEngine.evaluate(action.getCondition())) {
       logger.info("Action not executed due to condition being not satisfied");
       return;
     }
@@ -118,7 +123,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(DialogueAction action) {
-    if (!ConditionEngineHolder.getInstance().evaluate(action.getCondition())) {
+    if (!conditionEngine.evaluate(action.getCondition())) {
       logger.info("Action not executed due to condition being not satisfied");
       return;
     }
@@ -127,7 +132,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(ShowDescriptionAction action) {
-    if (!ConditionEngineHolder.getInstance().evaluate(action.getCondition())) {
+    if (!conditionEngine.evaluate(action.getCondition())) {
       logger.info("Action not executed due to condition being not satisfied");
       return;
     }
@@ -138,7 +143,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(QuizAction action) {
-    if (!ConditionEngineHolder.getInstance().evaluate(action.getCondition())) {
+    if (!conditionEngine.evaluate(action.getCondition())) {
       logger.info("Action not executed due to condition being not satisfied");
       return;
     }
@@ -166,7 +171,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(GameEndAction action) {
-    if (!ConditionEngineHolder.getInstance().evaluate(action.getCondition())) {
+    if (!conditionEngine.evaluate(action.getCondition())) {
       logger.info("Action not executed due to condition being not satisfied");
       return;
     }
@@ -180,7 +185,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(BattleAction action) {
-    if (!ConditionEngineHolder.getInstance().evaluate(action.getCondition())) {
+    if (!conditionEngine.evaluate(action.getCondition())) {
       logger.info("Action not executed due to condition being not satisfied");
       return;
     }

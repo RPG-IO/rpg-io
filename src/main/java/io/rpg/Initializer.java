@@ -7,7 +7,6 @@ import io.rpg.config.model.GameWorldConfig;
 import io.rpg.config.model.LocationConfig;
 import io.rpg.controller.PlayerController;
 import io.rpg.model.actions.LocationChangeAction;
-import io.rpg.model.actions.condition.ConditionEngineHolder;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.GameObject;
 import io.rpg.model.object.Player;
@@ -112,8 +111,6 @@ public class Initializer {
 
 
     Controller controller = controllerBuilder.build();
-
-    ConditionEngineHolder.init(controller);
 
     Game.Builder gameBuilder = new Game.Builder();
     Game game = gameBuilder
