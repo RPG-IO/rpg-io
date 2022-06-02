@@ -46,9 +46,7 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
     this.positionGameObjectMap = new HashMap<>();
     this.directionToLocationMap = new HashMap<>();
 
-    directionToLocationMap.put(MapDirection.NORTH, "location-1");
-    directionToLocationMap.put(MapDirection.SOUTH, "location-1");
-    directionToLocationMap.put(MapDirection.WEST, "location-2");
+    directionToLocationMap.put(MapDirection.EAST, "location-1");
   }
 
   public String getTag() {
