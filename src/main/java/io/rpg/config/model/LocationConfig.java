@@ -2,15 +2,14 @@ package io.rpg.config.model;
 
 
 import com.kkafara.rt.Result;
+import io.rpg.model.data.MapDirection;
 import io.rpg.util.ErrorMessageBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedHashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class LocationConfig {
   public static final int MAX_HEIGHT = 10;
@@ -20,6 +19,9 @@ public class LocationConfig {
 
   @NotNull
   private Set<GameObjectConfig> objects;
+
+  @NotNull
+  private HashMap<MapDirection, String> directionToLocationMap;
 
   @Nullable
   private Path path;
@@ -54,6 +56,15 @@ public class LocationConfig {
       objects = new LinkedHashSet<>();
     }
     return objects;
+  }
+
+  @NotNull
+  public HashMap<MapDirection, String> getDirectionToLocationMap() {
+    // same as objects in getObjects the direction map might be null if loaded via Gson
+    if (directionToLocationMap == null) {
+      directionToLocationMap = new HashMap<>();
+    }
+    return directionToLocationMap;
   }
 
   public void addObjectConfig(@NotNull GameObjectConfig config) {
