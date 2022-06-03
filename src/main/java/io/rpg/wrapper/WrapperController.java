@@ -105,6 +105,9 @@ public class WrapperController {
     startButton.setDisable(false);
 
     loadGame(path);
+    game.getController()
+        .getGameEndController()
+        .setOnEnd(() -> show(stage));
 
   }
 
