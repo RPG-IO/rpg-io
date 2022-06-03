@@ -9,12 +9,15 @@ public class Game {
   private Controller controller;
   private Action onStart;
   private AnimationTimer timer;
+  private Runnable onEnd;
 
   private Game() {
+    onEnd = () -> {};
   }
 
   public void setController(Controller controller) {
     this.controller = controller;
+    controller.getGameEndController().setOnEnd(this::end);
   }
 
   public void start(Stage stage) {
@@ -22,6 +25,15 @@ public class Game {
     controller.consumeAction(onStart);
     startAnimationTimer();
     stage.show();
+  }
+
+  public void end() {
+    timer.stop();
+    onEnd.run();
+  }
+
+  public void setOnEnd(Runnable onEnd) {
+    this.onEnd = onEnd;
   }
 
   private void startAnimationTimer() {

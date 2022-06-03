@@ -105,9 +105,7 @@ public class WrapperController {
     startButton.setDisable(false);
 
     loadGame(path);
-    game.getController()
-        .getGameEndController()
-        .setOnEnd(() -> show(stage));
+    game.setOnEnd(() -> show(stage));
 
   }
 
@@ -140,6 +138,7 @@ public class WrapperController {
 
   @FXML
   private void onStartClick() {
+    startButton.setDisable(true);
     game.start(stage);
   }
 
