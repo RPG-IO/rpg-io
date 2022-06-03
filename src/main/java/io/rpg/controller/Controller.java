@@ -176,9 +176,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   private void onAction(CollectAction action) {
     popupController.openTextImagePopup("Picked up an item!", new Image("file:assets/key.png"), getWindowCenterX(), getWindowCenterY());
-//     objectView.setVisible(false);
     playerController.getPlayer().getInventory().add(action.getOwner());
-    String tag=currentModel.getTag();
+    String tag = currentModel.getTag();
     LocationView currentLocationView=tagToLocationViewMap.get(tag);
     currentLocationView.removeViewBoundToObject(action.getOwner());
     currentModel.removeGameObject(action.getOwner());
@@ -230,7 +229,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         case Q -> popupController.openQuestionPopup(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'), getWindowCenterX(), getWindowCenterY());
         case L -> consumeAction(new LocationChangeAction("location-2", new Position(1, 2)));
         case U -> consumeAction(new GameEndAction("You have pressed the forbidden button"));
-        case E -> popupController.openInventoryPopup(playerController.getPlayer().getInventory(), getWindowCenterX(), getWindowCenterY(),playerController.getPlayer());
+        case E -> popupController.openInventoryPopup(playerController.getPlayer().getInventory(), getWindowCenterX(), getWindowCenterY(), playerController.getPlayer());
       }
     }
     // } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {

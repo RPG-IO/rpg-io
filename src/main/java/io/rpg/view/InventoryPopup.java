@@ -36,7 +36,7 @@ public class InventoryPopup extends Scene {
   @FXML
   private Label pointsLabel;
 
-  public InventoryPopup(Inventory inventory,Player player) {
+  public InventoryPopup(Inventory inventory, Player player) {
 
     super(new Group(), Color.TRANSPARENT);
     Group group = new Group();
@@ -44,8 +44,8 @@ public class InventoryPopup extends Scene {
     ImageView imageView = new ImageView(GameObjectView.resolvePathToJFXFormat("assets/popup-background.png"));
     imageView.setX(0);
     imageView.setY(0);
-    this.pointsLabel=new Label();
-    this.pointsLabel.setText("Points :"+String.valueOf(player.getPoints()));
+    this.pointsLabel = new Label();
+    this.pointsLabel.setText("Points :" + String.valueOf(player.getPoints()));
     this.pointsLabel.setLayoutX(325);
     this.pointsLabel.setLayoutY(150);
     this.pointsLabel.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + 18);
@@ -74,7 +74,7 @@ public class InventoryPopup extends Scene {
       imageGameObjectView.setOnMouseEntered(event -> {
         InventoryGameObjectView src = (InventoryGameObjectView) event.getSource();
 //                System.out.println("over the item "+src.collectibleGameObject.getAssetPath());
-        label.setText("stub description");
+        label.setText(src.collectibleGameObject.getAssetPath());
       });
 
       imageGameObjectView.setOnMouseExited(event -> {

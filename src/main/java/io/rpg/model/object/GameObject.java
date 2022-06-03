@@ -6,6 +6,7 @@ import io.rpg.model.actions.QuizAction;
 import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.Position;
 import io.rpg.util.DataObjectDescriptionProvider;
+import io.rpg.view.GameObjectView;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;
@@ -28,6 +29,7 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
   private Action onRightClickAction;
   private Action onLeftClickAction;
   private int strength;
+  private String assetPath;
 
   /**
    * Unique identifier of this game object.
@@ -54,6 +56,16 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
     this.exactPositionProperty = new SimpleObjectProperty<>(new Point2D(position.col, position.row));
     this.onLeftClickAction = new QuizAction(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'));
     this.onRightClickAction = Action.VOID;
+  }
+  public GameObject(@NotNull String tag, @NotNull Position position,String assetPath) {
+//    this.tag = tag;
+//    this.stateChangeObservers = new LinkedHashSet<>();
+//    this.exactPositionProperty = new SimpleObjectProperty<>(new Point2D(position.col, position.row));
+//    this.onLeftClickAction = new QuizAction(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'));
+//    this.onRightClickAction = Action.VOID;
+    this(tag,position);
+    this.assetPath=assetPath;
+
   }
 
   public GameObject(@NotNull String tag, @NotNull Position position, int strength) {
@@ -131,4 +143,13 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
     return strength;
   }
 
+
+
+  public String getAssetPath() {
+    return assetPath;
+  }
+
+  public void setAssetPath(String assetPath) {
+    this.assetPath = assetPath;
+  }
 }

@@ -49,7 +49,7 @@ public class GameObjectFactory {
 //      player.setStrength(config.getStrength());
       return player;
     } else {
-      GameObject gameObject = new GameObject(config.getTag(), config.getPosition());
+      GameObject gameObject = new GameObject(config.getTag(), config.getPosition(),config.getAssetPath());
 
       gameObject.setOnLeftClickAction(onLeftClickAction);
       gameObject.setOnRightClickAction(onRightClickAction);;

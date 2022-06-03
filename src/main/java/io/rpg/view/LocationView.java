@@ -1,5 +1,6 @@
 package io.rpg.view;
 
+import io.rpg.Game;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.LocationModelStateChange;
 import io.rpg.model.location.LocationModel;
@@ -111,16 +112,32 @@ public class LocationView extends Scene
     viewModel.getForegroundPane().getChildren().add(view);
   }
 
-  public void removeViewBoundToObject(GameObject gameObject){
-    for(Node node : viewModel.getForegroundPane().getChildren()){
-      if(node instanceof GameObjectView){
-          GameObjectView temp =(GameObjectView)node;
-          if(temp.getBoundObject()==gameObject){
-            removeChild(temp);
-            break;
-          }
+  public GameObjectView findViewBoundToObject(GameObject gameObject){
+    for(Node node : viewModel.getForegroundPane().getChildren()) {
+      if (node instanceof GameObjectView) {
+        GameObjectView temp = (GameObjectView) node;
+        if (temp.getBoundObject() == gameObject) {
+          return temp;
+        }
       }
     }
+    return null;
+  }
+
+  public void removeViewBoundToObject(GameObject gameObject){
+    GameObjectView view = findViewBoundToObject(gameObject);
+    if(view != null) {
+      removeChild(view);
+    }
+//    for(Node node : viewModel.getForegroundPane().getChildren()){
+//      if(node instanceof GameObjectView){
+//          GameObjectView temp = (GameObjectView) node;
+//          if(temp.getBoundObject() == gameObject){
+//            removeChild(temp);
+//            break;
+//          }
+//      }
+//    }
   }
   
 }

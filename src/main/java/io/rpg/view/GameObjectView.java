@@ -53,8 +53,8 @@ public class GameObjectView extends ImageView
   }
 
   public void bindToGameObject(GameObject gameObject) {
-    this.position.bind(gameObject.getExactPositionProperty());
-    this.boundObject=gameObject;
+      this.position.bind(gameObject.getExactPositionProperty());
+      this.boundObject = gameObject;
   }
 
   public Point2D getPosition() {
