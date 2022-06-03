@@ -59,6 +59,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   public void setMainStage(Stage mainStage) {
     this.mainStage = mainStage;
+    this.popupController.setOwner(mainStage);
 
     mainStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
       if (!isNowFocused) {

@@ -6,8 +6,10 @@ import io.rpg.view.popups.QuestionPopup;
 import io.rpg.view.popups.TextImagePopup;
 import io.rpg.view.popups.TextPopup;
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 public class PopupController {
 
@@ -23,7 +25,7 @@ public class PopupController {
     });
   }
 
-  public void openTextPopup(String text, int x, int y){
+  public void openTextPopup(String text, int x, int y) {
     TextPopup popupScene = new TextPopup(text);
     popupStage.setScene(popupScene);
 
@@ -35,7 +37,12 @@ public class PopupController {
     popupScene.setButtonCallback(event -> popupStage.hide());
   }
 
-  public void openTextImagePopup(String text, Image image, int x, int y){
+  public void setOwner(Window window) {
+    popupStage.initOwner(window);
+    popupStage.initModality(Modality.WINDOW_MODAL);
+  }
+
+  public void openTextImagePopup(String text, Image image, int x, int y) {
     TextImagePopup popupScene = new TextImagePopup(text, image);
     popupStage.setScene(popupScene);
 
