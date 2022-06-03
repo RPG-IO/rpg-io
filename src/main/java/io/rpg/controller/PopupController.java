@@ -75,7 +75,6 @@ public class PopupController {
     popupStage.show();
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
-
   }
 
   public void openQuestionPopup(Question question, int x, int y) {
