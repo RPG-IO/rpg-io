@@ -1,17 +1,19 @@
 package io.rpg.model.actions;
 
+import io.rpg.model.actions.condition.Condition;
 import io.rpg.model.object.Question;
 
 /**
  * Class for storing local data needed to preform a quiz action.
  */
 
-public class QuizAction implements Action {
+public class QuizAction extends ConditionalAction {
 
   public final Question question;
   private int pointsToEarn;
 
-  public QuizAction(Question question) {
+  public QuizAction(Question question, Condition condition) {
+    super(condition);
     this.question = question;
     this.pointsToEarn = 10;
   }

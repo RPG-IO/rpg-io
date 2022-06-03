@@ -2,6 +2,7 @@ package io.rpg.util;
 
 import io.rpg.config.model.ActionConfigBundle;
 import io.rpg.model.actions.*;
+import io.rpg.model.actions.condition.ConditionFactory;
 import io.rpg.model.object.Question;
 import javafx.scene.image.Image;
 
@@ -43,27 +44,31 @@ public class ActionFactory {
   private static QuizAction quizActionFromConfig(ActionConfigBundle config) {
     // TODO: as for now only one question is handled but the config API
     // is capable of handling more than one!
-    return new QuizAction(config.getQuestions().get(0));
+    return new QuizAction(config.getQuestions().get(0), ConditionFactory.fromConfig(config.getCondition()));
   }
 
   private static GameEndAction gameEndActionFromConfig(ActionConfigBundle config) {
-    return new GameEndAction(config.getDescription());
+    return new GameEndAction(config.getDescription(), ConditionFactory.fromConfig(config.getCondition()));
   }
 
   private static DialogueAction dialogueActionFromConfig(ActionConfigBundle config) {
     // TODO: Move Image creation inside DialogueAction? Idk tbh.
-    return new DialogueAction(config.getDialogueStatements().get(0), new Image("file:" + config.getAssetPath()));
+    return new DialogueAction(config.getDialogueStatements().get(0),
+        new Image("file:" + config.getAssetPath()), ConditionFactory.fromConfig(config.getCondition()));
   }
 
   private static LocationChangeAction locationChangeActionFromConfig(ActionConfigBundle config) {
-    return new LocationChangeAction(config.getTargetLocationTag(), config.getTargetPosition());
+    return new LocationChangeAction(config.getTargetLocationTag(), config.getTargetPosition(),
+        ConditionFactory.fromConfig(config.getCondition()));
   }
 
   private static ShowDescriptionAction showDescriptionActionFromConfig(ActionConfigBundle config) {
-    return new ShowDescriptionAction(config.getDescription(), new Image("file:" + config.getAssetPath()));
+    return new ShowDescriptionAction(config.getDescription(), new Image("file:" + config.getAssetPath()),
+        ConditionFactory.fromConfig(config.getCondition()));
   }
 
   private static BattleAction battleActionFromConfig(ActionConfigBundle config) {
-    return new BattleAction(config.getRewardPoints());
+    return new BattleAction(config.getRewardPoints(),
+        ConditionFactory.fromConfig(config.getCondition()));
   }
 }

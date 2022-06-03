@@ -111,7 +111,7 @@ public class Initializer {
     Game.Builder gameBuilder = new Game.Builder();
     Game game = gameBuilder
         .setController(controller)
-        .setOnStartAction(new LocationChangeAction(gameWorldConfig.getRootLocation(), player.getPosition()))
+        .setOnStartAction(new LocationChangeAction(gameWorldConfig.getRootLocation(), player.getPosition(), null))
         .build();
 
     return Result.ok(game);

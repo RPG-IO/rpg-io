@@ -171,7 +171,7 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
     }
 
     String location = directionToLocationMap.get(direction);
-    LocationChangeAction action = new LocationChangeAction(location, nextPosition);
+    LocationChangeAction action = new LocationChangeAction(location, nextPosition, null);
     emitAction(action);
   }
 
