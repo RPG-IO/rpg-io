@@ -2,6 +2,7 @@ package io.rpg.controller;
 
 import io.rpg.model.object.Player;
 import io.rpg.model.object.Question;
+import io.rpg.view.BattlePopup;
 import io.rpg.view.popups.DialoguePopup;
 import io.rpg.view.popups.QuestionPopup;
 import io.rpg.model.data.Inventory;
@@ -65,6 +66,16 @@ public class PopupController {
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
 
+  }
+
+  public void openBattlePopup(int x,int y){
+    BattlePopup battlePopup = new BattlePopup();
+    this.popupStage.setScene(battlePopup);
+
+    popupStage.show();
+
+    popupStage.setX(x - battlePopup.getWidth() / 2);
+    popupStage.setY(y - battlePopup.getHeight() / 2);
   }
 
   public void openQuestionPopup(Question question, int x, int y, Runnable successCallback, Runnable failureCallback) {

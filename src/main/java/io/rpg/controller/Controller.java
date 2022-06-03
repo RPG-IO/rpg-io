@@ -159,19 +159,20 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(BattleAction action) {
-    Player player = playerController.getPlayer();
-    GameObject opponent = action.getOpponent();
-    int reward = action.getReward();
-    BattleResult result;
-    if (player.getPoints() > opponent.getStrength()) {
-      player.addPoints(reward);
-      result = new BattleResult(BattleResult.Result.VICTORY, reward);
-    } else if (player.getStrength() < opponent.getStrength()) {
-      result = new BattleResult(BattleResult.Result.DEFEAT, 0);
-    } else {
-      result = new BattleResult(BattleResult.Result.DRAW, 0);
-    }
-    popupController.openTextPopup(result.getMessage(), getWindowCenterX(), getWindowCenterY());
+//    Player player = playerController.getPlayer();
+//    GameObject opponent = action.getOpponent();
+//    int reward = action.getReward();
+//    BattleResult result;
+//    if (player.getPoints() > opponent.getStrength()) {
+//      player.addPoints(reward);
+//      result = new BattleResult(BattleResult.Result.VICTORY, reward);
+//    } else if (player.getStrength() < opponent.getStrength()) {
+//      result = new BattleResult(BattleResult.Result.DEFEAT, 0);
+//    } else {
+//      result = new BattleResult(BattleResult.Result.DRAW, 0);
+//    }
+    popupController.openBattlePopup(getWindowCenterX(), getWindowCenterY());
+
   }
 
   private void onAction(CollectAction action) {
