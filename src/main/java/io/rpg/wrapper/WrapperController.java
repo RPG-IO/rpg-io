@@ -145,6 +145,4 @@ public class WrapperController {
   private void printLine(String line) {
     outputArea.setText(outputArea.getText() + "\n" + line);
   }
-
-
 }
