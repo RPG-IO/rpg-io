@@ -114,60 +114,48 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(LocationChangeAction action) {
-    if (!conditionEngine.evaluate(action.getCondition())) {
-      logger.info("Action not executed due to condition being not satisfied");
-      return;
-    }
+    actionGuard(action, () -> {
+      if (!this.tagToLocationModelMap.containsKey(action.destinationLocationTag)) {
+        logger.error("Unknown location tag");
+        return;
+      }
 
-    if (!this.tagToLocationModelMap.containsKey(action.destinationLocationTag)) {
-      logger.error("Unknown location tag");
-      return;
-    }
+      LocationView nextView = this.tagToLocationViewMap.get(action.destinationLocationTag);
+      LocationModel nextModel = this.tagToLocationModelMap.get(action.destinationLocationTag);
 
-    LocationView nextView = this.tagToLocationViewMap.get(action.destinationLocationTag);
-    LocationModel nextModel = this.tagToLocationModelMap.get(action.destinationLocationTag);
+      playerController.teleportTo(nextModel, nextView, action.playerPosition);
 
-    playerController.teleportTo(nextModel, nextView, action.playerPosition);
-
-    this.currentModel = nextModel;
-    this.currentView = nextView;
-    mainStage.setScene(nextView);
+      this.currentModel = nextModel;
+      this.currentView = nextView;
+      mainStage.setScene(nextView);
+    });
   }
 
   private void onAction(DialogueAction action) {
-    if (!conditionEngine.evaluate(action.getCondition())) {
-      logger.info("Action not executed due to condition being not satisfied");
-      return;
-    }
-
-    popupController.openDialoguePopup(action.text, action.image, getWindowCenterX(), getWindowCenterY());
+    actionGuard(action, () -> {
+      popupController.openDialoguePopup(action.text, action.image, getWindowCenterX(), getWindowCenterY());
+    });
   }
 
   private void onAction(ShowDescriptionAction action) {
-    if (!conditionEngine.evaluate(action.getCondition())) {
-      logger.info("Action not executed due to condition being not satisfied");
-      return;
-    }
-
-    if (!action.description.isEmpty()) {
-      popupController.openTextImagePopup(action.description, action.image, getWindowCenterX(), getWindowCenterY());
-    }
+    actionGuard(action, () -> {
+      if (!action.description.isEmpty()) {
+        popupController.openTextImagePopup(action.description, action.image, getWindowCenterX(), getWindowCenterY());
+      }
+    });
   }
 
   private void onAction(QuizAction action) {
-    if (!conditionEngine.evaluate(action.getCondition())) {
-      logger.info("Action not executed due to condition being not satisfied");
-      return;
-    }
-
-    int pointsCount = action.getPointsToEarn();
-    popupController.openQuestionPopup(
-        action.question,
-        getWindowCenterX(), getWindowCenterY(),
-        () -> acceptQuizResult(true, pointsCount),
-        () -> acceptQuizResult(false, 0)
-    );
-    action.setPointsToEarn(0);
+    actionGuard(action, () -> {
+      int pointsCount = action.getPointsToEarn();
+      popupController.openQuestionPopup(
+          action.question,
+          getWindowCenterX(), getWindowCenterY(),
+          () -> acceptQuizResult(true, pointsCount),
+          () -> acceptQuizResult(false, 0)
+      );
+      action.setPointsToEarn(0);
+    });
   }
 
   public void acceptQuizResult(boolean correct, int pointsCount) {
@@ -183,31 +171,35 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   }
 
   private void onAction(GameEndAction action) {
-    if (!conditionEngine.evaluate(action.getCondition())) {
-      logger.info("Action not executed due to condition being not satisfied");
-      return;
-    }
-    gameEndController.showGameEnd(mainStage, action.description);
+    actionGuard(action, () -> {
+      gameEndController.showGameEnd(mainStage, action.description);
+    });
   }
 
   private void onAction(BattleAction action) {
-    if (!conditionEngine.evaluate(action.getCondition())) {
+    actionGuard(action, () -> {
+      Player player = playerController.getPlayer();
+      GameObject opponent = action.getOpponent();
+      int reward = action.getReward();
+      BattleResult result;
+      if (player.getPoints() > opponent.getStrength()) {
+        player.addPoints(reward);
+        result = new BattleResult(BattleResult.Result.VICTORY, reward);
+      } else if (player.getStrength() < opponent.getStrength()) {
+        result = new BattleResult(BattleResult.Result.DEFEAT, 0);
+      } else {
+        result = new BattleResult(BattleResult.Result.DRAW, 0);
+      }
+      popupController.openTextPopup(result.getMessage(), getWindowCenterX(), getWindowCenterY());
+    });
+  }
+
+  private void actionGuard(ConditionalAction action, Runnable actionLogic) {
+    if (action.getCondition() != null && !action.getCondition().acceptEngine(conditionEngine)) {
       logger.info("Action not executed due to condition being not satisfied");
       return;
     }
-    Player player = playerController.getPlayer();
-    GameObject opponent = action.getOpponent();
-    int reward = action.getReward();
-    BattleResult result;
-    if (player.getPoints() > opponent.getStrength()) {
-      player.addPoints(reward);
-      result = new BattleResult(BattleResult.Result.VICTORY, reward);
-    } else if (player.getStrength() < opponent.getStrength()) {
-      result = new BattleResult(BattleResult.Result.DEFEAT, 0);
-    } else {
-      result = new BattleResult(BattleResult.Result.DRAW, 0);
-    }
-    popupController.openTextPopup(result.getMessage(), getWindowCenterX(), getWindowCenterY());
+    actionLogic.run();
   }
   
   public Scene getView() {
