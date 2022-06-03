@@ -7,7 +7,7 @@
     "target-position": {"row": 9, "col": 0},
     "condition": {
       "type": "item-required",
-      "tag": "key"
+      "item-tag": "key"
     }
   }
 }
