@@ -2,12 +2,11 @@ package io.rpg;
 
 import com.kkafara.rt.Result;
 import io.rpg.config.ConfigLoader;
-import io.rpg.controller.Controller;
 import io.rpg.config.model.GameWorldConfig;
 import io.rpg.config.model.LocationConfig;
+import io.rpg.controller.Controller;
 import io.rpg.controller.PlayerController;
 import io.rpg.model.actions.LocationChangeAction;
-import io.rpg.model.data.MapDirection;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.GameObject;
 import io.rpg.model.object.Player;
@@ -19,29 +18,24 @@ import io.rpg.view.popups.DialoguePopup;
 import io.rpg.view.popups.QuestionPopup;
 import io.rpg.view.popups.TextImagePopup;
 import io.rpg.view.popups.TextPopup;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Iterator;
+import java.util.List;
 import javafx.geometry.Point2D;
-import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
 public class Initializer {
   private Path pathToConfigDir;
   private ConfigLoader configLoader;
-  private final Stage mainStage;
 
   private final Logger logger;
 
-  public Initializer(@NotNull String pathToConfigDir, @NotNull Stage mainStage) {
+  public Initializer(@NotNull String pathToConfigDir) {
     this.configLoader = new ConfigLoader(pathToConfigDir);
-    this.mainStage = mainStage;
     this.logger = LogManager.getLogger(Initializer.class);
   }
 

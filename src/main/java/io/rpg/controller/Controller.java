@@ -36,6 +36,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   private Logger logger;
   private final PopupController popupController = new PopupController();
   private PlayerController playerController;
+  private GameEndController gameEndController;
   private Stage mainStage;
   private final ConditionEngine conditionEngine;
 
@@ -47,6 +48,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     tagToLocationViewMap = new LinkedHashMap<>();
 
     conditionEngine = new ConditionEngine(this);
+    gameEndController = new GameEndController();
   }
 
   public Controller(LinkedHashMap<String, LocationModel> tagToLocationModelMap,
@@ -185,13 +187,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       logger.info("Action not executed due to condition being not satisfied");
       return;
     }
-    GameEndView view = GameEndView.load();
-    view.setDescription(action.description);
-    double prevWidth = mainStage.getWidth();
-    double prevHeight = mainStage.getHeight();
-    mainStage.setScene(view);
-    mainStage.setWidth(prevWidth);
-    mainStage.setHeight(prevHeight);
+    gameEndController.showGameEnd(mainStage, action.description);
   }
 
   private void onAction(BattleAction action) {
@@ -298,6 +294,9 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     return playerController;
   }
 
+  public GameEndController getGameEndController() {
+    return gameEndController;
+  }
 
   public static class Builder {
     private final Controller controller;

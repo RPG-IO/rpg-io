@@ -27,4 +27,8 @@ public class GameEndView extends Scene {
   public void setDescription(String description) {
     viewModel.setDescription(description);
   }
+
+  public void setOnClick(Runnable runnable) {
+    viewModel.getParent().setOnMouseClicked((e) -> runnable.run());
+  }
 }
