@@ -44,7 +44,7 @@ public class ActionConfigBundle implements ConfigWithValidation {
   private ActionType actionType;
 
   /**
-   * Condition that needs to be satisfied before the action than be executed.
+   * Condition that needs to be satisfied before the action can be executed.
    */
   @Nullable
   @SerializedName(value = "condition", alternate = {"requires"})
