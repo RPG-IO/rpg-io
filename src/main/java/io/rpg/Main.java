@@ -20,30 +20,37 @@ public class Main extends Application {
   @Override
   public void start(Stage stage) throws IOException {
     Configurator.setRootLevel(Level.DEBUG);
-    WrapperController wrapperController = WrapperController.load();
-    wrapperController.show(stage);
+    String path = getParameters().getNamed().get("config");
+    if (path == null) {
+      WrapperController wrapperController = WrapperController.load();
+      wrapperController.show(stage);
+    } else {
+      fastStart(path, stage);
+    }
+  }
 
-//    Initializer worldInitializer = new Initializer("configurations/demo-config-1", stage);
-//    Result<Game, Exception> initializationResult = worldInitializer.initialize();
-//
-//    if (initializationResult.isErr()) {
-//      logger.error("Initialization error");
-//
-//      initializationResult.getErrOpt().ifPresentOrElse(
-//          ex -> {
-//            logger.error(ex.getMessage());
-//            ex.printStackTrace();
-//          },
-//          () -> logger.error("No reason provided")
-//      );
-//      return;
-//    } else if (initializationResult.isOkValueNull()) {
-//      logger.error("Initialization returned null value");
-//      return;
-//    }
-//
-//    Game game = initializationResult.getOk();
-//    game.start(stage);
+  private void fastStart(String path, Stage stage) {
+    Initializer worldInitializer = new Initializer(path);
+    Result<Game, Exception> initializationResult = worldInitializer.initialize();
+
+    if (initializationResult.isErr()) {
+      logger.error("Initialization error");
+
+      initializationResult.getErrOpt().ifPresentOrElse(
+          ex -> {
+            logger.error(ex.getMessage());
+            ex.printStackTrace();
+          },
+          () -> logger.error("No reason provided")
+      );
+      return;
+    } else if (initializationResult.isOkValueNull()) {
+      logger.error("Initialization returned null value");
+      return;
+    }
+
+    Game game = initializationResult.getOk();
+    game.start(stage);
   }
 
   public static void main(String[] args) {

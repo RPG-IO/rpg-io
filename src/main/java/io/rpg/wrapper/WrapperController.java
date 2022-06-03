@@ -110,7 +110,7 @@ public class WrapperController {
   }
 
   private void loadGame(String path) {
-    Initializer worldInitializer = new Initializer(path, stage);
+    Initializer worldInitializer = new Initializer(path);
     Result<Game, Exception> initializationResult = worldInitializer.initialize();
 
     if (initializationResult.isErr()) {
