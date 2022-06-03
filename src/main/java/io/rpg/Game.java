@@ -8,11 +8,9 @@ import javafx.stage.Stage;
 public class Game {
   private Controller controller;
   private Action onStart;
-  private Runnable onEnd;
   private AnimationTimer timer;
 
   private Game() {
-    onEnd = () -> {};
   }
 
   public void setController(Controller controller) {
@@ -44,10 +42,6 @@ public class Game {
     timer.start();
   }
 
-  public void end() {
-    onEnd.run();
-  }
-
   public static class Builder {
     private final Game game;
 
@@ -68,11 +62,6 @@ public class Game {
 
     public Builder setOnStartAction(Action onStart) {
       game.onStart = onStart;
-      return this;
-    }
-
-    public Builder setOnEndTask(Runnable onEnd) {
-      game.onEnd = onEnd;
       return this;
     }
   }
