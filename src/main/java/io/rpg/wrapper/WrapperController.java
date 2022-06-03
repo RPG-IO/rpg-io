@@ -104,12 +104,11 @@ public class WrapperController {
     printLine("Selected: " + path);
     startButton.setDisable(false);
 
-    loadGame(path);
-    game.setOnEnd(() -> show(stage));
-
+    loadGame(path)
+        .ifOk(g -> g.setOnEnd(() -> show(stage)));
   }
 
-  private void loadGame(String path) {
+  private Result<Game, Void> loadGame(String path) {
     Initializer worldInitializer = new Initializer(path);
     Result<Game, Exception> initializationResult = worldInitializer.initialize();
 
@@ -125,15 +124,15 @@ public class WrapperController {
           },
           () -> printLine("No reason provided")
       );
-      return;
+      return Result.err();
     } else if (initializationResult.isOkValueNull()) {
       printLine("Initialization returned null value");
-      return;
+      return Result.err();
     } else {
       printLine("File was correctly loaded. Press START to begin game");
     }
 
-    game = initializationResult.getOk();
+    return Result.ok(game);
   }
 
   @FXML
