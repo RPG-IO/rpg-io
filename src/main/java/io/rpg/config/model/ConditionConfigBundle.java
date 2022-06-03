@@ -35,6 +35,11 @@ public class ConditionConfigBundle implements ConfigWithValidation {
     return builder.isEmpty() ? Result.ok() : Result.err(new Exception(builder.toString()));
   }
 
+  Result<Void, Exception> validateDefeatOpponent() {
+    // We need to check the same conditions
+    return validateItemRequired();
+  }
+
   @Override
   public Result<Void, Exception> validate() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
@@ -49,6 +54,7 @@ public class ConditionConfigBundle implements ConfigWithValidation {
 
     switch (type) {
       case ITEM_REQUIRED -> { return validateItemRequired(); }
+      case DEFEAT_OPPONENT -> { return validateDefeatOpponent(); }
       default -> throw new IllegalArgumentException("Not implemented condition type!");
     }
   }
