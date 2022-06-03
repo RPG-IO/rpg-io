@@ -12,7 +12,7 @@ public class ConditionConfigBundle implements ConfigWithValidation {
   private ConditionType type;
 
   @Nullable
-  @SerializedName(value = "item-tag", alternate = {"itemTag", "opponent-tag", "tag"})
+  @SerializedName(value = "item-tag", alternate = {"itemTag", "opponent-tag", "tag", "opponentTag"})
   private String objectTag;
 
   @Nullable
