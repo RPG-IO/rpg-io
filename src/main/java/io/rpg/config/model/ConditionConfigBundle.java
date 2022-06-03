@@ -13,7 +13,7 @@ public class ConditionConfigBundle implements ConfigWithValidation {
 
   @Nullable
   @SerializedName(value = "item-tag", alternate = {"itemTag"})
-  private String itemTag;
+  private String objectTag;
 
   @Nullable
   public ConditionType getType() {
@@ -21,14 +21,14 @@ public class ConditionConfigBundle implements ConfigWithValidation {
   }
 
   @Nullable
-  public String getItemTag() {
-    return itemTag;
+  public String getObjectTag() {
+    return objectTag;
   }
 
   Result<Void, Exception> validateItemRequired() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
 
-    if (itemTag == null || itemTag.isBlank()) {
+    if (objectTag == null || objectTag.isBlank()) {
       builder.append("No or invalid item tag provided");
     }
 

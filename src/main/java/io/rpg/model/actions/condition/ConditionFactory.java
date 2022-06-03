@@ -19,7 +19,7 @@ public class ConditionFactory {
   }
 
   private static ItemRequiredCondition itemRequiredFromConfig(ConditionConfigBundle config) {
-    assert config.getItemTag() != null;
-    return new ItemRequiredCondition(config.getItemTag());
+    assert config.getObjectTag() != null;
+    return new ItemRequiredCondition(config.getObjectTag());
   }
 }
