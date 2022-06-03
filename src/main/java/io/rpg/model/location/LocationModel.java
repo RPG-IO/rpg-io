@@ -9,13 +9,8 @@ import io.rpg.model.data.MapDirection;
 import io.rpg.model.data.Position;
 import io.rpg.model.object.GameObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Point2D;
 import org.apache.logging.log4j.LogManager;
@@ -30,7 +25,7 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
   private List<GameObject> gameObjects;
   private final HashMap<GameObject, ChangeListener<Point2D>> positionListeners;
   private final HashMap<Position, GameObject> positionGameObjectMap;
-  private final HashMap<MapDirection, String> directionToLocationMap;
+  private HashMap<MapDirection, String> directionToLocationMap;
   public Point2D bounds;
   private final Set<LocationModelStateChange.Observer> locationModelStateChangeObservers;
 
@@ -46,10 +41,6 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
     this.positionListeners = new HashMap<>();
     this.positionGameObjectMap = new HashMap<>();
     this.directionToLocationMap = new HashMap<>();
-
-    directionToLocationMap.put(MapDirection.NORTH, "location-1");
-    directionToLocationMap.put(MapDirection.SOUTH, "location-1");
-    directionToLocationMap.put(MapDirection.WEST, "location-2");
   }
 
   public String getTag() {
@@ -244,6 +235,11 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
 
     public Builder setTag(@NotNull String tag) {
       locationModel.tag = tag;
+      return this;
+    }
+
+    public Builder setDirectionToLocationMap(@NotNull HashMap<MapDirection, String> directionToLocationMap) {
+      locationModel.directionToLocationMap = directionToLocationMap;
       return this;
     }
 

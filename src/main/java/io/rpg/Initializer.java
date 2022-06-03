@@ -7,6 +7,7 @@ import io.rpg.config.model.GameWorldConfig;
 import io.rpg.config.model.LocationConfig;
 import io.rpg.controller.PlayerController;
 import io.rpg.model.actions.LocationChangeAction;
+import io.rpg.model.data.MapDirection;
 import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.GameObject;
 import io.rpg.model.object.Player;
@@ -27,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -80,11 +82,11 @@ public class Initializer {
       List<GameObjectView> gameObjectViews = loadGameObjectViewsForLocation(locationConfig);
 
       registerGameObjectViewsToModel(gameObjects, gameObjectViews);
-
       LocationModel model = new LocationModel.Builder()
           .setTag(locationConfig.getTag())
           .setBounds(new Point2D(locationConfig.getWidth(), locationConfig.getHeight()))
           .setGameObjects(gameObjects)
+          .setDirectionToLocationMap(locationConfig.getDirectionToLocationMap())
           .build();
 
       LocationView view = loadLocationViewFromConfig(locationConfig);

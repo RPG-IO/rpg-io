@@ -48,6 +48,9 @@
     { "tag": "object-3", "position": { "row": 1, "col": 1 }, "assetPath": "assets/zombie.png" }
   ],
   "backgroundPath": "assets/map.png",
+  "directionToLocationMap": {
+    "NORTH": "location-1"
+  },
   "width": 10,
   "height": 10
 }

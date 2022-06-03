@@ -18,7 +18,6 @@ import java.util.List;
  * Represents action configuration.
  */
 public class ActionConfigBundle implements ConfigWithValidation {
-
   /**
    * Unique tag, representing the action.
    *
