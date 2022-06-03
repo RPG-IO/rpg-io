@@ -2,11 +2,13 @@ package io.rpg;
 
 import io.rpg.controller.Controller;
 import io.rpg.model.actions.Action;
+import javafx.animation.AnimationTimer;
 import javafx.stage.Stage;
 
 public class Game {
   private Controller controller;
   private Action onStart;
+  private AnimationTimer timer;
 
   private Game() {
 
@@ -17,9 +19,28 @@ public class Game {
   }
 
   public void start(Stage stage) {
-    stage.show();
     controller.setMainStage(stage);
     controller.consumeAction(onStart);
+    startAnimationTimer();
+    stage.show();
+  }
+
+  private void startAnimationTimer() {
+    timer = new AnimationTimer() {
+      long lastUpdate = -1;
+      @Override
+      public void handle(long now) {
+        if (lastUpdate != -1) {
+          float difference = (now - lastUpdate) / 1e6f;
+
+          getController().getPlayerController()
+                         .getPlayer()
+                         .update(difference);
+        }
+        lastUpdate = now;
+      }
+    };
+    timer.start();
   }
 
   public static class Builder {

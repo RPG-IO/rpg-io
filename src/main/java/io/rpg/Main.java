@@ -9,11 +9,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 
-import java.io.IOException;
-
+/**
+ * Entry point of the app.
+ */
 public class Main extends Application {
   @Override
-  public void start(Stage stage) throws IOException {
+  public void start(Stage stage) {
     Configurator.setRootLevel(Level.DEBUG);
     Logger logger = LogManager.getLogger(Main.class);
 
@@ -36,24 +37,8 @@ public class Main extends Application {
       return;
     }
 
-    // TODO: 04.05.2022 Null check for game was already made but IDE still screams
     Game game = initializationResult.getOk();
     game.start(stage);
-
-    AnimationTimer animationTimer = new AnimationTimer() {
-      long lastUpdate = -1;
-
-      @Override
-      public void handle(long now) {
-        if (lastUpdate != -1) {
-          float difference = (now - lastUpdate) / 1e6f;
-
-          game.getController().getPlayerController().getPlayer().update(difference);
-        }
-        lastUpdate = now;
-      }
-    };
-    animationTimer.start();
   }
 
   public static void main(String[] args) {
