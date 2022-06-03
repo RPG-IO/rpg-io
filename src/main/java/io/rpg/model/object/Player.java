@@ -5,6 +5,7 @@ import io.rpg.view.GameObjectView;
 import javafx.geometry.Point2D;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -104,5 +105,9 @@ public class Player extends GameObject {
 
   public void addDefeatedOpponent(@NotNull String tag) {
     this.defeatedOpponents.add(tag);
+  }
+
+  public Set<String> getDefeatedOpponents() {
+    return Collections.unmodifiableSet(defeatedOpponents);
   }
 }
