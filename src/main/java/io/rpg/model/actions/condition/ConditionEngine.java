@@ -1,18 +1,26 @@
 package io.rpg.model.actions.condition;
 
 import io.rpg.controller.Controller;
-import io.rpg.model.object.Player;
 
 import java.lang.ref.WeakReference;
 
 public class ConditionEngine {
-  private final WeakReference<Controller> controller;
+  private final WeakReference<Controller> weakRefControler;
 
   public ConditionEngine(final Controller controller) {
-    this.controller = new WeakReference<>(controller);
+    this.weakRefControler = new WeakReference<>(controller);
   }
 
-  public boolean evaluate(Condition condition) {
+  public boolean evaluateItemRequiredCondition(ItemRequiredCondition itemRequiredCondition) {
+    // TODO: Implement this when the inventory gets implemented.
+    // Scheme:
+//    return weakRefControler
+//        .get()
+//        .getPlayerController()
+//        .getPlayer()
+//        .getInventory()
+//        .getItems()
+//        .containsItemForTag(itemRequiredCondition.getItemTag());
     return true;
   }
 }
