@@ -15,4 +15,9 @@ public class ShowDescriptionAction extends ConditionalAction {
     this.description = description;
     this.image = image;
   }
+
+  @Override
+  public void acceptActionEngine(ActionEngine engine) {
+    engine.onAction(this);
+  }
 }

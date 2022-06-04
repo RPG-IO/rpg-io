@@ -11,11 +11,16 @@ public final class ConditionEngine {
     this.weakRefController = new WeakReference<>(controller);
   }
 
+  private Controller controller() throws IllegalStateException {
+    Controller controller = weakRefController.get();
+    if (controller == null) throw new IllegalStateException("Controller was dropped but ConditionEngine still executes");
+    return controller;
+  }
+
   public boolean evaluate(ItemRequiredCondition condition) {
     // TODO: Implement this when the inventory gets implemented.
     // Scheme:
-//    return weakRefControler
-//        .get()
+//    return controller()
 //        .getPlayerController()
 //        .getPlayer()
 //        .getInventory()
@@ -25,8 +30,7 @@ public final class ConditionEngine {
   }
 
   public boolean evaluate(DefeatOpponentCondition condition) {
-    return weakRefController
-        .get()
+    return controller()
         .getPlayerController()
         .getPlayer()
         .getDefeatedOpponents()
@@ -36,8 +40,7 @@ public final class ConditionEngine {
   public boolean evaluate(LevelRequiredCondition condition) {
     // TODO: Implement this when the level system is implemented.
     // For now I just return true.
-//    return weakRefController
-//        .get()
+//    return controller()
 //        .getPlayerController()
 //        .getPlayer()
 //        .getLevel() >= condition.getLevel();

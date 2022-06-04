@@ -23,4 +23,9 @@ public class LocationChangeAction extends ConditionalAction {
     this.destinationLocationTag = destinationLocationTag;
     this.playerPosition = playerPosition;
   }
+
+  @Override
+  public void acceptActionEngine(ActionEngine engine) {
+    engine.onAction(this);
+  }
 }
