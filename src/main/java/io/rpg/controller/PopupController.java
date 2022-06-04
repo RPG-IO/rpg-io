@@ -27,24 +27,23 @@ public class PopupController {
     TextPopup popupScene = new TextPopup(text);
     popupStage.setScene(popupScene);
 
-    popupStage.show();
-
+    popupScene.setButtonCallback(event -> popupStage.hide());
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
 
-    popupScene.setButtonCallback(event -> popupStage.hide());
+    popupStage.showAndWait();
+
   }
 
   public void openTextImagePopup(String text, Image image, int x, int y){
     TextImagePopup popupScene = new TextImagePopup(text, image);
     popupStage.setScene(popupScene);
 
-    popupStage.show();
-
+    popupScene.setButtonCallback(event -> popupStage.hide());
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
 
-    popupScene.setButtonCallback(event -> popupStage.hide());
+    popupStage.showAndWait();
   }
 
   public void openPointsPopup(int pointsCount, int x, int y) {
@@ -56,29 +55,29 @@ public class PopupController {
     popupScene.setSuccessCallback(successCallback);
     popupScene.setFailureCallback(failureCallback);
     popupStage.setScene(popupScene);
-    popupStage.show();
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
+    popupStage.showAndWait();
   }
 
   public void openQuestionPopup(Question question, int x, int y) {
     QuestionPopup popupScene = new QuestionPopup(question);
     popupStage.setScene(popupScene);
-    popupStage.show();
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
+    popupStage.showAndWait();
   }
   
   public void openDialoguePopup(String text, Image npcImage, int x, int y) {
     DialoguePopup popupScene = new DialoguePopup(text, npcImage);
     popupStage.setScene(popupScene);
 
-    popupStage.show();
-
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
 
     popupScene.setCloseButtonCallback(event -> popupStage.hide());
+
+    popupStage.showAndWait();
   }
 
 

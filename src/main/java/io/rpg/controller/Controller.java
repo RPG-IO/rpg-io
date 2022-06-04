@@ -107,6 +107,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       return;
     }
 
+    logger.info("Consuming action");
+
     action.acceptActionEngine(actionEngine);
   }
 
