@@ -3,6 +3,8 @@ package io.rpg.model.actions;
 import io.rpg.model.object.GameObject;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 /**
  * A marker interface for action classes.
  */
@@ -34,13 +36,13 @@ public interface Action {
     }
 
     @Override
-    public @Nullable Action getBeforeAction() {
-      return null;
+    public Optional<Action> getBeforeAction() {
+      return Optional.empty();
     }
 
     @Override
-    public @Nullable Action getAfterAction() {
-      return null;
+    public Optional<Action> getAfterAction() {
+      return Optional.empty();
     }
   };
 
@@ -55,9 +57,8 @@ public interface Action {
 
   void setAfterAction(Action action);
 
-  @Nullable
-  Action getBeforeAction();
+  Optional<Action> getBeforeAction();
 
   @Nullable
-  Action getAfterAction();
+  Optional<Action> getAfterAction();
 }

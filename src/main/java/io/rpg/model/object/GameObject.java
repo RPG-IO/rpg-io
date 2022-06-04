@@ -153,12 +153,8 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
   private void setThisAsEmitter(Action action) {
     if (action != null) {
       action.setEmitter(this);
-      if (action.getAfterAction() != null) {
-        action.getAfterAction().setEmitter(this);
-      }
-      if (action.getBeforeAction() != null) {
-        action.getBeforeAction().setEmitter(this);
-      }
+      action.getAfterAction().ifPresent(a -> a.setEmitter(this));
+      action.getBeforeAction().ifPresent(a -> a.setEmitter(this));
     }
   }
 }

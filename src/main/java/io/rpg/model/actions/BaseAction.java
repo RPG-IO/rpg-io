@@ -4,6 +4,8 @@ import io.rpg.model.actions.condition.Condition;
 import io.rpg.model.object.GameObject;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 public abstract class BaseAction implements Action {
   @Nullable
   private final Condition condition;
@@ -46,14 +48,12 @@ public abstract class BaseAction implements Action {
   }
 
   @Override
-  @Nullable
-  public Action getBeforeAction() {
-    return beforeAction;
+  public Optional<Action> getBeforeAction() {
+    return Optional.ofNullable(beforeAction);
   }
 
   @Override
-  @Nullable
-  public Action getAfterAction() {
-    return afterAction;
+  public Optional<Action> getAfterAction() {
+    return Optional.ofNullable(afterAction);
   }
 }
