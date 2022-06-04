@@ -1,0 +1,23 @@
+{
+  "tag": "location-4",
+  "objects": [
+    { "tag": "mul-1", "position": { "row": 0, "col": 5 }, "assetPath": "assets/bush.png" },
+    { "tag": "mul-1", "position": { "row": 0, "col": 6 }, "assetPath": "assets/bush.png" },
+    { "tag": "mul-1", "position": { "row": 0, "col": 7 }, "assetPath": "assets/bush.png" },
+    { "tag": "mul-1", "position": { "row": 3, "col": 7 }, "assetPath": "assets/bush.png" },
+    { "tag": "mul-1", "position": { "row": 4, "col": 7 }, "assetPath": "assets/bush.png" },
+    { "tag": "mul-1", "position": { "row": 5, "col": 7 }, "assetPath": "assets/bush.png" },
+    { "tag": "mul-1", "position": { "row": 6, "col": 7 }, "assetPath": "assets/bush.png" },
+    { "tag": "mul-1", "position": { "row": 7, "col": 7 }, "assetPath": "assets/bush.png" },
+    { "tag": "mul-1", "position": { "row": 8, "col": 7 }, "assetPath": "assets/bush.png" },
+    { "tag": "mul-1", "position": { "row": 0, "col": 8 }, "assetPath": "assets/bush.png" },
+    { "tag": "mul-1", "position": { "row": 8, "col": 8 }, "assetPath": "assets/bush.png" },
+    { "tag": "mul-1", "position": { "row": 0, "col": 9 }, "assetPath": "assets/bush.png" },
+    { "tag": "mul-1", "position": { "row": 8, "col": 9 }, "assetPath": "assets/bush.png" }
+  ],
+  "backgroundPath": "assets/map.png",
+  "north": "location-5",
+  "east": "location-2",
+  "width": 10,
+  "height": 10
+}

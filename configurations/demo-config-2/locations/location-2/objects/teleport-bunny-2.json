@@ -1,0 +1,11 @@
+{
+  "tag": "teleport-bunny-2",
+  "position": { "row": 7, "col": 4 },
+  "assetPath": "assets/bunny.png",
+  "onLeftClick": {
+    "tag": "action-tag",
+    "type": "location-change",
+    "target-location": "location-3",
+    "target-position": { "row": 3, "col": 5 }
+  }
+}

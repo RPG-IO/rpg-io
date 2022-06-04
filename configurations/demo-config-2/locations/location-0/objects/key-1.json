@@ -1,0 +1,6 @@
+{
+  "tag": "key-1",
+  "assetPath": "assets/key.png",
+  "position": { "row": 4, "col": 5 },
+  "onLeftClick": {"tag": "dialogue-action", "type": "dialogue", "statements": ["A key.,A, keyA, key.A, key.A, key.A, key.A, key.A, key.A key."], "assetPath": "assets/key.png"}
+}

@@ -1,0 +1,6 @@
+{
+  "tag": "chest-1",
+  "position": { "row": 4, "col": 3 },
+  "onLeftClick": {"tag": "chest", "type": "dialogue", "statements": ["another chest"]},
+  "assetPath": "assets/chest.png"
+}
