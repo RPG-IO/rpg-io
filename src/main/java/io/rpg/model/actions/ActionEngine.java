@@ -84,7 +84,6 @@ public final class ActionEngine {
     var controller = controller();
     if (correct) {
       controller.getPlayerController().addPoints(pointsCount);
-//      controller.getPopupController().hidePopup();
       if (pointsCount > 0)
         controller.getPopupController().openPointsPopup(pointsCount, controller.getWindowCenterX(), controller.getWindowCenterY());
     } else {
