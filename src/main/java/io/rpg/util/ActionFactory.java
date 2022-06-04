@@ -13,6 +13,10 @@ public class ActionFactory {
    * @return
    */
   public static Action fromConfig(ActionConfigBundle config) {
+    if (config == null) {
+      return Action.VOID;
+    }
+
     assert config.getActionType() != null : "Null action type! Make sure to call validation " +
         "method after the config object is inflated from JSON!";
 

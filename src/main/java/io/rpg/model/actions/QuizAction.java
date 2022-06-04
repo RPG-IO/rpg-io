@@ -7,7 +7,7 @@ import io.rpg.model.object.Question;
  * Class for storing local data needed to preform a quiz action.
  */
 
-public class QuizAction extends ConditionalAction {
+public class QuizAction extends BaseAction {
 
   public final Question question;
   private int pointsToEarn;

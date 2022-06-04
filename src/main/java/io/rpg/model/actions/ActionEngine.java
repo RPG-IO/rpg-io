@@ -119,7 +119,7 @@ public final class ActionEngine {
     });
   }
 
-  private void actionGuard(ConditionalAction action, Runnable actionLogic) {
+  private void actionGuard(BaseAction action, Runnable actionLogic) {
     if (action.getCondition() != null && !action.getCondition().acceptEngine(controller().getConditionEngine())) {
       logger.info("Action not executed due to condition being not satisfied");
       return;

@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 /**
  * Class for storing local data needed to perform a show description action.
  */
-public class ShowDescriptionAction extends ConditionalAction {
+public class ShowDescriptionAction extends BaseAction {
   public final String description;
   public final Image image;
 

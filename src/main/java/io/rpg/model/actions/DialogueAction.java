@@ -6,7 +6,7 @@ import javafx.scene.image.Image;
 /**
  * Class for storing local data needed to perform a dialogue action.
  */
-public class DialogueAction extends ConditionalAction {
+public class DialogueAction extends BaseAction {
   public final String text;
   public final Image image;
 

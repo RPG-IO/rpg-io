@@ -24,9 +24,9 @@ public class GameObjectFactory {
    */
   public static GameObject fromConfig(GameObjectConfig config) {
 
-    Action onLeftClickAction = config.getOnLeftClick() != null ? ActionFactory.fromConfig(config.getOnLeftClick()) : Action.VOID;
-    Action onRightClickAction = config.getOnRightClick() != null ? ActionFactory.fromConfig(config.getOnRightClick()) : Action.VOID;
-    Action onApproach = config.getOnApproach() != null ? ActionFactory.fromConfig(config.getOnApproach()) : Action.VOID;
+    Action onLeftClickAction = ActionFactory.fromConfig(config.getOnLeftClick());
+    Action onRightClickAction = ActionFactory.fromConfig(config.getOnRightClick());
+    Action onApproach = ActionFactory.fromConfig(config.getOnApproach());
 
     if (onRightClickAction.equals(Action.VOID)) {
       onRightClickAction = new ShowDescriptionAction(
@@ -39,34 +39,17 @@ public class GameObjectFactory {
     }
 
     // Not implemented in model for now, however they should be
-    Action onClickAction = config.getOnClick() != null ? ActionFactory.fromConfig(config.getOnClick()) : Action.VOID;
-
+    Action onClickAction = ActionFactory.fromConfig(config.getOnClick());
 
 
     if (config instanceof PlayerConfig) {
       Player player = new Player(config.getTag(), config.getPosition(), config.getAssetPath());
-      player.setOnLeftClickAction(onLeftClickAction);
-      player.setOnRightClickAction(onRightClickAction);
-      player.setOnApproach(onApproach);
+      setActionsOnObject(player, onLeftClickAction, onRightClickAction, onApproach);
 //      player.setStrength(config.getStrength());
       return player;
     } else {
       GameObject gameObject = new GameObject(config.getTag(), config.getPosition());
-
-      gameObject.setOnLeftClickAction(onLeftClickAction);
-      gameObject.setOnRightClickAction(onRightClickAction);
-      gameObject.setOnApproach(onApproach);
-
-      if (onLeftClickAction instanceof BattleAction) {
-        ((BattleAction) onLeftClickAction).setOpponent(gameObject);
-      }
-      if (onRightClickAction instanceof BattleAction) {
-        ((BattleAction) onRightClickAction).setOpponent(gameObject);
-      }
-      if (onApproach instanceof BattleAction) {
-        ((BattleAction) onApproach).setOpponent(gameObject);
-      }
-
+      setActionsOnObject(gameObject, onLeftClickAction, onRightClickAction, onApproach);
       // TODO: Create ActionFactory & inflate the actions
       return gameObject;
     }
@@ -87,5 +70,11 @@ public class GameObjectFactory {
       gameObjects.add(fromConfig(config));
     }
     return gameObjects;
+  }
+
+  private static void setActionsOnObject(GameObject object, Action onLeftClick, Action onRightClick, Action onApproach) {
+    object.setOnLeftClickAction(onLeftClick);
+    object.setOnRightClickAction(onRightClick);
+    object.setOnApproach(onApproach);
   }
 }
