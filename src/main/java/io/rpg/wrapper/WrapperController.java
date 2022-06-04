@@ -129,6 +129,7 @@ public class WrapperController {
       printLine("Initialization returned null value");
       return Result.err();
     } else {
+      game = initializationResult.getOk();
       printLine("File was correctly loaded. Press START to begin game");
     }
 
