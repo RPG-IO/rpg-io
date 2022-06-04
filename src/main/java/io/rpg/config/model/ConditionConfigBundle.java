@@ -12,8 +12,8 @@ public class ConditionConfigBundle implements ConfigWithValidation {
   private ConditionType type;
 
   @Nullable
-  @SerializedName(value = "item-tag", alternate = {"itemTag"})
-  private String itemTag;
+  @SerializedName(value = "item-tag", alternate = {"itemTag", "opponent-tag", "tag", "opponentTag"})
+  private String objectTag;
 
   @Nullable
   public ConditionType getType() {
@@ -21,18 +21,23 @@ public class ConditionConfigBundle implements ConfigWithValidation {
   }
 
   @Nullable
-  public String getItemTag() {
-    return itemTag;
+  public String getObjectTag() {
+    return objectTag;
   }
 
   Result<Void, Exception> validateItemRequired() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
 
-    if (itemTag == null || itemTag.isBlank()) {
+    if (objectTag == null || objectTag.isBlank()) {
       builder.append("No or invalid item tag provided");
     }
 
     return builder.isEmpty() ? Result.ok() : Result.err(new Exception(builder.toString()));
+  }
+
+  Result<Void, Exception> validateDefeatOpponent() {
+    // We need to check the same conditions
+    return validateItemRequired();
   }
 
   @Override
@@ -49,6 +54,7 @@ public class ConditionConfigBundle implements ConfigWithValidation {
 
     switch (type) {
       case ITEM_REQUIRED -> { return validateItemRequired(); }
+      case DEFEAT_OPPONENT -> { return validateDefeatOpponent(); }
       default -> throw new IllegalArgumentException("Not implemented condition type!");
     }
   }

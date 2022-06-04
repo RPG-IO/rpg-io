@@ -44,7 +44,7 @@
     { "tag": "tp-bunny", "position": { "row": 7, "col": 8 }, "assetPath": "assets/bunny.png" },
     { "tag": "key", "position": { "row": 6, "col": 3 }, "assetPath": "assets/key.png" },
     { "tag": "bandit", "position": { "row": 2, "col": 0 }, "assetPath": "assets/zombie.png" },
-    { "tag": "object-4", "position": { "row": 3, "col": 7 }, "assetPath": "assets/zombie.png" },
+    { "tag": "zombie", "position": { "row": 3, "col": 7 }, "assetPath": "assets/zombie.png" },
     { "tag": "object-5", "position": { "row": 9, "col": 8 }, "assetPath": "assets/chest.png" },
     { "tag": "object-6", "position": { "row": 9, "col": 9 }, "assetPath": "assets/bush.png" }
   ],

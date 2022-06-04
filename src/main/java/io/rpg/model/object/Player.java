@@ -5,6 +5,11 @@ import io.rpg.view.GameObjectView;
 import javafx.geometry.Point2D;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 public class Player extends GameObject {
 
   private int strength;
@@ -16,6 +21,8 @@ public class Player extends GameObject {
   private GameObjectView gameObjectView;
   private int points;
 
+  private final Set<String> defeatedOpponents;
+
 
   public Player(@NotNull String tag, @NotNull Position position, @NotNull String assetPath) {
     super(tag, position);
@@ -25,6 +32,7 @@ public class Player extends GameObject {
     this.upPressed = false;
     this.downPressed = false;
     this.strength = 0;
+    this.defeatedOpponents = new LinkedHashSet<>();
   }
 
   public void updateStrength(int value) {
@@ -93,5 +101,13 @@ public class Player extends GameObject {
 
   public int getStrength() {
     return strength;
+  }
+
+  public void addDefeatedOpponent(@NotNull String tag) {
+    this.defeatedOpponents.add(tag);
+  }
+
+  public Set<String> getDefeatedOpponents() {
+    return Collections.unmodifiableSet(defeatedOpponents);
   }
 }

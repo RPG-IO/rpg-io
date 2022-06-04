@@ -184,6 +184,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       BattleResult result;
       if (player.getPoints() > opponent.getStrength()) {
         player.addPoints(reward);
+        player.addDefeatedOpponent(opponent.getTag());
         result = new BattleResult(BattleResult.Result.VICTORY, reward);
       } else if (player.getStrength() < opponent.getStrength()) {
         result = new BattleResult(BattleResult.Result.DEFEAT, 0);
