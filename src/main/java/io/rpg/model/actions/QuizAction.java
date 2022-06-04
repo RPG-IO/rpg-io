@@ -26,4 +26,8 @@ public class QuizAction extends ConditionalAction {
     return pointsToEarn;
   }
 
+  @Override
+  public void acceptActionEngine(ActionEngine engine) {
+    engine.onAction(this);
+  }
 }

@@ -15,4 +15,9 @@ public class DialogueAction extends ConditionalAction {
     this.text = text;
     this.image = image;
   }
+
+  @Override
+  public void acceptActionEngine(ActionEngine engine) {
+    engine.onAction(this);
+  }
 }

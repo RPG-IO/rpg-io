@@ -3,7 +3,7 @@ package io.rpg.model.actions;
 import io.rpg.model.actions.condition.Condition;
 import io.rpg.model.object.GameObject;
 
-public class BattleAction extends ConditionalAction {
+public final class BattleAction extends ConditionalAction {
   private GameObject opponent;
   private final int reward;
 
@@ -22,5 +22,10 @@ public class BattleAction extends ConditionalAction {
 
   public int getReward() {
     return reward;
+  }
+
+  @Override
+  public void acceptActionEngine(ActionEngine engine) {
+    engine.onAction(this);
   }
 }

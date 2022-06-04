@@ -9,4 +9,9 @@ public class GameEndAction extends ConditionalAction {
     super(condition);
     this.description = description;
   }
+
+  @Override
+  public void acceptActionEngine(ActionEngine engine) {
+    engine.onAction(this);
+  }
 }
