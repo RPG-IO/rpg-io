@@ -6,6 +6,7 @@ import io.rpg.model.actions.QuizAction;
 import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.Position;
 import io.rpg.util.DataObjectDescriptionProvider;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;
@@ -116,12 +117,12 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
 
   public void setOnRightClickAction(@NotNull Action onRightClickAction) {
     this.onRightClickAction = onRightClickAction;
-    this.onRightClickAction.setEmitter(this);
+    setThisAsEmitter(this.onRightClickAction);
   }
 
   public void setOnLeftClickAction(@NotNull Action onLeftClickAction) {
     this.onLeftClickAction = onLeftClickAction;
-    this.onLeftClickAction.setEmitter(this);
+    setThisAsEmitter(this.onLeftClickAction);
   }
 
   public void onRightClick() {
@@ -141,11 +142,19 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
       return;
     }
     wasOnApproachFired = true;
-    emitAction(onApproach);
+    Platform.runLater(() -> emitAction(onApproach));
   }
 
   public void setOnApproach(Action onApproach) {
     this.onApproach = onApproach;
-    this.onApproach.setEmitter(this);
+    setThisAsEmitter(this.onApproach);
+  }
+
+  private void setThisAsEmitter(Action action) {
+    if (action != null) {
+      action.setEmitter(this);
+      action.getAfterAction().ifPresent(a -> a.setEmitter(this));
+      action.getBeforeAction().ifPresent(a -> a.setEmitter(this));
+    }
   }
 }

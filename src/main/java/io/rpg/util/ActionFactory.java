@@ -20,6 +20,13 @@ public class ActionFactory {
     assert config.getActionType() != null : "Null action type! Make sure to call validation " +
         "method after the config object is inflated from JSON!";
 
+    Action result = actionByType(config);
+    initBeforeAndAfterActions(result, config);
+
+    return result;
+  }
+
+  private static Action actionByType(ActionConfigBundle config) {
     switch (config.getActionType()) {
       case Quiz -> {
         return quizActionFromConfig(config);
@@ -43,6 +50,7 @@ public class ActionFactory {
         throw new IllegalArgumentException("Unexpected action type!");
       }
     }
+
   }
 
   private static QuizAction quizActionFromConfig(ActionConfigBundle config) {
@@ -74,5 +82,14 @@ public class ActionFactory {
   private static BattleAction battleActionFromConfig(ActionConfigBundle config) {
     return new BattleAction(config.getRewardPoints(),
         ConditionFactory.fromConfig(config.getCondition()));
+  }
+
+  private static void initBeforeAndAfterActions(Action action, ActionConfigBundle config) {
+    if (config.getBeforeAction() != null) {
+      action.setBeforeAction(actionByType(config.getBeforeAction()));
+    }
+    if (config.getAfterAction() != null) {
+      action.setAfterAction(actionByType(config.getAfterAction()));
+    }
   }
 }

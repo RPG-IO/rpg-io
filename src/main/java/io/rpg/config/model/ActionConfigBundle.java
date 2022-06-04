@@ -296,6 +296,20 @@ public class ActionConfigBundle implements ConfigWithValidation {
       return result;
     }
 
+    if (beforeAction != null) {
+      result = beforeAction.validate();
+      if (result.isErr()) {
+        return result;
+      }
+    }
+
+    if (afterAction != null) {
+      result = afterAction.validate();
+      if (result.isErr()) {
+        return result;
+      }
+    }
+
     // actionType can not be null here, guaranteed by validateBasic method
     //noinspection ConstantConditions
     switch (actionType) {

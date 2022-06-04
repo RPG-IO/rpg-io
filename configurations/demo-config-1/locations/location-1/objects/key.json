@@ -1,4 +1,21 @@
 {
   "tag": "key",
-  "onLeftClick": {"tag": "dialogue-action", "type": "dialogue", "statements": ["A key.,A, keyA, key.A, key.A, key.A, key.A, key.A, key.A key."], "assetPath": "assets/key.png"}
+  "onLeftClick": {
+    "tag": "dialogue-action",
+    "type": "dialogue",
+    "statements": ["A key.,A, keyA, key.A, key.A, key.A, key.A, key.A, key.A key."],
+    "assetPath": "assets/key.png",
+    "before": {
+      "tag": "message",
+      "type": "show-description",
+      "description": "Hurra, you are about to pickup a key!",
+      "assetPath": "assets/key.png"
+    },
+    "after": {
+      "tag": "followup-message",
+      "type": "show-description",
+      "description": "Hurra, the key was picked up!",
+      "assetPath": "assets/key.png"
+    }
+  }
 }

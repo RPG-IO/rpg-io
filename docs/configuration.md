@@ -36,7 +36,7 @@ following props:
 * `locations` - List of location tags. All the locations specified in `locations` are loaded, however this field is left
     for backward-compatibility.
 * `player` - Player object specification. It follows the `GameObject` specification
-    rules. (TODO: add hyperlink to that section)
+    rules. See [game object configuration][#game-object-configuration]
 * `rootLocation` - `tag` of first-to-be-displayed location.
 * `textPopupBackground` - Url of a picture to be used as a background for all TextPopups
 * `textPopupButton` - Url of a picture to be used as a button image for all TextPopups
@@ -181,9 +181,9 @@ common part first. Each action consists of following properties
 * *(optional)* `condition` - Condition configuration. The action won't be executed until the condition is satisfied.
     Aliases: `requires`. See [condition configuration](#condition-configuration)
 * *(optional)* `before` - Configuration of action to be triggered before the proper action is executed.
-  e.g. you may want to change location before starting the dialogue. (TODO: Logic is not implemented as for now).
+  e.g. you may want to change location before starting the dialogue.
 * *(optional)* `after` - Configuration of action to be triggered after the proper action is executed, e.g. you may want
-    give player some output or item. (TODO: Logic is not implemented as for now).
+    give player some output or item. 
 
 Let's look at specific action types:
 
