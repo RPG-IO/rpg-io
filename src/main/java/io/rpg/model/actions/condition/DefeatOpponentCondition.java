@@ -3,7 +3,7 @@ package io.rpg.model.actions.condition;
 import io.rpg.model.actions.ConditionType;
 import org.jetbrains.annotations.NotNull;
 
-public class DefeatOpponentCondition extends Condition {
+public final class DefeatOpponentCondition extends Condition {
 
   @NotNull
   private final String opponentTag;
