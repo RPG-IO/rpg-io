@@ -88,7 +88,7 @@ public final class ActionEngine {
         controller.getPopupController().openPointsPopup(pointsCount, controller.getWindowCenterX(), controller.getWindowCenterY());
     } else {
       controller.getPopupController().hidePopup();
-      System.out.println("wrong answer");
+      logger.info("Wrong answer provided");
     }
   }
 
