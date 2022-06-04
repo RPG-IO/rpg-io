@@ -44,4 +44,16 @@ public abstract class BaseAction implements Action {
   public void setBeforeAction(Action action) {
     beforeAction = action;
   }
+
+  @Override
+  @Nullable
+  public Action getBeforeAction() {
+    return beforeAction;
+  }
+
+  @Override
+  @Nullable
+  public Action getAfterAction() {
+    return afterAction;
+  }
 }
