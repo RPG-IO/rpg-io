@@ -27,9 +27,6 @@ public class PopupController {
     TextPopup popupScene = new TextPopup(text);
     popupStage.setScene(popupScene);
 
-    System.out.println("width: " + popupScene.getWidth());
-    System.out.println("height: " + popupScene.getHeight());
-
     popupScene.setButtonCallback(event -> popupStage.hide());
 
     popupStage.onShownProperty().setValue(event -> {
