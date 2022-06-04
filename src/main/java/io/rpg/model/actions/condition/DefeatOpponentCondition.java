@@ -15,7 +15,7 @@ public final class DefeatOpponentCondition extends Condition {
 
   @Override
   public boolean acceptEngine(ConditionEngine engine) {
-    return engine.evaluateDefeatOpponentCondition(this);
+    return engine.evaluate(this);
   }
 
   @NotNull

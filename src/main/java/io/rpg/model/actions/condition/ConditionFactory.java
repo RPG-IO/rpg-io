@@ -3,7 +3,7 @@ package io.rpg.model.actions.condition;
 import io.rpg.config.model.ConditionConfigBundle;
 import org.jetbrains.annotations.Nullable;
 
-public class ConditionFactory {
+public final class ConditionFactory {
   @Nullable
   public static Condition fromConfig(ConditionConfigBundle config) {
     if (config == null) {

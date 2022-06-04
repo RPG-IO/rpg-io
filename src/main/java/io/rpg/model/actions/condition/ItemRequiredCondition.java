@@ -15,7 +15,7 @@ public final class ItemRequiredCondition extends Condition {
 
   @Override
   public boolean acceptEngine(ConditionEngine engine) {
-    return engine.evaluateItemRequiredCondition(this);
+    return engine.evaluate(this);
   }
 
   @NotNull
