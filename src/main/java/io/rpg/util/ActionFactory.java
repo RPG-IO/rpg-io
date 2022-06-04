@@ -85,7 +85,11 @@ public class ActionFactory {
   }
 
   private static void initBeforeAndAfterActions(Action action, ActionConfigBundle config) {
-    action.setBeforeAction(actionByType(config.getBeforeAction()));
-    action.setAfterAction(actionByType(config.getAfterAction()));
+    if (config.getBeforeAction() != null) {
+      action.setBeforeAction(actionByType(config.getBeforeAction()));
+    }
+    if (config.getAfterAction() != null) {
+      action.setAfterAction(actionByType(config.getAfterAction()));
+    }
   }
 }
