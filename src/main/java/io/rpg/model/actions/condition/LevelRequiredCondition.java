@@ -1,7 +1,6 @@
 package io.rpg.model.actions.condition;
 
 import io.rpg.model.actions.ConditionType;
-import org.jetbrains.annotations.NotNull;
 
 public final class LevelRequiredCondition extends Condition {
 
