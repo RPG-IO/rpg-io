@@ -1,5 +1,0 @@
-{
-  "tag": "object-1",
-  "assetPath": "assets/knight.png",
-  "onLeftClick": {"tag": "actiontag", "type": "game-end", "description": "You won, congratulations!"}
-}

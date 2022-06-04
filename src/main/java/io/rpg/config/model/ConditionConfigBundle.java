@@ -11,9 +11,17 @@ public class ConditionConfigBundle implements ConfigWithValidation {
   @Nullable
   private ConditionType type;
 
+  /**
+   * {@link io.rpg.model.actions.condition.ItemRequiredCondition} <br>
+   * {@link io.rpg.model.actions.condition.DefeatOpponentCondition}
+   */
   @Nullable
   @SerializedName(value = "item-tag", alternate = {"itemTag", "opponent-tag", "tag", "opponentTag"})
   private String objectTag;
+
+  @Nullable
+  @SerializedName(value = "level", alternate = {"required-level", "requiredLevel"})
+  private Integer requiredLevel;
 
   @Nullable
   public ConditionType getType() {
@@ -23,6 +31,11 @@ public class ConditionConfigBundle implements ConfigWithValidation {
   @Nullable
   public String getObjectTag() {
     return objectTag;
+  }
+
+  @Nullable
+  public Integer getRequiredLevel() {
+    return requiredLevel;
   }
 
   Result<Void, Exception> validateItemRequired() {
@@ -40,6 +53,18 @@ public class ConditionConfigBundle implements ConfigWithValidation {
     return validateItemRequired();
   }
 
+  Result<Void, Exception> validateLevelRequired() {
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
+
+    if (requiredLevel == null) {
+      builder.append("No level provided");
+    } else if (requiredLevel <= 0) {
+      builder.append("Level must be > 0");
+    }
+
+    return builder.isEmpty() ? Result.ok() : Result.err(new Exception(builder.toString()));
+  }
+
   @Override
   public Result<Void, Exception> validate() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
@@ -55,6 +80,7 @@ public class ConditionConfigBundle implements ConfigWithValidation {
     switch (type) {
       case ITEM_REQUIRED -> { return validateItemRequired(); }
       case DEFEAT_OPPONENT -> { return validateDefeatOpponent(); }
+      case LEVEL_REQUIRED -> { return validateLevelRequired(); }
       default -> throw new IllegalArgumentException("Not implemented condition type!");
     }
   }

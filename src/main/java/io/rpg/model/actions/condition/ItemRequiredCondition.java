@@ -3,7 +3,7 @@ package io.rpg.model.actions.condition;
 import io.rpg.model.actions.ConditionType;
 import org.jetbrains.annotations.NotNull;
 
-public class ItemRequiredCondition extends Condition {
+public final class ItemRequiredCondition extends Condition {
 
   @NotNull
   private final String requiredItemTag;
@@ -15,7 +15,7 @@ public class ItemRequiredCondition extends Condition {
 
   @Override
   public boolean acceptEngine(ConditionEngine engine) {
-    return engine.evaluateItemRequiredCondition(this);
+    return engine.evaluate(this);
   }
 
   @NotNull

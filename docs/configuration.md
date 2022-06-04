@@ -229,6 +229,8 @@ Condition consists of following properties:
     * `opponent-tag` - Tag of the opponent that must be defeated to unlock the action. Note that as for now, the engine
         does not check whether specified object exists or has battle action set. For now you must guarantee
         the correctness. Aliases: `tag`, `opponentTag`.
+  * `level-required` - Requires following props:
+    * `level` - Required player level. Player's level must be >= given value for the condition to be satisfied.
 
 ## Example of full configuration structure
 
