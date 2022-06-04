@@ -214,6 +214,7 @@ Let's look at specific action types:
     as a list. Aliases: `text`, `dialogue-statements`, `dialogueStatements`. \\
   * `assetPath` - Path to the image with background for the dialogue window. As any path, it must be eiter absolute or relative to the engine's source root.
     Aliases: `asset-path`, `asset`.
+* `battle` -- No props required.
 
 ## Condition configuration
 
