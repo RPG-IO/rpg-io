@@ -6,6 +6,7 @@ import io.rpg.model.actions.QuizAction;
 import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.Position;
 import io.rpg.util.DataObjectDescriptionProvider;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;
@@ -141,7 +142,7 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
       return;
     }
     wasOnApproachFired = true;
-    emitAction(onApproach);
+    Platform.runLater(() -> emitAction(onApproach));
   }
 
   public void setOnApproach(Action onApproach) {
