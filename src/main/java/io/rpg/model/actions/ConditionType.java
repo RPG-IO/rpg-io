@@ -8,4 +8,7 @@ public enum ConditionType {
 
   @SerializedName("defeat-opponent")
   DEFEAT_OPPONENT,
+
+  @SerializedName("level-required")
+  LEVEL_REQUIRED,
 }
