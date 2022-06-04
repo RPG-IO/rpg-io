@@ -6,6 +6,7 @@ import io.rpg.model.object.GameObject;
 import io.rpg.model.object.Player;
 import io.rpg.util.BattleResult;
 import io.rpg.view.LocationView;
+import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -83,7 +84,7 @@ public final class ActionEngine {
     var controller = controller();
     if (correct) {
       controller.getPlayerController().addPoints(pointsCount);
-      controller.getPopupController().hidePopup();
+//      controller.getPopupController().hidePopup();
       if (pointsCount > 0)
         controller.getPopupController().openPointsPopup(pointsCount, controller.getWindowCenterX(), controller.getWindowCenterY());
     } else {
