@@ -15,6 +15,7 @@ public final class ConditionFactory {
     switch (config.getType()) {
       case ITEM_REQUIRED -> { return itemRequiredFromConfig(config); }
       case DEFEAT_OPPONENT -> { return defeatOpponentFromConfig(config); }
+      case LEVEL_REQUIRED -> { return levelRequiredFromConfig(config); }
       default -> throw new IllegalArgumentException("Not implemented condition type: " + config.getType().toString());
     }
   }
@@ -27,5 +28,10 @@ public final class ConditionFactory {
   private static DefeatOpponentCondition defeatOpponentFromConfig(ConditionConfigBundle config) {
     assert config.getObjectTag() != null;
     return new DefeatOpponentCondition(config.getObjectTag());
+  }
+
+  private static LevelRequiredCondition levelRequiredFromConfig(ConditionConfigBundle config) {
+    assert config.getRequiredLevel() != null;
+    return new LevelRequiredCondition(config.getRequiredLevel());
   }
 }

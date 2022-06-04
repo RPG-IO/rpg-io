@@ -33,6 +33,11 @@ public class ConditionConfigBundle implements ConfigWithValidation {
     return objectTag;
   }
 
+  @Nullable
+  public Integer getRequiredLevel() {
+    return requiredLevel;
+  }
+
   Result<Void, Exception> validateItemRequired() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
 
