@@ -10,6 +10,12 @@
       "type": "show-description",
       "description": "Hurra, you are about to pickup a key!",
       "assetPath": "assets/key.png"
+    },
+    "after": {
+      "tag": "followup-message",
+      "type": "show-description",
+      "description": "Hurra, the key was picked up!",
+      "assetPath": "assets/key.png"
     }
   }
 }
