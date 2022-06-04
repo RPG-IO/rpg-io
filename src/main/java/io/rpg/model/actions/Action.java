@@ -22,6 +22,26 @@ public interface Action {
     public @Nullable GameObject getEmitter() {
       return null;
     }
+
+    @Override
+    public void setBeforeAction(Action action) {
+      /* noop */
+    }
+
+    @Override
+    public void setAfterAction(Action action) {
+      /* noop */
+    }
+
+    @Override
+    public @Nullable Action getBeforeAction() {
+      return null;
+    }
+
+    @Override
+    public @Nullable Action getAfterAction() {
+      return null;
+    }
   };
 
   void acceptActionEngine(final ActionEngine engine);
@@ -30,4 +50,14 @@ public interface Action {
 
   @Nullable
   GameObject getEmitter();
+
+  void setBeforeAction(Action action);
+
+  void setAfterAction(Action action);
+
+  @Nullable
+  Action getBeforeAction();
+
+  @Nullable
+  Action getAfterAction();
 }
