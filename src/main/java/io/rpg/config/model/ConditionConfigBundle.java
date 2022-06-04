@@ -11,9 +11,17 @@ public class ConditionConfigBundle implements ConfigWithValidation {
   @Nullable
   private ConditionType type;
 
+  /**
+   * {@link io.rpg.model.actions.condition.ItemRequiredCondition} <br>
+   * {@link io.rpg.model.actions.condition.DefeatOpponentCondition}
+   */
   @Nullable
   @SerializedName(value = "item-tag", alternate = {"itemTag", "opponent-tag", "tag", "opponentTag"})
   private String objectTag;
+
+  @Nullable
+  @SerializedName(value = "level", alternate = {"required-level", "requiredLevel"})
+  private Integer requiredLevel;
 
   @Nullable
   public ConditionType getType() {
