@@ -8,7 +8,7 @@ import javafx.geometry.Point2D;
  * Class for storing local data needed to preform a location change action.
  */
 
-public class LocationChangeAction extends ConditionalAction {
+public class LocationChangeAction extends BaseAction {
   public final String destinationLocationTag;
   public final Point2D playerPosition;
 

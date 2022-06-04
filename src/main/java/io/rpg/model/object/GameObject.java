@@ -116,10 +116,12 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
 
   public void setOnRightClickAction(@NotNull Action onRightClickAction) {
     this.onRightClickAction = onRightClickAction;
+    this.onRightClickAction.setEmitter(this);
   }
 
   public void setOnLeftClickAction(@NotNull Action onLeftClickAction) {
     this.onLeftClickAction = onLeftClickAction;
+    this.onLeftClickAction.setEmitter(this);
   }
 
   public void onRightClick() {
@@ -144,5 +146,6 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
 
   public void setOnApproach(Action onApproach) {
     this.onApproach = onApproach;
+    this.onApproach.setEmitter(this);
   }
 }

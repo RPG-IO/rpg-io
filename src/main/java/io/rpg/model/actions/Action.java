@@ -1,5 +1,8 @@
 package io.rpg.model.actions;
 
+import io.rpg.model.object.GameObject;
+import org.jetbrains.annotations.Nullable;
+
 /**
  * A marker interface for action classes.
  */
@@ -9,7 +12,22 @@ public interface Action {
     public void acceptActionEngine(ActionEngine engine) {
       /* noop */
     }
+
+    @Override
+    public void setEmitter(GameObject emitter) {
+      /* noop */
+    }
+
+    @Override
+    public @Nullable GameObject getEmitter() {
+      return null;
+    }
   };
 
   void acceptActionEngine(final ActionEngine engine);
+
+  void setEmitter(GameObject emitter);
+
+  @Nullable
+  GameObject getEmitter();
 }
