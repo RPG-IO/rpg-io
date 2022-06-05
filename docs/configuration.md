@@ -172,6 +172,8 @@ As for now we support 5 kinds of actions:
 * `location-change`
 * `show-description`
 * `dialogue`
+* `battle`
+* `collect`
 
 For each kind configuration differs a bit, because different information is required. Let's take a closer look at the
 common part first. Each action consists of following properties
@@ -215,6 +217,10 @@ Let's look at specific action types:
   * `assetPath` - Path to the image with background for the dialogue window. As any path, it must be eiter absolute or relative to the engine's source root.
     Aliases: `asset-path`, `asset`.
 * `battle` -- No props required.
+* `show-description`:
+  * `assetPath` - Path to the image that will be shown in a popup after collecting the object, as well as in the Inventory window. As any path, it must be eiter absolute or relative to the engine's source root.
+    Aliases: `asset-path`, `asset`.
+  * `description` - Text displayed when the cursor is above the collected item in the Inventory window.
 
 ## Condition configuration
 
