@@ -9,10 +9,14 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
+
 public class PopupController {
 
   private final Stage popupStage = new Stage(StageStyle.TRANSPARENT);
   private final Image coinImage = new Image("file:assets/coin.png");
+  private final Queue<Runnable> methods = new ArrayDeque<>();
 
   public PopupController() {
     // close popup after clicking aside
@@ -23,7 +27,7 @@ public class PopupController {
     });
   }
 
-  public void openTextPopup(String text, int x, int y){
+  public void openTextPopup(String text, int x, int y) {
     TextPopup popupScene = new TextPopup(text);
     popupStage.setScene(popupScene);
 
@@ -32,10 +36,10 @@ public class PopupController {
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
 
-    popupScene.setButtonCallback(event -> popupStage.hide());
+    popupScene.setButtonCallback(event -> hidePopup());
   }
 
-  public void openTextImagePopup(String text, Image image, int x, int y){
+  public void openTextImagePopup(String text, Image image, int x, int y) {
     TextImagePopup popupScene = new TextImagePopup(text, image);
     popupStage.setScene(popupScene);
 
@@ -44,7 +48,7 @@ public class PopupController {
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
 
-    popupScene.setButtonCallback(event -> popupStage.hide());
+    popupScene.setButtonCallback(event -> hidePopup());
   }
 
   public void openPointsPopup(int pointsCount, int x, int y) {
@@ -78,11 +82,17 @@ public class PopupController {
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
 
-    popupScene.setCloseButtonCallback(event -> popupStage.hide());
+    popupScene.setCloseButtonCallback(event -> hidePopup());
   }
-
 
   public void hidePopup() {
     popupStage.hide();
+    if (!methods.isEmpty()) {
+      methods.remove().run();
+    }
+  }
+
+  public void addMethodToQueue(Runnable method) {
+    methods.add(method);
   }
 }

@@ -143,10 +143,12 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   public void acceptQuizResult(boolean correct, int pointsCount) {
     if (correct) {
-      playerController.addPoints(pointsCount);
-      popupController.hidePopup();
-      if (pointsCount > 0)
+      if (pointsCount > 0) {
         popupController.openPointsPopup(pointsCount, getWindowCenterX(), getWindowCenterY());
+        playerController.addPoints(pointsCount);
+      } else {
+        popupController.hidePopup();
+      }
     } else {
       popupController.hidePopup();
       System.out.println("wrong answer");
@@ -168,7 +170,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     GameObject opponent = action.getOpponent();
     int reward = action.getReward();
     BattleResult result;
-    if (player.getPoints() > opponent.getStrength()) {
+    if (player.getStrength() > opponent.getStrength()) {
       player.addPoints(reward);
       result = new BattleResult(BattleResult.Result.VICTORY, reward);
     } else if (player.getStrength() < opponent.getStrength()) {
@@ -177,6 +179,11 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       result = new BattleResult(BattleResult.Result.DRAW, 0);
     }
     popupController.openTextPopup(result.getMessage(), getWindowCenterX(), getWindowCenterY());
+  }
+
+  private void onAction(LevelUpAction action) {
+    Runnable queuedAction = () -> popupController.openTextPopup("Achieved level " + action.newLevel + "!", getWindowCenterX(), getWindowCenterY());
+    popupController.addMethodToQueue(queuedAction);
   }
   
   public Scene getView() {
