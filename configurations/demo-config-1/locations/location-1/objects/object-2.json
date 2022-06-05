@@ -1,0 +1,4 @@
+{
+  "tag": "object-2",
+  "onLeftClick": {"tag": "dialogue-action", "type": "collect"}
+}

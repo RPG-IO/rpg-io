@@ -7,6 +7,7 @@ import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.Position;
 import io.rpg.util.DataObjectDescriptionProvider;
 import javafx.application.Platform;
+import io.rpg.view.GameObjectView;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;
@@ -59,6 +60,14 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
     this.onRightClickAction = Action.VOID;
     this.onApproach = Action.VOID;
     this.wasOnApproachFired = false;
+  }
+  public GameObject(@NotNull String tag, @NotNull Position position) {
+//    this.tag = tag;
+//    this.stateChangeObservers = new LinkedHashSet<>();
+//    this.exactPositionProperty = new SimpleObjectProperty<>(new Point2D(position.col, position.row));
+//    this.onLeftClickAction = new QuizAction(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'));
+//    this.onRightClickAction = Action.VOID;
+    this(tag,position);
   }
 
   public GameObject(@NotNull String tag, @NotNull Position position, int strength) {

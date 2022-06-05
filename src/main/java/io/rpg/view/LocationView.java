@@ -1,12 +1,15 @@
 package io.rpg.view;
 
+import io.rpg.Game;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.LocationModelStateChange;
 import io.rpg.model.location.LocationModel;
+import io.rpg.model.object.CollectibleGameObject;
 import io.rpg.model.object.GameObject;
 import io.rpg.viewmodel.LocationViewModel;
 import io.rpg.config.model.LocationConfig;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -101,7 +104,6 @@ public class LocationView extends Scene
 
   List<GameObjectView> gameObjectViews = new ArrayList<>();
 
-
   public void removeChild(GameObjectView view) {
     viewModel.getForegroundPane().getChildren().remove(view);
   }
@@ -109,4 +111,33 @@ public class LocationView extends Scene
   public void addChild(GameObjectView view) {
     viewModel.getForegroundPane().getChildren().add(view);
   }
+
+  public GameObjectView findViewBoundToObject(GameObject gameObject){
+    for(Node node : viewModel.getForegroundPane().getChildren()) {
+      if (node instanceof GameObjectView) {
+        GameObjectView temp = (GameObjectView) node;
+        if (temp.getBoundObject() == gameObject) {
+          return temp;
+        }
+      }
+    }
+    return null;
+  }
+
+  public void removeViewBoundToObject(GameObject gameObject){
+    GameObjectView view = findViewBoundToObject(gameObject);
+    if(view != null) {
+      removeChild(view);
+    }
+//    for(Node node : viewModel.getForegroundPane().getChildren()){
+//      if(node instanceof GameObjectView){
+//          GameObjectView temp = (GameObjectView) node;
+//          if(temp.getBoundObject() == gameObject){
+//            removeChild(temp);
+//            break;
+//          }
+//      }
+//    }
+  }
+  
 }

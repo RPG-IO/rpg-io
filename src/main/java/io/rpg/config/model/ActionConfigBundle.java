@@ -263,6 +263,10 @@ public class ActionConfigBundle implements ConfigWithValidation {
     return Result.ok();
   }
 
+  Result<Void, Exception> validateForCollectAction() {
+    return Result.ok();
+  }
+
   Result<Void, Exception> validateBasic() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
     if (tag == null) {

@@ -7,18 +7,23 @@ import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
 import io.rpg.model.location.LocationModel;
+import io.rpg.model.object.CollectibleGameObject;
 import io.rpg.model.object.GameObject;
 import io.rpg.model.object.Player;
 import io.rpg.model.object.Question;
 import io.rpg.util.BattleResult;
 import io.rpg.view.GameEndView;
 import io.rpg.view.GameObjectView;
+import io.rpg.view.InventoryPopup;
 import io.rpg.view.LocationView;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import io.rpg.view.popups.TextPopup;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -41,10 +46,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   private final ConditionEngine conditionEngine;
   private final ActionEngine actionEngine;
 
-
   public Controller() {
     logger = LogManager.getLogger(Controller.class);
-
     tagToLocationModelMap = new LinkedHashMap<>();
     tagToLocationViewMap = new LinkedHashMap<>();
 
@@ -156,8 +159,9 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
         case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
         case Q -> popupController.openQuestionPopup(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'), getWindowCenterX(), getWindowCenterY());
-        case L -> consumeAction(new LocationChangeAction("location-2", new Position(1, 2), null));
-        case U -> consumeAction(new GameEndAction("You have pressed the forbidden button", null));
+        case L -> consumeAction(new LocationChangeAction("location-2", new Position(1, 2)), null);
+        case U -> consumeAction(new GameEndAction("You have pressed the forbidden button"), null);
+        case E -> popupController.openInventoryPopup(playerController.getPlayer().getInventory(), getWindowCenterX(), getWindowCenterY(), playerController.getPlayer());
       }
     }
   }
@@ -176,7 +180,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     GameObjectView objectView = event.source();
     Position position = new Position(objectView.getPosition());
     GameObject object = currentModel.getObject(position)
-                                    .orElseThrow(() -> new RuntimeException("No object present at position " + position));
+        .orElseThrow(() -> new RuntimeException("No object present at position " + position));
 
     double distance = playerPos.distance(objectView.getPosition());
 

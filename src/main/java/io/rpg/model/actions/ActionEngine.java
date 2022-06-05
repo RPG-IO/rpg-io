@@ -119,6 +119,17 @@ public final class ActionEngine {
     });
   }
 
+  private void onAction(CollectAction action) {
+		actionGuard(action, () -> {
+			controller().getPupupController().openTextImagePopup("Picked up an item!", new Image("file:assets/key.png"), getWindowCenterX(), getWindowCenterY());
+			controller().getPlayerController().getPlayer().getInventory().add(action.getOwner());
+			String tag = controller().getModel().getTag();
+			LocationView currentLocationView=tagToLocationViewMap.get(tag);
+			currentLocationView.removeViewBoundToObject(action.getOwner());
+			currentModel.removeGameObject(action.getOwner());
+		});
+  }
+
   private void actionGuard(BaseAction action, Runnable actionLogic) {
     if (action.getCondition() != null && !action.getCondition().acceptEngine(controller().getConditionEngine())) {
       logger.info("Action not executed due to condition being not satisfied");
