@@ -3,7 +3,6 @@ package io.rpg.util;
 import io.rpg.config.model.ActionConfigBundle;
 import io.rpg.model.actions.*;
 import io.rpg.model.actions.condition.ConditionFactory;
-import io.rpg.model.object.Question;
 import javafx.scene.image.Image;
 
 public class ActionFactory {
@@ -49,11 +48,8 @@ public class ActionFactory {
       case Collect -> {
         return collectActionFromConfig(config);
       }
-      default -> {
-        throw new IllegalArgumentException("Unexpected action type!");
-      }
+      default -> throw new IllegalArgumentException("Unexpected action type!");
     }
-
   }
 
   private static QuizAction quizActionFromConfig(ActionConfigBundle config) {
@@ -97,6 +93,6 @@ public class ActionFactory {
   }
 
   private static CollectAction collectActionFromConfig(ActionConfigBundle config) {
-    return new CollectAction(config.getAssetPath(), ConditionFactory.fromConfig(config.getCondition()));
+    return new CollectAction(config.getAssetPath(), config.getDescription(), ConditionFactory.fromConfig(config.getCondition()));
   }
 }

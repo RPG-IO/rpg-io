@@ -5,6 +5,7 @@
   "onLeftClick": {
     "tag": "dialogue-action",
     "type": "collect",
-    "assetPath": "assets/coin.png"
+    "assetPath": "assets/key.png",
+    "description": "A powerful key."
   }
 }
