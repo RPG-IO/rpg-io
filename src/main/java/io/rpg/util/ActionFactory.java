@@ -97,6 +97,6 @@ public class ActionFactory {
   }
 
   private static CollectAction collectActionFromConfig(ActionConfigBundle config) {
-    return new CollectAction();
+    return new CollectAction(config.getAssetPath(), ConditionFactory.fromConfig(config.getCondition()));
   }
 }

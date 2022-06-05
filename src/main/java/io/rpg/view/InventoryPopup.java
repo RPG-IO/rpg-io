@@ -67,14 +67,14 @@ public class InventoryPopup extends Scene {
 //            String assetPath=inventory.items.get(i).getAssetPath();
 //            to display objects in the menu
 //            wrapperClass to store information about object which we display
-      InventoryGameObjectView imageGameObjectView = new InventoryGameObjectView(inventory.items.get(i));
+      InventoryGameObjectView imageGameObjectView = inventory.items.get(i);
 
       imageGameObjectView.setX(i * 50 + PADDING_LEFT);
       imageGameObjectView.setY(0 + PADDING_TOP);
       imageGameObjectView.setOnMouseEntered(event -> {
         InventoryGameObjectView src = (InventoryGameObjectView) event.getSource();
 //                System.out.println("over the item "+src.collectibleGameObject.getAssetPath());
-        label.setText(src.collectibleGameObject.getAssetPath());
+        label.setText("mock description");
       });
 
       imageGameObjectView.setOnMouseExited(event -> {

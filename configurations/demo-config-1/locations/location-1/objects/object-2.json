@@ -1,4 +1,10 @@
 {
   "tag": "object-2",
-  "onLeftClick": {"tag": "dialogue-action", "type": "collect"}
+  "position": { "row": 5, "col": 5 },
+  "assetPath": "assets/key.png",
+  "onLeftClick": {
+    "tag": "dialogue-action",
+    "type": "collect",
+    "assetPath": "assets/coin.png"
+  }
 }

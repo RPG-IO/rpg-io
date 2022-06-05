@@ -61,14 +61,6 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
     this.onApproach = Action.VOID;
     this.wasOnApproachFired = false;
   }
-  public GameObject(@NotNull String tag, @NotNull Position position) {
-//    this.tag = tag;
-//    this.stateChangeObservers = new LinkedHashSet<>();
-//    this.exactPositionProperty = new SimpleObjectProperty<>(new Point2D(position.col, position.row));
-//    this.onLeftClickAction = new QuizAction(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'));
-//    this.onRightClickAction = Action.VOID;
-    this(tag,position);
-  }
 
   public GameObject(@NotNull String tag, @NotNull Position position, int strength) {
     this(tag, position);
