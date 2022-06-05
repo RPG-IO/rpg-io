@@ -85,6 +85,7 @@ public class ActionConfigBundle implements ConfigWithValidation {
   /**
    * {@link io.rpg.model.actions.GameEndAction} <br>
    * {@link io.rpg.model.actions.ShowDescriptionAction} <br>
+   * {@link io.rpg.model.actions.CollectAction} <br>
    * TODO
    */
   @Nullable
@@ -265,7 +266,16 @@ public class ActionConfigBundle implements ConfigWithValidation {
   }
 
   Result<Void, Exception> validateForCollectAction() {
-    return Result.ok();
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
+    if (description == null) {
+      builder.append("No description provided");
+    }
+    if (assetPath == null) {
+      builder.append("No asset path provided");
+    } else if (!Files.isRegularFile(Path.of(assetPath))) {
+      builder.append("Provided asset path does not point to a regular file");
+    }
+    return builder.isEmpty() ? Result.ok() : Result.err(new IllegalStateException(builder.toString()));
   }
 
   Result<Void, Exception> validateBasic() {
@@ -324,6 +334,7 @@ public class ActionConfigBundle implements ConfigWithValidation {
       case Quiz -> { return validateForQuizAction(); }
       case ShowDescription -> { return validateForShowDescriptionAction(); }
       case Battle -> { return validateForBattle(); }
+      case Collect -> { return validateForCollectAction(); }
       default -> { return Result.err(new RuntimeException("Invalid result returned")); }
     }
   }

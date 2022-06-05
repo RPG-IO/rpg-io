@@ -6,10 +6,12 @@ import org.jetbrains.annotations.Nullable;
 
 public class CollectAction extends BaseAction {
   private final String assetPath;
+  private final String description;
 
-  public CollectAction(String assetPath, @Nullable Condition condition) {
+  public CollectAction(String assetPath, String description, @Nullable Condition condition) {
     super(condition);
     this.assetPath = assetPath;
+    this.description = description;
   }
 
   public GameObject getOwner() {
@@ -23,6 +25,10 @@ public class CollectAction extends BaseAction {
 
   public String getAssetPath() {
     return assetPath;
+  }
+
+  public String getDescription() {
+    return description;
   }
 }
 

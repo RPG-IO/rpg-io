@@ -7,29 +7,20 @@ import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
 import io.rpg.model.location.LocationModel;
-import io.rpg.model.object.CollectibleGameObject;
 import io.rpg.model.object.GameObject;
-import io.rpg.model.object.Player;
 import io.rpg.model.object.Question;
-import io.rpg.util.BattleResult;
-import io.rpg.view.GameEndView;
 import io.rpg.view.GameObjectView;
-import io.rpg.view.InventoryPopup;
 import io.rpg.view.LocationView;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import io.rpg.view.popups.TextPopup;
+import javafx.stage.WindowEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -84,6 +75,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         player.setRightPressed(false);
       }
     });
+
+    mainStage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, (event) -> popupController.hidePopup());
   }
 
   public void setCurrentModel(@NotNull LocationModel model) {

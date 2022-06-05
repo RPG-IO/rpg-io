@@ -236,7 +236,7 @@ public class ConfigLoader {
         return Result.err(new Exception("Validation for game object config with tag: " + gameObjectConfig.getTag()
             + " failed."));
       } else {
-        logger.info("Loaded GameObjectConfig for tag: " + gameObjectConfig.getTag() + ":" + gameObjectConfig);
+        logger.info("Loaded GameObjectConfig for tag: " + gameObjectConfig.getTag());
       }
     }
 
@@ -272,7 +272,7 @@ public class ConfigLoader {
       return Result.err(exception);
     }
 
-    // after loading a object from JSON we should always call the validate method
+    // after loading an object from JSON we should always call the validate method
     // load information from configuration root file
     GameWorldConfig gameWorldConfigShell = gson.fromJson(reader, GameWorldConfig.class);
 
