@@ -1,7 +1,8 @@
-package io.rpg.view;
+package io.rpg.view.popups;
 
 import io.rpg.model.data.Inventory;
 import io.rpg.model.object.Player;
+import io.rpg.view.InventoryGameObjectView;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -21,12 +22,14 @@ public class InventoryPopup extends Scene {
   @FXML
   private Label pointsLabel;
 
+  private static String backgroundPath;
+
   public InventoryPopup(Inventory inventory, Player player) {
 
     super(new Group(), Color.TRANSPARENT);
     Group group = new Group();
-    //TODO: load asset path from config
-    ImageView imageView = new ImageView(GameObjectView.resolvePathToJFXFormat("assets/popup-background.png"));
+
+    ImageView imageView = new ImageView(backgroundPath);
     imageView.setX(0);
     imageView.setY(0);
 
@@ -45,7 +48,7 @@ public class InventoryPopup extends Scene {
     label = new Label();
     label.setLayoutX(300);
     label.setLayoutY(100);
-    label.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + 18);
+    label.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + 12);
 
     group.getChildren().add(imageView);
     group.getChildren().add(label);
@@ -66,5 +69,9 @@ public class InventoryPopup extends Scene {
 
     this.setRoot(group);
     this.setFill(Color.TRANSPARENT);
+  }
+
+  public static void setBackgroundPath(String backgroundPath) {
+    InventoryPopup.backgroundPath = backgroundPath;
   }
 }
