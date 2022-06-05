@@ -171,7 +171,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 //    } else {
 //      result = new BattleResult(BattleResult.Result.DRAW, 0);
 //    }
-    popupController.openBattlePopup(getWindowCenterX(), getWindowCenterY());
+    popupController.openBattlePopup(getPlayerController().getPlayer(),getWindowCenterX(), getWindowCenterY());
 
   }
 

@@ -9,6 +9,7 @@ import io.rpg.model.data.Inventory;
 import io.rpg.view.InventoryPopup;
 import io.rpg.view.popups.TextImagePopup;
 import io.rpg.view.popups.TextPopup;
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -32,7 +33,6 @@ public class PopupController {
     popupStage.setScene(popupScene);
 
     popupStage.show();
-
     popupStage.setX(x - popupScene.getWidth() / 2);
     popupStage.setY(y - popupScene.getHeight() / 2);
 
@@ -68,14 +68,15 @@ public class PopupController {
 
   }
 
-  public void openBattlePopup(int x,int y){
-    BattlePopup battlePopup = new BattlePopup();
+  public void openBattlePopup(Player player,int x,int y){
+    BattlePopup battlePopup = new BattlePopup(player);
     this.popupStage.setScene(battlePopup);
-
     popupStage.show();
-
     popupStage.setX(x - battlePopup.getWidth() / 2);
     popupStage.setY(y - battlePopup.getHeight() / 2);
+    battlePopup.setCloseButtonActionListener((event)->{
+      popupStage.close();
+    });
   }
 
   public void openQuestionPopup(Question question, int x, int y, Runnable successCallback, Runnable failureCallback) {

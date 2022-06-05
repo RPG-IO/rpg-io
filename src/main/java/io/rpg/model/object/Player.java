@@ -96,6 +96,10 @@ public class Player extends GameObject {
     points += value;
   }
 
+  public void removePoints(int value) {
+    points += value;
+  }
+
   public int getStrength() {
     return strength;
 	}
