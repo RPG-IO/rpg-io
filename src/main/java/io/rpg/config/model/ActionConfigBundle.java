@@ -75,6 +75,7 @@ public class ActionConfigBundle implements ConfigWithValidation {
   /**
    * {@link io.rpg.model.actions.DialogueAction} <br>
    * {@link io.rpg.model.actions.ShowDescriptionAction} <br>
+   * {@link io.rpg.model.actions.CollectAction} <br>
    * TODO
    */
   @Nullable
@@ -260,6 +261,10 @@ public class ActionConfigBundle implements ConfigWithValidation {
   }
 
   Result<Void, Exception> validateForBattle() {
+    return Result.ok();
+  }
+
+  Result<Void, Exception> validateForCollectAction() {
     return Result.ok();
   }
 

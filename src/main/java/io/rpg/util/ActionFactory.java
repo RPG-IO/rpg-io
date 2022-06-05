@@ -46,6 +46,9 @@ public class ActionFactory {
       case Battle -> {
         return battleActionFromConfig(config);
       }
+      case Collect -> {
+        return collectActionFromConfig(config);
+      }
       default -> {
         throw new IllegalArgumentException("Unexpected action type!");
       }
@@ -91,5 +94,9 @@ public class ActionFactory {
     if (config.getAfterAction() != null) {
       action.setAfterAction(actionByType(config.getAfterAction()));
     }
+  }
+
+  private static CollectAction collectActionFromConfig(ActionConfigBundle config) {
+    return new CollectAction(config.getAssetPath(), ConditionFactory.fromConfig(config.getCondition()));
   }
 }

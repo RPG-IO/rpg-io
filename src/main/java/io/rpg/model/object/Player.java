@@ -1,5 +1,6 @@
 package io.rpg.model.object;
 
+import io.rpg.model.data.Inventory;
 import io.rpg.model.data.Position;
 import io.rpg.view.GameObjectView;
 import javafx.geometry.Point2D;
@@ -20,6 +21,7 @@ public class Player extends GameObject {
   private boolean downPressed;
   private GameObjectView gameObjectView;
   private int points;
+  private final Inventory inventory;
 
   private final Set<String> defeatedOpponents;
 
@@ -33,6 +35,7 @@ public class Player extends GameObject {
     this.downPressed = false;
     this.strength = 0;
     this.defeatedOpponents = new LinkedHashSet<>();
+    this.inventory = new Inventory();
   }
 
   public void updateStrength(int value) {
@@ -99,8 +102,16 @@ public class Player extends GameObject {
     points += value;
   }
 
+  public void removePoints(int value) {
+    points += value;
+  }
+
   public int getStrength() {
     return strength;
+	}
+
+  public Inventory getInventory() {
+    return inventory;
   }
 
   public void addDefeatedOpponent(@NotNull String tag) {
