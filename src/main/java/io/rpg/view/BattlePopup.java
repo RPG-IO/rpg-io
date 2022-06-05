@@ -65,9 +65,9 @@ public class BattlePopup extends Scene {
         int singleLabelWidth=25;
         double allLabelsWidth=sequenceLength*singleLabelWidth+(sequenceLength-1)*SPACING;
         this.currentSequencePosition=0;
-        this.isOk=new Label();
-        this.isOk.setLayoutX(200);
-        this.isOk.setLayoutY(250);
+//        this.isOk=new Label();
+//        this.isOk.setLayoutX(200);
+//        this.isOk.setLayoutY(250);
         ImageView imageViewButton=new ImageView(GameObjectView.resolvePathToJFXFormat("assets/button-image.png"));
         button.setLayoutX(imageView.getImage().getWidth()/2-imageViewButton.getImage().getWidth()/2);
         button.setLayoutY(imageView.getImage().getHeight()-imageViewButton.getImage().getHeight()/2);
