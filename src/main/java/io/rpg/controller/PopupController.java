@@ -1,5 +1,6 @@
 package io.rpg.controller;
 
+import io.rpg.model.object.GameObject;
 import io.rpg.model.object.Player;
 import io.rpg.model.object.Question;
 import io.rpg.view.BattlePopup;
@@ -78,8 +79,8 @@ public class PopupController {
     }
   }
 
-  public void openBattlePopup(Player player,int x,int y){
-    BattlePopup battlePopup = new BattlePopup(player);
+  public void openBattlePopup(Controller controller, Player player, GameObject enemy, int x, int y){
+    BattlePopup battlePopup = new BattlePopup(controller,player,enemy);
     this.popupStage.setScene(battlePopup);
     popupStage.show();
     popupStage.setX(x - battlePopup.getWidth() / 2);

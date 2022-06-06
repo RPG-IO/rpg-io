@@ -1,5 +1,7 @@
 package io.rpg.view;
 
+import io.rpg.controller.Controller;
+import io.rpg.model.object.GameObject;
 import io.rpg.model.object.Player;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -30,16 +32,18 @@ public class BattlePopup extends Scene {
     private int sequenceLength =5;
     private Label[] characterLabels;
     private ImageView[] timerDots;
-    private Label isOk;
     private int currentSequencePosition;
-    private ImageView swordIcon;
+    private ImageView icon;
     private Timer timer;
     private int timeToCountDown;
     private Player player;
     private Button button;
+    private Controller controller;
+    private GameObject opponent;
+    private ImageView background;
 
 
-    public BattlePopup(Player player){
+    public BattlePopup(Controller controller,Player player, GameObject opponent){
 
         super(new Group(), Color.TRANSPARENT);
         this.player=player;
@@ -49,15 +53,15 @@ public class BattlePopup extends Scene {
         this.timerDots=new ImageView[timeToCountDown];
         this.sequence=generateRandomSequence(sequenceLength);
         this.button=new Button("OK");
-
-
+        this.controller=controller;
+        this.opponent=opponent;
+        this.background= new ImageView(GameObjectView.resolvePathToJFXFormat("assets/popup-background.png"));
         Group group = new Group();
         //TODO: load asset path from config
-        ImageView imageView = new ImageView(GameObjectView.resolvePathToJFXFormat("assets/popup-background.png"));
 
-        this.swordIcon=new ImageView(GameObjectView.resolvePathToJFXFormat("assets/sword6.png"));
-        imageView.setX(0);
-        imageView.setY(0);
+        this.icon=new ImageView(GameObjectView.resolvePathToJFXFormat("assets/sword6.png"));
+        background.setX(0);
+        background.setY(0);
 
         this.characterLabels=new Label[sequenceLength];
         double centerX=getX()+getWidth()/2;
@@ -65,34 +69,33 @@ public class BattlePopup extends Scene {
         int singleLabelWidth=25;
         double allLabelsWidth=sequenceLength*singleLabelWidth+(sequenceLength-1)*SPACING;
         this.currentSequencePosition=0;
-//        this.isOk=new Label();
-//        this.isOk.setLayoutX(200);
-//        this.isOk.setLayoutY(250);
         ImageView imageViewButton=new ImageView(GameObjectView.resolvePathToJFXFormat("assets/button-image.png"));
-        button.setLayoutX(imageView.getImage().getWidth()/2-imageViewButton.getImage().getWidth()/2);
-        button.setLayoutY(imageView.getImage().getHeight()-imageViewButton.getImage().getHeight()/2);
+        button.setLayoutX(background.getImage().getWidth()/2-imageViewButton.getImage().getWidth()/2);
+        button.setLayoutY(background.getImage().getHeight()-imageViewButton.getImage().getHeight()/2);
         button.setGraphic(imageViewButton);
         button.setContentDisplay(ContentDisplay.CENTER);
         button.setStyle("-fx-background-color: transparent;");
-        group.getChildren().add(imageView);
+
+        group.getChildren().add(background);
         group.getChildren().add(button);
         for(int i=0;i<5;i++){
             timerDots[i] = new ImageView(GameObjectView.resolvePathToJFXFormat("assets/button-image.png"));
-            timerDots[i].setLayoutX(i*SPACING+i*singleLabelWidth+ imageView.getImage().getWidth()/2-allLabelsWidth/2);
-            timerDots[i].setLayoutY(centerY+ imageView.getImage().getHeight()/2+50);
+            timerDots[i].setLayoutX(i*SPACING+i*singleLabelWidth+ background.getImage().getWidth()/2-allLabelsWidth/2);
+            timerDots[i].setLayoutY(centerY+ background.getImage().getHeight()/2+50);
             timerDots[i].setScaleX(0.5);
             timerDots[i].setScaleY(0.5);
             group.getChildren().add(timerDots[i]);
         }
-        group.getChildren().add(swordIcon);
+        group.getChildren().add(icon);
+        this.icon.setLayoutX(background.getImage().getWidth()/2);
+        this.icon.setLayoutY(20);
 
         for(int i=0;i<sequenceLength;i++){
             this.characterLabels[i]=new Label(String.valueOf(sequence.charAt(i)));
             this.characterLabels[i].setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + 18);
-            this.characterLabels[i].setLayoutX(i*SPACING+i*singleLabelWidth+ imageView.getImage().getWidth()/2-allLabelsWidth/2);
-            this.characterLabels[i].setLayoutY(centerY+ imageView.getImage().getHeight()/2);
-            this.swordIcon.setLayoutX(imageView.getImage().getWidth()/2);
-            this.swordIcon.setLayoutY(20);
+            this.characterLabels[i].setLayoutX(i*SPACING+i*singleLabelWidth+ background.getImage().getWidth()/2-allLabelsWidth/2);
+            this.characterLabels[i].setLayoutY(centerY+ background.getImage().getHeight()/2);
+
             group.getChildren().add(characterLabels[i]);
             double x=characterLabels[i].getLayoutX();
             double y=characterLabels[i].getLayoutY();
@@ -109,8 +112,6 @@ public class BattlePopup extends Scene {
                 currentSequencePosition++;
                 if(this.currentSequencePosition==sequenceLength){
                     win();
-                    this.isOk.setText("OK");
-                    group.getChildren().add(this.isOk);
                 }
             }else{
                 this.characterLabels[currentSequencePosition].setStyle("-fx-font-family: Monospaced; -fx-text-fill: #fa2902; -fx-font-weight: bold; -fx-font-size: " + 18);
@@ -160,6 +161,14 @@ public class BattlePopup extends Scene {
     public void win(){
         player.addPoints(timeToCountDown*POINTS_PER_SECOND);
         timer.cancel();
+        controller.removeObjectFromModel(opponent);
+        Image image=new Image(GameObjectView.resolvePathToJFXFormat("assets/victoryIconFinal.png"));
+//        this.icon.setLayoutX(image.getWidth()/2);
+        this.icon.setLayoutX(background.getImage().getWidth()/2-icon.getImage().getWidth()/2);
+        this.icon.setLayoutY(20);
+//        this.icon.setLayoutY(0);
+        icon.setImage(image);
+
     }
 
     public void lose(){

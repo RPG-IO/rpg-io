@@ -14,7 +14,6 @@ import org.apache.logging.log4j.core.config.Configurator;
  * Entry point of the app.
  */
 public class Main extends Application {
-
   private final Logger logger = LogManager.getLogger(Main.class);
 
   @Override
