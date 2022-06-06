@@ -1,0 +1,21 @@
+{
+  "tag": "goblin-1",
+  "assetPath": "assets/goblin.png",
+  "type": "dialog",
+  "onLeftClick": {
+    "tag": "actiontag",
+    "type": "quiz",
+    "questions": [
+      {
+        "question": "Autorskie prawa osobiste przysługują: ",
+        "a": "twórcy",
+        "b": "pracodawcy lub twórcy w określonych ustawą przypadkach",
+        "c": "inwestorowi lub twórcy",
+        "d": "żadne z powyższych",
+        "correct": "a"
+      }
+    ],
+    "reward": 5
+  },
+  "position": { "row": 7, "col": 3 }
+}

@@ -1,0 +1,15 @@
+{
+  "tag": "teleport-bunny-2",
+  "position": { "row": 7, "col": 4 },
+  "assetPath": "assets/bunny.png",
+  "onLeftClick": {
+    "tag": "action-tag",
+    "type": "location-change",
+    "target-location": "location-3",
+    "target-position": { "row": 3, "col": 5 },
+    "condition": {"type": "item-required", "item-tag": "diamond-1"}
+  },
+  "onApproach": {
+    "tag": "dialogue", "type": "show-description", "assetPath": "assets/key.png", "description": "Znajdź diament, a królik przeniesie cię do księżniczki"
+  }
+}
