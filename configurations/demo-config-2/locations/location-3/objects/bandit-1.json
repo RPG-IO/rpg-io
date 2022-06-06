@@ -1,0 +1,10 @@
+{
+  "tag": "bandit-1",
+  "position": { "row": 6, "col": 5 },
+  "assetPath": "assets/bandit.png",
+  "onLeftClick": {
+    "tag": "battle",
+    "type": "battle",
+    "reward": 10
+  }
+}
