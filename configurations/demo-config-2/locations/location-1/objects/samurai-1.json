@@ -1,0 +1,10 @@
+{
+  "tag": "samurai-1",
+  "assetPath": "assets/samurai.png",
+  "onLeftClick": {
+    "tag": "reflex-game-1",
+    "type": "battle-reflex",
+    "reward": 5
+  },
+  "position": { "row": 3, "col": 1 }
+}
