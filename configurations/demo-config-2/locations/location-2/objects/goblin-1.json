@@ -6,7 +6,8 @@
     "type": "dialogue",
     "statements": [
       "Księżniczka nadal czeka. Spiesz się!"
-    ]
+    ],
+    "assetPath": "assets/goblin.png"
   },
   "assetPath": "assets/goblin.png"
 }

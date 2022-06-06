@@ -35,7 +35,6 @@
   ],
   "backgroundPath": "assets/map.png",
   "directionToLocationMap": {
-    "NORTH": "location-3",
     "WEST": "location-4",
     "SOUTH": "location-1"
   },

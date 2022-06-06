@@ -1,6 +1,11 @@
 {
   "tag": "chest-1",
-  "onLeftClick": {"tag": "dialogue", "type": "dialogue", "statements": ["Stara skrzynia. Ciekawe co jest w środku."]},
+  "onLeftClick": {"tag": "dialogue", "type": "dialogue", "assetPath": "assets/chest.png", "statements": ["Stara skrzynia. Ciekawe co jest w środku."], "condition": {"type": "item-required", "item-tag": "key-1"}, "after": {
+    "tag": "get-item",
+    "type": "collect",
+    "assetPath": "assets/diamond.png",
+    "description": "Świecący diament"
+  }},
   "assetPath": "assets/chest.png",
   "position": { "row": 4, "col": 5 }
 }

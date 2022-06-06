@@ -1,6 +1,6 @@
 {
   "tag": "welcome-goblin",
   "assetPath": "assets/goblin.png",
-  "onApproach": {"tag": "introduction", "type": "dialogue", "statements": ["Witaj, podróżniku! Znalazłeś się w niebezpiecznej krainie, w której grasują zombie i bandyci. Odpowiedz na zagadki, pokonaj przeciwników i uratuj piękną księżniczkę!"]},
+  "onApproach": {"tag": "introduction", "assetPath": "assets/goblin.png", "type": "dialogue", "statements": ["Witaj, podróżniku! Znalazłeś się w niebezpiecznej krainie, w której grasują zombie i bandyci. Odpowiedz na zagadki, pokonaj przeciwników i uratuj piękną księżniczkę!"]},
   "position": { "row": 7, "col": 2 }
 }

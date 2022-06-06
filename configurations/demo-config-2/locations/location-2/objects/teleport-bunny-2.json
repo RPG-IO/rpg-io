@@ -6,6 +6,7 @@
     "tag": "action-tag",
     "type": "location-change",
     "target-location": "location-3",
-    "target-position": { "row": 3, "col": 5 }
+    "target-position": { "row": 3, "col": 5 },
+    "condition": {"type": "item-required", "item-tag": "diamond-1"}
   }
 }

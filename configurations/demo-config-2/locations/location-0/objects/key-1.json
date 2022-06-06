@@ -2,5 +2,5 @@
   "tag": "key-1",
   "assetPath": "assets/key.png",
   "position": { "row": 4, "col": 5 },
-  "onLeftClick": {"tag": "dialogue-action", "type": "dialogue", "statements": ["A key."], "assetPath": "assets/key.png"}
+  "onLeftClick": {"tag": "dialogue-action", "type": "collect", "description": "Klucz do skrzyni.", "assetPath": "assets/key.png"}
 }
