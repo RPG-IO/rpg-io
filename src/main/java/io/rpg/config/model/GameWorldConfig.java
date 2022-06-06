@@ -3,6 +3,7 @@ package io.rpg.config.model;
 import com.google.gson.annotations.SerializedName;
 import com.kkafara.rt.Result;
 import io.rpg.util.ErrorMessageBuilder;
+import org.apache.logging.log4j.core.util.FileUtils;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -66,6 +67,14 @@ public class GameWorldConfig implements ConfigWithValidation {
   private String dialoguePopupBackground;
   private String npcFrame;
 
+  /**
+   * Describes path to directory with all the assets.
+   *
+   * Must be either absolute or relative to <b>configuration directory</b>.
+   */
+  @SerializedName(value = "assetDirPath", alternate = {"asset-dir", "asset-dir-path", "assetDir"})
+  private String assetDirPath;
+
 
   /**
    * Unique tag for the game. This can be treated as name of the game.
@@ -128,11 +137,16 @@ public class GameWorldConfig implements ConfigWithValidation {
    */
   public Result<Void, Exception> validateStageOne() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
-    if (locationTags.size() < 1) {
+    if (locationTags != null && locationTags.size() < 1) {
 			builder.append("No location tags detected");
     }
     if (tag == null) {
       builder.append("Null tag");
+    }
+    if (assetDirPath == null) {
+      builder.append("No asset dir path specified");
+    } else if (!Files.isDirectory(Path.of(assetDirPath))) {
+
     }
     if (playerConfig == null) {
       builder.append("No player config provided");
