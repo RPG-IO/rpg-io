@@ -172,6 +172,8 @@ As for now we support 5 kinds of actions:
 * `location-change`
 * `show-description`
 * `dialogue`
+* `battle`
+* `collect`
 
 For each kind configuration differs a bit, because different information is required. Let's take a closer look at the
 common part first. Each action consists of following properties
@@ -206,15 +208,19 @@ Let's look at specific action types:
   
     Aliases: `targetLocation`, `target`
 * `show-description`:
-  * `assetPath` - Path to the image with background for the dialogue window. As any path, it must be eiter absolute or relative to the engine's source root.
+  * `assetPath` - Path to the image shown in the description popup, presumably depicting the object that the action belongs to. As any path, it must be eiter absolute or relative to the engine's source root.
     Aliases: `asset-path`, `asset`.
   * `description` - Additional information about the object.
 * `dialogue`:
   * `statements` - **List** of statements to be said. Right now, **only one statement is supported**, however you must provide it 
     as a list. Aliases: `text`, `dialogue-statements`, `dialogueStatements`. \\
-  * `assetPath` - Path to the image with background for the dialogue window. As any path, it must be eiter absolute or relative to the engine's source root.
+  * `assetPath` - Path to the image displayed in the dialogue popup, presumably depicting the NPC that the action is tied to. As any path, it must be eiter absolute or relative to the engine's source root.
     Aliases: `asset-path`, `asset`.
 * `battle` -- No props required.
+* `collect`:
+  * `assetPath` - Path to the image that will be shown in a popup after collecting the object, as well as in the Inventory window. As any path, it must be eiter absolute or relative to the engine's source root.
+    Aliases: `asset-path`, `asset`.
+  * `description` - Text displayed when the cursor is above the collected item in the Inventory window.
 
 ## Condition configuration
 

@@ -7,6 +7,7 @@ import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.Position;
 import io.rpg.util.DataObjectDescriptionProvider;
 import javafx.application.Platform;
+import io.rpg.view.GameObjectView;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;

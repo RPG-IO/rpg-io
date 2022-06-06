@@ -14,10 +14,8 @@ import io.rpg.util.GameObjectFactory;
 import io.rpg.util.GameObjectViewFactory;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
-import io.rpg.view.popups.DialoguePopup;
-import io.rpg.view.popups.QuestionPopup;
-import io.rpg.view.popups.TextImagePopup;
-import io.rpg.view.popups.TextPopup;
+import io.rpg.view.popups.*;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Iterator;
@@ -63,6 +61,7 @@ public class Initializer {
     TextImagePopup.setButtonPath(gameWorldConfig.getTextImagePopupButton());
     DialoguePopup.setBackgroundPath(gameWorldConfig.getDialoguePopupBackground());
     DialoguePopup.setNpcFramePath(gameWorldConfig.getNpcFrame());
+    InventoryPopup.setBackgroundPath(gameWorldConfig.getInventoryPopupBackground());
 
     Controller.Builder controllerBuilder = new Controller.Builder();
 

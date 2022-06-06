@@ -5,8 +5,10 @@ import io.rpg.model.location.LocationModel;
 import io.rpg.model.object.GameObject;
 import io.rpg.model.object.Player;
 import io.rpg.util.BattleResult;
+import io.rpg.view.GameObjectView;
+import io.rpg.view.InventoryGameObjectView;
 import io.rpg.view.LocationView;
-import javafx.application.Platform;
+import javafx.scene.image.Image;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -124,6 +126,17 @@ public final class ActionEngine {
   public void onAction(LevelUpAction action) {
     controller().getPopupController().openTextPopup("Achieved level " + action.newLevel + "!",
             controller().getWindowCenterX(), controller().getWindowCenterY());
+  }
+
+  public void onAction(CollectAction action) {
+    actionGuard(action, () -> {
+      var controller = controller();
+      controller.getPopupController().openTextImagePopup("Picked up an item!", new Image(GameObjectView.resolvePathToJFXFormat(action.getAssetPath())),
+          controller.getWindowCenterX(), controller.getWindowCenterY());
+      controller.getPlayerController().getPlayer().getInventory()
+          .add(new InventoryGameObjectView(action.getAssetPath(), action.getDescription(), action.getOwner().getTag()));
+      controller.removeObjectFromModel(action.getOwner());
+    });
   }
 
   private void actionGuard(BaseAction action, Runnable actionLogic) {

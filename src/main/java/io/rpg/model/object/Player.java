@@ -2,6 +2,7 @@ package io.rpg.model.object;
 
 import io.rpg.model.actions.Action;
 import io.rpg.model.actions.LevelUpAction;
+import io.rpg.model.data.Inventory;
 import io.rpg.model.data.Position;
 import io.rpg.view.GameObjectView;
 import javafx.geometry.Point2D;
@@ -24,6 +25,7 @@ public class Player extends GameObject {
   private int points;
   private int level;
   public Action levelUpAction;
+  private final Inventory inventory;
 
   private final Set<String> defeatedOpponents;
 
@@ -38,6 +40,7 @@ public class Player extends GameObject {
     this.strength = 0;
     this.level = 1;
     this.defeatedOpponents = new LinkedHashSet<>();
+    this.inventory = new Inventory();
   }
 
   public void updateStrength(int value) {
@@ -105,8 +108,16 @@ public class Player extends GameObject {
     updateLevel();
   }
 
+  public void removePoints(int value) {
+    points += value;
+  }
+
   public int getStrength() {
     return strength;
+	}
+
+  public Inventory getInventory() {
+    return inventory;
   }
 
   public int getLevel() {

@@ -4,6 +4,7 @@ import io.rpg.config.model.GameObjectConfig;
 import io.rpg.config.model.PlayerConfig;
 import io.rpg.model.actions.Action;
 import io.rpg.model.actions.BattleAction;
+import io.rpg.model.actions.CollectAction;
 import io.rpg.model.actions.ShowDescriptionAction;
 import io.rpg.model.object.GameObject;
 import io.rpg.model.object.Player;

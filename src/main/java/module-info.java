@@ -25,4 +25,5 @@ module io.rpg {
   opens io.rpg.config.model to com.google.gson;
 
   exports io.rpg;
+  opens io.rpg.view.popups to javafx.fxml;
 }

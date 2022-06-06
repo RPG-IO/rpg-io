@@ -1,0 +1,28 @@
+{
+  "tag": "demoAlpha",
+  "locationTags": [
+    "location-0",
+    "location-1",
+    "location-2",
+    "location-3",
+    "location-4",
+    "location-5"
+  ],
+  "rootLocation": "location-0",
+  "player": {
+    "tag": "player",
+    "position": { "row": 8, "col": 7 },
+    "type": "player",
+    "assetPath": "assets/knight.png",
+    "location": "location-0",
+    "strength": 911
+  },
+  "textPopupBackground": "assets/popup-background.png",
+  "textPopupButton": "assets/button-image.png",
+  "textImagePopupBackground": "assets/popup-background-2.png",
+  "textImagePopupButton": "assets/button-image-2.png",
+  "quizPopupBackground": "assets/popup-background-3.png",
+  "inventoryPopupBackground": "assets/popup-background.png",
+  "dialoguePopupBackground": "assets/popup-background.png",
+  "npcFrame": "assets/npc-frame.png"
+}

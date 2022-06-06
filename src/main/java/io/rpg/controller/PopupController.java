@@ -1,8 +1,12 @@
 package io.rpg.controller;
 
+import io.rpg.model.object.Player;
 import io.rpg.model.object.Question;
+import io.rpg.view.BattlePopup;
 import io.rpg.view.popups.DialoguePopup;
 import io.rpg.view.popups.QuestionPopup;
+import io.rpg.model.data.Inventory;
+import io.rpg.view.popups.InventoryPopup;
 import io.rpg.view.popups.TextImagePopup;
 import io.rpg.view.popups.TextPopup;
 import javafx.scene.image.Image;
@@ -34,6 +38,7 @@ public class PopupController {
       popupStage.setX(x - popupScene.getWidth() / 2);
       popupStage.setY(y - popupScene.getHeight() / 2);
     });
+
     if (!popupStage.isShowing()) {
       popupStage.showAndWait();
     }
@@ -55,6 +60,34 @@ public class PopupController {
 
   public void openPointsPopup(int pointsCount, int x, int y) {
     openTextImagePopup("You earned " + pointsCount + " points!", coinImage, x, y);
+  }
+
+  public void openInventoryPopup(Inventory inventory, int x, int y, Player player) {
+//    InventoryPopup inventoryPopup=new InventoryPopup();
+//    final Stage popupStage = new Stage(StageStyle.TRANSPARENT);
+
+    InventoryPopup popupScene = new InventoryPopup(inventory,player);
+    popupStage.setScene(popupScene);
+
+    popupStage.onShownProperty().setValue(event -> {
+      popupStage.setX(x - popupScene.getWidth() / 2);
+      popupStage.setY(y - popupScene.getHeight() / 2);
+    });
+
+    if (!popupStage.isShowing()) {
+      popupStage.showAndWait();
+    }
+  }
+
+  public void openBattlePopup(Player player,int x,int y){
+    BattlePopup battlePopup = new BattlePopup(player);
+    this.popupStage.setScene(battlePopup);
+    popupStage.show();
+    popupStage.setX(x - battlePopup.getWidth() / 2);
+    popupStage.setY(y - battlePopup.getHeight() / 2);
+    battlePopup.setCloseButtonActionListener((event)->{
+      popupStage.close();
+    });
   }
 
   public void openQuestionPopup(Question question, int x, int y, Runnable successCallback, Runnable failureCallback) {

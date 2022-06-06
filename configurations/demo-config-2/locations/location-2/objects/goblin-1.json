@@ -1,0 +1,13 @@
+{
+  "tag": "goblin-1",
+  "position": { "row": 4, "col": 5 },
+  "onLeftClick": {
+    "tag": "action",
+    "type": "dialogue",
+    "statements": [
+      "Księżniczka nadal czeka. Spiesz się!"
+    ],
+    "assetPath": "assets/goblin.png"
+  },
+  "assetPath": "assets/goblin.png"
+}
