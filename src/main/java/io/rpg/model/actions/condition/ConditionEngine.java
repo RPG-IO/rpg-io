@@ -18,15 +18,11 @@ public final class ConditionEngine {
   }
 
   public boolean evaluate(ItemRequiredCondition condition) {
-    // TODO: Implement this when the inventory gets implemented.
-    // Scheme:
-//    return controller()
-//        .getPlayerController()
-//        .getPlayer()
-//        .getInventory()
-//        .getItems()
-//        .containsItemForTag(condition.getItemTag());
-    return true;
+    return controller()
+        .getPlayerController()
+        .getPlayer()
+        .getInventory()
+        .containsItemForTag(condition.getItemTag());
   }
 
   public boolean evaluate(DefeatOpponentCondition condition) {

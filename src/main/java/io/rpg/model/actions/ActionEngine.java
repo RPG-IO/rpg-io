@@ -127,7 +127,7 @@ public final class ActionEngine {
       controller.getPopupController().openTextImagePopup("Picked up an item!", new Image(GameObjectView.resolvePathToJFXFormat(action.getAssetPath())),
           controller.getWindowCenterX(), controller.getWindowCenterY());
       controller.getPlayerController().getPlayer().getInventory()
-          .add(new InventoryGameObjectView(action.getAssetPath(), action.getDescription()));
+          .add(new InventoryGameObjectView(action.getAssetPath(), action.getDescription(), action.getOwner().getTag()));
       controller.removeObjectFromModel(action.getOwner());
     });
   }
