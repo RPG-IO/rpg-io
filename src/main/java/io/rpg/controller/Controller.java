@@ -76,7 +76,9 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       }
     });
 
-    mainStage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, (event) -> popupController.hidePopup());
+    if (mainStage.getScene() != null) {
+      mainStage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, (event) -> popupController.hidePopup());
+    }
   }
 
   public void setCurrentModel(@NotNull LocationModel model) {
