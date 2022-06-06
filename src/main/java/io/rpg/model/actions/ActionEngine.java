@@ -114,23 +114,25 @@ public final class ActionEngine {
   }
 
   public void onAction(BattleAction action) {
-    actionGuard(action, () -> {
-      Player player = controller().getPlayerController().getPlayer();
-      GameObject opponent = action.getOpponent();
-      int reward = action.getReward();
-      BattleResult result;
-      if (player.getPoints() > opponent.getStrength()) {
-        player.addPoints(reward);
-        player.addDefeatedOpponent(opponent.getTag());
-        result = new BattleResult(BattleResult.Result.VICTORY, reward);
-      } else if (player.getStrength() < opponent.getStrength()) {
-        result = new BattleResult(BattleResult.Result.DEFEAT, 0);
-      } else {
-        result = new BattleResult(BattleResult.Result.DRAW, 0);
-      }
-      controller().getPopupController().openTextPopup(result.getMessage(),
-          controller().getWindowCenterX(), controller().getWindowCenterY());
-    });
+//    actionGuard(action, () -> {
+//      Player player = controller().getPlayerController().getPlayer();
+//      GameObject opponent = action.getOpponent();
+//      int reward = action.getReward();
+//      BattleResult result;
+//      if (player.getPoints() > opponent.getStrength()) {
+//        player.addPoints(reward);
+//        player.addDefeatedOpponent(opponent.getTag());
+//        result = new BattleResult(BattleResult.Result.VICTORY, reward);
+//      } else if (player.getStrength() < opponent.getStrength()) {
+//        result = new BattleResult(BattleResult.Result.DEFEAT, 0);
+//      } else {
+//        result = new BattleResult(BattleResult.Result.DRAW, 0);
+//      }
+//      controller().getPopupController().openTextPopup(result.getMessage(),
+//          controller().getWindowCenterX(), controller().getWindowCenterY());
+//    });
+    Player player=controller().getPlayerController().getPlayer();
+    controller().getPopupController().openBattlePopup(controller(),player,action.getOpponent(), controller().getWindowCenterX(),controller().getWindowCenterY());
   }
 
   public void onAction(BattleReflexAction action) {
