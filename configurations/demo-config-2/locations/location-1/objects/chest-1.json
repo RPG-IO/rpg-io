@@ -6,6 +6,9 @@
     "assetPath": "assets/diamond.png",
     "description": "Świecący diament"
   }},
+  "onApproach": {
+    "tag": "dialogue", "type": "show-description", "assetPath": "assets/key.png", "description": "Potrzebujesz klucz, żeby otworzyć skrzynię."
+  },
   "assetPath": "assets/chest.png",
   "position": { "row": 4, "col": 5 }
 }
