@@ -116,7 +116,8 @@ public final class ActionEngine {
       }
       controller().getPopupController().openTextPopup(result.getMessage(),
           controller().getWindowCenterX(), controller().getWindowCenterY());
-      player.addPoints(reward);
+      if (player.getStrength() > opponent.getStrength())
+        player.addPoints(reward);
     });
   }
 
