@@ -85,9 +85,10 @@ public final class ActionEngine {
   public void acceptQuizResult(boolean correct, int pointsCount) {
     var controller = controller();
     if (correct) {
-      controller.getPlayerController().addPoints(pointsCount);
-      if (pointsCount > 0)
+      if (pointsCount > 0) {
         controller.getPopupController().openPointsPopup(pointsCount, controller.getWindowCenterX(), controller.getWindowCenterY());
+        controller.getPlayerController().addPoints(pointsCount);
+      }
     } else {
       controller.getPopupController().hidePopup();
       logger.info("Wrong answer provided");
@@ -107,8 +108,7 @@ public final class ActionEngine {
       GameObject opponent = action.getOpponent();
       int reward = action.getReward();
       BattleResult result;
-      if (player.getPoints() > opponent.getStrength()) {
-        player.addPoints(reward);
+      if (player.getStrength() > opponent.getStrength()) {
         player.addDefeatedOpponent(opponent.getTag());
         result = new BattleResult(BattleResult.Result.VICTORY, reward);
       } else if (player.getStrength() < opponent.getStrength()) {
@@ -118,7 +118,14 @@ public final class ActionEngine {
       }
       controller().getPopupController().openTextPopup(result.getMessage(),
           controller().getWindowCenterX(), controller().getWindowCenterY());
+      if (player.getStrength() > opponent.getStrength())
+        player.addPoints(reward);
     });
+  }
+
+  public void onAction(LevelUpAction action) {
+    controller().getPopupController().openTextPopup("Achieved level " + action.newLevel + "!",
+            controller().getWindowCenterX(), controller().getWindowCenterY());
   }
 
   public void onAction(CollectAction action) {

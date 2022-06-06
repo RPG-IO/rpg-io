@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+
 public class PopupController {
 
   private final Stage popupStage = new Stage(StageStyle.TRANSPARENT);
@@ -129,7 +130,6 @@ public class PopupController {
       popupStage.showAndWait();
     }
   }
-
 
   public void hidePopup() {
     popupStage.hide();
