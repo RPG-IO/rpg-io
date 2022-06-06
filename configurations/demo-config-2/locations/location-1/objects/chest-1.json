@@ -1,0 +1,6 @@
+{
+  "tag": "chest-1",
+  "onLeftClick": {"tag": "dialogue", "type": "dialogue", "statements": ["A very old chest."]},
+  "assetPath": "assets/chest.png",
+  "position": { "row": 4, "col": 5 }
+}

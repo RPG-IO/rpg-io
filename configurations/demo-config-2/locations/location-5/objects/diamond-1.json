@@ -1,0 +1,10 @@
+{
+  "tag": "diamond-1",
+  "position": { "row": 8, "col": 9 },
+  "assetPath": "assets/diamond.png",
+  "onLeftClick": {
+    "tag": "get-item",
+    "type": "dialogue",
+    "statements": ["diamond"]
+  }
+}

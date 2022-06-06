@@ -1,0 +1,6 @@
+{
+  "tag": "welcome-goblin",
+  "assetPath": "assets/goblin.png",
+  "onApproach": {"tag": "introduction", "type": "dialogue", "statements": ["Welcome!"]},
+  "position": { "row": 7, "col": 2 }
+}
