@@ -94,18 +94,6 @@ public final class ActionEngine {
     }
   }
 
-  public void acceptBattleReflexResult(boolean won, int pointsCount) {
-    var controller = controller();
-    if (won) {
-      controller.getPlayerController().addPoints(pointsCount);
-      if (pointsCount > 0)
-        controller.getPopupController().openPointsPopup(pointsCount, controller.getWindowCenterX(), controller.getWindowCenterY());
-    } else {
-      controller.getPopupController().hidePopup();
-      logger.info("Lost");
-    }
-  }
-
   public void onAction(GameEndAction action) {
     actionGuard(action, () -> {
       var controller = controller();
@@ -114,31 +102,42 @@ public final class ActionEngine {
   }
 
   public void onAction(BattleAction action) {
-//    actionGuard(action, () -> {
-//      Player player = controller().getPlayerController().getPlayer();
-//      GameObject opponent = action.getOpponent();
-//      int reward = action.getReward();
-//      BattleResult result;
-//      if (player.getPoints() > opponent.getStrength()) {
-//        player.addPoints(reward);
-//        player.addDefeatedOpponent(opponent.getTag());
-//        result = new BattleResult(BattleResult.Result.VICTORY, reward);
-//      } else if (player.getStrength() < opponent.getStrength()) {
-//        result = new BattleResult(BattleResult.Result.DEFEAT, 0);
-//      } else {
-//        result = new BattleResult(BattleResult.Result.DRAW, 0);
-//      }
-//      controller().getPopupController().openTextPopup(result.getMessage(),
-//          controller().getWindowCenterX(), controller().getWindowCenterY());
-//    });
-    Player player=controller().getPlayerController().getPlayer();
-    controller().getPopupController().openBattlePopup(controller(),player,action.getOpponent(), controller().getWindowCenterX(),controller().getWindowCenterY());
+    actionGuard(action, () -> {
+      Player player = controller().getPlayerController().getPlayer();
+      GameObject opponent = action.getOpponent();
+      int reward = action.getReward();
+      BattleResult result;
+      if (player.getPoints() > opponent.getStrength()) {
+        player.addPoints(reward);
+        player.addDefeatedOpponent(opponent.getTag());
+        result = new BattleResult(BattleResult.Result.VICTORY, reward);
+      } else if (player.getStrength() < opponent.getStrength()) {
+        result = new BattleResult(BattleResult.Result.DEFEAT, 0);
+      } else {
+        result = new BattleResult(BattleResult.Result.DRAW, 0);
+      }
+      controller().getPopupController().openTextPopup(result.getMessage(),
+          controller().getWindowCenterX(), controller().getWindowCenterY());
+    });
   }
 
   public void onAction(BattleReflexAction action) {
-    actionGuard(action, () -> {
-      controller().getPopupController().openBattleReflexPopup(() -> acceptBattleReflexResult(true, action.getReward()),  () -> acceptBattleReflexResult(false, 0), controller().getWindowCenterX(), controller().getWindowCenterY());
-    });
+    actionGuard(action, () -> controller().getPopupController().openBattleReflexPopup(action.getReward(),
+        (won, points) -> acceptBattleReflexResult(action.getEmitter(), won, points),
+        controller().getWindowCenterX(),
+        controller().getWindowCenterY()));
+  }
+
+  public void acceptBattleReflexResult(GameObject actionOwner, boolean won, int pointsCount) {
+    var controller = controller();
+    if (won) {
+      if (pointsCount > 0)
+        controller.getPopupController().openPointsPopup(pointsCount, controller.getWindowCenterX(), controller.getWindowCenterY());
+      controller.removeObjectFromModel(actionOwner);
+      controller.getPlayerController().addPoints(pointsCount);
+    } else {
+      controller.getPopupController().hidePopup();
+    }
   }
 
   public void onAction(CollectAction action) {

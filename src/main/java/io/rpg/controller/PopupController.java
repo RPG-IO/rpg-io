@@ -13,6 +13,10 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.util.concurrent.Callable;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+
 public class PopupController {
 
   private final Stage popupStage = new Stage(StageStyle.TRANSPARENT);
@@ -75,8 +79,8 @@ public class PopupController {
     }
   }
 
-  public void openBattleReflexPopup(Runnable successCallback, Runnable failureCallback, int x, int y){
-    BattleReflexPopup popupScene = new BattleReflexPopup(successCallback, failureCallback);
+  public void openBattleReflexPopup(int pointsPerSecond, BiConsumer<Boolean, Integer> callback, int x, int y){
+    BattleReflexPopup popupScene = new BattleReflexPopup(pointsPerSecond, callback);
     popupScene.setCloseButtonActionListener((event) -> hidePopup());
     popupStage.setScene(popupScene);
     popupStage.onShownProperty().setValue(event -> {

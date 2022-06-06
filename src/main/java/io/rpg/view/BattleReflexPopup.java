@@ -1,6 +1,5 @@
 package io.rpg.view;
 
-import io.rpg.model.object.Player;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,34 +15,35 @@ import javafx.scene.paint.Color;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.function.BiConsumer;
 
 public class BattleReflexPopup extends Scene {
 
   final int SPACING = 25;
-  final int POINTS_PER_SECOND = 50;
-  final int PENALTY = -10;
   private final char[] singleMove = {'W', 'A', 'S', 'D'};
   private final Random random;
   private final String sequence;
   private final int sequenceLength = 5;
   private final Label[] characterLabels;
   private final ImageView[] timerDots;
-  private final Runnable successCallback;
-  private final Runnable failureCallback;
+
+  private final BiConsumer<Boolean, Integer> callback;
+  private final int pointsPerSecond;
   private int currentSequencePosition;
   private final Timer timer;
   private int timeToCountDown;
   private final Button button;
 
 
-  public BattleReflexPopup(Runnable successCallback, Runnable failureCallback) {
+  public BattleReflexPopup(int pointsPerSecond, BiConsumer<Boolean, Integer> callback) {
     super(new Group(), Color.TRANSPARENT);
 
-    this.successCallback = successCallback;
-    this.failureCallback = failureCallback;
+    this.callback = callback;
+    this.pointsPerSecond = pointsPerSecond;
 
-    this.timer = new java.util.Timer();
+    this.timer = new Timer();
     this.timeToCountDown = 5;
+
     this.random = new Random();
     this.timerDots = new ImageView[timeToCountDown];
     this.sequence = generateRandomSequence(sequenceLength);
@@ -124,11 +124,11 @@ public class BattleReflexPopup extends Scene {
   }
 
   public String generateRandomSequence(int length) {
-    String str = "";
+    StringBuilder str = new StringBuilder();
     for (int i = 0; i < length; i++) {
-      str += singleMove[random.nextInt(singleMove.length)];
+      str.append(singleMove[random.nextInt(singleMove.length)]);
     }
-    return str;
+    return str.toString();
   }
 
   private void timerTick() {
@@ -142,13 +142,12 @@ public class BattleReflexPopup extends Scene {
   }
 
   public void win() {
-    successCallback.run();
+    callback.accept(true, timeToCountDown * pointsPerSecond);
     timer.cancel();
   }
 
   public void lose() {
-//    player.removePoints(PENALTY);
-    failureCallback.run();
+    callback.accept(false, 0);
   }
 
   public void setCloseButtonActionListener(EventHandler<ActionEvent> value) {
