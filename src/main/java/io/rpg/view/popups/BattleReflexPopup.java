@@ -1,5 +1,6 @@
-package io.rpg.view;
+package io.rpg.view.popups;
 
+import io.rpg.view.GameObjectView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,7 +20,7 @@ import java.util.function.BiConsumer;
 
 public class BattleReflexPopup extends Scene {
 
-  final int SPACING = 25;
+  private final int SPACING = 25;
   private final char[] singleMove = {'W', 'A', 'S', 'D'};
   private final Random random;
   private final String sequence;
@@ -33,6 +34,9 @@ public class BattleReflexPopup extends Scene {
   private final Timer timer;
   private int timeToCountDown;
   private final Button button;
+
+  private static String backgroundPath;
+  private static String buttonPath;
 
 
   public BattleReflexPopup(int pointsPerSecond, BiConsumer<Boolean, Integer> callback) {
@@ -50,12 +54,11 @@ public class BattleReflexPopup extends Scene {
     this.button = new Button("OK");
 
     Group group = new Group();
-    //TODO: load asset path from config
-    ImageView imageView = new ImageView(GameObjectView.resolvePathToJFXFormat("assets/popup-background.png"));
+    ImageView background = new ImageView(backgroundPath);
 
     ImageView swordIcon = new ImageView(GameObjectView.resolvePathToJFXFormat("assets/sword6.png"));
-    imageView.setX(0);
-    imageView.setY(0);
+    background.setX(0);
+    background.setY(0);
 
     this.characterLabels = new Label[sequenceLength];
     double centerX = getX() + getWidth() / 2;
@@ -64,19 +67,19 @@ public class BattleReflexPopup extends Scene {
     double allLabelsWidth = sequenceLength * singleLabelWidth + (sequenceLength - 1) * SPACING;
     this.currentSequencePosition = 0;
 
-    ImageView imageViewButton = new ImageView(GameObjectView.resolvePathToJFXFormat("assets/button-image.png"));
-    button.setLayoutX(imageView.getImage().getWidth() / 2 - imageViewButton.getImage().getWidth() / 2);
-    button.setLayoutY(imageView.getImage().getHeight() - imageViewButton.getImage().getHeight() / 2);
+    ImageView imageViewButton = new ImageView(buttonPath);
+    button.setLayoutX(background.getImage().getWidth() / 2 - imageViewButton.getImage().getWidth() / 2);
+    button.setLayoutY(background.getImage().getHeight() - imageViewButton.getImage().getHeight() / 2);
     button.setGraphic(imageViewButton);
     button.setContentDisplay(ContentDisplay.CENTER);
     button.setStyle("-fx-background-color: transparent;");
-    group.getChildren().add(imageView);
+    group.getChildren().add(background);
     group.getChildren().add(button);
 
     for (int i = 0; i < 5; i++) {
       timerDots[i] = new ImageView(GameObjectView.resolvePathToJFXFormat("assets/button-image.png"));
-      timerDots[i].setLayoutX(i * SPACING + i * singleLabelWidth + imageView.getImage().getWidth() / 2 - allLabelsWidth / 2);
-      timerDots[i].setLayoutY(centerY + imageView.getImage().getHeight() / 2 + 50);
+      timerDots[i].setLayoutX(i * SPACING + i * singleLabelWidth + background.getImage().getWidth() / 2 - allLabelsWidth / 2);
+      timerDots[i].setLayoutY(centerY + background.getImage().getHeight() / 2 + 50);
       timerDots[i].setScaleX(0.5);
       timerDots[i].setScaleY(0.5);
       group.getChildren().add(timerDots[i]);
@@ -87,9 +90,9 @@ public class BattleReflexPopup extends Scene {
     for (int i = 0; i < sequenceLength; i++) {
       this.characterLabels[i] = new Label(String.valueOf(sequence.charAt(i)));
       this.characterLabels[i].setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + 18);
-      this.characterLabels[i].setLayoutX(i * SPACING + i * singleLabelWidth + imageView.getImage().getWidth() / 2 - allLabelsWidth / 2);
-      this.characterLabels[i].setLayoutY(centerY + imageView.getImage().getHeight() / 2);
-      swordIcon.setLayoutX(imageView.getImage().getWidth() / 2);
+      this.characterLabels[i].setLayoutX(i * SPACING + i * singleLabelWidth + background.getImage().getWidth() / 2 - allLabelsWidth / 2);
+      this.characterLabels[i].setLayoutY(centerY + background.getImage().getHeight() / 2);
+      swordIcon.setLayoutX(background.getImage().getWidth() / 2);
       swordIcon.setLayoutY(20);
       group.getChildren().add(characterLabels[i]);
       double x = characterLabels[i].getLayoutX();
@@ -102,15 +105,17 @@ public class BattleReflexPopup extends Scene {
 
     setOnKeyPressed((event) -> {
       String str = event.getCode().getChar();
-      if (str.equals(String.valueOf(sequence.charAt(currentSequencePosition)))) {
-        this.characterLabels[currentSequencePosition].setStyle("-fx-font-family: Monospaced; -fx-text-fill: #2bee1e; -fx-font-weight: bold; -fx-font-size: " + 18);
-        currentSequencePosition++;
-        if (this.currentSequencePosition == sequenceLength) {
-          win();
+      if (currentSequencePosition < sequenceLength) {
+        if (str.equals(String.valueOf(sequence.charAt(currentSequencePosition)))) {
+          this.characterLabels[currentSequencePosition].setStyle("-fx-font-family: Monospaced; -fx-text-fill: #2bee1e; -fx-font-weight: bold; -fx-font-size: " + 18);
+          currentSequencePosition++;
+          if (this.currentSequencePosition == sequenceLength) {
+            win();
+          }
+        } else {
+          this.characterLabels[currentSequencePosition].setStyle("-fx-font-family: Monospaced; -fx-text-fill: #fa2902; -fx-font-weight: bold; -fx-font-size: " + 18);
+          currentSequencePosition++;
         }
-      } else {
-        this.characterLabels[currentSequencePosition].setStyle("-fx-font-family: Monospaced; -fx-text-fill: #fa2902; -fx-font-weight: bold; -fx-font-size: " + 18);
-        currentSequencePosition++;
       }
     });
 
@@ -121,6 +126,14 @@ public class BattleReflexPopup extends Scene {
     }, 1000, 1000);
     button.setOnAction((event) -> {
     });
+  }
+
+  public static void setBackgroundPath(String backgroundPath) {
+    BattleReflexPopup.backgroundPath = backgroundPath;
+  }
+
+  public static void setButtonPath(String buttonPath) {
+    BattleReflexPopup.buttonPath = buttonPath;
   }
 
   public String generateRandomSequence(int length) {

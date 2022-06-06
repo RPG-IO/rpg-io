@@ -2,7 +2,7 @@ package io.rpg.controller;
 
 import io.rpg.model.object.Player;
 import io.rpg.model.object.Question;
-import io.rpg.view.BattleReflexPopup;
+import io.rpg.view.popups.BattleReflexPopup;
 import io.rpg.view.popups.DialoguePopup;
 import io.rpg.view.popups.QuestionPopup;
 import io.rpg.model.data.Inventory;
@@ -13,9 +13,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class PopupController {
 
