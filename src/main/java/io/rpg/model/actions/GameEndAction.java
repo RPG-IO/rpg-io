@@ -1,9 +1,17 @@
 package io.rpg.model.actions;
 
-public class GameEndAction implements Action {
+import io.rpg.model.actions.condition.Condition;
+
+public class GameEndAction extends BaseAction {
   public final String description;
 
-  public GameEndAction(String description) {
+  public GameEndAction(String description, Condition condition) {
+    super(condition);
     this.description = description;
+  }
+
+  @Override
+  public void acceptActionEngine(ActionEngine engine) {
+    engine.onAction(this);
   }
 }

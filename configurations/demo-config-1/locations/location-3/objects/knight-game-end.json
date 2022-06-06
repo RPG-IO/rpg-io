@@ -1,0 +1,13 @@
+{
+  "tag": "knight-game-end",
+  "assetPath": "assets/knight.png",
+  "onLeftClick": {
+    "tag": "actiontag",
+    "type": "game-end",
+    "description": "You won, congratulations!",
+    "condition": {
+      "type": "level-required",
+      "level": 2
+    }
+  }
+}

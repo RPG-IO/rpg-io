@@ -1,5 +1,5 @@
 {
-  "tag": "object-4",
+  "tag": "zombie",
   "assetPath": "assets/zombie.png",
   "onLeftClick": {
     "tag": "dialogue-action",
@@ -15,6 +15,16 @@
       }
 
     ],
-    "reward": 5
+    "reward": 5,
+    "condition": {
+      "type": "defeat-opponent",
+      "opponent-tag": "bandit"
+    }
+  },
+  "onRightClick": {
+    "tag": "description",
+    "type": "show-description",
+    "assetPath": "assets/zombie.png",
+    "description": "To unlock the quiz you need to defeat the bandit!"
   }
 }

@@ -1,7 +1,8 @@
 package io.rpg;
 
 import com.kkafara.rt.Result;
-import javafx.animation.AnimationTimer;
+import io.rpg.wrapper.WrapperController;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.Level;
@@ -9,15 +10,27 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 
-import java.io.IOException;
-
+/**
+ * Entry point of the app.
+ */
 public class Main extends Application {
+
+  private final Logger logger = LogManager.getLogger(Main.class);
+
   @Override
   public void start(Stage stage) throws IOException {
     Configurator.setRootLevel(Level.DEBUG);
-    Logger logger = LogManager.getLogger(Main.class);
+    String path = getParameters().getNamed().get("config");
+    if (path == null) {
+      WrapperController wrapperController = WrapperController.load();
+      wrapperController.show(stage);
+    } else {
+      fastStart(path, stage);
+    }
+  }
 
-    Initializer worldInitializer = new Initializer("configurations/demo-config-1", stage);
+  private void fastStart(String path, Stage stage) {
+    Initializer worldInitializer = new Initializer(path);
     Result<Game, Exception> initializationResult = worldInitializer.initialize();
 
     if (initializationResult.isErr()) {
@@ -36,24 +49,8 @@ public class Main extends Application {
       return;
     }
 
-    // TODO: 04.05.2022 Null check for game was already made but IDE still screams
     Game game = initializationResult.getOk();
     game.start(stage);
-
-    AnimationTimer animationTimer = new AnimationTimer() {
-      long lastUpdate = -1;
-
-      @Override
-      public void handle(long now) {
-        if (lastUpdate != -1) {
-          float difference = (now - lastUpdate) / 1e6f;
-
-          game.getController().getPlayerController().getPlayer().update(difference);
-        }
-        lastUpdate = now;
-      }
-    };
-    animationTimer.start();
   }
 
   public static void main(String[] args) {

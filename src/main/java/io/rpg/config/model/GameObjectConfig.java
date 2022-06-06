@@ -145,6 +145,16 @@ public class GameObjectConfig implements ConfigWithValidation {
       builder.append("No position provided");
     }
 
+    if (onRightClick != null) {
+      onRightClick.validate().ifErr(err -> builder.combine(err.getMessage()));
+    }
+    if (onLeftClick != null) {
+      onLeftClick.validate().ifErr(err -> builder.combine(err.getMessage()));
+    }
+    if (onApproach != null) {
+      onApproach.validate().ifErr(err -> builder.combine(err.getMessage()));
+    }
+
     return builder.isEmpty() ? Result.ok() : Result.err(new Exception(builder.toString()));
   }
 

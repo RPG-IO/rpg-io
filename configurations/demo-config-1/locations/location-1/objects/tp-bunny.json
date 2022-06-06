@@ -1,0 +1,13 @@
+{
+  "tag": "tp-bunny",
+  "onLeftClick": {
+    "tag": "change-location",
+    "type": "location-change",
+    "target-location": "location-2",
+    "target-position": {"row": 9, "col": 0},
+    "condition": {
+      "type": "item-required",
+      "item-tag": "key"
+    }
+  }
+}

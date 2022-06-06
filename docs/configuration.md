@@ -8,8 +8,9 @@
 4. [Location configuration](#location-configuration)
 5. [`GameObject` configuration](#gameobject-configuration)
 6. [Action configuration](#action-configuration)
-7. [Example of full configuration structure](#example-of-full-configuration-structure)
-8. [Example configurations](#example-configurations)
+7. [Condition configuration](#condition-configuration)
+8. [Example of full configuration structure](#example-of-full-configuration-structure)
+9. [Example configurations](#example-configurations)
 
 ## Root directory
 
@@ -35,7 +36,7 @@ following props:
 * `locations` - List of location tags. All the locations specified in `locations` are loaded, however this field is left
     for backward-compatibility.
 * `player` - Player object specification. It follows the `GameObject` specification
-    rules. (TODO: add hyperlink to that section)
+    rules. See [game object configuration][#game-object-configuration]
 * `rootLocation` - `tag` of first-to-be-displayed location.
 * `textPopupBackground` - Url of a picture to be used as a background for all TextPopups
 * `textPopupButton` - Url of a picture to be used as a button image for all TextPopups
@@ -177,10 +178,12 @@ common part first. Each action consists of following properties
 
 * `tag` - Action tag; this is required however it is not used for now. Action tag does not have to be unique for now.
 * `type` - One of action types mentioned above.
-* *(optional)* `before` - Configuration of action to be triggered before the proper action is executed,
-  e.g. you may want to change location before starting the dialogue. (TODO: Logic is not implemented as for now).
+* *(optional)* `condition` - Condition configuration. The action won't be executed until the condition is satisfied.
+    Aliases: `requires`. See [condition configuration](#condition-configuration)
+* *(optional)* `before` - Configuration of action to be triggered before the proper action is executed.
+  e.g. you may want to change location before starting the dialogue.
 * *(optional)* `after` - Configuration of action to be triggered after the proper action is executed, e.g. you may want
-    give player some output or item. (TODO: Logic is not implemented as for now).
+    give player some output or item. 
 
 Let's look at specific action types:
 
@@ -211,7 +214,24 @@ Let's look at specific action types:
     as a list. Aliases: `text`, `dialogue-statements`, `dialogueStatements`. \\
   * `assetPath` - Path to the image with background for the dialogue window. As any path, it must be eiter absolute or relative to the engine's source root.
     Aliases: `asset-path`, `asset`.
+* `battle` -- No props required.
 
+## Condition configuration
+
+Describes condition that must be satisfied before the action can be executed.
+
+Condition consists of following properties:
+
+* `type` - One of types:
+  * `item-required` - Requires following props:
+    * `item-tag` - Tag of the item that must be in the player inventory for the action to be executed.
+        Aliases: `tag`, `itemTag`.
+  * `defeat-opponent` - Requires following props:
+    * `opponent-tag` - Tag of the opponent that must be defeated to unlock the action. Note that as for now, the engine
+        does not check whether specified object exists or has battle action set. For now you must guarantee
+        the correctness. Aliases: `tag`, `opponentTag`.
+  * `level-required` - Requires following props:
+    * `level` - Required player level. Player's level must be >= given value for the condition to be satisfied.
 
 ## Example of full configuration structure
 

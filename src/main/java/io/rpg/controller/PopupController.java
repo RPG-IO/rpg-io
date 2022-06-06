@@ -9,14 +9,11 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
 
 public class PopupController {
 
   private final Stage popupStage = new Stage(StageStyle.TRANSPARENT);
   private final Image coinImage = new Image("file:assets/coin.png");
-  private final Queue<Runnable> methods = new ArrayDeque<>();
 
   public PopupController() {
     // close popup after clicking aside
@@ -31,24 +28,29 @@ public class PopupController {
     TextPopup popupScene = new TextPopup(text);
     popupStage.setScene(popupScene);
 
-    popupStage.show();
+    popupScene.setButtonCallback(event -> popupStage.hide());
 
-    popupStage.setX(x - popupScene.getWidth() / 2);
-    popupStage.setY(y - popupScene.getHeight() / 2);
-
-    popupScene.setButtonCallback(event -> hidePopup());
+    popupStage.onShownProperty().setValue(event -> {
+      popupStage.setX(x - popupScene.getWidth() / 2);
+      popupStage.setY(y - popupScene.getHeight() / 2);
+    });
+    if (!popupStage.isShowing()) {
+      popupStage.showAndWait();
+    }
   }
 
   public void openTextImagePopup(String text, Image image, int x, int y) {
     TextImagePopup popupScene = new TextImagePopup(text, image);
     popupStage.setScene(popupScene);
 
-    popupStage.show();
-
-    popupStage.setX(x - popupScene.getWidth() / 2);
-    popupStage.setY(y - popupScene.getHeight() / 2);
-
-    popupScene.setButtonCallback(event -> hidePopup());
+    popupScene.setButtonCallback(event -> popupStage.hide());
+    popupStage.onShownProperty().setValue(event -> {
+      popupStage.setX(x - popupScene.getWidth() / 2);
+      popupStage.setY(y - popupScene.getHeight() / 2);
+    });
+    if (!popupStage.isShowing()) {
+      popupStage.showAndWait();
+    }
   }
 
   public void openPointsPopup(int pointsCount, int x, int y) {
@@ -60,39 +62,43 @@ public class PopupController {
     popupScene.setSuccessCallback(successCallback);
     popupScene.setFailureCallback(failureCallback);
     popupStage.setScene(popupScene);
-    popupStage.show();
-    popupStage.setX(x - popupScene.getWidth() / 2);
-    popupStage.setY(y - popupScene.getHeight() / 2);
+    popupStage.onShownProperty().setValue(event -> {
+      popupStage.setX(x - popupScene.getWidth() / 2);
+      popupStage.setY(y - popupScene.getHeight() / 2);
+    });
+    if (!popupStage.isShowing()) {
+      popupStage.showAndWait();
+    }
   }
 
   public void openQuestionPopup(Question question, int x, int y) {
     QuestionPopup popupScene = new QuestionPopup(question);
     popupStage.setScene(popupScene);
-    popupStage.show();
-    popupStage.setX(x - popupScene.getWidth() / 2);
-    popupStage.setY(y - popupScene.getHeight() / 2);
+    popupStage.onShownProperty().setValue(event -> {
+      popupStage.setX(x - popupScene.getWidth() / 2);
+      popupStage.setY(y - popupScene.getHeight() / 2);
+    });
+    if (!popupStage.isShowing()) {
+      popupStage.showAndWait();
+    }
   }
   
   public void openDialoguePopup(String text, Image npcImage, int x, int y) {
     DialoguePopup popupScene = new DialoguePopup(text, npcImage);
     popupStage.setScene(popupScene);
 
-    popupStage.show();
+    popupStage.onShownProperty().setValue(event -> {
+      popupStage.setX(x - popupScene.getWidth() / 2);
+      popupStage.setY(y - popupScene.getHeight() / 2);
+    });
 
-    popupStage.setX(x - popupScene.getWidth() / 2);
-    popupStage.setY(y - popupScene.getHeight() / 2);
-
-    popupScene.setCloseButtonCallback(event -> hidePopup());
+    popupScene.setCloseButtonCallback(event -> popupStage.hide());
+    if (!popupStage.isShowing()) {
+      popupStage.showAndWait();
+    }
   }
 
   public void hidePopup() {
     popupStage.hide();
-    if (!methods.isEmpty()) {
-      methods.remove().run();
-    }
-  }
-
-  public void addMethodToQueue(Runnable method) {
-    methods.add(method);
   }
 }

@@ -2,6 +2,7 @@ package io.rpg.controller;
 
 import com.kkafara.rt.Result;
 import io.rpg.model.actions.*;
+import io.rpg.model.actions.condition.ConditionEngine;
 import io.rpg.model.data.KeyboardEvent;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
@@ -13,10 +14,6 @@ import io.rpg.util.BattleResult;
 import io.rpg.view.GameEndView;
 import io.rpg.view.GameObjectView;
 import io.rpg.view.LocationView;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.LinkedHashMap;
-import java.util.List;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -26,6 +23,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
+import java.util.List;
+
 public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Observer, ActionConsumer {
   private Scene currentView;
   private LinkedHashMap<String, LocationModel> tagToLocationModelMap;
@@ -34,7 +36,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
   private Logger logger;
   private final PopupController popupController = new PopupController();
   private PlayerController playerController;
+  private GameEndController gameEndController;
   private Stage mainStage;
+  private final ConditionEngine conditionEngine;
+  private final ActionEngine actionEngine;
 
 
   public Controller() {
@@ -42,6 +47,10 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
     tagToLocationModelMap = new LinkedHashMap<>();
     tagToLocationViewMap = new LinkedHashMap<>();
+
+    conditionEngine = new ConditionEngine(this);
+    actionEngine = new ActionEngine(this);
+    gameEndController = new GameEndController();
   }
 
   public Controller(LinkedHashMap<String, LocationModel> tagToLocationModelMap,
@@ -55,6 +64,9 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     // TODO: handle errors
     this.currentModel = this.tagToLocationModelMap.get(rootTag);
     this.currentView = this.tagToLocationViewMap.get(rootTag);
+
+    conditionEngine = new ConditionEngine(this);
+    actionEngine = new ActionEngine(this);
   }
 
   public void setMainStage(Stage mainStage) {
@@ -69,6 +81,14 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         player.setRightPressed(false);
       }
     });
+  }
+
+  public void setCurrentModel(@NotNull LocationModel model) {
+    currentModel = model;
+  }
+
+  public Stage getMainStage() {
+    return mainStage;
   }
 
   public void setModel(@NotNull LocationModel model) {
@@ -87,105 +107,11 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       return;
     }
 
-    Class<?>[] args = {action.getClass()};
-    Method onSpecificAction;
+    logger.info("Consuming action");
 
-    try {
-      onSpecificAction = this.getClass().getDeclaredMethod("onAction", args);
-    } catch (NoSuchMethodException e) {
-      logger.error("onAction for " + action.getClass().getSimpleName() + "is not implemented");
-      return;
-    }
-
-    try {
-      onSpecificAction.invoke(this, action);
-    } catch (IllegalAccessException | InvocationTargetException e) {
-      throw new RuntimeException(e);
-    }
+    action.acceptActionEngine(actionEngine);
   }
 
-  private void onAction(LocationChangeAction action) {
-    if (!this.tagToLocationModelMap.containsKey(action.destinationLocationTag)) {
-      logger.error("Unknown location tag");
-      return;
-    }
-
-    LocationView nextView = this.tagToLocationViewMap.get(action.destinationLocationTag);
-    LocationModel nextModel = this.tagToLocationModelMap.get(action.destinationLocationTag);
-
-    playerController.teleportTo(nextModel, nextView, action.playerPosition);
-
-    this.currentModel = nextModel;
-    this.currentView = nextView;
-    mainStage.setScene(nextView);
-  }
-
-  private void onAction(DialogueAction action) {
-    popupController.openDialoguePopup(action.text, action.image, getWindowCenterX(), getWindowCenterY());
-  }
-
-  private void onAction(ShowDescriptionAction action) {
-    if (!action.description.isEmpty()) {
-      popupController.openTextImagePopup(action.description, action.image, getWindowCenterX(), getWindowCenterY());
-    }
-  }
-
-  private void onAction(QuizAction action) {
-    int pointsCount = action.getPointsToEarn();
-    popupController.openQuestionPopup(
-        action.question,
-        getWindowCenterX(), getWindowCenterY(),
-        () -> acceptQuizResult(true, pointsCount),
-        () -> acceptQuizResult(false, 0)
-    );
-    action.setPointsToEarn(0);
-  }
-
-  public void acceptQuizResult(boolean correct, int pointsCount) {
-    if (correct) {
-      if (pointsCount > 0) {
-        popupController.openPointsPopup(pointsCount, getWindowCenterX(), getWindowCenterY());
-        playerController.addPoints(pointsCount);
-      } else {
-        popupController.hidePopup();
-      }
-    } else {
-      popupController.hidePopup();
-      System.out.println("wrong answer");
-    }
-  }
-
-  private void onAction(GameEndAction action) {
-    GameEndView view = GameEndView.load();
-    view.setDescription(action.description);
-    double prevWidth = mainStage.getWidth();
-    double prevHeight = mainStage.getHeight();
-    mainStage.setScene(view);
-    mainStage.setWidth(prevWidth);
-    mainStage.setHeight(prevHeight);
-  }
-
-  private void onAction(BattleAction action) {
-    Player player = playerController.getPlayer();
-    GameObject opponent = action.getOpponent();
-    int reward = action.getReward();
-    BattleResult result;
-    if (player.getStrength() > opponent.getStrength()) {
-      player.addPoints(reward);
-      result = new BattleResult(BattleResult.Result.VICTORY, reward);
-    } else if (player.getStrength() < opponent.getStrength()) {
-      result = new BattleResult(BattleResult.Result.DEFEAT, 0);
-    } else {
-      result = new BattleResult(BattleResult.Result.DRAW, 0);
-    }
-    popupController.openTextPopup(result.getMessage(), getWindowCenterX(), getWindowCenterY());
-  }
-
-  private void onAction(LevelUpAction action) {
-    Runnable queuedAction = () -> popupController.openTextPopup("Achieved level " + action.newLevel + "!", getWindowCenterX(), getWindowCenterY());
-    popupController.addMethodToQueue(queuedAction);
-  }
-  
   public Scene getView() {
     return currentView;
   }
@@ -230,20 +156,17 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
         case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
         case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
         case Q -> popupController.openQuestionPopup(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'), getWindowCenterX(), getWindowCenterY());
-        case L -> consumeAction(new LocationChangeAction("location-2", new Position(1, 2)));
-        case U -> consumeAction(new GameEndAction("You have pressed the forbidden button"));
+        case L -> consumeAction(new LocationChangeAction("location-2", new Position(1, 2), null));
+        case U -> consumeAction(new GameEndAction("You have pressed the forbidden button", null));
       }
     }
-    // } else if (payload.getEventType() == KeyEvent.KEY_RELEASED) {
-    //
-    // }
   }
 
-  private int getWindowCenterX() {
+  public int getWindowCenterX() {
     return (int) (currentView.getWindow().getX() + currentView.getWindow().getWidth() / 2);
   }
 
-  private int getWindowCenterY() {
+  public int getWindowCenterY() {
     return (int) (currentView.getWindow().getY() + currentView.getWindow().getHeight() / 2);
   }
 
@@ -273,6 +196,17 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
     return playerController;
   }
 
+  public GameEndController getGameEndController() {
+    return gameEndController;
+  }
+
+  public PopupController getPopupController() {
+    return popupController;
+  }
+
+  public ConditionEngine getConditionEngine() {
+    return conditionEngine;
+  }
 
   public static class Builder {
     private final Controller controller;
