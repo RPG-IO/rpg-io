@@ -45,8 +45,10 @@
     { "tag": "mul-1", "position": { "row": 9, "col": 9 }, "assetPath": "assets/bush.png" }
   ],
   "backgroundPath": "assets/map.png",
-  "west": "location-5",
-  "south": "location-2",
+  "directionToLocationMap": {
+    "WEST": "location-5",
+    "SOUTH": "location-2"
+  },
   "width": 10,
   "height": 10
 }

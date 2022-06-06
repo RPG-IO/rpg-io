@@ -1,10 +1,11 @@
 {
   "tag": "diamond-1",
-  "position": { "row": 8, "col": 9 },
+  "position": { "row": 7, "col": 2 },
   "assetPath": "assets/diamond.png",
   "onLeftClick": {
     "tag": "get-item",
-    "type": "dialogue",
-    "statements": ["diamond"]
+    "type": "collect",
+    "assetPath": "assets/diamond.png",
+    "description": "Przezroczysty diament. Wygląda na drogi."
   }
 }

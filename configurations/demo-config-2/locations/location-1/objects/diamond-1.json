@@ -4,7 +4,8 @@
   "assetPath": "assets/diamond.png",
   "onLeftClick": {
     "tag": "get-item",
-    "type": "dialogue",
-    "statements": ["diamond"]
+    "type": "collect",
+    "assetPath": "assets/diamond.png",
+    "description": "Świecący diament"
   }
 }

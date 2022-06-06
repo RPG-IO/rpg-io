@@ -1,6 +1,6 @@
 {
   "tag": "chest-1",
-  "onLeftClick": {"tag": "dialogue", "type": "dialogue", "statements": ["A very old chest."]},
+  "onLeftClick": {"tag": "dialogue", "type": "dialogue", "statements": ["Stara skrzynia. Ciekawe co jest w środku."]},
   "assetPath": "assets/chest.png",
   "position": { "row": 4, "col": 5 }
 }

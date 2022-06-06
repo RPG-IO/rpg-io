@@ -1,6 +1,6 @@
 {
   "tag": "chest-1",
   "position": { "row": 4, "col": 3 },
-  "onLeftClick": {"tag": "chest", "type": "dialogue", "statements": ["another chest"]},
+  "onLeftClick": {"tag": "chest", "type": "dialogue", "statements": ["Skrzynia, w której mogą być cenne przedmioty."]},
   "assetPath": "assets/chest.png"
 }
