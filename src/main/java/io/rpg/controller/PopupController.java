@@ -131,7 +131,6 @@ public class PopupController {
     }
   }
 
-
   public void hidePopup() {
     popupStage.hide();
   }

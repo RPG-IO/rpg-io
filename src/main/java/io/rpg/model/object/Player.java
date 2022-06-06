@@ -1,5 +1,7 @@
 package io.rpg.model.object;
 
+import io.rpg.model.actions.Action;
+import io.rpg.model.actions.LevelUpAction;
 import io.rpg.model.data.Inventory;
 import io.rpg.model.data.Position;
 import io.rpg.view.GameObjectView;
@@ -21,6 +23,8 @@ public class Player extends GameObject {
   private boolean downPressed;
   private GameObjectView gameObjectView;
   private int points;
+  private int level;
+  public Action levelUpAction;
   private final Inventory inventory;
 
   private final Set<String> defeatedOpponents;
@@ -34,6 +38,7 @@ public class Player extends GameObject {
     this.upPressed = false;
     this.downPressed = false;
     this.strength = 0;
+    this.level = 1;
     this.defeatedOpponents = new LinkedHashSet<>();
     this.inventory = new Inventory();
   }
@@ -100,6 +105,7 @@ public class Player extends GameObject {
 
   public void addPoints(int value) {
     points += value;
+    updateLevel();
   }
 
   public void removePoints(int value) {
@@ -112,6 +118,21 @@ public class Player extends GameObject {
 
   public Inventory getInventory() {
     return inventory;
+  }
+
+  public int getLevel() {
+    return level;
+  }
+
+  public void updateLevel() { //TODO: update different types of stats instead of just strength. Also do not use an arbitrary value
+    int levelDifference = points / 10;
+    points %= 10;
+    if (levelDifference != 0) {
+      level += levelDifference;
+      updateStrength(10);
+      levelUpAction = new LevelUpAction(level, null);
+      emitAction(levelUpAction);
+    }
   }
 
   public void addDefeatedOpponent(@NotNull String tag) {
