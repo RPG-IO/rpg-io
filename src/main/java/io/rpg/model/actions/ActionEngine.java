@@ -141,6 +141,7 @@ public final class ActionEngine {
       if (pointsCount > 0)
         controller.getPopupController().openPointsPopup(pointsCount, controller.getWindowCenterX(), controller.getWindowCenterY());
       controller.removeObjectFromModel(actionOwner);
+      controller.getPlayerController().getPlayer().addDefeatedOpponent(actionOwner.getTag());
       controller.getPlayerController().addPoints(pointsCount);
     } else {
       controller.getPopupController().hidePopup();
