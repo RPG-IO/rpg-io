@@ -17,7 +17,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class BattlePopup extends Scene {
+public class BattleReflexPopup extends Scene {
 
   final int SPACING = 25;
   final int POINTS_PER_SECOND = 50;
@@ -28,16 +28,20 @@ public class BattlePopup extends Scene {
   private final int sequenceLength = 5;
   private final Label[] characterLabels;
   private final ImageView[] timerDots;
+  private final Runnable successCallback;
+  private final Runnable failureCallback;
   private int currentSequencePosition;
   private final Timer timer;
   private int timeToCountDown;
-  private final Player player;
   private final Button button;
 
 
-  public BattlePopup(Player player) {
+  public BattleReflexPopup(Runnable successCallback, Runnable failureCallback) {
     super(new Group(), Color.TRANSPARENT);
-    this.player = player;
+
+    this.successCallback = successCallback;
+    this.failureCallback = failureCallback;
+
     this.timer = new java.util.Timer();
     this.timeToCountDown = 5;
     this.random = new Random();
@@ -132,20 +136,19 @@ public class BattlePopup extends Scene {
     if (timeToCountDown < 0) {
       timer.cancel();
       lose();
-      System.out.println("lose");
       return;
     }
     timerDots[timeToCountDown].setImage(new Image(GameObjectView.resolvePathToJFXFormat("assets/button-image-2.png")));
   }
 
   public void win() {
-    player.addPoints(timeToCountDown * POINTS_PER_SECOND);
-    System.out.println("win");
+    successCallback.run();
     timer.cancel();
   }
 
   public void lose() {
-    player.removePoints(PENALTY);
+//    player.removePoints(PENALTY);
+    failureCallback.run();
   }
 
   public void setCloseButtonActionListener(EventHandler<ActionEvent> value) {

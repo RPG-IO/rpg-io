@@ -24,7 +24,10 @@ public enum ActionType {
   Battle("battle"),
 
   @SerializedName("collect")
-  Collect("collect");
+  Collect("collect"),
+
+  @SerializedName("battle-reflex")
+  BattleReflex("battle-reflex");
 
   private final String asString;
 
@@ -44,6 +47,7 @@ public enum ActionType {
       case "show-description" -> { return Optional.of(ShowDescription); }
       case "dialogue" -> { return Optional.of(Dialogue); }
       case "battle" -> { return Optional.of(Battle); }
+      case "battle-reflex" -> { return Optional.of(BattleReflex); }
       case "collect" -> { return Optional.of(Collect); }
       default -> { return Optional.empty(); }
     }

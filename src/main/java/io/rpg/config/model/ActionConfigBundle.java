@@ -265,6 +265,10 @@ public class ActionConfigBundle implements ConfigWithValidation {
     return Result.ok();
   }
 
+  Result<Void, Exception> validateForBattleReflex() {
+    return Result.ok();
+  }
+
   Result<Void, Exception> validateForCollectAction() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
     if (description == null) {
@@ -334,6 +338,7 @@ public class ActionConfigBundle implements ConfigWithValidation {
       case Quiz -> { return validateForQuizAction(); }
       case ShowDescription -> { return validateForShowDescriptionAction(); }
       case Battle -> { return validateForBattle(); }
+      case BattleReflex -> { return validateForBattleReflex(); }
       case Collect -> { return validateForCollectAction(); }
       default -> { return Result.err(new RuntimeException("Invalid result returned")); }
     }
