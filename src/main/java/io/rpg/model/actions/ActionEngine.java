@@ -110,6 +110,7 @@ public final class ActionEngine {
       BattleResult result;
       if (player.getStrength() > opponent.getStrength()) {
         player.addDefeatedOpponent(opponent.getTag());
+        controller().removeObjectFromModel(action.getEmitter());
         result = new BattleResult(BattleResult.Result.VICTORY, reward);
       } else if (player.getStrength() < opponent.getStrength()) {
         result = new BattleResult(BattleResult.Result.DEFEAT, 0);

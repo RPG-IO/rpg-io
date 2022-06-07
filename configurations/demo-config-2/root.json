@@ -24,5 +24,6 @@
   "quizPopupBackground": "assets/popup-background-3.png",
   "inventoryPopupBackground": "assets/popup-background.png",
   "dialoguePopupBackground": "assets/popup-background.png",
-  "npcFrame": "assets/npc-frame.png"
+  "npcFrame": "assets/npc-frame.png",
+  "assetDir": "../../assets"
 }
