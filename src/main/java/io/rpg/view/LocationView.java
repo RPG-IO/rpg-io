@@ -22,6 +22,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static io.rpg.util.PathUtils.resolvePathToJFXFormat;
+
 public class LocationView extends Scene
     implements KeyboardEvent.Emitter, LocationModelStateChange.Observer {
   private final static URL FXML_URL = LocationViewModel.class.getResource("location-view.fxml");
@@ -60,10 +62,6 @@ public class LocationView extends Scene
     LocationView view = loadFromFXML(FXML_URL);
     view.getViewModel().setBackground(new Image(resolvePathToJFXFormat(config.getBackgroundPath())));
     return view;
-  }
-
-  public static String resolvePathToJFXFormat(String path) {
-    return "file:" + path;
   }
 
   @Override

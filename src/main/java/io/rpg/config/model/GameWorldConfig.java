@@ -1,5 +1,8 @@
 package io.rpg.config.model;
 
+import static io.rpg.util.PathUtils.resolvePathToAsset;
+import static io.rpg.util.PathUtils.resolvePathToJFXFormat;
+
 import com.google.gson.annotations.SerializedName;
 import com.kkafara.rt.Result;
 import io.rpg.util.ErrorMessageBuilder;
@@ -7,6 +10,7 @@ import io.rpg.util.ErrorMessageBuilder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+
 
 /**
  * This class in not meant to be instantiated by hand. It is used by {@link io.rpg.config.ConfigLoader}
@@ -240,67 +244,34 @@ public class GameWorldConfig implements ConfigWithValidation {
   }
 
   public String getQuizPopupBackground() {
-    return resolvePathFormat(quizPopupBackground);
+    return resolvePathToJFXFormat(quizPopupBackground);
   }
 
   public String getTextPopupButton() {
-    return resolvePathFormat(textPopupButton);
+    return resolvePathToJFXFormat(textPopupButton);
   }
 
   public String getTextImagePopupBackground() {
-    return resolvePathFormat(textImagePopupBackground);
+    return resolvePathToJFXFormat(textImagePopupBackground);
   }
 
   public String getTextImagePopupButton() {
-    return resolvePathFormat(textImagePopupButton);
+    return resolvePathToJFXFormat(textImagePopupButton);
   }
 
   public String getTextPopupBackground() {
-    return resolvePathFormat(textPopupBackground);
+    return resolvePathToJFXFormat(textPopupBackground);
   }
 
   public String getInventoryPopupBackground() {
-    return resolvePathFormat(inventoryPopupBackground);
+    return resolvePathToJFXFormat(inventoryPopupBackground);
   }
 
   public String getDialoguePopupBackground() {
-    return resolvePathFormat(dialoguePopupBackground);
+    return resolvePathToJFXFormat(dialoguePopupBackground);
   }
 
   public String getNpcFrame() {
-    return resolvePathFormat(npcFrame);
-  }
-
-  public static String resolvePathFormat(String path) {
-    return "file:" + path;
-  }
-
-  /**
-   * Resolves path to the asset.
-   *
-   * Path to the asset must be either relative to the configuration directory
-   * or absolute.
-   *
-   * @param pathStr path to the asset
-   * @return optional with path to the asset if resolution succeeded, empty optional else
-   */
-  private Optional<String> resolvePathToAsset(Path root, String pathStr) {
-    if (pathStr == null) {
-      return Optional.empty();
-    }
-
-    Path assetPath = Path.of(pathStr);
-
-    if (Files.isRegularFile(assetPath)) {
-      return Optional.of(assetPath.toString());
-    }
-
-    assetPath = root.resolve(pathStr);
-
-    if (Files.isRegularFile(assetPath)) {
-      return Optional.of(assetPath.toString());
-    } else {
-      return Optional.empty();
-    }
+    return resolvePathToJFXFormat(npcFrame);
   }
 }
