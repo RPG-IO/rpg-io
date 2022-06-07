@@ -1,6 +1,6 @@
 {
   "tag": "zombie-2",
-  "position": { "row": 3, "col": 3 },
+  "position": { "row": 5, "col": 4 },
   "assetPath": "zombie.png",
   "onLeftClick": {
     "tag": "actiontag",

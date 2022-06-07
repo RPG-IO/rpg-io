@@ -1,6 +1,6 @@
 {
   "tag": "bandit-1",
-  "position": { "row": 6, "col": 5 },
+  "position": { "row": 4, "col": 6 },
   "assetPath": "samurai.png",
   "onLeftClick": {
     "tag": "battle",

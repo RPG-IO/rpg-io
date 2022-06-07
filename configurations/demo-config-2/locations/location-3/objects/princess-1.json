@@ -2,5 +2,17 @@
   "tag": "princess-1",
   "position": { "row": 6, "col": 6 },
   "assetPath": "princess.png",
-  "onLeftClick": {"tag": "actiontag", "type": "game-end", "description": "Zwyciężyłeś! Udało ci się przejść przez labirynt i uratować księżniczkę."}
+  "onLeftClick": {
+    "tag": "actiontag",
+    "type": "game-end",
+    "description": "Zwyciężyłeś! Udało ci się przejść przez labirynt i uratować księżniczkę.",
+    "before": {
+      "tag": "description",
+      "type": "dialogue",
+      "statements": [
+        "Chlip, chlip... Dziękuję za ratunek"
+      ],
+      "assetPath": "princess.png"
+    }
+  }
 }

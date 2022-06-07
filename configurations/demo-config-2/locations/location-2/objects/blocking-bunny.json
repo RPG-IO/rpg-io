@@ -1,0 +1,28 @@
+{
+  "tag": "blocking-bunny",
+  "assetPath": "bunny-right.png",
+  "position": { "row": 7, "col": 2 },
+  "onApproach": {
+    "tag": "w",
+    "type": "show-description",
+    "description": "Nie przepuszczę Cie dopóki mi nie zapłacisz. Chcę jeden diament!",
+    "assetPath": "diamond.png"
+  },
+  "onLeftClick": {
+    "tag": "w",
+    "type": "collect",
+    "assetPath": "envelope.png",
+    "description": "Przepustka",
+    "condition":{
+      "tag": "xd",
+      "type": "item-required",
+      "item-tag": "chest-1"
+    }
+  },
+  "onRightClick": {
+    "tag": "w",
+    "type": "show-description",
+    "assetPath": "diamond.png",
+    "description": "Ten królik powiedział, że Cię nie przepuści dopóki nie dasz mu diamentu."
+  }
+}

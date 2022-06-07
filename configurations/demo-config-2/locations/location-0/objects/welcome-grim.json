@@ -1,9 +1,9 @@
 {
-  "tag": "welcome-goblin",
-  "assetPath": "grim.png",
+  "tag": "welcome-grim",
+  "assetPath": "grim-right.png",
   "onApproach": {
     "tag": "introduction",
-    "assetPath": "grim.png",
+    "assetPath": "grim-right.png",
     "type": "dialogue",
     "statements": [
       "Witaj, podróżniku! Znalazłeś się w niebezpiecznej krainie, w której grasują zombie i bandyci. Odpowiedz na zagadki, pokonaj przeciwników i uratuj piękną księżniczkę!"
@@ -12,7 +12,7 @@
   "onRightClick": {
     "tag": "introduction",
     "type": "show-description",
-    "assetPath": "grim.png",
+    "assetPath": "grim-right.png",
     "description": "Witaj, podróżniku! Znalazłeś się w niebezpiecznej krainie, w której grasują zombie i bandyci. Odpowiedz na zagadki, pokonaj przeciwników i uratuj piękną księżniczkę!"
   },
   "position": { "row": 7, "col": 2 }
