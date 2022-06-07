@@ -39,6 +39,8 @@ public class BattleReflexPopup extends Scene {
   private static String backgroundPath;
   private static String buttonPath;
 
+  private boolean lost = false;
+
 
   public BattleReflexPopup(int pointsPerSecond, BiConsumer<Boolean, Integer> callback) {
     super(new Group(), Color.TRANSPARENT);
@@ -110,11 +112,16 @@ public class BattleReflexPopup extends Scene {
           this.characterLabels[currentSequencePosition].setStyle("-fx-font-family: Monospaced; -fx-text-fill: #2bee1e; -fx-font-weight: bold; -fx-font-size: " + 18);
           currentSequencePosition++;
           if (this.currentSequencePosition == sequenceLength) {
-            win();
+            if (lost) {
+              lose();
+            } else {
+              win();
+            }
           }
         } else {
           this.characterLabels[currentSequencePosition].setStyle("-fx-font-family: Monospaced; -fx-text-fill: #fa2902; -fx-font-weight: bold; -fx-font-size: " + 18);
           currentSequencePosition++;
+          lost = true;
         }
       }
     });

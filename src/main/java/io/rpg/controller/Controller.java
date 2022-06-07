@@ -151,10 +151,6 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
     if (payload.getEventType() == KeyEvent.KEY_PRESSED) {
       switch (payload.getCode()) {
-        case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
-        case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
-        case L -> consumeAction(new LocationChangeAction("location-2", new Position(1, 2), null));
-        case U -> consumeAction(new GameEndAction("You have pressed the forbidden button", null));
         case E -> popupController.openInventoryPopup(playerController.getPlayer().getInventory(), getWindowCenterX(), getWindowCenterY(), playerController.getPlayer());
       }
     }

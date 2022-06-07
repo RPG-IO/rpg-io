@@ -1,0 +1,21 @@
+{
+  "tag": "boxer",
+  "position": { "row": 4, "col": 1 },
+  "assetPath": "boxing.png",
+  "onLeftClick": {
+    "tag": "battle-for-the-princess",
+    "type": "battle",
+    "reward": 5,
+    "condition": {
+      "tag": "whatever",
+      "type": "defeat-opponent",
+      "opponent-tag": "zombie-2"
+    }
+  },
+  "onRightClick": {
+    "tag": ";aslkfdj",
+    "type": "show-description",
+    "description": "Jeśli chcesz mnie pokonać, musisz pokazać, że jesteś coś warty. Pokonaj moich kolegów.",
+    "assetPath": "zombie.png"
+  }
+}

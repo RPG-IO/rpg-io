@@ -1,0 +1,30 @@
+{
+  "tag": "tp-to-the-chick",
+  "onLeftClick": {
+    "tag": "tp-to-chick",
+    "type": "location-change",
+    "target-location": "location-3",
+    "target-position": {
+      "row": 2, "col": 2
+    },
+    "condition": {
+      "tag": "xd",
+      "type": "defeat-opponent",
+      "opponent-tag": "boxer"
+    }
+  },
+  "onRightClick": {
+    "tag": "right-action",
+    "type": "show-description",
+    "assetPath": "boxing.png",
+    "description": "Masz wrażenie, że aby aktywować teleport potrzebujesz pokanać jednego z pobliskich przeciwników."
+  },
+  "onApproach": {
+    "tag": "dialogue",
+    "type": "show-description",
+    "assetPath": "princess.png",
+    "description": "Zbliżasz się magicznej skrzyni i masz wrażenie że słyszysz płącz księżniczki. Postanawiasz, że musisz sprawdzić co się dzieje."
+  },
+  "assetPath": "chest.png",
+  "position": { "row": 4, "col": 3 }
+}

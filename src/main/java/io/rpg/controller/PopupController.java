@@ -2,6 +2,7 @@ package io.rpg.controller;
 
 import io.rpg.model.object.Player;
 import io.rpg.model.object.Question;
+import io.rpg.util.PathUtils;
 import io.rpg.view.popups.BattleReflexPopup;
 import io.rpg.view.popups.DialoguePopup;
 import io.rpg.view.popups.QuestionPopup;
@@ -18,7 +19,7 @@ import java.util.function.BiConsumer;
 public class PopupController {
 
   private final Stage popupStage = new Stage(StageStyle.TRANSPARENT);
-  private final Image coinImage = new Image("file:assets/coin.png");
+  private final Image coinImage = new Image(PathUtils.resolvePathToJFXFormat(PathUtils.resolvePathToAsset("coin.png").get()));
 
   public PopupController() {
     // close popup after clicking aside

@@ -1,0 +1,21 @@
+{
+  "tag": "grim",
+  "position": { "row": 4, "col": 5 },
+  "onApproach": {
+    "tag": "action",
+    "type": "dialogue",
+    "statements": [
+      "Księżniczka nadal czeka. Spiesz się!"
+    ],
+    "assetPath": "grim-left.png"
+  },
+  "onLeftClick": {
+    "tag": "action",
+    "type": "dialogue",
+    "statements": [
+      "Księżniczka nadal czeka. Spiesz się!"
+    ],
+    "assetPath": "grim-left.png"
+  },
+  "assetPath": "grim-left.png"
+}
