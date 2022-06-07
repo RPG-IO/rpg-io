@@ -48,7 +48,6 @@ public class GameObjectView extends ImageView
 
   @Override
   public void emitOnMouseClickedEvent(MouseClickedEvent event) {
-    System.out.println("Object clicked");
     onClickedObservers.forEach(listener -> listener.onMouseClickedEvent(event));
   }
 

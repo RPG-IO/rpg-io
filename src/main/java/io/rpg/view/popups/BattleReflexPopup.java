@@ -97,7 +97,6 @@ public class BattleReflexPopup extends Scene {
       group.getChildren().add(characterLabels[i]);
       double x = characterLabels[i].getLayoutX();
       double y = characterLabels[i].getLayoutY();
-      System.out.println(x + " " + y);
     }
 
     this.setRoot(group);

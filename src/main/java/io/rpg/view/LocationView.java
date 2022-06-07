@@ -47,9 +47,6 @@ public class LocationView extends Scene
 
     this.setOnKeyPressed(event -> emitKeyboardEvent(new KeyboardEvent(this, event)));
     this.setOnKeyReleased(event -> emitKeyboardEvent(new KeyboardEvent(this, event)));
-
-    System.out.println("CHILDREN");
-    System.out.println(root.getChildrenUnmodifiable());
   }
 
   public LocationViewModel getViewModel() {
@@ -66,8 +63,6 @@ public class LocationView extends Scene
 
   public static LocationView fromConfig(LocationConfig config) throws IOException {
     LocationView view = loadFromFXML(FXML_URL);
-    System.out.println("BACKGROUND PATH");
-    System.out.println(config.getBackgroundPath());
     view.getViewModel().setBackground(new Image(resolvePathToJFXFormat(config.getBackgroundPath())));
     return view;
   }

@@ -276,8 +276,6 @@ public class ConfigLoader {
     // load information from configuration root file
     GameWorldConfig gameWorldConfigShell = gson.fromJson(reader, GameWorldConfig.class);
 
-    System.out.println(gameWorldConfigShell.toString());
-
     // GameWorldConfig is loaded in two stages right now
     // todo: fix this! Separate initial GameWorldConfig to different class
     gameWorldConfigShell.injectConfigDirPath(configDirPath);
