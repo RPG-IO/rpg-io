@@ -6,6 +6,7 @@ import static io.rpg.util.PathUtils.resolvePathToJFXFormat;
 import com.google.gson.annotations.SerializedName;
 import com.kkafara.rt.Result;
 import io.rpg.util.ErrorMessageBuilder;
+import io.rpg.util.PathUtils;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -171,50 +172,54 @@ public class GameWorldConfig implements ConfigWithValidation {
       assetDirPath = Path.of(assetDir);
     }
 
+    PathUtils.init(assetDirPath);
+
     if (playerConfig == null) {
       builder.append("No player config provided");
+    } else {
+      playerConfig.validate().ifErr(err -> builder.combine(err.getMessage()));
     }
 
     if (rootLocation == null) {
       builder.append("No root location set!");
     }
 
-    resolvePathToAsset(assetDirPath, quizPopupBackground).ifPresentOrElse(
+    resolvePathToAsset(quizPopupBackground).ifPresentOrElse(
         pathStr -> { quizPopupBackground = pathStr; },
         () -> builder.append("Invalid quiz popup background specified")
     );
 
-    resolvePathToAsset(assetDirPath, textImagePopupBackground).ifPresentOrElse(
+    resolvePathToAsset(textImagePopupBackground).ifPresentOrElse(
         pathStr -> { textImagePopupBackground = pathStr; },
         () -> builder.append("Invalid text image popup background specified")
     );
 
-    resolvePathToAsset(assetDirPath, textPopupButton).ifPresentOrElse(
+    resolvePathToAsset(textPopupButton).ifPresentOrElse(
         pathStr -> { textPopupButton = pathStr; },
         () -> builder.append("Invalid text popup button specified")
     );
 
-    resolvePathToAsset(assetDirPath, textImagePopupButton).ifPresentOrElse(
+    resolvePathToAsset(textImagePopupButton).ifPresentOrElse(
         pathStr -> { textImagePopupButton = pathStr; },
         () -> builder.append("Invalid text image popup button specified")
     );
 
-    resolvePathToAsset(assetDirPath, textPopupBackground).ifPresentOrElse(
+    resolvePathToAsset(textPopupBackground).ifPresentOrElse(
         pathStr -> { textPopupBackground = pathStr; },
         () -> builder.append("Invalid text popup background specified")
     );
 
-    resolvePathToAsset(assetDirPath, inventoryPopupBackground).ifPresentOrElse(
+    resolvePathToAsset(inventoryPopupBackground).ifPresentOrElse(
         pathStr -> { inventoryPopupBackground = pathStr; },
         () -> builder.append("Invalid inventory popup background specified")
     );
 
-    resolvePathToAsset(assetDirPath, dialoguePopupBackground).ifPresentOrElse(
+    resolvePathToAsset(dialoguePopupBackground).ifPresentOrElse(
         pathStr -> { dialoguePopupBackground = pathStr; },
         () -> builder.append("Invalid dialogue popup background specified")
     );
 
-    resolvePathToAsset(assetDirPath, npcFrame).ifPresentOrElse(
+    resolvePathToAsset(npcFrame).ifPresentOrElse(
         pathStr -> { npcFrame = pathStr; },
         () -> builder.append("Invalid NPC Frame specified")
     );

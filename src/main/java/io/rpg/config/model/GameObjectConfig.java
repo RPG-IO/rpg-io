@@ -5,6 +5,7 @@ import com.kkafara.rt.Result;
 import io.rpg.model.data.Position;
 import io.rpg.util.DataObjectDescriptionProvider;
 import io.rpg.util.ErrorMessageBuilder;
+import io.rpg.util.PathUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -122,6 +123,12 @@ public class GameObjectConfig implements ConfigWithValidation {
     if (tag == null || tag.isBlank()) {
       return Result.err(new Exception("Invalid or no tag provided"));
     }
+    if (assetPath != null) {
+      PathUtils.resolvePathToAsset(assetPath).ifPresentOrElse(
+          path -> { assetPath = path; },
+          () -> {}
+      );
+    }
     return Result.ok();
   }
 
@@ -140,6 +147,12 @@ public class GameObjectConfig implements ConfigWithValidation {
     }
     if (assetPath == null || assetPath.isBlank()) {
       builder.append("Invalid path to asset");
+    } else {
+      PathUtils.resolvePathToAsset(assetPath).ifPresentOrElse(
+          path -> { assetPath = path; },
+          () -> builder.append("Provided background path: \"" + assetPath
+              + "\" does not point to a regular file")
+      );
     }
     if (position == null) {
       builder.append("No position provided");
@@ -163,7 +176,10 @@ public class GameObjectConfig implements ConfigWithValidation {
       this.position = gameObjectConfig.position;
     }
     if (gameObjectConfig.assetPath != null) {
-      this.assetPath = gameObjectConfig.assetPath;
+      PathUtils.resolvePathToAsset(gameObjectConfig.assetPath).ifPresentOrElse(
+          path -> { assetPath = path; },
+          () -> {}
+      );
     }
     if (gameObjectConfig.onApproach != null) {
       this.onApproach = gameObjectConfig.onApproach;

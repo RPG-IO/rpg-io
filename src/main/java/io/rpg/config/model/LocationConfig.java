@@ -4,6 +4,7 @@ package io.rpg.config.model;
 import com.kkafara.rt.Result;
 import io.rpg.model.data.MapDirection;
 import io.rpg.util.ErrorMessageBuilder;
+import io.rpg.util.PathUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -115,10 +116,15 @@ public class LocationConfig {
       builder.append("No background path provided");
     } else if (backgroundPath.isBlank()) {
       builder.append("Blank background path");
-    } else if (!Files.isRegularFile(Path.of(backgroundPath))) {
-      builder.append("Provided background path: \"" + backgroundPath
-          + "\" does not point to a regular file");
-    } else if (objects == null) {
+    } else {
+      PathUtils.resolvePathToAsset(backgroundPath).ifPresentOrElse(
+          path -> { backgroundPath = path; },
+          () -> builder.append("Provided background path: \"" + backgroundPath
+              + "\" does not point to a regular file")
+      );
+    }
+
+    if (objects == null) {
       builder.append("No objects specified");
     }
 
