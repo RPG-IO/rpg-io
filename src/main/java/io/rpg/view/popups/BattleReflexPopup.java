@@ -1,5 +1,6 @@
 package io.rpg.view.popups;
 
+import io.rpg.util.PathUtils;
 import io.rpg.view.GameObjectView;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -56,7 +57,7 @@ public class BattleReflexPopup extends Scene {
     Group group = new Group();
     ImageView background = new ImageView(backgroundPath);
 
-    ImageView swordIcon = new ImageView(GameObjectView.resolvePathToJFXFormat("assets/sword6.png"));
+    ImageView swordIcon = new ImageView(PathUtils.resolvePathToJFXFormat(PathUtils.resolvePathToAsset("sword6.png").get()));
     background.setX(0);
     background.setY(0);
 
@@ -77,7 +78,7 @@ public class BattleReflexPopup extends Scene {
     group.getChildren().add(button);
 
     for (int i = 0; i < 5; i++) {
-      timerDots[i] = new ImageView(GameObjectView.resolvePathToJFXFormat("assets/button-image.png"));
+      timerDots[i] = new ImageView(PathUtils.resolvePathToJFXFormat(PathUtils.resolvePathToAsset("button-image.png").get()));
       timerDots[i].setLayoutX(i * SPACING + i * singleLabelWidth + background.getImage().getWidth() / 2 - allLabelsWidth / 2);
       timerDots[i].setLayoutY(centerY + background.getImage().getHeight() / 2 + 50);
       timerDots[i].setScaleX(0.5);
@@ -97,7 +98,6 @@ public class BattleReflexPopup extends Scene {
       group.getChildren().add(characterLabels[i]);
       double x = characterLabels[i].getLayoutX();
       double y = characterLabels[i].getLayoutY();
-      System.out.println(x + " " + y);
     }
 
     this.setRoot(group);
@@ -151,7 +151,9 @@ public class BattleReflexPopup extends Scene {
       lose();
       return;
     }
-    timerDots[timeToCountDown].setImage(new Image(GameObjectView.resolvePathToJFXFormat("assets/button-image-2.png")));
+    timerDots[timeToCountDown].setImage(new Image(PathUtils.resolvePathToJFXFormat(
+        PathUtils.resolvePathToAsset("button-image-2.png").get()
+    )));
   }
 
   public void win() {

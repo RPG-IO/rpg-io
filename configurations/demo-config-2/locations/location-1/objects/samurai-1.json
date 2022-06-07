@@ -1,6 +1,6 @@
 {
   "tag": "samurai-1",
-  "assetPath": "assets/samurai.png",
+  "assetPath": "samurai.png",
   "onLeftClick": {
     "tag": "reflex-game-1",
     "type": "battle-reflex",
@@ -11,12 +11,12 @@
     "tag": "info",
     "type": "show-description",
     "description": "Potrzebujesz wykazać się zręcznością by mnie pokonać",
-    "assetPath": "assets/samurai.png"
+    "assetPath": "samurai.png"
   },
   "onApproach": {
     "tag": "info",
     "type": "show-description",
     "description": "Potrzebujesz wykazać się zręcznością aby mnie pokonać.",
-    "assetPath": "assets/samurai.png"
+    "assetPath": "samurai.png"
   }
 }

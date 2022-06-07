@@ -15,6 +15,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.jetbrains.annotations.NotNull;
 
+import static io.rpg.util.PathUtils.resolvePathToJFXFormat;
+
 public class GameObjectView extends ImageView
     implements MouseClickedEvent.Emitter, GameObjectStateChange.Observer {
   private Path path;
@@ -41,14 +43,9 @@ public class GameObjectView extends ImageView
     });
   }
 
-  public static String resolvePathToJFXFormat(String path) {
-    return "file:" + path;
-  }
-
 
   @Override
   public void emitOnMouseClickedEvent(MouseClickedEvent event) {
-    System.out.println("Object clicked");
     onClickedObservers.forEach(listener -> listener.onMouseClickedEvent(event));
   }
 

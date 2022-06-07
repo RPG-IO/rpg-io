@@ -1,11 +1,11 @@
 {
   "tag": "coin-1",
   "position": { "row": 7, "col": 2 },
-  "assetPath": "assets/coin.png",
+  "assetPath": "coin.png",
   "onLeftClick": {
     "tag": "get-item",
     "type": "collect",
-    "assetPath": "assets/coin.png",
+    "assetPath": "coin.png",
     "description": "Świecąca moneta"
   }
 }

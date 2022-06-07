@@ -1,6 +1,6 @@
 {
   "tag": "knight-game-end",
-  "assetPath": "assets/knight.png",
+  "assetPath": "knight.png",
   "onLeftClick": {
     "tag": "actiontag",
     "type": "game-end",

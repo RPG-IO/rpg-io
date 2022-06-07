@@ -1,6 +1,6 @@
 {
   "tag": "goblin-1",
-  "assetPath": "assets/goblin.png",
+  "assetPath": "goblin.png",
   "type": "dialog",
   "onLeftClick": {
     "tag": "actiontag",

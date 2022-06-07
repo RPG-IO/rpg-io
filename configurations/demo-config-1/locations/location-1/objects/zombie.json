@@ -1,6 +1,6 @@
 {
   "tag": "zombie",
-  "assetPath": "assets/zombie.png",
+  "assetPath": "zombie.png",
   "onLeftClick": {
     "tag": "dialogue-action",
     "type": "quiz",
@@ -24,7 +24,7 @@
   "onRightClick": {
     "tag": "description",
     "type": "show-description",
-    "assetPath": "assets/zombie.png",
+    "assetPath": "zombie.png",
     "description": "To unlock the quiz you need to defeat the bandit!"
   }
 }

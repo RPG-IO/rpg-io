@@ -3,7 +3,7 @@
   "onLeftClick": {
     "tag": "dialogue",
     "type": "dialogue",
-    "assetPath": "assets/chest.png",
+    "assetPath": "chest.png",
     "statements": ["Stara skrzynia. Ciekawe co jest w środku."],
     "condition": {
       "type": "item-required",
@@ -12,7 +12,7 @@
     "after": {
       "tag": "get-item",
       "type": "collect",
-      "assetPath": "assets/diamond.png",
+      "assetPath": "diamond.png",
       "description": "Świecący diament",
       "condition": {
         "type": "item-required",
@@ -23,15 +23,15 @@
   "onApproach": {
     "tag": "dialogue",
     "type": "show-description",
-    "assetPath": "assets/key.png",
+    "assetPath": "key.png",
     "description": "Potrzebujesz klucz, żeby otworzyć skrzynię."
   },
   "onRightClick": {
     "tag": "chest-condition-description",
     "type": "show-description",
     "description": "Aby mnie otworzyć potrzebujesz klucza.",
-    "assetPath": "assets/key.png"
+    "assetPath": "key.png"
   },
-  "assetPath": "assets/chest.png",
+  "assetPath": "chest.png",
   "position": { "row": 4, "col": 5 }
 }

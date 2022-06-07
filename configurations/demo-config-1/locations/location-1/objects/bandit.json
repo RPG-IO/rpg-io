@@ -1,6 +1,6 @@
 {
   "tag": "bandit",
-  "assetPath": "assets/bandit.png",
+  "assetPath": "bandit.png",
   "type": "dialog",
   "onLeftClick": {
     "tag": "battle",

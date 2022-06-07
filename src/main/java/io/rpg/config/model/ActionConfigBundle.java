@@ -6,6 +6,7 @@ import io.rpg.model.actions.ActionType;
 import io.rpg.model.data.Position;
 import io.rpg.model.object.Question;
 import io.rpg.util.ErrorMessageBuilder;
+import io.rpg.util.PathUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -327,6 +328,13 @@ public class ActionConfigBundle implements ConfigWithValidation {
       if (result.isErr()) {
         return result;
       }
+    }
+
+    if (assetPath != null) {
+      PathUtils.resolvePathToAsset(assetPath).ifPresentOrElse(
+          path -> { assetPath = path; },
+          () -> {}
+      );
     }
 
     // actionType can not be null here, guaranteed by validateBasic method

@@ -1,6 +1,6 @@
 {
   "tag": "object-8",
-  "assetPath": "assets/bunny.png",
+  "assetPath": "bunny.png",
   "onLeftClick": {
     "tag": "action-tag",
     "type": "location-change",

@@ -1,6 +1,6 @@
 {
   "tag": "object-2",
-  "assetPath": "assets/zombie.png",
+  "assetPath": "zombie.png",
   "onLeftClick": {
     "tag": "actiontag",
     "type": "quiz",

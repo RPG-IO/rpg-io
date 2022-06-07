@@ -1,11 +1,11 @@
 {
   "tag": "object-2",
   "position": { "row": 5, "col": 5 },
-  "assetPath": "assets/key.png",
+  "assetPath": "key.png",
   "onLeftClick": {
     "tag": "dialogue-action",
     "type": "collect",
-    "assetPath": "assets/key.png",
+    "assetPath": "key.png",
     "description": "A powerful key."
   }
 }

@@ -18,7 +18,7 @@ public class Main extends Application {
 
   @Override
   public void start(Stage stage) throws IOException {
-    Configurator.setRootLevel(Level.DEBUG);
+    Configurator.setRootLevel(Level.WARN);
     String path = getParameters().getNamed().get("config");
     if (path == null) {
       WrapperController wrapperController = WrapperController.load();

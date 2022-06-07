@@ -13,7 +13,7 @@
     "tag": "player",
     "position": { "row": 8, "col": 7 },
     "type": "player",
-    "assetPath": "assets/knight.png",
+    "assetPath": "knight.png",
     "location": "location-0",
     "strength": 911
   },
