@@ -34,12 +34,9 @@ public final class ConditionEngine {
   }
 
   public boolean evaluate(LevelRequiredCondition condition) {
-    // TODO: Implement this when the level system is implemented.
-    // For now I just return true.
-//    return controller()
-//        .getPlayerController()
-//        .getPlayer()
-//        .getLevel() >= condition.getLevel();
-    return true;
+    return controller()
+        .getPlayerController()
+        .getPlayer()
+        .getLevel() >= condition.getLevel();
   }
 }
