@@ -125,12 +125,12 @@ public class Player extends GameObject {
   }
 
   public void updateLevel() { //TODO: update different types of stats instead of just strength. Also do not use an arbitrary value
-    int levelDifference = points / 10;
-    points %= 10;
+    System.out.println(points);
+    int levelDifference = points / (level*10);
     if (levelDifference != 0) {
       level += levelDifference;
       updateStrength(10);
-      levelUpAction = new LevelUpAction(level, null);
+      levelUpAction = new LevelUpAction(level, points, null);
       emitAction(levelUpAction);
     }
   }

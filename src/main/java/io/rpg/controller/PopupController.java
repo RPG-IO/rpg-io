@@ -24,6 +24,12 @@ public class PopupController {
     // close popup after clicking aside
     popupStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
       if (!isNowFocused) {
+        if (popupStage.getScene() != null) {
+          if (popupStage.getScene() instanceof QuestionPopup) {
+            ((QuestionPopup) popupStage.getScene()).clickCallback();
+            return;
+          }
+        }
         popupStage.close();
       }
     });
@@ -90,22 +96,8 @@ public class PopupController {
     }
   }
 
-  public void openQuestionPopup(Question question, int x, int y, Runnable successCallback, Runnable failureCallback) {
-    QuestionPopup popupScene = new QuestionPopup(question);
-    popupScene.setSuccessCallback(successCallback);
-    popupScene.setFailureCallback(failureCallback);
-    popupStage.setScene(popupScene);
-    popupStage.onShownProperty().setValue(event -> {
-      popupStage.setX(x - popupScene.getWidth() / 2);
-      popupStage.setY(y - popupScene.getHeight() / 2);
-    });
-    if (!popupStage.isShowing()) {
-      popupStage.showAndWait();
-    }
-  }
-
-  public void openQuestionPopup(Question question, int x, int y) {
-    QuestionPopup popupScene = new QuestionPopup(question);
+  public void openQuestionPopup(Question question, int x, int y, BiConsumer<Boolean, Integer> callback, int reward) {
+    QuestionPopup popupScene = new QuestionPopup(question, callback, reward);
     popupStage.setScene(popupScene);
     popupStage.onShownProperty().setValue(event -> {
       popupStage.setX(x - popupScene.getWidth() / 2);

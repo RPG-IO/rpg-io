@@ -72,27 +72,35 @@ public final class ActionEngine {
     actionGuard(action, () -> {
       var controller = controller();
       int pointsCount = action.getPointsToEarn();
+      System.out.println(pointsCount);
       controller.getPopupController().openQuestionPopup(
           action.question,
           controller.getWindowCenterX(), controller.getWindowCenterY(),
-          () -> acceptQuizResult(true, pointsCount),
-          () -> acceptQuizResult(false, 0)
+          (won, points) -> acceptQuizResult(action.getEmitter(), won, points),
+          pointsCount
       );
-      action.setPointsToEarn(0);
     });
   }
 
-  public void acceptQuizResult(boolean correct, int pointsCount) {
+  public void acceptQuizResult(GameObject opponent, boolean correct, int pointsCount) {
     var controller = controller();
+    System.out.println("quiz result accepting");
+
     if (correct) {
       if (pointsCount > 0) {
         controller.getPopupController().openPointsPopup(pointsCount, controller.getWindowCenterX(), controller.getWindowCenterY());
+        controller.getPlayerController().getPlayer().addDefeatedOpponent(opponent.getTag());
         controller.getPlayerController().addPoints(pointsCount);
+      } else {
+        controller.getPopupController().hidePopup();
       }
     } else {
       controller.getPopupController().hidePopup();
       logger.info("Wrong answer provided");
     }
+
+    // TODO: better action disabling
+    opponent.setOnLeftClickAction(Action.VOID);
   }
 
   public void onAction(GameEndAction action) {
@@ -110,7 +118,7 @@ public final class ActionEngine {
       BattleResult result;
       if (player.getStrength() > opponent.getStrength()) {
         player.addDefeatedOpponent(opponent.getTag());
-        controller().removeObjectFromModel(action.getEmitter());
+        controller().removeObjectFromModel(opponent);
         result = new BattleResult(BattleResult.Result.VICTORY, reward);
       } else if (player.getStrength() < opponent.getStrength()) {
         result = new BattleResult(BattleResult.Result.DEFEAT, 0);
@@ -125,7 +133,7 @@ public final class ActionEngine {
   }
 
   public void onAction(LevelUpAction action) {
-    controller().getPopupController().openTextPopup("Achieved level " + action.newLevel + "!",
+    controller().getPopupController().openTextPopup((action.getPoints() != null ? (action.getPoints() + " points earned already!\n") : "" ) + "Achieved level " + action.newLevel + "!",
             controller().getWindowCenterX(), controller().getWindowCenterY());
   }
 

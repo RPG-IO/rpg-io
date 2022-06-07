@@ -12,10 +12,10 @@ public class QuizAction extends BaseAction {
   public final Question question;
   private int pointsToEarn;
 
-  public QuizAction(Question question, Condition condition) {
+  public QuizAction(Question question, int pointsToEarn, Condition condition) {
     super(condition);
     this.question = question;
-    this.pointsToEarn = 10;
+    this.pointsToEarn = pointsToEarn;
   }
 
   public void setPointsToEarn(int pointsToEarn) {
