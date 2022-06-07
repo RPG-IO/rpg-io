@@ -4,7 +4,7 @@
     "row": 5,
     "col": 5
   },
-  "assetPath": "assets/bandit.png",
+  "assetPath": "bandit.png",
   "onLeftClick": {
     "tag": "battle",
     "type": "battle",
@@ -14,12 +14,12 @@
     "tag": "info",
     "type": "show-description",
     "description": "Potrzebujesz przynajmniej 1 siły aby mnie pokonać.",
-    "assetPath": "assets/bandit.png"
+    "assetPath": "bandit.png"
   },
   "onApproach": {
     "tag": "info",
     "type": "show-description",
     "description": "Potrzebujesz przynajmniej 1 siły aby mnie pokonać.",
-    "assetPath": "assets/bandit.png"
+    "assetPath": "bandit.png"
   }
 }

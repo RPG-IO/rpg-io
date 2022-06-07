@@ -1,7 +1,7 @@
 {
   "tag": "zombie-1",
   "position": { "row": 4, "col": 1 },
-  "assetPath": "assets/zombie.png",
+  "assetPath": "zombie.png",
   "onLeftClick": {
     "tag": "dialogue-action",
     "type": "quiz",
