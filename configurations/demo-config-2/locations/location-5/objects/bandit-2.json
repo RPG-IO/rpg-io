@@ -6,5 +6,17 @@
     "tag": "battle",
     "type": "battle",
     "reward": 12
+  },
+  "onRightClick": {
+    "tag": "info",
+    "type": "show-description",
+    "description": "Potrzebujesz przynajmniej 1 siły aby mnie pokonać.",
+    "assetPath": "assets/bandit.png"
+  },
+  "onApproach": {
+    "tag": "info",
+    "type": "show-description",
+    "description": "Potrzebujesz przynajmniej 1 siły aby mnie pokonać.",
+    "assetPath": "assets/bandit.png"
   }
 }

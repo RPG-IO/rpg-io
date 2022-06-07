@@ -17,12 +17,13 @@
     "location": "location-0",
     "strength": 911
   },
-  "textPopupBackground": "assets/popup-background.png",
-  "textPopupButton": "assets/button-image.png",
-  "textImagePopupBackground": "assets/popup-background-2.png",
-  "textImagePopupButton": "assets/button-image-2.png",
-  "quizPopupBackground": "assets/popup-background-3.png",
-  "inventoryPopupBackground": "assets/popup-background.png",
-  "dialoguePopupBackground": "assets/popup-background.png",
-  "npcFrame": "assets/npc-frame.png"
+  "textPopupBackground": "popup-background.png",
+  "textPopupButton": "button-image.png",
+  "textImagePopupBackground": "popup-background-2.png",
+  "textImagePopupButton": "button-image-2.png",
+  "quizPopupBackground": "popup-background-3.png",
+  "inventoryPopupBackground": "popup-background.png",
+  "dialoguePopupBackground": "popup-background.png",
+  "npcFrame": "npc-frame.png",
+  "assetDir": "../../assets"
 }

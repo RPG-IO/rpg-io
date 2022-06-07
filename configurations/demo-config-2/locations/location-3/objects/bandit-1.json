@@ -1,10 +1,22 @@
 {
   "tag": "bandit-1",
   "position": { "row": 6, "col": 5 },
-  "assetPath": "assets/bandit.png",
+  "assetPath": "assets/samurai.png",
   "onLeftClick": {
     "tag": "battle",
-    "type": "battle",
+    "type": "battle-reflex",
     "reward": 10
+  },
+  "onRightClick": {
+    "tag": "info",
+    "type": "show-description",
+    "description": "Potrzebujesz wykazać się zręcznością by mnie pokonać",
+    "assetPath": "assets/samurai.png"
+  },
+  "onApproach": {
+    "tag": "info",
+    "type": "show-description",
+    "description": "Potrzebujesz wykazać się zręcznością aby mnie pokonać.",
+    "assetPath": "assets/samurai.png"
   }
 }
