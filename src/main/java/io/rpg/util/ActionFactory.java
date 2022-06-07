@@ -58,7 +58,7 @@ public class ActionFactory {
   private static QuizAction quizActionFromConfig(ActionConfigBundle config) {
     // TODO: as for now only one question is handled but the config API
     // is capable of handling more than one!
-    return new QuizAction(config.getQuestions().get(0), ConditionFactory.fromConfig(config.getCondition()));
+    return new QuizAction(config.getQuestions().get(0), config.getRewardPoints(), ConditionFactory.fromConfig(config.getCondition()));
   }
 
   private static GameEndAction gameEndActionFromConfig(ActionConfigBundle config) {

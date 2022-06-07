@@ -27,6 +27,7 @@ public class PopupController {
         if (popupStage.getScene() != null) {
           if (popupStage.getScene() instanceof QuestionPopup) {
             ((QuestionPopup) popupStage.getScene()).clickCallback();
+            return;
           }
         }
         popupStage.close();

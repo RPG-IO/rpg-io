@@ -72,6 +72,7 @@ public final class ActionEngine {
     actionGuard(action, () -> {
       var controller = controller();
       int pointsCount = action.getPointsToEarn();
+      System.out.println(pointsCount);
       controller.getPopupController().openQuestionPopup(
           action.question,
           controller.getWindowCenterX(), controller.getWindowCenterY(),
@@ -83,16 +84,18 @@ public final class ActionEngine {
 
   public void acceptQuizResult(GameObject opponent, boolean correct, int pointsCount) {
     var controller = controller();
+    System.out.println("quiz result accepting");
+
     if (correct) {
       if (pointsCount > 0) {
         controller.getPopupController().openPointsPopup(pointsCount, controller.getWindowCenterX(), controller.getWindowCenterY());
-        controller.removeObjectFromModel(opponent);
         controller.getPlayerController().getPlayer().addDefeatedOpponent(opponent.getTag());
         controller.getPlayerController().addPoints(pointsCount);
+      } else {
+        controller.getPopupController().hidePopup();
       }
     } else {
       controller.getPopupController().hidePopup();
-      controller.removeObjectFromModel(opponent);
       logger.info("Wrong answer provided");
     }
   }
@@ -127,7 +130,7 @@ public final class ActionEngine {
   }
 
   public void onAction(LevelUpAction action) {
-    controller().getPopupController().openTextPopup("Achieved level " + action.newLevel + "!",
+    controller().getPopupController().openTextPopup((action.getPoints() != null ? (action.getPoints() + " points earned already!\n") : "" ) + "Achieved level " + action.newLevel + "!",
             controller().getWindowCenterX(), controller().getWindowCenterY());
   }
 
