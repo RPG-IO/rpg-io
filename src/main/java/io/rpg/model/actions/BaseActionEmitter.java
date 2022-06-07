@@ -4,9 +4,9 @@ public abstract class BaseActionEmitter implements ActionEmitter {
   private ActionConsumer consumer = (a) -> {};
 
   protected void emitAction(Action action) {
-    action.getBeforeAction().ifPresent(a -> consumer.consumeAction(a));
+    action.getBeforeAction().ifPresent(a -> emitAction(action));
     consumer.consumeAction(action);
-    action.getAfterAction().ifPresent(a -> consumer.consumeAction(a));
+    action.getAfterAction().ifPresent(a -> emitAction(action));
   }
 
   @Override
