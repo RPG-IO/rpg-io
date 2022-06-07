@@ -21,29 +21,26 @@ public class PathUtils {
       return Optional.empty();
     }
 
-    System.out.println("Resolving path: " + pathStr);
-
     Path assetPath = Path.of(pathStr);
 
     if (Files.isRegularFile(assetPath)) {
-      System.out.println("Resolved: " + assetPath);
       return Optional.of(assetPath.toString());
     }
 
     assetPath = root.resolve(pathStr);
 
     if (Files.isRegularFile(assetPath)) {
-      System.out.println("Resolved: " + assetPath);
       return Optional.of(assetPath.toString());
     } else {
-      System.out.printf("Failed to resolve");
       return Optional.empty();
     }
   }
 
   public static String resolvePathToJFXFormat(String path) {
-    System.out.println("Resolving path to jfx: " + path);
-    return "file:" + path;
+    if (!path.startsWith("file:")) {
+      return "file:" + path;
+    }
+    return path;
   }
 
   public static void init(Path rootPath) {

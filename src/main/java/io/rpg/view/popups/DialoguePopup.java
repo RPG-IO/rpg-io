@@ -1,5 +1,6 @@
 package io.rpg.view.popups;
 
+import io.rpg.util.PathUtils;
 import io.rpg.viewmodel.DialoguePopupViewModel;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -41,6 +42,9 @@ public class DialoguePopup extends Scene {
 
     viewModel.setBackgroundImage(backgroundPath);
     viewModel.setNpcFrameImage(npcFramePath);
+
+    viewModel.setCloseButtonImage(PathUtils.resolvePathToJFXFormat(PathUtils.resolvePathToAsset("close-button.png").get()));
+    viewModel.setNextButtonImage(PathUtils.resolvePathToJFXFormat(PathUtils.resolvePathToAsset("right-arrow.png").get()));
 
     textPages = List.of(text.split("(?<=\\G.{200})")); //split text into 200-letter pages
     viewModel.setText(textPages.get(currentPage));
