@@ -62,14 +62,12 @@ public class QuestionPopup extends Scene {
   public void answerSelected(char answer) {
     char correctAnswer = question.getCorrectAnswerChar();
     if (answer == correctAnswer) {
-      System.out.println("correct");
       viewModel.setQuestionLabel("Correct!");
       viewModel.setAllButtonsCallback(event -> callback.accept(true, pointsToEarn));
       this.setOnMouseClicked(event -> callback.accept(true, pointsToEarn));
       this.onClickCallback = () -> callback.accept(true, pointsToEarn);
     } else {
       viewModel.highlightWrong(answer);
-      System.out.println("wrong");
       viewModel.setQuestionLabel("Answer " + answer + " is incorrect. The correct answer is " + correctAnswer + ": " + question.getCorrectAnswer());
       viewModel.setAllButtonsCallback(event -> callback.accept(false, 0));
       this.setOnMouseClicked(event -> callback.accept(false, 0));

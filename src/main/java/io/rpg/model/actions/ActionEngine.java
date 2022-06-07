@@ -73,7 +73,6 @@ public final class ActionEngine {
     actionGuard(action, () -> {
       var controller = controller();
       int pointsCount = action.getPointsToEarn();
-      System.out.println(pointsCount);
       controller.getPopupController().openQuestionPopup(
           action.question,
           controller.getWindowCenterX(), controller.getWindowCenterY(),
@@ -85,7 +84,6 @@ public final class ActionEngine {
 
   public void acceptQuizResult(GameObject opponent, boolean correct, int pointsCount) {
     var controller = controller();
-    System.out.println("quiz result accepting");
 
     if (correct) {
       if (pointsCount > 0) {
