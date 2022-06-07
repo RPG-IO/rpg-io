@@ -38,6 +38,8 @@ following props:
 * `player` - Player object specification. It follows the `GameObject` specification
     rules. See [game object configuration][#game-object-configuration]
 * `rootLocation` - `tag` of first-to-be-displayed location.
+* `assetDirPath` - path to the directory with all the assets used in the configuration. Must be either absolute
+    or relative to **configuration directory**. Aliases: `asset-dir`, `asset-dir-path`, `assetDir`.
 * `textPopupBackground` - Url of a picture to be used as a background for all TextPopups
 * `textPopupButton` - Url of a picture to be used as a button image for all TextPopups
 * `textImagePopupBackground` -  Url of a picture to be used as a background for all TextImagePopups
@@ -70,7 +72,8 @@ e.g.
   "quizPopupBackground": "assets/popup-background-3.png",
   "inventoryPopupBackground": "assets/popup-background.png",
   "dialoguePopupBackground": "assets/popup-background.png",
-  "npcFrame": "assets/npc-frame.png"
+  "npcFrame": "assets/npc-frame.png",
+  "assetDir": "../../assets"
 }
 ```
 

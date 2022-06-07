@@ -280,6 +280,7 @@ public class ConfigLoader {
 
     // GameWorldConfig is loaded in two stages right now
     // todo: fix this! Separate initial GameWorldConfig to different class
+    gameWorldConfigShell.injectConfigDirPath(configDirPath);
     Result<Void, Exception> configLoadResult = gameWorldConfigShell.validateStageOne();
 
     if (configLoadResult.isErr()) {
