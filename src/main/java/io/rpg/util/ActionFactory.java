@@ -68,7 +68,7 @@ public class ActionFactory {
   private static DialogueAction dialogueActionFromConfig(ActionConfigBundle config) {
     // TODO: Move Image creation inside DialogueAction? Idk tbh.
     return new DialogueAction(config.getDialogueStatements().get(0),
-        new Image("file:" + config.getAssetPath()), ConditionFactory.fromConfig(config.getCondition()));
+        new Image(PathUtils.resolvePathToJFXFormat(config.getAssetPath())), ConditionFactory.fromConfig(config.getCondition()));
   }
 
   private static LocationChangeAction locationChangeActionFromConfig(ActionConfigBundle config) {
