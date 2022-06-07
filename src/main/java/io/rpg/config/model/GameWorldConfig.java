@@ -3,13 +3,10 @@ package io.rpg.config.model;
 import com.google.gson.annotations.SerializedName;
 import com.kkafara.rt.Result;
 import io.rpg.util.ErrorMessageBuilder;
-import org.apache.logging.log4j.core.util.FileUtils;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This class in not meant to be instantiated by hand. It is used by {@link io.rpg.config.ConfigLoader}
@@ -73,7 +70,18 @@ public class GameWorldConfig implements ConfigWithValidation {
    * Must be either absolute or relative to <b>configuration directory</b>.
    */
   @SerializedName(value = "assetDirPath", alternate = {"asset-dir", "asset-dir-path", "assetDir"})
-  private String assetDirPath;
+  private String assetDir;
+  private transient Path assetDirPath;
+
+  /**
+   * Ugly as ... But we need it to be able to resolve the paths.
+   * Better solution might be moving path validation to new class or just to ConfigLoader.
+   */
+  private transient Path configDirPath;
+
+  public void injectConfigDirPath(Path path) {
+    configDirPath = path;
+  }
 
 
   /**
@@ -138,46 +146,74 @@ public class GameWorldConfig implements ConfigWithValidation {
   public Result<Void, Exception> validateStageOne() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
     if (locationTags != null && locationTags.size() < 1) {
-			builder.append("No location tags detected");
+      builder.append("No location tags detected");
     }
     if (tag == null) {
       builder.append("Null tag");
     }
-    if (assetDirPath == null) {
+    if (assetDir == null || assetDir.isBlank()) {
       builder.append("No asset dir path specified");
-    } else if (!Files.isDirectory(Path.of(assetDirPath))) {
-
+    } else if (!Files.isDirectory(Path.of(assetDir))) {
+      // the path is either invalid or relative to configuration directory
+      // let's see whether it is relative first
+      assetDirPath = configDirPath.resolve(assetDir);
+      if (!Files.isDirectory(assetDirPath)) {
+        builder.append("Invalid asset directory specified. Neither " + assetDir + " nor " + assetDirPath + " "
+            + "point to valid directory");
+      } else {
+        assetDir = assetDirPath.toString();
+      }
+    } else {
+      assetDirPath = Path.of(assetDir);
     }
+
     if (playerConfig == null) {
       builder.append("No player config provided");
     }
+
     if (rootLocation == null) {
       builder.append("No root location set!");
     }
-    if (quizPopupBackground == null || !Files.isRegularFile(Path.of(quizPopupBackground))) {
-			builder.append("Invalid quiz popup background specified");
-    } 
-		if (textImagePopupBackground == null || !Files.isRegularFile(Path.of(textImagePopupBackground))) {
-			builder.append("Invalid text image popup background specified");
-    } 
-		if (textPopupButton == null || !Files.isRegularFile(Path.of(textPopupButton))) {
-			builder.append("Invalid text popup button specified");
-    } 
-		if (textImagePopupButton == null || !Files.isRegularFile(Path.of(textImagePopupButton))) {
-			builder.append("Invald text image popup button specified");
-    } 
-		if (textPopupBackground == null || !Files.isRegularFile(Path.of(textPopupBackground))) {
-			builder.append("Invalid text popup background specified");
-    } 
-		if (inventoryPopupBackground == null || !Files.isRegularFile(Path.of(inventoryPopupBackground))) {
-			builder.append("Invalid inventory popup background specified");
-    }
-    if (dialoguePopupBackground == null || !Files.isRegularFile(Path.of(dialoguePopupBackground))) {
-      builder.append("Invalid dialogue popup background specified");
-    }
-    if (npcFrame == null || !Files.isRegularFile(Path.of(npcFrame))) {
-      builder.append("Invalid NPC Frame specified");
-    }
+
+    resolvePathToAsset(assetDirPath, quizPopupBackground).ifPresentOrElse(
+        pathStr -> { quizPopupBackground = pathStr; },
+        () -> builder.append("Invalid quiz popup background specified")
+    );
+
+    resolvePathToAsset(assetDirPath, textImagePopupBackground).ifPresentOrElse(
+        pathStr -> { textImagePopupBackground = pathStr; },
+        () -> builder.append("Invalid text image popup background specified")
+    );
+
+    resolvePathToAsset(assetDirPath, textPopupButton).ifPresentOrElse(
+        pathStr -> { textPopupButton = pathStr; },
+        () -> builder.append("Invalid text popup button specified")
+    );
+
+    resolvePathToAsset(assetDirPath, textImagePopupButton).ifPresentOrElse(
+        pathStr -> { textImagePopupButton = pathStr; },
+        () -> builder.append("Invalid text image popup button specified")
+    );
+
+    resolvePathToAsset(assetDirPath, textPopupBackground).ifPresentOrElse(
+        pathStr -> { textPopupBackground = pathStr; },
+        () -> builder.append("Invalid text popup background specified")
+    );
+
+    resolvePathToAsset(assetDirPath, inventoryPopupBackground).ifPresentOrElse(
+        pathStr -> { inventoryPopupBackground = pathStr; },
+        () -> builder.append("Invalid inventory popup background specified")
+    );
+
+    resolvePathToAsset(assetDirPath, dialoguePopupBackground).ifPresentOrElse(
+        pathStr -> { dialoguePopupBackground = pathStr; },
+        () -> builder.append("Invalid dialogue popup background specified")
+    );
+
+    resolvePathToAsset(assetDirPath, npcFrame).ifPresentOrElse(
+        pathStr -> { npcFrame = pathStr; },
+        () -> builder.append("Invalid NPC Frame specified")
+    );
 
     return builder.isEmpty() ? Result.ok() :
         Result.err(new IllegalStateException(builder.toString()));
@@ -237,5 +273,34 @@ public class GameWorldConfig implements ConfigWithValidation {
 
   public static String resolvePathFormat(String path) {
     return "file:" + path;
+  }
+
+  /**
+   * Resolves path to the asset.
+   *
+   * Path to the asset must be either relative to the configuration directory
+   * or absolute.
+   *
+   * @param pathStr path to the asset
+   * @return optional with path to the asset if resolution succeeded, empty optional else
+   */
+  private Optional<String> resolvePathToAsset(Path root, String pathStr) {
+    if (pathStr == null) {
+      return Optional.empty();
+    }
+
+    Path assetPath = Path.of(pathStr);
+
+    if (Files.isRegularFile(assetPath)) {
+      return Optional.of(assetPath.toString());
+    }
+
+    assetPath = root.resolve(pathStr);
+
+    if (Files.isRegularFile(assetPath)) {
+      return Optional.of(assetPath.toString());
+    } else {
+      return Optional.empty();
+    }
   }
 }

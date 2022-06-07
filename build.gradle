@@ -85,6 +85,7 @@ jlink {
     launcher {
         name = 'app'
     }
+    forceMerge('log4j-api')
 }
 
 jlinkZip {
