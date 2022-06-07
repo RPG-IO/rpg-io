@@ -98,6 +98,9 @@ public final class ActionEngine {
       controller.getPopupController().hidePopup();
       logger.info("Wrong answer provided");
     }
+
+    // TODO: better action disabling
+    opponent.setOnLeftClickAction(Action.VOID);
   }
 
   public void onAction(GameEndAction action) {
