@@ -27,19 +27,8 @@ public class GameObjectFactory {
     Action onRightClickAction = ActionFactory.fromConfig(config.getOnRightClick());
     Action onApproach = ActionFactory.fromConfig(config.getOnApproach());
 
-    if (onRightClickAction.equals(Action.VOID)) {
-      onRightClickAction = new ShowDescriptionAction(
-          DataObjectDescriptionProvider.combineDescriptions(
-              DataObjectDescriptionProvider.getFieldDescription(config, GameObjectConfig.class)
-          ),
-          new Image("file:" + config.getAssetPath()),
-          null
-      );
-    }
-
     // Not implemented in model for now, however they should be
     Action onClickAction = ActionFactory.fromConfig(config.getOnClick());
-
 
     if (config instanceof PlayerConfig) {
       Player player = new Player(config.getTag(), config.getPosition(), config.getAssetPath());
