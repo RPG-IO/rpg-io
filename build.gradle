@@ -5,9 +5,8 @@ plugins {
     id 'org.beryx.jlink' version '2.24.1'
     id 'checkstyle'
 }
-
 group 'io.rpg'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 repositories {
     mavenCentral()
@@ -85,6 +84,7 @@ jlink {
     launcher {
         name = 'app'
     }
+    forceMerge('log4j-api')
 }
 
 jlinkZip {
