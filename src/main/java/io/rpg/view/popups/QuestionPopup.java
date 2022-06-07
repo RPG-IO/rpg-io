@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class QuestionPopup extends Scene {
 
@@ -20,6 +21,7 @@ public class QuestionPopup extends Scene {
   private final BiConsumer<Boolean, Integer> callback;
 
   private static String backgroundPath;
+  private Runnable onClickCallback;
 
   public QuestionPopup(Question question, BiConsumer<Boolean, Integer> callback, int pointsToEarn) {
     super(new Group(), Color.TRANSPARENT);
@@ -64,14 +66,22 @@ public class QuestionPopup extends Scene {
       viewModel.setQuestionLabel("Correct!");
       viewModel.setAllButtonsCallback(event -> callback.accept(true, pointsToEarn));
       this.setOnMouseClicked(event -> callback.accept(true, pointsToEarn));
+      this.onClickCallback = () -> callback.accept(true, pointsToEarn);
     } else {
       viewModel.highlightWrong(answer);
       System.out.println("wrong");
       viewModel.setQuestionLabel("Answer " + answer + " is incorrect. The correct answer is " + correctAnswer + ": " + question.getCorrectAnswer());
       viewModel.setAllButtonsCallback(event -> callback.accept(false, 0));
       this.setOnMouseClicked(event -> callback.accept(false, 0));
+      this.onClickCallback = () -> callback.accept(false, 0);
     }
 
     viewModel.highlightCorrect(correctAnswer);
+  }
+
+  public void clickCallback() {
+    if (this.onClickCallback != null) {
+      this.onClickCallback.run();
+    }
   }
 }

@@ -24,6 +24,11 @@ public class PopupController {
     // close popup after clicking aside
     popupStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
       if (!isNowFocused) {
+        if (popupStage.getScene() != null) {
+          if (popupStage.getScene() instanceof QuestionPopup) {
+            ((QuestionPopup) popupStage.getScene()).clickCallback();
+          }
+        }
         popupStage.close();
       }
     });
