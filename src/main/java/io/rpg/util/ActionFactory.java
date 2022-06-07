@@ -77,7 +77,8 @@ public class ActionFactory {
   }
 
   private static ShowDescriptionAction showDescriptionActionFromConfig(ActionConfigBundle config) {
-    return new ShowDescriptionAction(config.getDescription(), new Image("file:" + config.getAssetPath()),
+    return new ShowDescriptionAction(config.getDescription(), new Image(
+        PathUtils.resolvePathToJFXFormat(PathUtils.resolvePathToAsset(config.getAssetPath()).get())),
         ConditionFactory.fromConfig(config.getCondition()));
   }
 

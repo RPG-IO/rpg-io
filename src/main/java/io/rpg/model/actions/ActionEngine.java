@@ -60,6 +60,7 @@ public final class ActionEngine {
   }
 
   public void onAction(ShowDescriptionAction action) {
+    System.out.println(action.image.getUrl());
     actionGuard(action, () -> {
       if (!action.description.isEmpty()) {
         var controller = controller();
