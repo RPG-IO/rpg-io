@@ -128,6 +128,26 @@ public final class ActionEngine {
             controller().getWindowCenterX(), controller().getWindowCenterY());
   }
 
+  public void onAction(BattleReflexAction action) {
+    actionGuard(action, () -> controller().getPopupController().openBattleReflexPopup(action.getReward(),
+        (won, points) -> acceptBattleReflexResult(action.getEmitter(), won, points),
+        controller().getWindowCenterX(),
+        controller().getWindowCenterY()));
+  }
+
+  public void acceptBattleReflexResult(GameObject actionOwner, boolean won, int pointsCount) {
+    var controller = controller();
+    if (won) {
+      if (pointsCount > 0)
+        controller.getPopupController().openPointsPopup(pointsCount, controller.getWindowCenterX(), controller.getWindowCenterY());
+      controller.removeObjectFromModel(actionOwner);
+      controller.getPlayerController().getPlayer().addDefeatedOpponent(actionOwner.getTag());
+      controller.getPlayerController().addPoints(pointsCount);
+    } else {
+      controller.getPopupController().hidePopup();
+    }
+  }
+
   public void onAction(CollectAction action) {
     actionGuard(action, () -> {
       var controller = controller();

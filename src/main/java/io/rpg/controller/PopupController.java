@@ -2,7 +2,7 @@ package io.rpg.controller;
 
 import io.rpg.model.object.Player;
 import io.rpg.model.object.Question;
-import io.rpg.view.BattlePopup;
+import io.rpg.view.popups.BattleReflexPopup;
 import io.rpg.view.popups.DialoguePopup;
 import io.rpg.view.popups.QuestionPopup;
 import io.rpg.model.data.Inventory;
@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.util.function.BiConsumer;
 
 public class PopupController {
 
@@ -63,10 +64,7 @@ public class PopupController {
   }
 
   public void openInventoryPopup(Inventory inventory, int x, int y, Player player) {
-//    InventoryPopup inventoryPopup=new InventoryPopup();
-//    final Stage popupStage = new Stage(StageStyle.TRANSPARENT);
-
-    InventoryPopup popupScene = new InventoryPopup(inventory,player);
+    InventoryPopup popupScene = new InventoryPopup(inventory, player);
     popupStage.setScene(popupScene);
 
     popupStage.onShownProperty().setValue(event -> {
@@ -79,15 +77,17 @@ public class PopupController {
     }
   }
 
-  public void openBattlePopup(Player player,int x,int y){
-    BattlePopup battlePopup = new BattlePopup(player);
-    this.popupStage.setScene(battlePopup);
-    popupStage.show();
-    popupStage.setX(x - battlePopup.getWidth() / 2);
-    popupStage.setY(y - battlePopup.getHeight() / 2);
-    battlePopup.setCloseButtonActionListener((event)->{
-      popupStage.close();
+  public void openBattleReflexPopup(int pointsPerSecond, BiConsumer<Boolean, Integer> callback, int x, int y){
+    BattleReflexPopup popupScene = new BattleReflexPopup(pointsPerSecond, callback);
+    popupScene.setCloseButtonActionListener((event) -> hidePopup());
+    popupStage.setScene(popupScene);
+    popupStage.onShownProperty().setValue(event -> {
+      popupStage.setX(x - popupScene.getWidth() / 2);
+      popupStage.setY(y - popupScene.getHeight() / 2);
     });
+    if (!popupStage.isShowing()) {
+      popupStage.showAndWait();
+    }
   }
 
   public void openQuestionPopup(Question question, int x, int y, Runnable successCallback, Runnable failureCallback) {

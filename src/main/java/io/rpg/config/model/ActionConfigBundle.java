@@ -262,7 +262,11 @@ public class ActionConfigBundle implements ConfigWithValidation {
   }
 
   Result<Void, Exception> validateForBattle() {
-    return Result.ok();
+    ErrorMessageBuilder builder = new ErrorMessageBuilder();
+    if (rewardPoints == null) {
+      builder.append("No reward provided");
+    }
+    return builder.isEmpty() ? Result.ok() : Result.err(new IllegalStateException(builder.toString()));
   }
 
   Result<Void, Exception> validateForCollectAction() {
@@ -333,7 +337,7 @@ public class ActionConfigBundle implements ConfigWithValidation {
       case LocationChange -> { return validateForLocationChangeAction(); }
       case Quiz -> { return validateForQuizAction(); }
       case ShowDescription -> { return validateForShowDescriptionAction(); }
-      case Battle -> { return validateForBattle(); }
+      case Battle, BattleReflex -> { return validateForBattle(); }
       case Collect -> { return validateForCollectAction(); }
       default -> { return Result.err(new RuntimeException("Invalid result returned")); }
     }

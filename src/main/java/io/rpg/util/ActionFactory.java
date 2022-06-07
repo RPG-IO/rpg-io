@@ -45,6 +45,9 @@ public class ActionFactory {
       case Battle -> {
         return battleActionFromConfig(config);
       }
+      case BattleReflex -> {
+        return battleReflexActionFromConfig(config);
+      }
       case Collect -> {
         return collectActionFromConfig(config);
       }
@@ -80,6 +83,11 @@ public class ActionFactory {
 
   private static BattleAction battleActionFromConfig(ActionConfigBundle config) {
     return new BattleAction(config.getRewardPoints(),
+        ConditionFactory.fromConfig(config.getCondition()));
+  }
+
+  private static BattleReflexAction battleReflexActionFromConfig(ActionConfigBundle config) {
+    return new BattleReflexAction(config.getRewardPoints(),
         ConditionFactory.fromConfig(config.getCondition()));
   }
 

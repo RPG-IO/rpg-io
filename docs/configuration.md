@@ -173,6 +173,7 @@ As for now we support 5 kinds of actions:
 * `show-description`
 * `dialogue`
 * `battle`
+* `battle-reflex`
 * `collect`
 
 For each kind configuration differs a bit, because different information is required. Let's take a closer look at the
@@ -216,7 +217,10 @@ Let's look at specific action types:
     as a list. Aliases: `text`, `dialogue-statements`, `dialogueStatements`. \\
   * `assetPath` - Path to the image displayed in the dialogue popup, presumably depicting the NPC that the action is tied to. As any path, it must be eiter absolute or relative to the engine's source root.
     Aliases: `asset-path`, `asset`.
-* `battle` -- No props required.
+* `battle`:
+  * `reward`: number of points given as a prize for winning the battle
+* `battle-reflex`:
+  * `reward`: number of points awarded after winning the battle will be `reward` * number of seconds left in the challenge
 * `collect`:
   * `assetPath` - Path to the image that will be shown in a popup after collecting the object, as well as in the Inventory window. As any path, it must be eiter absolute or relative to the engine's source root.
     Aliases: `asset-path`, `asset`.
