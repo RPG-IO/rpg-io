@@ -153,7 +153,6 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
       switch (payload.getCode()) {
         case F -> popupController.openPointsPopup(5, getWindowCenterX(), getWindowCenterY());
         case G -> popupController.openTextPopup("Hello!", getWindowCenterX(), getWindowCenterY());
-        case Q -> popupController.openQuestionPopup(new Question("How many bits are there in one byte?", new String[]{"1/8", "1024", "8", "256"}, 'C'), getWindowCenterX(), getWindowCenterY());
         case L -> consumeAction(new LocationChangeAction("location-2", new Position(1, 2), null));
         case U -> consumeAction(new GameEndAction("You have pressed the forbidden button", null));
         case E -> popupController.openInventoryPopup(playerController.getPlayer().getInventory(), getWindowCenterX(), getWindowCenterY(), playerController.getPlayer());

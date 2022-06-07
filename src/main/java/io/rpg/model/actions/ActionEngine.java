@@ -75,22 +75,24 @@ public final class ActionEngine {
       controller.getPopupController().openQuestionPopup(
           action.question,
           controller.getWindowCenterX(), controller.getWindowCenterY(),
-          () -> acceptQuizResult(true, pointsCount),
-          () -> acceptQuizResult(false, 0)
+          (won, points) -> acceptQuizResult(action.getEmitter(), won, points),
+          pointsCount
       );
-      action.setPointsToEarn(0);
     });
   }
 
-  public void acceptQuizResult(boolean correct, int pointsCount) {
+  public void acceptQuizResult(GameObject opponent, boolean correct, int pointsCount) {
     var controller = controller();
     if (correct) {
       if (pointsCount > 0) {
         controller.getPopupController().openPointsPopup(pointsCount, controller.getWindowCenterX(), controller.getWindowCenterY());
+        controller.removeObjectFromModel(opponent);
+        controller.getPlayerController().getPlayer().addDefeatedOpponent(opponent.getTag());
         controller.getPlayerController().addPoints(pointsCount);
       }
     } else {
       controller.getPopupController().hidePopup();
+      controller.removeObjectFromModel(opponent);
       logger.info("Wrong answer provided");
     }
   }
@@ -110,6 +112,7 @@ public final class ActionEngine {
       BattleResult result;
       if (player.getStrength() > opponent.getStrength()) {
         player.addDefeatedOpponent(opponent.getTag());
+        controller().removeObjectFromModel(opponent);
         result = new BattleResult(BattleResult.Result.VICTORY, reward);
       } else if (player.getStrength() < opponent.getStrength()) {
         result = new BattleResult(BattleResult.Result.DEFEAT, 0);
