@@ -40,10 +40,11 @@ class LocationModelTest {
 
     object1.setOnRightClickAction(action);
     object1.onRightClick();
-    Mockito.verify(consumer, Mockito.times(1)).consumeAction(action);
+
+    Mockito.verify(consumer, Mockito.times(0)).consumeAction(action);
 
     object2.setOnRightClickAction(action);
     object2.onRightClick();
-    Mockito.verify(consumer, Mockito.times(2)).consumeAction(action);
+    Mockito.verify(consumer, Mockito.times(0)).consumeAction(action);
   }
 }
