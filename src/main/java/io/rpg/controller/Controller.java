@@ -100,7 +100,7 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   @Override
   public void consumeAction(Action action) {
-    if (!action.equals(Action.VOID)) {
+    if (Action.VOID.equals(action)) {
       logger.trace("Consumed void action");
       return;
     }
