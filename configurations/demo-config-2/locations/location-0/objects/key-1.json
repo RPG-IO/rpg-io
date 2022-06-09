@@ -2,5 +2,16 @@
   "tag": "key-1",
   "assetPath": "key.png",
   "position": { "row": 4, "col": 5 },
-  "onLeftClick": {"tag": "dialogue-action", "type": "collect", "description": "Klucz do skrzyni.", "assetPath": "key.png"}
+  "onLeftClick": {
+    "tag": "dialogue-action",
+    "type": "collect",
+    "description": "Klucz do skrzyni.",
+    "assetPath": "key.png"
+  },
+  "onApproach": {
+    "tag": "onKeyApproachAction",
+    "type": "show-description",
+    "description": "W oddali spostrzegasz klucz. Ciekawe co otwiera...",
+    "assetPath": "key.png"
+  }
 }
