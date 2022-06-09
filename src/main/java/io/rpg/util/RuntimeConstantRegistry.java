@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
-import java.util.Optional;
 
 public final class RuntimeConstantRegistry {
   private final Logger logger = LogManager.getLogger(RuntimeConstantRegistry.class);
