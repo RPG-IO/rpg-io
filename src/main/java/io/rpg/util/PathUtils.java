@@ -5,7 +5,6 @@ import java.nio.file.Path;
 import java.util.Optional;
 
 public class PathUtils {
-  private static Path root;
 
   /**
    * Resolves path to the asset.
@@ -27,7 +26,7 @@ public class PathUtils {
       return Optional.of(assetPath.toString());
     }
 
-    assetPath = root.resolve(pathStr);
+    assetPath = RuntimeConstantRegistryInstance.get().getAssetDirPath().resolve(pathStr);
 
     if (Files.isRegularFile(assetPath)) {
       return Optional.of(assetPath.toString());
@@ -41,11 +40,5 @@ public class PathUtils {
       return "file:" + path;
     }
     return path;
-  }
-
-  public static void init(Path rootPath) {
-    if (root == null) {
-      root = rootPath;
-    }
   }
 }
