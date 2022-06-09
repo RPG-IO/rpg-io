@@ -2,17 +2,13 @@ package io.rpg.model.object;
 
 import io.rpg.model.actions.Action;
 import io.rpg.model.actions.BaseActionEmitter;
-import io.rpg.model.actions.QuizAction;
-import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.Position;
 import io.rpg.util.DataObjectDescriptionProvider;
 import javafx.application.Platform;
-import io.rpg.view.GameObjectView;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Point2D;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -21,7 +17,7 @@ import java.util.Set;
  * Class representing common state properties for all
  * objects appearing in the game.
  */
-public class GameObject extends BaseActionEmitter implements GameObjectStateChange.Emitter {
+public class GameObject extends BaseActionEmitter {
 
   /**
    * Position of game object in model's representation of location.
@@ -40,9 +36,6 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
   @NotNull
   private final String tag;
 
-  @NotNull
-  private final Set<GameObjectStateChange.Observer> stateChangeObservers;
-
   /**
    * Unique identifier of this game object.
    */
@@ -54,7 +47,6 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
 
   public GameObject(@NotNull String tag, @NotNull Position position) {
     this.tag = tag;
-    this.stateChangeObservers = new LinkedHashSet<>();
     this.exactPositionProperty = new SimpleObjectProperty<>(new Point2D(position.col, position.row));
     this.onLeftClickAction = Action.VOID;
     this.onRightClickAction = Action.VOID;
@@ -87,22 +79,6 @@ public class GameObject extends BaseActionEmitter implements GameObjectStateChan
 
   public ObservableValue<Point2D> getExactPositionProperty() {
     return exactPositionProperty;
-  }
-
-  @Override
-  public void emitGameObjectStateChange(GameObjectStateChange event) {
-    // TODO
-    // noop for now
-  }
-
-  @Override
-  public void addGameObjectStateChangeObserver(GameObjectStateChange.Observer observer) {
-    this.stateChangeObservers.add(observer);
-  }
-
-  @Override
-  public void removeGameObjectStateChangeObserver(GameObjectStateChange.Observer observer) {
-    this.stateChangeObservers.remove(observer);
   }
 
   @Override

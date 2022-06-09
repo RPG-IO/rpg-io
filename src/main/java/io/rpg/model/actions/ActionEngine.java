@@ -6,7 +6,6 @@ import io.rpg.model.object.GameObject;
 import io.rpg.model.object.Player;
 import io.rpg.util.BattleResult;
 import io.rpg.util.PathUtils;
-import io.rpg.view.GameObjectView;
 import io.rpg.view.InventoryGameObjectView;
 import io.rpg.view.LocationView;
 import javafx.scene.image.Image;

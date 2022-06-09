@@ -140,7 +140,6 @@ public class Initializer {
       GameObjectView gameObjectView = gameObjectViewIterator.next();
 
       // registration
-      gameObject.addGameObjectStateChangeObserver(gameObjectView);
       gameObjectView.bindToGameObject(gameObject);
     }
   }

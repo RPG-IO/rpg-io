@@ -20,7 +20,6 @@ public class PlayerController implements KeyboardEvent.Observer {
     playerView.bindToGameObject(player);
     this.onChangeLocation = () -> {};
 
-    player.addGameObjectStateChangeObserver(playerView);
     player.setGameObjectView(playerView);
   }
 
