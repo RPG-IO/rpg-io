@@ -6,7 +6,19 @@
     "tag": "dialogue-action",
     "type": "collect",
     "description": "Klucz do skrzyni.",
-    "assetPath": "key.png"
+    "assetPath": "key.png",
+    "before": {
+      "tag": "before collect",
+      "type": "show-description",
+      "assetPath": "key.png",
+      "description": "Schylasz się i podnosisz stary klucz. Ciekawe co otwiera...",
+      "after": {
+        "tag": "before collect",
+        "type": "show-description",
+        "assetPath": "chest.png",
+        "description": "Może tą starą skrzynię którą widziałeś na północy?"
+      }
+    }
   },
   "onApproach": {
     "tag": "onKeyApproachAction",
