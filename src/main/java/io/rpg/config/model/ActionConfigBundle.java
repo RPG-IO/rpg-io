@@ -218,9 +218,6 @@ public class ActionConfigBundle implements ConfigWithValidation {
 
   Result<Void, Exception> validateForDialogueAction() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
-    if (description == null) {
-      builder.append("No description provided");
-    }
     if (assetPath == null) {
       builder.append("No asset path provided");
     } else if (!Files.isRegularFile(Path.of(assetPath))) {
