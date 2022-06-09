@@ -107,16 +107,19 @@ public class WrapperController {
 
     String path = pathOptional.get();
     printLine("Selected: " + path);
-    startButton.setDisable(false);
 
     // simple check if the user did not pick just a random file
     Path _path = Path.of(path);
-    if (!Files.isReadable(_path)) {
-      printLine("Selected path does not point to a readable file. Try again.");
-    } else if (!_path.getFileName().toString().equals(ConfigConstants.ROOT)) {
-      printLine("Selected path does not point to: " + ConfigConstants.ROOT + " file.");
+    if (!Files.isReadable(_path) || !Files.isDirectory(_path)) {
+      printLine(_path.toString() + " is not readable or is not a directory");
     } else {
-      loadGame(path).ifOk(g -> g.setOnEnd(() -> show(stage)));
+      startButton.setDisable(false);
+      loadGame(path).ifOk(
+          g -> {
+            game = g;
+            game.setOnEnd(() -> show(stage));
+          }
+      );
     }
   }
 
@@ -140,17 +143,17 @@ public class WrapperController {
     } else if (initializationResult.isOkValueNull()) {
       printLine("Initialization returned null value");
       return Result.err();
-    } else {
-      game = initializationResult.getOk();
     }
 
-    return Result.ok(game);
+    return Result.ok(initializationResult.getOk());
   }
 
   @FXML
   private void onStartClick() {
-    startButton.setDisable(true);
-    game.start(stage);
+    if (game != null) {
+      startButton.setDisable(true);
+      game.start(stage);
+    }
   }
 
   private void printLine(String line) {
