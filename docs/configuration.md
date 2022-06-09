@@ -245,6 +245,8 @@ Condition consists of following properties:
         the correctness. Aliases: `tag`, `opponentTag`.
   * `level-required` - Requires following props:
     * `level` - Required player level. Player's level must be >= given value for the condition to be satisfied.
+  * `points-required` - Requires following props:
+    * `points` - Player's point count must be >= give value for the condition to be satisfied.
 
 ## Example of full configuration structure
 
