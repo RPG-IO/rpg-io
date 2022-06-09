@@ -89,7 +89,6 @@ public class Initializer {
       assert view != null;
 
       gameObjectViews.forEach(view::addChild);
-      model.addOnLocationModelStateChangeObserver(view);
 
       controllerBuilder
           .addViewForTag(locationConfig.getTag(), view)

@@ -4,7 +4,6 @@ import com.kkafara.rt.Result;
 import io.rpg.model.actions.ActionConsumer;
 import io.rpg.model.actions.BaseActionEmitter;
 import io.rpg.model.actions.LocationChangeAction;
-import io.rpg.model.data.LocationModelStateChange;
 import io.rpg.model.data.MapDirection;
 import io.rpg.model.data.Position;
 import io.rpg.model.object.GameObject;
@@ -20,14 +19,13 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Represents single location in our game.
  */
-public class LocationModel extends BaseActionEmitter implements LocationModelStateChange.Emitter {
+public class LocationModel extends BaseActionEmitter {
   private String tag;
   private List<GameObject> gameObjects;
   private final HashMap<GameObject, ChangeListener<Point2D>> positionListeners;
   private final HashMap<Position, GameObject> positionGameObjectMap;
   private HashMap<MapDirection, String> directionToLocationMap;
   public Point2D bounds;
-  private final Set<LocationModelStateChange.Observer> locationModelStateChangeObservers;
 
 
   public LocationModel(@NotNull String tag, @NotNull List<GameObject> gameObjects) {
@@ -37,7 +35,6 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
   }
 
   private LocationModel() {
-    this.locationModelStateChangeObservers = new LinkedHashSet<>();
     this.positionListeners = new HashMap<>();
     this.positionGameObjectMap = new HashMap<>();
     this.directionToLocationMap = new HashMap<>();
@@ -181,23 +178,6 @@ public class LocationModel extends BaseActionEmitter implements LocationModelSta
     double x = Math.max(-offset, Math.min(bounds.getX() - 1 + offset, pos.getX()));
     double y = Math.max(-offset, Math.min(bounds.getY() - 1 + offset, pos.getY()));
     return new Point2D(x, y);
-  }
-
-  @Override
-  public void addOnLocationModelStateChangeObserver(LocationModelStateChange.Observer observer) {
-    locationModelStateChangeObservers.add(observer);
-  }
-
-  @Override
-  public void removeOnLocationModelStateChangeObserver(LocationModelStateChange.Observer observer) {
-    locationModelStateChangeObservers.remove(observer);
-  }
-
-  @Override
-  public void emitLocationModelStateChange(LocationModelStateChange event) {
-    locationModelStateChangeObservers.forEach(observer -> {
-      observer.onLocationModelStateChange(event);
-    });
   }
 
   @Override
