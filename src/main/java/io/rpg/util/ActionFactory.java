@@ -94,10 +94,14 @@ public class ActionFactory {
 
   private static void initBeforeAndAfterActions(Action action, ActionConfigBundle config) {
     if (config.getBeforeAction() != null) {
-      action.setBeforeAction(actionByType(config.getBeforeAction()));
+      Action newAction = actionByType(config.getBeforeAction());
+      initBeforeAndAfterActions(newAction, config.getBeforeAction());
+      action.setBeforeAction(newAction);
     }
     if (config.getAfterAction() != null) {
-      action.setAfterAction(actionByType(config.getAfterAction()));
+      Action newAction = actionByType(config.getAfterAction());
+      initBeforeAndAfterActions(newAction, config.getAfterAction());
+      action.setAfterAction(newAction);
     }
   }
 
