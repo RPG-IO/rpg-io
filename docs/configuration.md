@@ -33,7 +33,7 @@ File in `json` format. Specifies a single object that must specify
 following props:
 
 * `tag` - It represents the game's name.
-* `locations` - List of location tags. All the locations specified in `locations` are loaded, however this field is left
+* `locations` - List of location tags. All the locations specified in `locations` directory are loaded, however this field is left
     for backward-compatibility.
 * `player` - Player object specification. It follows the `GameObject` specification
     rules. See [game object configuration][#game-object-configuration]
@@ -49,6 +49,8 @@ following props:
 * `dialoguePopupBackground` - Url of a picture to be used as a background for all DialoguePopups
 * `npcFrame` - Url of a picture to be used as a frame around a NPC image in the DialoguePopups
 
+**Note: all assets paths must be either absolute or relative to **assets** directory.**
+
 e.g.
 ```json
 {
@@ -62,17 +64,17 @@ e.g.
     "tag": "player",
     "position": { "row": 4, "col": 5 },
     "type": "player",
-    "assetPath": "assets/stone.png",
+    "assetPath": "stone.png",
     "location": "location-1"
   },
-  "textPopupBackground": "assets/popup-background.png",
-  "textPopupButton": "assets/button-image.png",
-  "textImagePopupBackground": "assets/popup-background-2.png",
-  "textImagePopupButton": "assets/button-image-2.png",
-  "quizPopupBackground": "assets/popup-background-3.png",
-  "inventoryPopupBackground": "assets/popup-background.png",
-  "dialoguePopupBackground": "assets/popup-background.png",
-  "npcFrame": "assets/npc-frame.png",
+  "textPopupBackground": "popup-background.png",
+  "textPopupButton": "button-image.png",
+  "textImagePopupBackground": "popup-background-2.png",
+  "textImagePopupButton": "button-image-2.png",
+  "quizPopupBackground": "popup-background-3.png",
+  "inventoryPopupBackground": "popup-background.png",
+  "dialoguePopupBackground": "popup-background.png",
+  "npcFrame": "npc-frame.png",
   "assetDir": "../../assets"
 }
 ```
@@ -87,8 +89,7 @@ Each subdirectory contains detailed location configuration (explained below).
 
 Names of the subdirectories are treated as location tags & 
 location object will be created, by the engine for every subdirectory that contains
-correct location configuration .
-
+correct location configuration.
 
 e.g., there are two location configured in the game: `location-1`, `location-2`:
 
@@ -120,7 +121,7 @@ It consists of:
     tag will be deduced from directory name.
 * `objects` - List of `GameObject` configurations. This field was left for backward compat, but it also allows you to 
     configure small objects in-line w/o need to create separate config file for them.
-* `backgroundPath` - Path to the background asset. As any path, it must be eiter absolute or relative to the engine's source root.
+* `backgroundPath` - Path to the background asset. As any path, it must be eiter absolute or relative to the **assets directory**.
 
 All the objects configured in `objects` directory are loaded. You don't have to specify them inside `<location-tag>.json` file.
 Note however, that object tags must be unique (as for now, in the future we plan to introduce special prefix for tag, that will
@@ -132,10 +133,10 @@ location config example:
 {
   "tag": "location-1",
   "objects": [
-    { "tag": "object-1", "position": { "row": 0, "col": 5 }, "type": "collectible", "assetPath": "assets/someDude.png" },
-    { "tag": "object-2", "position": { "row": 1, "col": 3 }, "type": "dialog", "assetPath": "assets/someDude.png" }
+    { "tag": "object-1", "position": { "row": 0, "col": 5 }, "assetPath": "someDude.png" },
+    { "tag": "object-2", "position": { "row": 1, "col": 3 }, "assetPath": "someDude.png" }
   ],
-  "backgroundPath": "assets/map.png"
+  "backgroundPath": "map.png"
 }
 ```
 
@@ -153,7 +154,7 @@ location-1
 
 * `tag` - Unique id for the object across all game objects.
 * `position` - Position of the object in the location. See examples.
-* `assetPath` - Path to the asset representing this game object. As any path, it must be eiter absolute or relative to the engine's source root.
+* `assetPath` - Path to the asset representing this game object. As any path, it must be eiter absolute or relative to **assets directory**.
     Aliases: `asset-path`, `asset`.
 * *(optional)* `onClick` - Configuration for the action to be triggered when user clicks on the object. See [action configuration](#action-configuration).
     Aliases: `onPress`, `on-press`, `on-click`.
@@ -212,20 +213,20 @@ Let's look at specific action types:
   
     Aliases: `targetLocation`, `target`
 * `show-description`:
-  * `assetPath` - Path to the image shown in the description popup, presumably depicting the object that the action belongs to. As any path, it must be eiter absolute or relative to the engine's source root.
+  * `assetPath` - Path to the image shown in the description popup, presumably depicting the object that the action belongs to. As any path, it must be eiter absolute or relative to the **assets** directory.
     Aliases: `asset-path`, `asset`.
   * `description` - Additional information about the object.
 * `dialogue`:
   * `statements` - **List** of statements to be said. Right now, **only one statement is supported**, however you must provide it 
     as a list. Aliases: `text`, `dialogue-statements`, `dialogueStatements`. \\
-  * `assetPath` - Path to the image displayed in the dialogue popup, presumably depicting the NPC that the action is tied to. As any path, it must be eiter absolute or relative to the engine's source root.
+  * `assetPath` - Path to the image displayed in the dialogue popup, presumably depicting the NPC that the action is tied to. As any path, it must be eiter absolute or relative to the **assets** directory.
     Aliases: `asset-path`, `asset`.
 * `battle`:
   * `reward`: number of points given as a prize for winning the battle
 * `battle-reflex`:
   * `reward`: number of points awarded after winning the battle will be `reward` * number of seconds left in the challenge
 * `collect`:
-  * `assetPath` - Path to the image that will be shown in a popup after collecting the object, as well as in the Inventory window. As any path, it must be eiter absolute or relative to the engine's source root.
+  * `assetPath` - Path to the image that will be shown in a popup after collecting the object, as well as in the Inventory window. As any path, it must be eiter absolute or relative to the **assets** directory.
     Aliases: `asset-path`, `asset`.
   * `description` - Text displayed when the cursor is above the collected item in the Inventory window.
 
@@ -245,6 +246,39 @@ Condition consists of following properties:
         the correctness. Aliases: `tag`, `opponentTag`.
   * `level-required` - Requires following props:
     * `level` - Required player level. Player's level must be >= given value for the condition to be satisfied.
+
+Example configuration of object with actions and conditions
+
+```json
+{
+  "tag": "blocking-bunny",
+  "assetPath": "bunny-right.png",
+  "position": { "row": 7, "col": 2 },
+  "onApproach": {
+    "tag": "w",
+    "type": "show-description",
+    "description": "Nie przepuszczę Cie dopóki mi nie zapłacisz. Chcę jeden diament!",
+    "assetPath": "diamond.png"
+  },
+  "onLeftClick": {
+    "tag": "w",
+    "type": "collect",
+    "assetPath": "envelope.png",
+    "description": "Przepustka",
+    "condition":{
+      "tag": "xd",
+      "type": "item-required",
+      "item-tag": "chest-1"
+    }
+  },
+  "onRightClick": {
+    "tag": "w",
+    "type": "show-description",
+    "assetPath": "diamond.png",
+    "description": "Ten królik powiedział, że Cię nie przepuści dopóki nie dasz mu diamentu."
+  }
+}
+```
 
 ## Example of full configuration structure
 
