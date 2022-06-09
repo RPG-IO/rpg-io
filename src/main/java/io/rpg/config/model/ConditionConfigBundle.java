@@ -19,9 +19,13 @@ public class ConditionConfigBundle implements ConfigWithValidation {
   @SerializedName(value = "item-tag", alternate = {"itemTag", "opponent-tag", "tag", "opponentTag"})
   private String objectTag;
 
+  /**
+   * {@link io.rpg.model.actions.condition.LevelRequiredCondition}
+   * {@link io.rpg.model.actions.condition.PointsRequiredCondition}
+   */
   @Nullable
-  @SerializedName(value = "level", alternate = {"required-level", "requiredLevel"})
-  private Integer requiredLevel;
+  @SerializedName(value = "level", alternate = {"required-level", "requiredLevel", "points"})
+  private Integer intValue;
 
   @Nullable
   public ConditionType getType() {
@@ -35,7 +39,12 @@ public class ConditionConfigBundle implements ConfigWithValidation {
 
   @Nullable
   public Integer getRequiredLevel() {
-    return requiredLevel;
+    return intValue;
+  }
+
+  @Nullable
+  public Integer getRequiredPoints() {
+    return intValue;
   }
 
   Result<Void, Exception> validateItemRequired() {
@@ -56,13 +65,18 @@ public class ConditionConfigBundle implements ConfigWithValidation {
   Result<Void, Exception> validateLevelRequired() {
     ErrorMessageBuilder builder = new ErrorMessageBuilder();
 
-    if (requiredLevel == null) {
+    if (intValue == null) {
       builder.append("No level provided");
-    } else if (requiredLevel <= 0) {
+    } else if (intValue <= 0) {
       builder.append("Level must be > 0");
     }
 
     return builder.isEmpty() ? Result.ok() : Result.err(new Exception(builder.toString()));
+  }
+
+  Result<Void, Exception> validatePointsRequired() {
+    // We need to check the same conditions
+    return validateLevelRequired();
   }
 
   @Override
@@ -81,6 +95,7 @@ public class ConditionConfigBundle implements ConfigWithValidation {
       case ITEM_REQUIRED -> { return validateItemRequired(); }
       case DEFEAT_OPPONENT -> { return validateDefeatOpponent(); }
       case LEVEL_REQUIRED -> { return validateLevelRequired(); }
+      case POINTS_REQUIRED -> { return validatePointsRequired(); }
       default -> throw new IllegalArgumentException("Not implemented condition type!");
     }
   }
