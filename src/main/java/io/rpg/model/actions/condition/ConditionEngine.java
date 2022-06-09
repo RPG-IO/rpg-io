@@ -39,4 +39,11 @@ public final class ConditionEngine {
         .getPlayer()
         .getLevel() >= condition.getLevel();
   }
+
+  public boolean evaluate(PointsRequiredCondition condition) {
+    return controller()
+        .getPlayerController()
+        .getPlayer()
+        .getPoints() >= condition.getPoints();
+  }
 }
