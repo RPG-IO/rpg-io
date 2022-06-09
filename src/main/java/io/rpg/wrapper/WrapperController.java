@@ -5,7 +5,11 @@ import io.rpg.Game;
 import io.rpg.Initializer;
 import io.rpg.Main;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
+
+import io.rpg.config.ConfigConstants;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -104,8 +109,15 @@ public class WrapperController {
     printLine("Selected: " + path);
     startButton.setDisable(false);
 
-    loadGame(path)
-        .ifOk(g -> g.setOnEnd(() -> show(stage)));
+    // simple check if the user did not pick just a random file
+    Path _path = Path.of(path);
+    if (!Files.isReadable(_path)) {
+      printLine("Selected path does not point to a readable file. Try again.");
+    } else if (!_path.getFileName().toString().equals(ConfigConstants.ROOT)) {
+      printLine("Selected path does not point to: " + ConfigConstants.ROOT + " file.");
+    } else {
+      loadGame(path).ifOk(g -> g.setOnEnd(() -> show(stage)));
+    }
   }
 
   private Result<Game, Void> loadGame(String path) {
@@ -130,7 +142,6 @@ public class WrapperController {
       return Result.err();
     } else {
       game = initializationResult.getOk();
-      printLine("File was correctly loaded. Press START to begin game");
     }
 
     return Result.ok(game);
