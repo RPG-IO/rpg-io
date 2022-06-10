@@ -11,4 +11,7 @@ public enum ConditionType {
 
   @SerializedName("level-required")
   LEVEL_REQUIRED,
+
+  @SerializedName("points-required")
+  POINTS_REQUIRED,
 }
