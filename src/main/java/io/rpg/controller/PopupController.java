@@ -25,12 +25,12 @@ public class PopupController {
     // close popup after clicking aside
     popupStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
       if (!isNowFocused) {
-        if (popupStage.getScene() != null) {
-          if (popupStage.getScene() instanceof QuestionPopup) {
-            ((QuestionPopup) popupStage.getScene()).clickCallback();
-            return;
-          }
-        }
+//        if (popupStage.getScene() != null) {
+//          if (popupStage.getScene() instanceof QuestionPopup) {
+//            ((QuestionPopup) popupStage.getScene()).clickCallback();
+//            return;
+//          }
+//        }
         popupStage.close();
       }
     });
@@ -100,6 +100,7 @@ public class PopupController {
 
   public void openQuestionPopup(Question question, int x, int y, BiConsumer<Boolean, Integer> callback, int reward) {
     QuestionPopup popupScene = new QuestionPopup(question, callback, reward);
+    popupScene.setOkButtonCallback((event) -> hidePopup());
     popupStage.setScene(popupScene);
     popupStage.onShownProperty().setValue(event -> {
       popupStage.setX(x - popupScene.getWidth() / 2);

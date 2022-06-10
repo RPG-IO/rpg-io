@@ -45,6 +45,7 @@ following props:
 * `textImagePopupBackground` -  Url of a picture to be used as a background for all TextImagePopups
 * `textImagePopupButton` - Url of a picture to be used as a button image for all TextImagePopups
 * `quizPopupBackground` - Url of a picture to be used as a background for all QuizPopups
+* `quizPopupButton` - Url of a picture to be used as a button image for all QuizPopups
 * `inventoryPopupBackground` - Url of a picture to be used as a background for the Inventory
 * `dialoguePopupBackground` - Url of a picture to be used as a background for all DialoguePopups
 * `npcFrame` - Url of a picture to be used as a frame around a NPC image in the DialoguePopups
@@ -72,6 +73,7 @@ e.g.
   "textImagePopupBackground": "popup-background-2.png",
   "textImagePopupButton": "button-image-2.png",
   "quizPopupBackground": "popup-background-3.png",
+  "quizPopupButton": "button-image-3.png",
   "inventoryPopupBackground": "popup-background.png",
   "dialoguePopupBackground": "popup-background.png",
   "npcFrame": "npc-frame.png",
