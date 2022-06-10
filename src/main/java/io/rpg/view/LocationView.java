@@ -2,7 +2,6 @@ package io.rpg.view;
 
 import io.rpg.config.model.LocationConfig;
 import io.rpg.model.data.KeyboardEvent;
-import io.rpg.model.data.LocationModelStateChange;
 import io.rpg.model.object.GameObject;
 import io.rpg.viewmodel.LocationViewModel;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +24,7 @@ import java.util.Set;
 import static io.rpg.util.PathUtils.resolvePathToJFXFormat;
 
 public class LocationView extends Scene
-    implements KeyboardEvent.Emitter, LocationModelStateChange.Observer {
+    implements KeyboardEvent.Emitter {
   private final static URL FXML_URL = LocationViewModel.class.getResource("location-view.fxml");
 
   private final Logger logger;
@@ -81,14 +80,6 @@ public class LocationView extends Scene
       observer.onKeyboardEvent(event);
     });
   }
-
-  @Override
-  public void onLocationModelStateChange(LocationModelStateChange event) {
-    // TODO: implement state change & appropriate events
-    // most likely here we want to pass this event to LocationViewModel or even
-    // make LocationViewModel implement LocationModelStateChange.Observer
-  }
-
 
   List<GameObjectView> gameObjectViews = new ArrayList<>();
 

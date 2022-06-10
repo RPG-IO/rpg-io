@@ -1,7 +1,6 @@
 package io.rpg.view;
 
 import com.sun.javafx.scene.ImageViewHelper;
-import io.rpg.model.data.GameObjectStateChange;
 import io.rpg.model.data.MouseClickedEvent;
 import io.rpg.model.data.Position;
 import io.rpg.model.object.GameObject;
@@ -18,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import static io.rpg.util.PathUtils.resolvePathToJFXFormat;
 
 public class GameObjectView extends ImageView
-    implements MouseClickedEvent.Emitter, GameObjectStateChange.Observer {
+    implements MouseClickedEvent.Emitter {
   private Path path;
   private final Set<MouseClickedEvent.Observer> onClickedObservers;
   private final SimpleObjectProperty<Point2D> position;
@@ -66,12 +65,6 @@ public class GameObjectView extends ImageView
   @Override
   public void removeOnClickedObserver(MouseClickedEvent.Observer observer) {
     onClickedObservers.remove(observer);
-  }
-
-  @Override
-  public void onGameObjectStateChange(GameObjectStateChange event) {
-    // TODO: implement update logic here or create view model class but it
-    // is even more boilerplate
   }
 
   public GameObject getBoundObject() {

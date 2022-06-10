@@ -89,7 +89,6 @@ public class Initializer {
       assert view != null;
 
       gameObjectViews.forEach(view::addChild);
-      model.addOnLocationModelStateChangeObserver(view);
 
       controllerBuilder
           .addViewForTag(locationConfig.getTag(), view)
@@ -140,7 +139,6 @@ public class Initializer {
       GameObjectView gameObjectView = gameObjectViewIterator.next();
 
       // registration
-      gameObject.addGameObjectStateChangeObserver(gameObjectView);
       gameObjectView.bindToGameObject(gameObject);
     }
   }
