@@ -23,15 +23,6 @@ public class PopupController {
   private final Stage popupStage = new Stage(StageStyle.TRANSPARENT);
   private final Image coinImage = new Image(PathUtils.resolvePathToJFXFormat(PathUtils.resolvePathToAsset("coin.png").get()));
 
-  public PopupController() {
-    // close popup after clicking aside
-    popupStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-      if (!isNowFocused) {
-        popupStage.close();
-      }
-    });
-  }
-
   public void openTextPopup(String text, int x, int y) {
     TextPopup popupScene = new TextPopup(text);
     popupStage.setScene(popupScene);

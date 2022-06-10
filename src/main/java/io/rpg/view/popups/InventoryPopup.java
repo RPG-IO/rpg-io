@@ -55,14 +55,14 @@ public class InventoryPopup extends Scene {
     closeButton.setGraphic(closeButtonImageView);
 
     this.pointsLabel = new Label();
-    this.pointsLabel.setText("Points :" + player.getPoints());
+    this.pointsLabel.setText("Points: " + player.getPoints());
     this.pointsLabel.setLayoutX(325);
     this.pointsLabel.setLayoutY(150);
     this.pointsLabel.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + 18);
 
     this.strengthLabel = new Label();
     this.strengthLabel.setStyle("-fx-font-family: Monospaced; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: " + 18);
-    this.strengthLabel.setText("Strength :" + player.getStrength());
+    this.strengthLabel.setText("Strength: " + player.getStrength());
     this.strengthLabel.setLayoutX(325);
     this.strengthLabel.setLayoutY(200);
 
