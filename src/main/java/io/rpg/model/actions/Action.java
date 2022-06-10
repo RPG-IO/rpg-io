@@ -59,6 +59,5 @@ public interface Action {
 
   Optional<Action> getBeforeAction();
 
-  @Nullable
   Optional<Action> getAfterAction();
 }
