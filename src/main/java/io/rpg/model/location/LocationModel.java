@@ -64,10 +64,49 @@ public class LocationModel extends BaseActionEmitter {
 
   public void addGameObject(GameObject gameObject) {
     gameObjects.add(gameObject);
-    checkAndCorrectBoundsCrossing(gameObject, gameObject.getExactPosition(), false);
+    correctGameObjectPosition(gameObject);
     positionGameObjectMap.put(gameObject.getPosition(), gameObject);
     registerGameObject(gameObject);
 
+  }
+
+  private void correctGameObjectPosition(GameObject gameObject) {
+    Point2D exactBoundPosition = getBoundPosition(gameObject.getExactPosition());
+    Position boundPosition = new Position(exactBoundPosition);
+    if (!positionGameObjectMap.containsKey(boundPosition)) {
+      gameObject.setExactPosition(exactBoundPosition);
+      return;
+    }
+
+    Position freePosition = findNearestFreePosition(boundPosition);
+    gameObject.setPosition(freePosition);
+  }
+
+  private Position findNearestFreePosition(Position position) {
+    if (!positionGameObjectMap.containsKey(position)) {
+      return position;
+    }
+
+    var it = position.getNeighborhoodIter(new Position(bounds));
+    while (it.hasNext()) {
+      Position pos = it.next();
+      if (!positionGameObjectMap.containsKey(pos)) {
+        return pos;
+      }
+    }
+
+    // Last resort
+    for (int i = 0; i < bounds.getX() * bounds.getY(); i++) {
+      int row =  i / ((int) bounds.getX());
+      int col = i % ((int) bounds.getX());
+
+      Position pos = new Position(row, col);
+      if (!positionGameObjectMap.containsKey(pos)) {
+        return pos;
+      }
+    }
+
+    throw new IllegalStateException("No free field for new GameObject");
   }
 
   private void registerGameObject(GameObject gameObject) {
@@ -91,6 +130,8 @@ public class LocationModel extends BaseActionEmitter {
   }
 
   private void onGameObjectPositionChange(GameObject gameObject, Point2D oldPosition, Point2D newPosition) {
+
+
     boolean changeOccurred = checkAndCorrectBoundsCrossing(gameObject, newPosition, true);
 
     if (changeOccurred) {
@@ -99,21 +140,24 @@ public class LocationModel extends BaseActionEmitter {
 
     Position newPos = new Position(newPosition);
     Position oldPos = new Position(oldPosition);
-    if (newPos.equals(oldPos)) {
-      return;
-    }
+
+    positionGameObjectMap.values().remove(gameObject);
 
     // Collision check
-    if (positionGameObjectMap.containsKey(newPos) && !positionGameObjectMap.get(newPos)
-                                                                           .equals(gameObject)) {
-      gameObject.setExactPosition(oldPosition);
+    if (positionGameObjectMap.containsKey(newPos)) {
+      if (!positionGameObjectMap.containsKey(oldPos)) {
+        gameObject.setExactPosition(oldPosition);
+      } else {
+        gameObject.setPosition(findNearestFreePosition(oldPos));
+      }
       return;
     }
 
-    if (gameObject.equals(positionGameObjectMap.get(oldPos))) {
-      changeField(gameObject, oldPos, newPos);
-    }
+//    if (gameObject.equals(positionGameObjectMap.get(oldPos))) {
+//      changeField(gameObject, oldPos, newPos);
+//    }
 
+    positionGameObjectMap.put(newPos, gameObject);
     notifyApproachOf(gameObject);
   }
 
@@ -124,7 +168,9 @@ public class LocationModel extends BaseActionEmitter {
     for (Iterator<Position> it = position.getNeighborhoodIter(new Position(bounds)); it.hasNext(); ) {
       Position p = it.next();
       GameObject neighbor = positionGameObjectMap.get(p);
-      if (neighbor == null) continue;
+      if (neighbor == null) {
+        continue;
+      }
 
       neighbors.add(neighbor);
     }
