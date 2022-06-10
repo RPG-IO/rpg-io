@@ -74,6 +74,7 @@ public class PopupController {
     InventoryPopup popupScene = new InventoryPopup(inventory, player);
     popupStage.setScene(popupScene);
 
+    popupScene.setCloseButtonCallback(event -> popupStage.hide());
     popupStage.onShownProperty().setValue(event -> {
       popupStage.setX(x - popupScene.getWidth() / 2);
       popupStage.setY(y - popupScene.getHeight() / 2);
