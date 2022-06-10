@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import com.kkafara.rt.Result;
 import io.rpg.util.ErrorMessageBuilder;
 import io.rpg.util.PathUtils;
+import io.rpg.util.RuntimeConstantRegistryInstance;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -172,7 +173,7 @@ public class GameWorldConfig implements ConfigWithValidation {
       assetDirPath = Path.of(assetDir);
     }
 
-    PathUtils.init(assetDirPath);
+    RuntimeConstantRegistryInstance.get().setAssetDirPath(assetDirPath);
 
     if (playerConfig == null) {
       builder.append("No player config provided");
@@ -240,6 +241,7 @@ public class GameWorldConfig implements ConfigWithValidation {
     if (stageOneValidationResult.isErr()) {
       builder.combine(stageOneValidationResult.getErr().getMessage());
     }
+
     if (locationConfigs.size() < 1) {
       builder.append("No location configs loaded");
     }
