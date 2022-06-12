@@ -6,7 +6,7 @@
     "tag": "battle",
     "type": "battle",
     "reward": 10,
-    "required-strength": 10
+    "strength": 9
   },
   "onRightClick": {
     "tag": "info",
