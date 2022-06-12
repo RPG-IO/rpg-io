@@ -114,11 +114,11 @@ public final class ActionEngine {
       GameObject opponent = action.getOpponent();
       int reward = action.getReward();
       BattleResult result;
-      if (player.getStrength() > opponent.getStrength()) {
+      if (player.getStrength() > action.getRequriedStrength()) {
         player.addDefeatedOpponent(opponent.getTag());
         controller().removeObjectFromModel(opponent);
         result = new BattleResult(BattleResult.Result.VICTORY, reward);
-      } else if (player.getStrength() < opponent.getStrength()) {
+      } else if (player.getStrength() < action.getRequriedStrength()) {
         result = new BattleResult(BattleResult.Result.DEFEAT, 0);
       } else {
         result = new BattleResult(BattleResult.Result.DRAW, 0);
@@ -131,7 +131,9 @@ public final class ActionEngine {
   }
 
   public void onAction(LevelUpAction action) {
-    controller().getPopupController().openTextPopup((action.getPoints() != null ? (action.getPoints() + " points earned already!\n") : "" ) + "Achieved level " + action.newLevel + "!",
+    controller().getPopupController().openTextPopup(
+        (action.getPoints() != null ? (action.getPoints() + " points earned already!\n") : "")
+            + "Achieved level " + action.newLevel + "!",
             controller().getWindowCenterX(), controller().getWindowCenterY());
   }
 
