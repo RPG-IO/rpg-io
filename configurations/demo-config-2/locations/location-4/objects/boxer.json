@@ -13,7 +13,7 @@
     }
   },
   "onRightClick": {
-    "tag": ";aslkfdj",
+    "tag": "boxer-description",
     "type": "show-description",
     "description": "Jeśli chcesz mnie pokonać, musisz pokazać, że jesteś coś warty. Pokonaj moich kolegów.",
     "assetPath": "zombie.png"

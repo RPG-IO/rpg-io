@@ -4,7 +4,7 @@
     "tag": "dialogue",
     "type": "dialogue",
     "assetPath": "chest.png",
-    "statements": ["Stara skrzynia. Ciekawe co jest w środku."],
+    "statements": ["Stara skrzynia. Ciekawe, co jest w środku."],
     "condition": {
       "type": "item-required",
       "item-tag": "key-1"
@@ -29,7 +29,7 @@
   "onRightClick": {
     "tag": "chest-condition-description",
     "type": "show-description",
-    "description": "Aby mnie otworzyć potrzebujesz klucza.",
+    "description": "Aby mnie otworzyć, potrzebujesz klucza.",
     "assetPath": "key.png"
   },
   "assetPath": "chest.png",

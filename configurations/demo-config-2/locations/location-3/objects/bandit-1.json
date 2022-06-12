@@ -10,13 +10,13 @@
   "onRightClick": {
     "tag": "info",
     "type": "show-description",
-    "description": "Potrzebujesz wykazać się zręcznością by mnie pokonać",
+    "description": "Potrzebujesz wykazać się zręcznością, aby mnie pokonać",
     "assetPath": "samurai.png"
   },
   "onApproach": {
     "tag": "info",
     "type": "show-description",
-    "description": "Potrzebujesz wykazać się zręcznością aby mnie pokonać.",
+    "description": "Potrzebujesz wykazać się zręcznością, aby mnie pokonać.",
     "assetPath": "samurai.png"
   }
 }
