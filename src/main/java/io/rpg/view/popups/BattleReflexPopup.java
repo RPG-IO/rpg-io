@@ -128,7 +128,7 @@ public class BattleReflexPopup extends Scene {
 
     timer.schedule(new TimerTask() {
       public void run() {
-        Platform.runLater(() -> timerTick());
+        timerTick();
       }
     }, 1000, 1000);
     button.setOnAction((event) -> {
@@ -154,8 +154,8 @@ public class BattleReflexPopup extends Scene {
   private void timerTick() {
     timeToCountDown--;
     if (timeToCountDown < 0) {
-      timer.cancel();
       lose();
+      timer.cancel();
       return;
     }
     timerDots[timeToCountDown].setImage(new Image(PathUtils.resolvePathToJFXFormat(
@@ -164,12 +164,12 @@ public class BattleReflexPopup extends Scene {
   }
 
   public void win() {
-    callback.accept(true, timeToCountDown * pointsPerSecond);
+    Platform.runLater(() -> callback.accept(true, timeToCountDown * pointsPerSecond));
     timer.cancel();
   }
 
   public void lose() {
-    callback.accept(false, 0);
+    Platform.runLater(() -> callback.accept(false, 0));
   }
 
   public void setCloseButtonActionListener(EventHandler<ActionEvent> value) {
