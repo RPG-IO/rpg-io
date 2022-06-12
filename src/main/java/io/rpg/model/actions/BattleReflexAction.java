@@ -18,5 +18,4 @@ public final class BattleReflexAction extends BaseAction {
   public int getReward() {
     return reward;
   }
-
 }
