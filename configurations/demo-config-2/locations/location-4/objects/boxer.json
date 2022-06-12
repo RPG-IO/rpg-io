@@ -9,7 +9,7 @@
     "condition": {
       "tag": "whatever",
       "type": "defeat-opponent",
-      "opponent-tag": "zombie-2"
+      "opponent-tag": "zombie-4"
     }
   },
   "onRightClick": {
