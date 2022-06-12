@@ -6,7 +6,7 @@ plugins {
     id 'checkstyle'
 }
 group 'io.rpg'
-version '1.0'
+version '1.0.0'
 
 repositories {
     mavenCentral()
@@ -81,12 +81,19 @@ run {
 jlink {
     imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+
+    jpackage {
+        icon = 'src/main/resources/io/rpg/app.png'
+        appVersion = "1.0.0"
+    }
+
     launcher {
-        name = 'app'
+        name = 'RPG-IO'
         jvmArgs = ['--add-exports=javafx.graphics/com.sun.javafx.scene=io.rpg']
     }
     forceMerge('log4j-api')
 }
+
 
 jlinkZip {
     group = 'distribution'

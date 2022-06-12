@@ -140,16 +140,16 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   @Override
   public void onKeyboardEvent(KeyboardEvent event) {
-    // TODO: implement event handling
     logger.trace("Controller notified on key pressed from " + event.source());
-    //TODO: call Player::set...Pressed depending on keyCode and whether the key was pressed or released
 
     KeyEvent payload = event.payload();
 
     if (payload.getEventType() == KeyEvent.KEY_PRESSED) {
       switch (payload.getCode()) {
-        case E ->
-            popupController.openInventoryPopup(playerController.getPlayer().getInventory(), getWindowCenterX(), getWindowCenterY(), playerController.getPlayer());
+        case E -> {
+          stopPlayer();
+          popupController.openInventoryPopup(playerController.getPlayer().getInventory(), getWindowCenterX(), getWindowCenterY(), playerController.getPlayer());
+        }
       }
     }
   }
