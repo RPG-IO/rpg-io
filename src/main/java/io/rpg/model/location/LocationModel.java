@@ -7,9 +7,11 @@ import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.MapDirection;
 import io.rpg.model.data.Position;
 import io.rpg.model.object.GameObject;
-
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Point2D;
 import org.apache.logging.log4j.LogManager;
@@ -25,9 +27,9 @@ public class LocationModel extends BaseActionEmitter {
   private final HashMap<GameObject, ChangeListener<Point2D>> positionListeners;
   private final HashMap<Position, GameObject> positionGameObjectMap;
   private HashMap<MapDirection, String> directionToLocationMap;
-  public Point2D bounds;
+  public Position bounds;
 
-
+  @SuppressWarnings("unused")
   public LocationModel(@NotNull String tag, @NotNull List<GameObject> gameObjects) {
     this();
     this.tag = tag;
@@ -57,15 +59,14 @@ public class LocationModel extends BaseActionEmitter {
    */
   private void setGameObjects(List<GameObject> gameObjects) {
     this.gameObjects = gameObjects;
+    gameObjects.forEach(this::placeGameObject);
     gameObjects.forEach(this::registerGameObject);
-    gameObjects.forEach(g -> checkAndCorrectBoundsCrossing(g, g.getExactPosition(), false));
     gameObjects.forEach(g -> positionGameObjectMap.put(g.getPosition(), g));
   }
 
   public void addGameObject(GameObject gameObject) {
     gameObjects.add(gameObject);
-    checkAndCorrectBoundsCrossing(gameObject, gameObject.getExactPosition(), false);
-    positionGameObjectMap.put(gameObject.getPosition(), gameObject);
+    placeGameObject(gameObject);
     registerGameObject(gameObject);
 
   }
@@ -78,9 +79,33 @@ public class LocationModel extends BaseActionEmitter {
     positionListeners.put(gameObject, positionListener);
   }
 
+  private void placeGameObject(GameObject gameObject) {
+    Point2D boundPos = getBoundPosition(gameObject.getExactPosition());
+    Position position = new Position(boundPos);
+    if (!positionGameObjectMap.containsKey(position)) {
+      gameObject.setExactPosition(boundPos);
+      positionGameObjectMap.put(position, gameObject);
+      return;
+    }
+
+    Iterator<Position> it = position.getBfsIter(bounds);
+    while (it.hasNext()) {
+      Position p = it.next();
+      if (positionGameObjectMap.containsKey(p)) {
+        continue;
+      }
+
+      gameObject.setPosition(p);
+      positionGameObjectMap.put(p, gameObject);
+      return;
+    }
+
+    throw new RuntimeException("No place to put gameObject"  + gameObject);
+  }
+
   public void removeGameObject(GameObject gameObject) {
     gameObjects.remove(gameObject);
-    positionGameObjectMap.remove(gameObject.getPosition());
+    positionGameObjectMap.values().remove(gameObject);
     unRegisterGameObject(gameObject);
   }
 
@@ -91,40 +116,66 @@ public class LocationModel extends BaseActionEmitter {
   }
 
   private void onGameObjectPositionChange(GameObject gameObject, Point2D oldPosition, Point2D newPosition) {
-    boolean changeOccurred = checkAndCorrectBoundsCrossing(gameObject, newPosition, true);
+    Position newPos = new Position(newPosition);
+    Position oldPos = new Position(oldPosition);
 
-    if (changeOccurred) {
+    if (oldPos.equals(newPos)) {
       return;
     }
 
-    Position newPos = new Position(newPosition);
-    Position oldPos = new Position(oldPosition);
-    if (newPos.equals(oldPos)) {
+    // When previous position was not accepted
+    if (gameObject.equals(positionGameObjectMap.get(newPos))) {
       return;
     }
 
     // Collision check
-    if (positionGameObjectMap.containsKey(newPos) && !positionGameObjectMap.get(newPos)
-                                                                           .equals(gameObject)) {
+    if (positionGameObjectMap.containsKey(newPos)) {
       gameObject.setExactPosition(oldPosition);
       return;
     }
 
-    if (gameObject.equals(positionGameObjectMap.get(oldPos))) {
-      changeField(gameObject, oldPos, newPos);
+    if (!newPos.isInside(bounds)) {
+      Position delta = newPos.subtract(oldPos);
+      // Don't try to teleport diagonally
+      if (delta.row * delta.col == 0) {
+        boolean hasBeenTeleported = tryToTeleport(gameObject, delta);
+        if (hasBeenTeleported) {
+          return;
+        }
+      }
+
+      gameObject.setExactPosition(oldPosition);
+      return;
     }
 
+    changeField(gameObject, oldPos, newPos);
     notifyApproachOf(gameObject);
+  }
+
+  private boolean tryToTeleport(GameObject gameObject, Position crossingDirection) {
+    MapDirection teleportDirection = crossingDirection.getDirection();
+    String nextLocation  = directionToLocationMap.get(teleportDirection);
+    if (nextLocation == null) {
+      return false;
+    }
+
+    Point2D currentPosition = gameObject.getExactPosition();
+    Point2D nextPosition = currentPosition.subtract(teleportDirection.toVector().multiply(20));
+    LocationChangeAction action = new LocationChangeAction(nextLocation, nextPosition, null);
+    emitAction(action);
+    return true;
   }
 
   private void notifyApproachOf(GameObject gameObject) {
     Position position = gameObject.getPosition();
     List<GameObject> neighbors = new ArrayList<>(8);
 
-    for (Iterator<Position> it = position.getNeighborhoodIter(new Position(bounds)); it.hasNext(); ) {
+    for (Iterator<Position> it = position.getNeighborhoodIter(bounds); it.hasNext(); ) {
       Position p = it.next();
       GameObject neighbor = positionGameObjectMap.get(p);
-      if (neighbor == null) continue;
+      if (neighbor == null) {
+        continue;
+      }
 
       neighbors.add(neighbor);
     }
@@ -137,46 +188,10 @@ public class LocationModel extends BaseActionEmitter {
     positionGameObjectMap.put(newPos, gameObject);
   }
 
-
-  private boolean checkAndCorrectBoundsCrossing(GameObject gameObject, Point2D newPosition, boolean emitAction) {
-    Point2D boundPosition = getBoundPosition(newPosition);
-    if (boundPosition.equals(newPosition)) {
-      return false;
-    }
-
-    gameObject.setExactPosition(boundPosition);
-    Point2D boundsCrossedDirection = newPosition.subtract(boundPosition)
-                                                .normalize();
-
-    if (emitAction) {
-      emitBoundCrossedAction(gameObject, boundsCrossedDirection);
-    }
-
-    return true;
-  }
-
-  private void emitBoundCrossedAction(GameObject gameObject, Point2D boundsCrossedDirection) {
-    // guard against non cardinal directions vector
-    if ((boundsCrossedDirection.angle(1, 0) % 90) != 0) {
-      return;
-    }
-    MapDirection direction = MapDirection.fromDirectionVector(boundsCrossedDirection);
-    Point2D position = gameObject.getExactPosition();
-    Point2D nextPosition = position.subtract(boundsCrossedDirection.multiply(20));
-    if (!directionToLocationMap.containsKey(direction)) {
-      return;
-    }
-
-    String location = directionToLocationMap.get(direction);
-    LocationChangeAction action = new LocationChangeAction(location, nextPosition, null);
-    emitAction(action);
-  }
-
-
   private Point2D getBoundPosition(Point2D pos) {
     double offset = 0.3; // it should be less than 0.5
-    double x = Math.max(-offset, Math.min(bounds.getX() - 1 + offset, pos.getX()));
-    double y = Math.max(-offset, Math.min(bounds.getY() - 1 + offset, pos.getY()));
+    double x = Math.max(-offset, Math.min(bounds.col - 1 + offset, pos.getX()));
+    double y = Math.max(-offset, Math.min(bounds.row - 1 + offset, pos.getY()));
     return new Point2D(x, y);
   }
 
@@ -209,7 +224,7 @@ public class LocationModel extends BaseActionEmitter {
     }
 
     public Builder setBounds(Point2D bounds) {
-      locationModel.bounds = bounds;
+      locationModel.bounds = new Position(bounds);
       return this;
     }
 

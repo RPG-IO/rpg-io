@@ -1,12 +1,17 @@
 package io.rpg.model.data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
+import java.util.Queue;
+import java.util.Set;
 import java.util.function.Consumer;
 import javafx.geometry.Point2D;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents current position by holding row / col values.
@@ -14,6 +19,7 @@ import javafx.geometry.Point2D;
  * Gson library.
  */
 public final class Position {
+  public static final Position ZERO = new Position(0, 0);
   public final int row;
   public final int col;
 
@@ -22,8 +28,45 @@ public final class Position {
     this.col = col;
   }
 
+  public boolean isInside(Position lowerLeft, Position upperRight) {
+    return lowerLeft.col <= this.col && lowerLeft.row <= this.row
+        && upperRight.col > this.col && upperRight.row > this.row;
+  }
+
+  public boolean isInside(Position upperLeft) {
+    return isInside(ZERO, upperLeft);
+  }
+
   public Position(Point2D point2D) {
     this((int) Math.round(point2D.getY()), (int) Math.round(point2D.getX()));
+  }
+
+  public Position subtract(@NotNull Position other) {
+    return new Position(row - other.row, col - other.col);
+  }
+
+  /**
+   * Calculates most fitting MapDirection with priority on NORTH, SOUTH directions.
+
+   * @return MapDirection.
+   */
+  public MapDirection getDirection() {
+    if (this.equals(ZERO)) {
+      throw new IllegalArgumentException("Direction of ZERO is undefined");
+    }
+
+    if (Math.abs(col) > Math.abs(row)) {
+      if (col > 0) {
+        return MapDirection.EAST;
+      }
+      return MapDirection.WEST;
+    }
+
+    if (row > 0) {
+      return MapDirection.SOUTH;
+    }
+
+    return MapDirection.NORTH;
   }
 
   @Override
@@ -90,6 +133,48 @@ public final class Position {
     @Override
     public void forEachRemaining(Consumer<? super Position> action) {
       iterator.forEachRemaining(action);
+    }
+  }
+
+  public Iterator<Position> getBfsIter(Position upperBound) {
+    return new FourNeighborBfsIter(this, upperBound);
+  }
+
+  private static class FourNeighborBfsIter implements Iterator<Position> {
+    private final Set<Position> visited;
+    private final Queue<Position> queue;
+    private final Position upperBound;
+
+    public FourNeighborBfsIter(Position start, Position upperBound) {
+      this.upperBound = upperBound;
+      visited = new HashSet<>();
+      queue = new LinkedList<>();
+      queue.add(start);
+      visited.add(start);
+    }
+
+    @Override
+    public boolean hasNext() {
+      return !queue.isEmpty();
+    }
+
+    private void addToQueueIfValid(Position position) {
+      if (position.isInside(ZERO, upperBound) && !visited.contains(position)) {
+        queue.add(position);
+        visited.add(position);
+      }
+    }
+
+    @Override
+    public Position next() {
+      Position position = queue.poll();
+      assert position != null;
+      addToQueueIfValid(new Position(position.row + 1, position.col));
+      addToQueueIfValid(new Position(position.row, position.col + 1));
+      addToQueueIfValid(new Position(position.row, position.col - 1));
+      addToQueueIfValid(new Position(position.row - 1, position.col));
+
+      return position;
     }
   }
 

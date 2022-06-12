@@ -12,29 +12,16 @@ public enum MapDirection {
   WEST;
 
   /**
-   * Returns MapDirection corresponding to given vector.
-   * Direction is calculated using javafx coordinate system.
+   * Returns vector representation of MapDirection in JavaFx coordinate system.
 
-   * @param v Vector with one coordinate equal to 0 and another equal to 1 or -1.
-   * @return MapDirection.
+   * @return Point2D
    */
-  public static MapDirection fromDirectionVector(Point2D v) {
-    v = v.normalize();
-
-    if (v.getX() == 0) {
-      if (v.getY() == -1) {
-        return NORTH;
-      } else if (v.getY() == 1) {
-        return SOUTH;
-      } else {
-        throw new IllegalArgumentException("Vector is equal to [0, 0]");
-      }
-    } else {
-      if (v.getX() == 1) {
-        return EAST;
-      } else {
-        return WEST;
-      }
-    }
+  public Point2D toVector() {
+    return switch (this) {
+      case EAST -> new Point2D(1, 0);
+      case WEST -> new Point2D(-1, 0);
+      case NORTH -> new Point2D(0, -1);
+      case SOUTH -> new Point2D(0, 1);
+    };
   }
 }
