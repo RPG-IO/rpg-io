@@ -7,9 +7,11 @@ import io.rpg.model.actions.LocationChangeAction;
 import io.rpg.model.data.MapDirection;
 import io.rpg.model.data.Position;
 import io.rpg.model.object.GameObject;
-
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Point2D;
 import org.apache.logging.log4j.LogManager;
@@ -57,56 +59,16 @@ public class LocationModel extends BaseActionEmitter {
    */
   private void setGameObjects(List<GameObject> gameObjects) {
     this.gameObjects = gameObjects;
+    gameObjects.forEach(this::placeGameObject);
     gameObjects.forEach(this::registerGameObject);
-    gameObjects.forEach(g -> checkAndCorrectBoundsCrossing(g, g.getExactPosition(), false));
     gameObjects.forEach(g -> positionGameObjectMap.put(g.getPosition(), g));
   }
 
   public void addGameObject(GameObject gameObject) {
     gameObjects.add(gameObject);
-    correctGameObjectPosition(gameObject);
-    positionGameObjectMap.put(gameObject.getPosition(), gameObject);
+    placeGameObject(gameObject);
     registerGameObject(gameObject);
 
-  }
-
-  private void correctGameObjectPosition(GameObject gameObject) {
-    Point2D exactBoundPosition = getBoundPosition(gameObject.getExactPosition());
-    Position boundPosition = new Position(exactBoundPosition);
-    if (!positionGameObjectMap.containsKey(boundPosition)) {
-      gameObject.setExactPosition(exactBoundPosition);
-      return;
-    }
-
-    Position freePosition = findNearestFreePosition(boundPosition);
-    gameObject.setPosition(freePosition);
-  }
-
-  private Position findNearestFreePosition(Position position) {
-    if (!positionGameObjectMap.containsKey(position)) {
-      return position;
-    }
-
-    var it = position.getNeighborhoodIter(new Position(bounds));
-    while (it.hasNext()) {
-      Position pos = it.next();
-      if (!positionGameObjectMap.containsKey(pos)) {
-        return pos;
-      }
-    }
-
-    // Last resort
-    for (int i = 0; i < bounds.getX() * bounds.getY(); i++) {
-      int row =  i / ((int) bounds.getX());
-      int col = i % ((int) bounds.getX());
-
-      Position pos = new Position(row, col);
-      if (!positionGameObjectMap.containsKey(pos)) {
-        return pos;
-      }
-    }
-
-    throw new IllegalStateException("No free field for new GameObject");
   }
 
   private void registerGameObject(GameObject gameObject) {
@@ -117,9 +79,33 @@ public class LocationModel extends BaseActionEmitter {
     positionListeners.put(gameObject, positionListener);
   }
 
+  private void placeGameObject(GameObject gameObject) {
+    Point2D boundPos = getBoundPosition(gameObject.getExactPosition());
+    Position position = new Position(boundPos);
+    if (!positionGameObjectMap.containsKey(position)) {
+      gameObject.setExactPosition(boundPos);
+      positionGameObjectMap.put(position, gameObject);
+      return;
+    }
+
+    Iterator<Position> it = position.getBfsIter(new Position(bounds));
+    while (it.hasNext()) {
+      Position p = it.next();
+      if (positionGameObjectMap.containsKey(p)) {
+        continue;
+      }
+
+      gameObject.setPosition(p);
+      positionGameObjectMap.put(p, gameObject);
+      return;
+    }
+
+    throw new RuntimeException("No place to put gameObject"  + gameObject);
+  }
+
   public void removeGameObject(GameObject gameObject) {
     gameObjects.remove(gameObject);
-    positionGameObjectMap.remove(gameObject.getPosition());
+    positionGameObjectMap.values().remove(gameObject);
     unRegisterGameObject(gameObject);
   }
 
@@ -130,35 +116,51 @@ public class LocationModel extends BaseActionEmitter {
   }
 
   private void onGameObjectPositionChange(GameObject gameObject, Point2D oldPosition, Point2D newPosition) {
-
-
-    boolean changeOccurred = checkAndCorrectBoundsCrossing(gameObject, newPosition, true);
-
-    if (changeOccurred) {
-      return;
-    }
-
     Position newPos = new Position(newPosition);
     Position oldPos = new Position(oldPosition);
 
-    positionGameObjectMap.values().remove(gameObject);
-
-    // Collision check
-    if (positionGameObjectMap.containsKey(newPos)) {
-      if (!positionGameObjectMap.containsKey(oldPos)) {
-        gameObject.setExactPosition(oldPosition);
-      } else {
-        gameObject.setPosition(findNearestFreePosition(oldPos));
-      }
+    if (oldPos.equals(newPos)) {
       return;
     }
 
-//    if (gameObject.equals(positionGameObjectMap.get(oldPos))) {
-//      changeField(gameObject, oldPos, newPos);
-//    }
+    // When previous position was not accepted
+    if (gameObject.equals(positionGameObjectMap.get(newPos))) {
+      return;
+    }
 
-    positionGameObjectMap.put(newPos, gameObject);
+    // Collision check
+    if (positionGameObjectMap.containsKey(newPos)) {
+      gameObject.setExactPosition(oldPosition);
+      return;
+    }
+
+    if (!newPos.isInside(new Position(bounds))) {
+      Position delta = newPos.subtract(oldPos);
+      boolean hasBeenTeleported = tryToTeleport(gameObject, delta);
+      if (hasBeenTeleported) {
+        return;
+      }
+
+      gameObject.setExactPosition(oldPosition);
+      return;
+    }
+
+    changeField(gameObject, oldPos, newPos);
     notifyApproachOf(gameObject);
+  }
+
+  private boolean tryToTeleport(GameObject gameObject, Position crossingDirection) {
+    MapDirection teleportDirection = crossingDirection.getDirection();
+    String nextLocation  = directionToLocationMap.get(teleportDirection);
+    if (nextLocation == null) {
+      return false;
+    }
+
+    Point2D currentPosition = gameObject.getExactPosition();
+    Point2D nextPosition = currentPosition.subtract(teleportDirection.toVector().multiply(20));
+    LocationChangeAction action = new LocationChangeAction(nextLocation, nextPosition, null);
+    emitAction(action);
+    return true;
   }
 
   private void notifyApproachOf(GameObject gameObject) {
@@ -182,42 +184,6 @@ public class LocationModel extends BaseActionEmitter {
     positionGameObjectMap.remove(oldPos);
     positionGameObjectMap.put(newPos, gameObject);
   }
-
-
-  private boolean checkAndCorrectBoundsCrossing(GameObject gameObject, Point2D newPosition, boolean emitAction) {
-    Point2D boundPosition = getBoundPosition(newPosition);
-    if (boundPosition.equals(newPosition)) {
-      return false;
-    }
-
-    gameObject.setExactPosition(boundPosition);
-    Point2D boundsCrossedDirection = newPosition.subtract(boundPosition)
-                                                .normalize();
-
-    if (emitAction) {
-      emitBoundCrossedAction(gameObject, boundsCrossedDirection);
-    }
-
-    return true;
-  }
-
-  private void emitBoundCrossedAction(GameObject gameObject, Point2D boundsCrossedDirection) {
-    // guard against non cardinal directions vector
-    if ((boundsCrossedDirection.angle(1, 0) % 90) != 0) {
-      return;
-    }
-    MapDirection direction = MapDirection.fromDirectionVector(boundsCrossedDirection);
-    Point2D position = gameObject.getExactPosition();
-    Point2D nextPosition = position.subtract(boundsCrossedDirection.multiply(20));
-    if (!directionToLocationMap.containsKey(direction)) {
-      return;
-    }
-
-    String location = directionToLocationMap.get(direction);
-    LocationChangeAction action = new LocationChangeAction(location, nextPosition, null);
-    emitAction(action);
-  }
-
 
   private Point2D getBoundPosition(Point2D pos) {
     double offset = 0.3; // it should be less than 0.5

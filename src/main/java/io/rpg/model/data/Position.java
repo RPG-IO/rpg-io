@@ -42,7 +42,7 @@ public final class Position {
   }
 
   public Position subtract(@NotNull Position other) {
-    return new Position(row - other.row, col - other.row);
+    return new Position(row - other.row, col - other.col);
   }
 
   /**
