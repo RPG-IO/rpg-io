@@ -29,7 +29,7 @@ public class LocationModel extends BaseActionEmitter {
   private HashMap<MapDirection, String> directionToLocationMap;
   public Position bounds;
 
-
+  @SuppressWarnings("unused")
   public LocationModel(@NotNull String tag, @NotNull List<GameObject> gameObjects) {
     this();
     this.tag = tag;
@@ -136,9 +136,12 @@ public class LocationModel extends BaseActionEmitter {
 
     if (!newPos.isInside(bounds)) {
       Position delta = newPos.subtract(oldPos);
-      boolean hasBeenTeleported = tryToTeleport(gameObject, delta);
-      if (hasBeenTeleported) {
-        return;
+      // Don't try to teleport diagonally
+      if (delta.row * delta.col == 0) {
+        boolean hasBeenTeleported = tryToTeleport(gameObject, delta);
+        if (hasBeenTeleported) {
+          return;
+        }
       }
 
       gameObject.setExactPosition(oldPosition);
