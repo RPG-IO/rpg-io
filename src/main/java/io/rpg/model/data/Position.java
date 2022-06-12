@@ -40,6 +40,30 @@ public final class Position {
     this((int) Math.round(point2D.getY()), (int) Math.round(point2D.getX()));
   }
 
+  /**
+   * Calculates most fitting MapDirection with priority on NORTH, SOUTH directions.
+
+   * @return MapDirection.
+   */
+  public MapDirection getDirection() {
+    if (this.equals(ZERO)) {
+      throw new IllegalArgumentException("Direction of ZERO is undefined");
+    }
+
+    if (Math.abs(col) > Math.abs(row)) {
+      if (col > 0) {
+        return MapDirection.EAST;
+      }
+      return MapDirection.WEST;
+    }
+
+    if (row > 0) {
+      return MapDirection.SOUTH;
+    }
+
+    return MapDirection.NORTH;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (this == obj) {
@@ -114,7 +138,7 @@ public final class Position {
   private static class FourNeighborBfsIter implements Iterator<Position> {
     private final Set<Position> visited;
     private final Queue<Position> queue;
-    private Position upperBound;
+    private final Position upperBound;
 
     public FourNeighborBfsIter(Position start, Position upperBound) {
       this.upperBound = upperBound;
