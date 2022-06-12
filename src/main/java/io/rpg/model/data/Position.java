@@ -11,6 +11,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.function.Consumer;
 import javafx.geometry.Point2D;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents current position by holding row / col values.
@@ -29,7 +30,7 @@ public final class Position {
 
   public boolean isInside(Position lowerLeft, Position upperRight) {
     return lowerLeft.col <= this.col && lowerLeft.row <= this.row
-        && upperRight.col > this.col && upperRight.row > this.col;
+        && upperRight.col > this.col && upperRight.row > this.row;
   }
 
   public boolean isInside(Position upperLeft) {
@@ -38,6 +39,10 @@ public final class Position {
 
   public Position(Point2D point2D) {
     this((int) Math.round(point2D.getY()), (int) Math.round(point2D.getX()));
+  }
+
+  public Position subtract(@NotNull Position other) {
+    return new Position(row - other.row, col - other.row);
   }
 
   /**

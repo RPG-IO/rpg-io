@@ -135,4 +135,22 @@ class PositionTest {
   void getDirection_shouldThrowOnZero() {
     assertThrows(IllegalArgumentException.class, Position.ZERO::getDirection);
   }
+
+  @Test
+  void isInside_shouldBeTrue() {
+    Position upperBound = new Position(10,10);
+    assertTrue(new Position(1,1).isInside(upperBound));
+    assertTrue(new Position(1,9).isInside(upperBound));
+    assertTrue(new Position(9,1).isInside(upperBound));
+    assertTrue(new Position(5,1).isInside(upperBound));
+  }
+
+  @Test
+  void isInside_shouldBeFalse() {
+    Position upperBound = new Position(10,10);
+    assertFalse(new Position(-1,1).isInside(upperBound));
+    assertFalse(new Position(1,-9).isInside(upperBound));
+    assertFalse(new Position(10,1).isInside(upperBound));
+    assertFalse(new Position(50,10).isInside(upperBound));
+  }
 }
