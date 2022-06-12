@@ -173,6 +173,9 @@ public class BattleReflexPopup extends Scene {
   }
 
   public void setCloseButtonActionListener(EventHandler<ActionEvent> value) {
-    button.setOnAction(value);
+    button.setOnAction(event -> {
+      timer.cancel();
+      value.handle(event);
+    });
   }
 }
