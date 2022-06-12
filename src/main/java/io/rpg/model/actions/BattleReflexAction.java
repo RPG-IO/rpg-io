@@ -4,12 +4,10 @@ import io.rpg.model.actions.condition.Condition;
 
 public final class BattleReflexAction extends BaseAction {
   private final int reward;
-  private final int requiredStrength;
 
-  public BattleReflexAction(int reward, int requiredStrength, Condition condition) {
+  public BattleReflexAction(int reward, Condition condition) {
     super(condition);
     this.reward = reward;
-    this.requiredStrength = requiredStrength;
   }
 
   @Override
@@ -21,7 +19,4 @@ public final class BattleReflexAction extends BaseAction {
     return reward;
   }
 
-  public int getRequiredStrength() {
-    return requiredStrength;
-  }
 }
