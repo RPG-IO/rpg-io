@@ -117,7 +117,7 @@ public class WrapperController {
       loadGame(path).ifOk(
           g -> {
             game = g;
-            game.setOnEnd(() -> show(stage));
+//            game.setOnEnd(() -> show(stage));
           }
       );
     }
