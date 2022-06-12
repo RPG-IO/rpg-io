@@ -53,6 +53,7 @@ public final class ActionEngine {
   public void onAction(DialogueAction action) {
     actionGuard(action, () -> {
       var controller = controller();
+      controller.stopPlayer();
       controller.getPopupController().openDialoguePopup(action.text, action.image,
           controller.getWindowCenterX(), controller.getWindowCenterY());
     });
@@ -62,6 +63,7 @@ public final class ActionEngine {
     actionGuard(action, () -> {
       if (!action.description.isEmpty()) {
         var controller = controller();
+        controller.stopPlayer();
         controller.getPopupController().openTextImagePopup(action.description, action.image,
             controller.getWindowCenterX(), controller.getWindowCenterY());
       }
@@ -71,6 +73,7 @@ public final class ActionEngine {
   public void onAction(QuizAction action) {
     actionGuard(action, () -> {
       var controller = controller();
+      controller.stopPlayer();
       int pointsCount = action.getPointsToEarn();
       controller.getPopupController().openQuestionPopup(
           action.question,
@@ -86,6 +89,7 @@ public final class ActionEngine {
 
     if (correct) {
       if (pointsCount > 0) {
+        controller.stopPlayer();
         controller.getPopupController().openPointsPopup(pointsCount, controller.getWindowCenterX(), controller.getWindowCenterY());
         controller.getPlayerController().getPlayer().addDefeatedOpponent(opponent.getTag());
         controller.getPlayerController().addPoints(pointsCount);
@@ -104,51 +108,61 @@ public final class ActionEngine {
   public void onAction(GameEndAction action) {
     actionGuard(action, () -> {
       var controller = controller();
+      controller.stopPlayer();
       controller.getGameEndController().showGameEnd(controller.getMainStage(), action.description);
     });
   }
 
   public void onAction(BattleAction action) {
     actionGuard(action, () -> {
-      Player player = controller().getPlayerController().getPlayer();
+      Controller controller = controller();
+      Player player = controller.getPlayerController().getPlayer();
       GameObject opponent = action.getOpponent();
       int reward = action.getReward();
       BattleResult result;
       if (player.getStrength() > action.getRequriedStrength()) {
         player.addDefeatedOpponent(opponent.getTag());
-        controller().removeObjectFromModel(opponent);
+        controller.removeObjectFromModel(opponent);
         result = new BattleResult(BattleResult.Result.VICTORY, reward);
       } else if (player.getStrength() < action.getRequriedStrength()) {
         result = new BattleResult(BattleResult.Result.DEFEAT, 0);
       } else {
         result = new BattleResult(BattleResult.Result.DRAW, 0);
       }
-      controller().getPopupController().openTextPopup(result.getMessage(),
-          controller().getWindowCenterX(), controller().getWindowCenterY());
+      controller.stopPlayer();
+      controller.getPopupController().openTextPopup(result.getMessage(),
+          controller.getWindowCenterX(), controller.getWindowCenterY());
       if (player.getStrength() > opponent.getStrength())
         player.addPoints(reward);
     });
   }
 
   public void onAction(LevelUpAction action) {
+    controller().stopPlayer();
     controller().getPopupController().openTextPopup(
         (action.getPoints() != null ? (action.getPoints() + " points earned already!\n") : "")
             + "Achieved level " + action.newLevel + "!",
-            controller().getWindowCenterX(), controller().getWindowCenterY());
+        controller().getWindowCenterX(), controller().getWindowCenterY());
   }
 
   public void onAction(BattleReflexAction action) {
-    actionGuard(action, () -> controller().getPopupController().openBattleReflexPopup(action.getReward(),
-        (won, points) -> acceptBattleReflexResult(action.getEmitter(), won, points),
-        controller().getWindowCenterX(),
-        controller().getWindowCenterY()));
+    actionGuard(action, () -> {
+      Controller controller = controller();
+      controller.stopPlayer();
+      controller.getPopupController().openBattleReflexPopup(action.getReward(),
+          (won, points) -> acceptBattleReflexResult(action.getEmitter(), won, points),
+          controller.getWindowCenterX(),
+          controller.getWindowCenterY());
+    });
   }
 
   public void acceptBattleReflexResult(GameObject actionOwner, boolean won, int pointsCount) {
     var controller = controller();
     if (won) {
-      if (pointsCount > 0)
+      if (pointsCount > 0) {
+        controller.stopPlayer();
         controller.getPopupController().openPointsPopup(pointsCount, controller.getWindowCenterX(), controller.getWindowCenterY());
+      }
       controller.removeObjectFromModel(actionOwner);
       controller.getPlayerController().getPlayer().addDefeatedOpponent(actionOwner.getTag());
       controller.getPlayerController().addPoints(pointsCount);
@@ -160,6 +174,7 @@ public final class ActionEngine {
   public void onAction(CollectAction action) {
     actionGuard(action, () -> {
       var controller = controller();
+      controller.stopPlayer();
       controller.getPopupController().openTextImagePopup("Picked up an item!", new Image(PathUtils.resolvePathToJFXFormat(action.getAssetPath())),
           controller.getWindowCenterX(), controller.getWindowCenterY());
       controller.getPlayerController().getPlayer().getInventory()
