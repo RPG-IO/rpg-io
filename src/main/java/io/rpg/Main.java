@@ -2,13 +2,15 @@ package io.rpg;
 
 import com.kkafara.rt.Result;
 import io.rpg.wrapper.WrapperController;
-import java.io.IOException;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
+
+import java.io.IOException;
 
 /**
  * Entry point of the app.
@@ -20,6 +22,11 @@ public class Main extends Application {
   public void start(Stage stage) throws IOException {
     Configurator.setRootLevel(Level.WARN);
     String path = getParameters().getNamed().get("config");
+
+    stage.setTitle("RPG-IO");
+
+    stage.getIcons().add(new Image((Main.class.getResource("app.png").toString())));
+
     if (path == null) {
       WrapperController wrapperController = WrapperController.load();
       wrapperController.show(stage);
