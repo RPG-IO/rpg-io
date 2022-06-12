@@ -27,7 +27,7 @@ public class LocationModel extends BaseActionEmitter {
   private final HashMap<GameObject, ChangeListener<Point2D>> positionListeners;
   private final HashMap<Position, GameObject> positionGameObjectMap;
   private HashMap<MapDirection, String> directionToLocationMap;
-  public Point2D bounds;
+  public Position bounds;
 
 
   public LocationModel(@NotNull String tag, @NotNull List<GameObject> gameObjects) {
@@ -88,7 +88,7 @@ public class LocationModel extends BaseActionEmitter {
       return;
     }
 
-    Iterator<Position> it = position.getBfsIter(new Position(bounds));
+    Iterator<Position> it = position.getBfsIter(bounds);
     while (it.hasNext()) {
       Position p = it.next();
       if (positionGameObjectMap.containsKey(p)) {
@@ -134,7 +134,7 @@ public class LocationModel extends BaseActionEmitter {
       return;
     }
 
-    if (!newPos.isInside(new Position(bounds))) {
+    if (!newPos.isInside(bounds)) {
       Position delta = newPos.subtract(oldPos);
       boolean hasBeenTeleported = tryToTeleport(gameObject, delta);
       if (hasBeenTeleported) {
@@ -167,7 +167,7 @@ public class LocationModel extends BaseActionEmitter {
     Position position = gameObject.getPosition();
     List<GameObject> neighbors = new ArrayList<>(8);
 
-    for (Iterator<Position> it = position.getNeighborhoodIter(new Position(bounds)); it.hasNext(); ) {
+    for (Iterator<Position> it = position.getNeighborhoodIter(bounds); it.hasNext(); ) {
       Position p = it.next();
       GameObject neighbor = positionGameObjectMap.get(p);
       if (neighbor == null) {
@@ -187,8 +187,8 @@ public class LocationModel extends BaseActionEmitter {
 
   private Point2D getBoundPosition(Point2D pos) {
     double offset = 0.3; // it should be less than 0.5
-    double x = Math.max(-offset, Math.min(bounds.getX() - 1 + offset, pos.getX()));
-    double y = Math.max(-offset, Math.min(bounds.getY() - 1 + offset, pos.getY()));
+    double x = Math.max(-offset, Math.min(bounds.col - 1 + offset, pos.getX()));
+    double y = Math.max(-offset, Math.min(bounds.row - 1 + offset, pos.getY()));
     return new Point2D(x, y);
   }
 
@@ -221,7 +221,7 @@ public class LocationModel extends BaseActionEmitter {
     }
 
     public Builder setBounds(Point2D bounds) {
-      locationModel.bounds = bounds;
+      locationModel.bounds = new Position(bounds);
       return this;
     }
 
