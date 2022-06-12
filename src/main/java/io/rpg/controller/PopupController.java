@@ -10,6 +10,7 @@ import io.rpg.model.data.Inventory;
 import io.rpg.view.popups.InventoryPopup;
 import io.rpg.view.popups.TextImagePopup;
 import io.rpg.view.popups.TextPopup;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -23,11 +24,8 @@ public class PopupController {
   private final Stage popupStage = new Stage(StageStyle.TRANSPARENT);
   private final Image coinImage = new Image(PathUtils.resolvePathToJFXFormat(PathUtils.resolvePathToAsset("coin.png").get()));
 
-  public void openTextPopup(String text, int x, int y) {
-    TextPopup popupScene = new TextPopup(text);
+  private void openPopup(Scene popupScene, int x, int y) {
     popupStage.setScene(popupScene);
-
-    popupScene.setButtonCallback(event -> popupStage.hide());
 
     popupStage.onShownProperty().setValue(event -> {
       popupStage.setX(x - popupScene.getWidth() / 2);
@@ -39,23 +37,21 @@ public class PopupController {
     }
   }
 
+  public void openTextPopup(String text, int x, int y) {
+    TextPopup popupScene = new TextPopup(text);
+    popupScene.setButtonCallback(event -> popupStage.hide());
+    openPopup(popupScene, x, y);
+  }
+
   public void setOwner(Window window) {
-      popupStage.initOwner(window);
-      popupStage.initModality(Modality.WINDOW_MODAL);
-    }
+    popupStage.initOwner(window);
+    popupStage.initModality(Modality.WINDOW_MODAL);
+  }
 
   public void openTextImagePopup(String text, Image image, int x, int y) {
     TextImagePopup popupScene = new TextImagePopup(text, image);
-    popupStage.setScene(popupScene);
-
     popupScene.setButtonCallback(event -> popupStage.hide());
-    popupStage.onShownProperty().setValue(event -> {
-      popupStage.setX(x - popupScene.getWidth() / 2);
-      popupStage.setY(y - popupScene.getHeight() / 2);
-    });
-    if (!popupStage.isShowing()) {
-      popupStage.showAndWait();
-    }
+    openPopup(popupScene, x, y);
   }
 
   public void openPointsPopup(int pointsCount, int x, int y) {
@@ -64,58 +60,26 @@ public class PopupController {
 
   public void openInventoryPopup(Inventory inventory, int x, int y, Player player) {
     InventoryPopup popupScene = new InventoryPopup(inventory, player);
-    popupStage.setScene(popupScene);
-
     popupScene.setCloseButtonCallback(event -> popupStage.hide());
-    popupStage.onShownProperty().setValue(event -> {
-      popupStage.setX(x - popupScene.getWidth() / 2);
-      popupStage.setY(y - popupScene.getHeight() / 2);
-    });
-
-    if (!popupStage.isShowing()) {
-      popupStage.showAndWait();
-    }
+    openPopup(popupScene, x, y);
   }
 
-  public void openBattleReflexPopup(int pointsPerSecond, BiConsumer<Boolean, Integer> callback, int x, int y){
+  public void openBattleReflexPopup(int pointsPerSecond, BiConsumer<Boolean, Integer> callback, int x, int y) {
     BattleReflexPopup popupScene = new BattleReflexPopup(pointsPerSecond, callback);
     popupScene.setCloseButtonActionListener((event) -> hidePopup());
-    popupStage.setScene(popupScene);
-    popupStage.onShownProperty().setValue(event -> {
-      popupStage.setX(x - popupScene.getWidth() / 2);
-      popupStage.setY(y - popupScene.getHeight() / 2);
-    });
-    if (!popupStage.isShowing()) {
-      popupStage.showAndWait();
-    }
+    openPopup(popupScene, x, y);
   }
 
   public void openQuestionPopup(Question question, int x, int y, BiConsumer<Boolean, Integer> callback, int reward) {
     QuestionPopup popupScene = new QuestionPopup(question, callback, reward);
     popupScene.setOkButtonCallback((event) -> hidePopup());
-    popupStage.setScene(popupScene);
-    popupStage.onShownProperty().setValue(event -> {
-      popupStage.setX(x - popupScene.getWidth() / 2);
-      popupStage.setY(y - popupScene.getHeight() / 2);
-    });
-    if (!popupStage.isShowing()) {
-      popupStage.showAndWait();
-    }
+    openPopup(popupScene, x, y);
   }
-  
+
   public void openDialoguePopup(String text, Image npcImage, int x, int y) {
     DialoguePopup popupScene = new DialoguePopup(text, npcImage);
-    popupStage.setScene(popupScene);
-
-    popupStage.onShownProperty().setValue(event -> {
-      popupStage.setX(x - popupScene.getWidth() / 2);
-      popupStage.setY(y - popupScene.getHeight() / 2);
-    });
-
     popupScene.setCloseButtonCallback(event -> popupStage.hide());
-    if (!popupStage.isShowing()) {
-      popupStage.showAndWait();
-    }
+    openPopup(popupScene, x, y);
   }
 
   public void hidePopup() {
