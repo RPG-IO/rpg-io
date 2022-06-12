@@ -83,7 +83,7 @@ public class ActionFactory {
   }
 
   private static BattleAction battleActionFromConfig(ActionConfigBundle config) {
-    return new BattleAction(config.getRewardPoints(),
+    return new BattleAction(config.getRewardPoints(), config.getRequiredStrength(),
         ConditionFactory.fromConfig(config.getCondition()));
   }
 

@@ -12,9 +12,9 @@ public class BattleResult {
 
     public String getMessage() {
         return switch (result) {
-            case VICTORY -> "You won! Gained " + reward + " points.";
-            case DEFEAT -> "You lost :(";
-            case DRAW -> "Draw.";
+            case VICTORY -> "Wygrałeś! Twoja nagroda: " + reward + " pkt.";
+            case DEFEAT -> "Przegrałeś. Postaraj się podnieść swoje statystyki.";
+            case DRAW -> "Remis.";
         };
     }
 }

@@ -11,19 +11,19 @@
       "tag": "before collect",
       "type": "show-description",
       "assetPath": "key.png",
-      "description": "Schylasz się i podnosisz stary klucz. Ciekawe co otwiera...",
+      "description": "Schylasz się i podnosisz stary klucz. Ciekawe, co otwiera...",
       "after": {
         "tag": "before collect",
         "type": "show-description",
         "assetPath": "chest.png",
-        "description": "Może tą starą skrzynię którą widziałeś na północy?"
+        "description": "Może tę starą skrzynię, którą widziałeś na północy?"
       }
     }
   },
   "onApproach": {
     "tag": "onKeyApproachAction",
     "type": "show-description",
-    "description": "W oddali spostrzegasz klucz. Ciekawe co otwiera...",
+    "description": "W oddali spostrzegasz klucz. Ciekawe, co otwiera...",
     "assetPath": "key.png"
   }
 }

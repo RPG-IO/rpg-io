@@ -29,7 +29,7 @@ public class BattleTest {
         }
 
         // Then
-        assertEquals("You won! Gained 2 points.", result.getMessage());
+        assertEquals("Wygrałeś! Twoja nagroda: 2 pkt.", result.getMessage());
         assertEquals(2, player.getPoints());
     }
 
@@ -52,7 +52,7 @@ public class BattleTest {
         }
 
         // Then
-        assertEquals("Draw.", result.getMessage());
+        assertEquals("Remis.", result.getMessage());
         assertEquals(0, player.getPoints());
     }
 
@@ -75,7 +75,7 @@ public class BattleTest {
         }
 
         // Then
-        assertEquals("You lost :(", result.getMessage());
+        assertEquals("Przegrałeś. Postaraj się podnieść swoje statystyki.", result.getMessage());
         assertEquals(0, player.getPoints());
     }
 }

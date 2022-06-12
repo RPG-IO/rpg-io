@@ -2,16 +2,17 @@ package io.rpg.view.popups;
 
 import io.rpg.model.object.Question;
 import io.rpg.viewmodel.QuestionPopupViewModel;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class QuestionPopup extends Scene {
 
@@ -21,7 +22,7 @@ public class QuestionPopup extends Scene {
   private final BiConsumer<Boolean, Integer> callback;
 
   private static String backgroundPath;
-  private Runnable onClickCallback;
+  private static String buttonPath;
 
   public QuestionPopup(Question question, BiConsumer<Boolean, Integer> callback, int pointsToEarn) {
     super(new Group(), Color.TRANSPARENT);
@@ -50,6 +51,7 @@ public class QuestionPopup extends Scene {
     viewModel.setButtonCallback('D', event -> this.answerSelected('D'));
 
     viewModel.setBackgroundImage(backgroundPath);
+    viewModel.setOkButtonImage(buttonPath);
 
     this.setFill(Color.TRANSPARENT);
   }
@@ -58,28 +60,27 @@ public class QuestionPopup extends Scene {
     QuestionPopup.backgroundPath = backgroundPath;
   }
 
+  public static void setButtonPath(String buttonPath) {
+    QuestionPopup.buttonPath = buttonPath;
+  }
+
 
   public void answerSelected(char answer) {
     char correctAnswer = question.getCorrectAnswerChar();
+    this.viewModel.setAllButtonsCallback(null);
     if (answer == correctAnswer) {
-      viewModel.setQuestionLabel("Correct!");
-      viewModel.setAllButtonsCallback(event -> callback.accept(true, pointsToEarn));
-      this.setOnMouseClicked(event -> callback.accept(true, pointsToEarn));
-      this.onClickCallback = () -> callback.accept(true, pointsToEarn);
+      viewModel.setQuestionLabel("Poprawna odpowiedź!");
+      this.setOkButtonCallback(event -> callback.accept(true, pointsToEarn));
     } else {
       viewModel.highlightWrong(answer);
-      viewModel.setQuestionLabel("Answer " + answer + " is incorrect. The correct answer is " + correctAnswer + ": " + question.getCorrectAnswer());
-      viewModel.setAllButtonsCallback(event -> callback.accept(false, 0));
-      this.setOnMouseClicked(event -> callback.accept(false, 0));
-      this.onClickCallback = () -> callback.accept(false, 0);
+      viewModel.setQuestionLabel("Poprawna odpowiedź: " + question.getCorrectAnswerChar());
+      this.setOkButtonCallback(event -> callback.accept(false, 0));
     }
 
     viewModel.highlightCorrect(correctAnswer);
   }
 
-  public void clickCallback() {
-    if (this.onClickCallback != null) {
-      this.onClickCallback.run();
-    }
+  public void setOkButtonCallback(EventHandler<? super MouseEvent> callback) {
+    viewModel.setOkButtonOnClick(callback);
   }
 }

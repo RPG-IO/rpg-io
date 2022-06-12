@@ -65,20 +65,19 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
   public void setMainStage(Stage mainStage) {
     this.mainStage = mainStage;
-
-    mainStage.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-      if (!isNowFocused) {
-        var player = playerController.getPlayer();
-        player.setDownPressed(false);
-        player.setUpPressed(false);
-        player.setLeftPressed(false);
-        player.setRightPressed(false);
-      }
-    });
+    this.popupController.setOwner(mainStage);
 
     if (mainStage.getScene() != null) {
       mainStage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, (event) -> popupController.hidePopup());
     }
+  }
+
+  public void stopPlayer() {
+    var player = playerController.getPlayer();
+    player.setDownPressed(false);
+    player.setUpPressed(false);
+    player.setLeftPressed(false);
+    player.setRightPressed(false);
   }
 
   public void setCurrentModel(@NotNull LocationModel model) {
@@ -149,7 +148,8 @@ public class Controller implements KeyboardEvent.Observer, MouseClickedEvent.Obs
 
     if (payload.getEventType() == KeyEvent.KEY_PRESSED) {
       switch (payload.getCode()) {
-        case E -> popupController.openInventoryPopup(playerController.getPlayer().getInventory(), getWindowCenterX(), getWindowCenterY(), playerController.getPlayer());
+        case E ->
+            popupController.openInventoryPopup(playerController.getPlayer().getInventory(), getWindowCenterX(), getWindowCenterY(), playerController.getPlayer());
       }
     }
   }

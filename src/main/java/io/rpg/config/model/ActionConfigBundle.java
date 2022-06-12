@@ -123,6 +123,13 @@ public class ActionConfigBundle implements ConfigWithValidation {
   private Integer rewardPoints;
 
   /**
+   * {@link io.rpg.model.actions.BattleAction} <br>
+   * {@link io.rpg.model.actions.BattleReflexAction} <br>
+   */
+  @SerializedName(value = "required-strength", alternate = {"requiredStrength", "strength"})
+  private int requiredStrength;
+
+  /**
    * Package scoped constructor, meant for test purposes only.
    */
   ActionConfigBundle(@NotNull String tag, @NotNull ActionType actionType) {
@@ -191,6 +198,10 @@ public class ActionConfigBundle implements ConfigWithValidation {
   @Nullable
   public Integer getRewardPoints() {
     return rewardPoints;
+  }
+
+  public int getRequiredStrength() {
+    return requiredStrength;
   }
 
   @Nullable

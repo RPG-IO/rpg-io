@@ -6,7 +6,6 @@ import static io.rpg.util.PathUtils.resolvePathToJFXFormat;
 import com.google.gson.annotations.SerializedName;
 import com.kkafara.rt.Result;
 import io.rpg.util.ErrorMessageBuilder;
-import io.rpg.util.PathUtils;
 import io.rpg.util.RuntimeConstantRegistryInstance;
 
 import java.nio.file.Files;
@@ -62,6 +61,7 @@ public class GameWorldConfig implements ConfigWithValidation {
    * Specifies the assets for each popup.
    */
   private String quizPopupBackground;
+  private String quizPopupButton;
   private String textPopupButton;
   private String textImagePopupBackground;
   private String textImagePopupButton;
@@ -190,6 +190,11 @@ public class GameWorldConfig implements ConfigWithValidation {
         () -> builder.append("Invalid quiz popup background specified")
     );
 
+    resolvePathToAsset(quizPopupButton).ifPresentOrElse(
+        pathStr -> { quizPopupButton = pathStr; },
+        () -> builder.append("Invalid quiz popup button specified")
+    );
+
     resolvePathToAsset(textImagePopupBackground).ifPresentOrElse(
         pathStr -> { textImagePopupBackground = pathStr; },
         () -> builder.append("Invalid text image popup background specified")
@@ -252,6 +257,9 @@ public class GameWorldConfig implements ConfigWithValidation {
 
   public String getQuizPopupBackground() {
     return resolvePathToJFXFormat(quizPopupBackground);
+  }
+  public String getQuizPopupButton() {
+    return resolvePathToJFXFormat(quizPopupButton);
   }
 
   public String getTextPopupButton() {

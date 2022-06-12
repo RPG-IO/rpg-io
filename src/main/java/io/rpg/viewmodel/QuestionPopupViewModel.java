@@ -16,6 +16,7 @@ public class QuestionPopupViewModel {
   @FXML private Pane backgroundPane;
   @FXML private ImageView backgroundImage;
   @FXML private Button aButton, bButton, cButton, dButton;
+  @FXML private Button okButton;
 
   public void setQuestion(Question question) {
     questionLabel.setText(question.getQuestion());
@@ -48,6 +49,10 @@ public class QuestionPopupViewModel {
     getButtonFromCode(buttonCode).setOnMouseClicked(callback);
   }
 
+  public void setOkButtonOnClick(EventHandler<? super MouseEvent> callback) {
+    okButton.setOnMouseClicked(callback);
+  }
+
   public void setAllButtonsCallback(EventHandler<? super MouseEvent> callback) {
     aButton.setOnMouseClicked(callback);
     bButton.setOnMouseClicked(callback);
@@ -63,5 +68,10 @@ public class QuestionPopupViewModel {
   public void highlightWrong(char buttonCode) {
     Button button = getButtonFromCode(buttonCode);
     button.setStyle(button.getStyle() + "-fx-border-color: #a93e3e; -fx-border-width: 5px;");
+  }
+
+  public void setOkButtonImage(String url) {
+    ImageView imageView = new ImageView(url);
+    okButton.setGraphic(imageView);
   }
 }

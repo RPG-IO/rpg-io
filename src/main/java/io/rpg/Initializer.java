@@ -55,6 +55,7 @@ public class Initializer {
 
     // set assets for popups
     QuestionPopup.setBackgroundPath(gameWorldConfig.getQuizPopupBackground());
+    QuestionPopup.setButtonPath(gameWorldConfig.getQuizPopupButton());
     TextPopup.setBackgroundPath(gameWorldConfig.getTextPopupBackground());
     BattleReflexPopup.setBackgroundPath(gameWorldConfig.getTextPopupBackground());
     TextImagePopup.setBackgroundPath(gameWorldConfig.getTextImagePopupBackground());

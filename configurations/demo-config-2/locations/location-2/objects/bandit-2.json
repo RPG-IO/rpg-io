@@ -1,22 +1,23 @@
 {
   "tag": "bandit-2",
-  "position": { "row": 8, "col": 2 },
+  "position": { "row": 1, "col": 6 },
   "assetPath": "bandit.png",
   "onLeftClick": {
     "tag": "battle",
     "type": "battle",
-    "reward": 12
+    "reward": 10,
+    "strength": 9
   },
   "onRightClick": {
     "tag": "info",
     "type": "show-description",
-    "description": "Potrzebujesz przynajmniej 1 punkt siły, aby mnie pokonać.",
+    "description": "Potrzebujesz przynajmniej 10 punktów siły, aby mnie pokonać.",
     "assetPath": "bandit.png"
   },
   "onApproach": {
     "tag": "info",
     "type": "show-description",
-    "description": "Potrzebujesz przynajmniej 1 punkt siły, aby mnie pokonać.",
+    "description": "Potrzebujesz przynajmniej 10 punktów siły, aby mnie pokonać.",
     "assetPath": "bandit.png"
   }
 }

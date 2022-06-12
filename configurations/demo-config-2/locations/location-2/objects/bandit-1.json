@@ -5,18 +5,19 @@
   "onLeftClick": {
     "tag": "battle",
     "type": "battle",
-    "reward": 10
+    "reward": 10,
+    "strength": 19
   },
   "onRightClick": {
     "tag": "info",
     "type": "show-description",
-    "description": "Potrzebujesz przynajmniej 1 siły aby mnie pokonać.",
+    "description": "Potrzebujesz przynajmniej 20 punktów siły, aby mnie pokonać.",
     "assetPath": "bandit.png"
   },
   "onApproach": {
     "tag": "info",
     "type": "show-description",
-    "description": "Potrzebujesz przynajmniej 1 siły aby mnie pokonać.",
+    "description": "Potrzebujesz przynajmniej 20 punktów siły, aby mnie pokonać.",
     "assetPath": "bandit.png"
   }
 }

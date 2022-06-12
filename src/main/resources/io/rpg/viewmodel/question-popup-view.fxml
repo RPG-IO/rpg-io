@@ -39,5 +39,17 @@
             <Font name="Monospaced Bold" size="12" />
          </font>
       </Button>
+      <Button fx:id="okButton" cancelButton="true" contentDisplay="CENTER" layoutX="208.0" layoutY="416.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="58.0" style="-fx-background-color: transparent;" styleClass="ok_button" stylesheets="@../../../css/styles.css" text="OK" textAlignment="CENTER" textFill="#97401d">
+         <font>
+            <Font name="Monospaced Bold" size="20.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="57.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../assets/button-image-3.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </Pane>
