@@ -11,7 +11,7 @@
   "onRightClick": {
     "tag": "info",
     "type": "show-description",
-    "description": "Potrzebujesz przynajmniej 20 siły aby mnie pokonać.",
+    "description": "Potrzebujesz przynajmniej 20 punktów siły, aby mnie pokonać.",
     "assetPath": "bandit.png"
   },
   "onApproach": {
