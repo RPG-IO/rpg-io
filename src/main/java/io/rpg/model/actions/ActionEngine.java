@@ -140,8 +140,8 @@ public final class ActionEngine {
   public void onAction(LevelUpAction action) {
     controller().stopPlayer();
     controller().getPopupController().openTextPopup(
-        (action.getPoints() != null ? (action.getPoints() + " points earned already!\n") : "")
-            + "Achieved level " + action.newLevel + "!",
+        (action.getPoints() != null ? ("Zdobyłeś już punktów: " + action.getPoints() + ".\n") : "")
+            + "Poziom " + action.newLevel + ". osiągnięty!",
         controller().getWindowCenterX(), controller().getWindowCenterY());
   }
 
@@ -175,7 +175,7 @@ public final class ActionEngine {
     actionGuard(action, () -> {
       var controller = controller();
       controller.stopPlayer();
-      controller.getPopupController().openTextImagePopup("Picked up an item!", new Image(PathUtils.resolvePathToJFXFormat(action.getAssetPath())),
+      controller.getPopupController().openTextImagePopup("Zdobyłeś przedmiot!", new Image(PathUtils.resolvePathToJFXFormat(action.getAssetPath())),
           controller.getWindowCenterX(), controller.getWindowCenterY());
       controller.getPlayerController().getPlayer().getInventory()
           .add(new InventoryGameObjectView(action.getAssetPath(), action.getDescription(), action.getOwner().getTag()));

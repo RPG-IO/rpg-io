@@ -55,7 +55,7 @@ public class PopupController {
   }
 
   public void openPointsPopup(int pointsCount, int x, int y) {
-    openTextImagePopup("You earned " + pointsCount + " points!", coinImage, x, y);
+    openTextImagePopup("Zdobyłeś punkty w liczbie: " + pointsCount + "!", coinImage, x, y);
   }
 
   public void openInventoryPopup(Inventory inventory, int x, int y, Player player) {

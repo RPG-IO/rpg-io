@@ -13,13 +13,13 @@
   "onRightClick": {
     "tag": "info",
     "type": "show-description",
-    "description": "Potrzebujesz przynajmniej 1 siły aby mnie pokonać.",
+    "description": "Potrzebujesz przynajmniej 1 punkt siły, aby mnie pokonać.",
     "assetPath": "bandit.png"
   },
   "onApproach": {
     "tag": "info",
     "type": "show-description",
-    "description": "Potrzebujesz przynajmniej 1 siły aby mnie pokonać.",
+    "description": "Potrzebujesz przynajmniej 1 punkt siły, aby mnie pokonać.",
     "assetPath": "bandit.png"
   }
 }

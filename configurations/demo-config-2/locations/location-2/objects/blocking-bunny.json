@@ -5,7 +5,7 @@
   "onApproach": {
     "tag": "w",
     "type": "show-description",
-    "description": "Nie przepuszczę Cie dopóki mi nie zapłacisz. Chcę jeden diament!",
+    "description": "Nie przepuszczę Cię, dopóki mi nie zapłacisz. Chcę jeden diament!",
     "assetPath": "diamond.png"
   },
   "onLeftClick": {
@@ -23,6 +23,6 @@
     "tag": "w",
     "type": "show-description",
     "assetPath": "diamond.png",
-    "description": "Ten królik powiedział, że Cię nie przepuści dopóki nie dasz mu diamentu."
+    "description": "Ten królik powiedział, że Cię nie przepuści, dopóki nie dasz mu diamentu."
   }
 }

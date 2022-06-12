@@ -17,7 +17,7 @@
   "onApproach": {
     "tag": "info",
     "type": "show-description",
-    "description": "Potrzebujesz przynajmniej 10 siły aby mnie pokonać.",
+    "description": "Potrzebujesz przynajmniej 10 punktów siły, aby mnie pokonać.",
     "assetPath": "bandit.png"
   }
 }
