@@ -126,7 +126,7 @@ public final class Position {
 
     @Override
     public boolean hasNext() {
-      return queue.isEmpty();
+      return !queue.isEmpty();
     }
 
     private void addToQueueIfValid(Position position) {
