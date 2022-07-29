@@ -1,9 +1,8 @@
 package io.rpg.annotation;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
+import com.google.auto.service.AutoService;
+
+import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
@@ -20,8 +19,9 @@ import java.util.stream.Collectors;
 /**
  * Requires parameterless constructor.
  */
-@SupportedAnnotationTypes("io.rpg.annotation.BuilderProcessor")
+@SupportedAnnotationTypes("io.rpg.annotation.BuilderProperty")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
+@AutoService(Processor.class)
 public class BuilderProcessor extends AbstractProcessor {
   private final int INDENTATION = 2;
   private final String INDENT = " ".repeat(INDENTATION);
@@ -29,6 +29,7 @@ public class BuilderProcessor extends AbstractProcessor {
   @Override
   public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
     for (TypeElement annotation : annotations) {
+      processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "PROCESSING ANNOTATION");
       Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
 
       // Annotated method with one parameter && name wit "set" prefix is recognized as setter
@@ -36,8 +37,6 @@ public class BuilderProcessor extends AbstractProcessor {
         ((ExecutableType) element.asType()).getParameterTypes().size() == 1
             && element.getSimpleName().toString().startsWith("set"))
       );
-
-
 
       List<Element> annotatedSetters = annotatedMethods.get(true);
       List<Element> otherMethods = annotatedMethods.get(false);
@@ -88,7 +87,7 @@ public class BuilderProcessor extends AbstractProcessor {
 
           // generate setters for builder
           setterMap.forEach((methodName, argumentType) -> {
-            writer.println(INDENT + " public " + builderSimpleClassName + " " + methodName + "(" + argumentType + "value) {");
+            writer.println(INDENT + " public " + builderSimpleClassName + " " + methodName + "(" + argumentType + " value) {");
             writer.println(INDENT.repeat(2) + "object." + methodName + "(value);");
             writer.println(INDENT.repeat(2) + "return this;");
             writer.println('}');
