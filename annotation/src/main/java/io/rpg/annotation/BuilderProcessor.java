@@ -73,11 +73,11 @@ public class BuilderProcessor extends AbstractProcessor {
         JavaFileObject builderFile = processingEnv.getFiler().createSourceFile(builderClassName);
         try (PrintWriter writer = new PrintWriter(builderFile.openWriter())) {
           if (packageName != null) {
-            writer.println("package " + packageName + ';');
+            writer.println("package " + packageName + ';' + '\n');
           }
 
           // begin class definition
-          writer.println("public class " + builderSimpleClassName + '{');
+          writer.println("public class " + builderSimpleClassName + " {");
 
           writer.println(INDENT + "private " + simpleClassName + " object = new " + simpleClassName + "();");
 
@@ -90,7 +90,7 @@ public class BuilderProcessor extends AbstractProcessor {
             writer.println(INDENT + " public " + builderSimpleClassName + " " + methodName + "(" + argumentType + " value) {");
             writer.println(INDENT.repeat(2) + "object." + methodName + "(value);");
             writer.println(INDENT.repeat(2) + "return this;");
-            writer.println('}');
+            writer.println(INDENT + '}');
           });
 
           // end class definition
