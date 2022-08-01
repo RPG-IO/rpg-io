@@ -1,6 +1,7 @@
 package io.rpg.model.location;
 
 import com.kkafara.rt.Result;
+import io.rpg.annotation.BuilderProperty;
 import io.rpg.model.actions.ActionConsumer;
 import io.rpg.model.actions.BaseActionEmitter;
 import io.rpg.model.actions.LocationChangeAction;
@@ -36,10 +37,15 @@ public class LocationModel extends BaseActionEmitter {
     this.gameObjects = gameObjects;
   }
 
-  private LocationModel() {
+  public LocationModel() {
     this.positionListeners = new HashMap<>();
     this.positionGameObjectMap = new HashMap<>();
     this.directionToLocationMap = new HashMap<>();
+  }
+
+  @BuilderProperty
+  public void setTag(String tag) {
+    this.tag = tag;
   }
 
   public String getTag() {
